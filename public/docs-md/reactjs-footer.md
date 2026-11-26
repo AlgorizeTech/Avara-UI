@@ -106,6 +106,21 @@ All 9 options as live previews: https://avaraui.com/view/footer
    - Set these props: `{"variant":"glass-dock"}`
    - Docs: https://avaraui.com/docs/nextjs/footer#glass-dock-footer
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/footer.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/footer
+```
+
 ## Architectural Blueprint & Liquid Ink Footer (Heron AI Inspired)
 
 - Use `variant="architectural-liquid"` an architectural blueprint drafting grid footer featuring 3D isometric brand cube, technical metrics, and interactive liquid ink typography that organically fills and ripples with fluid physics strictly when hovering directly over the text.
@@ -213,6 +228,8 @@ export default function WordmarkFooterDemo() {
 }
 ```
 
+## Examples
+
 ## Installation
 
 Add the component by URL — no setup needed:
@@ -227,8 +244,6 @@ Or register the @avara-ui registry once per project and add it by name:
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/footer
 ```
-
-## Examples
 
 ### Simple Centered Footer
 

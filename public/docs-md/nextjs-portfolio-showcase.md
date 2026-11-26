@@ -8,6 +8,21 @@ url: https://avaraui.com/docs/nextjs/portfolio-showcase
 
 An infinite, draggable masonry canvas for creative agencies, design studios and freelance portfolios. It wraps endlessly in every direction, drifts on its own as a camera glides from card to card, and opens a project modal when a card is clicked.
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/portfolio-showcase.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/portfolio-showcase
+```
+
 ## Masonry Portfolio — variant="masonry-portfolio"
 
 Drag in any direction with momentum, or let the camera glide from card to card. Click a card to open its project details.
@@ -98,21 +113,6 @@ export default function PortfolioShowcaseExample() {
     />
   );
 }
-```
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/portfolio-showcase.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/portfolio-showcase
 ```
 
 ## Features

@@ -8,6 +8,21 @@ url: https://avaraui.com/docs/nextjs/data-table
 
 A stateful data table built on [Table](./table) primitives with built-in global search, click-to-sort column headers, filter tabs, pagination, and batch row selection.
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/advanced-table.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/advanced-table
+```
+
 ### Searchable DataTable
 
 - Pass `data` and getRowId — everything else is composition. No column config.

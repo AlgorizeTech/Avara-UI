@@ -10,6 +10,21 @@ A product hero for anything that comes in flavours — a matcha latte here, but 
 
 `FlavourCarousel` is built from library pieces: the cart button is [Button](https://avaraui.com/docs/nextjs/button).
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/flavour-carousel.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/flavour-carousel
+```
+
 ## Choose your matcha tea
 
 Eight flavours around one cup. Wait five seconds or click a tile to turn the ring; arrow keys work when it has focus, and hovering holds it.
@@ -73,21 +88,6 @@ export default function Flavours() {
     />
   );
 }
-```
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/flavour-carousel.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/flavour-carousel
 ```
 
 ## Preparing the pictures

@@ -62,6 +62,21 @@ All 4 options as live previews: https://avaraui.com/view/support-dashboard
    - Set these props: `{"variant":"liquid-glass"}`
    - Docs: https://avaraui.com/docs/nextjs/support-dashboard#support-liquid-glass
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/support-dashboard.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/support-dashboard
+```
+
 ## Ticket workspace
 
 A 3-pane drill-down: inbox, conversation thread and a collapsible properties pane.
@@ -148,6 +163,8 @@ export default function Helpdesk() {
 }
 ```
 
+## Examples
+
 ## Installation
 
 Add the component by URL — no setup needed:
@@ -162,8 +179,6 @@ Or register the @avara-ui registry once per project and add it by name:
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/support-dashboard
 ```
-
-## Examples
 
 ### Table view
 

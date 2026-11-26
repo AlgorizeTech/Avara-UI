@@ -27,55 +27,6 @@ npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/carousel
 ```
 
-### Radial carousel
-
-`RadialCarousel` arranges cards on a 360-degree 3D wheel around a central hub, with drag momentum. The hub plays or pauses autoplay.
-
-- Pass `items` as `{ title, category, rating, img }[]` — cards radiate in 360 degrees around the center.
-- `stepAngle` controls the rotation angle increment between cards (default is 360 / items.length).
-
-```tsx
-import { RadialCarousel, type RadialCarouselItem } from "@/components/custom/carousel";
-
-const customItems: RadialCarouselItem[] = [
-  {
-    title: "Misty Pine Forest",
-    category: "Nature",
-    rating: "4.9",
-    price: "$120",
-    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
-  },
-  {
-    title: "Lush River Valley",
-    category: "Wilderness",
-    rating: "4.8",
-    price: "$150",
-    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
-  },
-  {
-    title: "Autumn Woodland Path",
-    category: "Landscape",
-    rating: "4.9",
-    price: "$95",
-    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
-  },
-];
-
-export default function RadialCarouselDemo() {
-  return (
-    <div className="w-full rounded-xl overflow-hidden border border-border shadow-sm bg-foreground/5">
-      <RadialCarousel
-        items={customItems}
-        autoPlay={true}
-        autoPlayInterval={3500}
-      />
-    </div>
-  );
-}
-```
-
-All five carousels (`RadialCarousel`, `FluidGlassSlider`, `ImageCarousel`, `HeroCarousel`, `CustomCarousel`) ship together in a single self-contained `carousel.tsx` file when installing `carousel`. You can import components directly or pass `variant="radial" | "glass" | "image" | "hero" | "thumbnails"` into the default `Carousel` component.
-
 ### Fluid glass slider
 
 `FluidGlassSlider` is a liquid glass distortion slider featuring dynamic cursor tracking, glassmorphism overlays, and smooth progress tracking.

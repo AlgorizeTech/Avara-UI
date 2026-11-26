@@ -80,6 +80,21 @@ export default function FleetDashboard() {
 
 ## Examples
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/fleet-map.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/fleet-map
+```
+
 ### Minimal
 
 - Set `variant="minimal"` to float the vehicle list as a panel over a light map.

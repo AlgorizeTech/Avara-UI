@@ -126,6 +126,21 @@ All 12 options as live previews: https://avaraui.com/view/pricing
    - Set these props: `{"layout":"typographic","variant":"typographic"}`
    - Docs: https://avaraui.com/docs/nextjs/pricing#typographic-menu
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/pricing.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/pricing
+```
+
 ## Selectable workspace plans
 
 Interactive radio-selectable plans with Monthly/Annual toggle, team seat stepper, and responsive mobile accordion view.
@@ -196,6 +211,8 @@ export default function WorkspacePlanSelector() {
 }
 ```
 
+## Examples
+
 ## Installation
 
 Add the component by URL — no setup needed:
@@ -210,8 +227,6 @@ Or register the @avara-ui registry once per project and add it by name:
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/pricing
 ```
-
-## Examples
 
 ### Tiered cards
 
