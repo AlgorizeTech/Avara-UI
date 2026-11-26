@@ -6,16 +6,30 @@ import { RadioIcon } from "@/components/ui/radio-icon";
 import type { RadarIconHandle } from "@/components/ui/radar-icon";
 import {
   ArrowUpRight,
+  Award,
   BarChart2,
+  CheckCircle2,
   ChevronDown,
   CloudCog,
+  Copy,
+  Eye,
+  Flag,
+  Globe,
+  Home,
   Menu,
   Moon,
+  MoreHorizontal,
+  MoreVertical,
   PieChart,
   Play,
+  Plus,
   Sun,
+  Target,
   TrendingUp,
+  Users,
+  Wand2,
   X,
+  Zap,
 } from "lucide-react";
 import { TemplatePage, type TemplatePreviewTab } from "@/components/site/TemplatePage";
 import { cn } from "@/lib/utils";
@@ -75,6 +89,29 @@ function MailoraHeroPreview({
   const isDark = theme === "dark";
   const prefersReducedMotion = useReducedMotion();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [targetName, setTargetName] = useState("Sales Promotion");
+  const [customerTypes, setCustomerTypes] = useState([
+    "Teacher",
+    "Man",
+    "Woman",
+    "Cloth",
+  ]);
+  const [audienceReachStep, setAudienceReachStep] = useState(5);
+  const [subjectIndex, setSubjectIndex] = useState(0);
+
+  const generatedSubjects = [
+    "Spring is here, Upgrade your wardrobe for 50% off!",
+    "Last chance: Unlock 40% off your seasonal refresh today",
+    "Your exclusive early-access invite ends at midnight",
+  ];
+
+  const extraCustomerTypes = ["Founder", "Agency", "Retail", "SaaS"];
+  const handleAddCustomerType = () => {
+    const next = extraCustomerTypes.find((t) => !customerTypes.includes(t));
+    if (next) {
+      setCustomerTypes((prev) => [...prev, next]);
+    }
+  };
 
   const navItems = [
     { label: "Home", active: true, hasDropdown: false },
@@ -94,10 +131,12 @@ function MailoraHeroPreview({
   return (
     <div
       className={cn(
-        "@container relative w-full min-h-[600px] @lg:min-h-[640px] overflow-hidden px-4 py-5 @sm:px-6 @lg:px-8 @lg:py-6 transition-colors duration-300",
+        "@container relative w-full overflow-x-clip px-4 @sm:px-6 @lg:px-8 transition-colors duration-300",
         isDark ? "bg-[#0B0D12] text-zinc-100" : "bg-white text-zinc-900",
       )}
     >
+      {/* Hero + Navbar + Edge-Anchored Floating Cards */}
+      <div className="relative -mx-4 @sm:-mx-6 @lg:-mx-8 px-4 @sm:px-6 @lg:px-8 pt-5 @lg:pt-6 pb-8 min-h-[600px] @lg:min-h-[640px] overflow-hidden">
       {/* Large Subtle Edge-Only Architectural Boxes + Warm Peach Tinted Cells */}
       <div
         aria-hidden
@@ -657,6 +696,1303 @@ function MailoraHeroPreview({
           </motion.div>
         </div>
       </section>
+      </div>
+
+      {/* 3. Key Features Section */}
+      <section className="relative z-10 mx-auto max-w-5xl pt-12 @sm:pt-16 pb-6">
+        {/* Top Tag Pill */}
+        <div className="inline-flex items-center rounded-full border border-zinc-200/80 bg-white px-3.5 py-1 text-[11px] font-medium text-zinc-600 shadow-xs dark:border-white/10 dark:bg-white/[0.05] dark:text-zinc-300">
+          Key Features
+        </div>
+
+        {/* Heading + Right Subtitle */}
+        <div className="mt-4 flex flex-col gap-4 @md:flex-row @md:items-end @md:justify-between">
+          <h3 className="text-[26px] @sm:text-[34px] @lg:text-[38px] font-semibold tracking-tight leading-[1.14]">
+            Reach the right{" "}
+            <span className={isDark ? "text-zinc-500" : "text-zinc-400"}>
+              audience
+            </span>
+            <br />
+            <span className={isDark ? "text-zinc-500" : "text-zinc-400"}>
+              without
+            </span>{" "}
+            headaches.
+          </h3>
+
+          <p
+            className={cn(
+              "max-w-[260px] text-[11.5px] @sm:text-[12px] leading-relaxed",
+              isDark ? "text-zinc-400" : "text-zinc-500",
+            )}
+          >
+            Reach the right audience at the right time without the tech headaches.
+          </p>
+        </div>
+
+        {/* Bento Container */}
+        <div
+          className={cn(
+            "mt-8 rounded-3xl p-4 @sm:p-6 transition-colors",
+            isDark ? "bg-white/[0.04]" : "bg-[#F5F5F5]",
+          )}
+        >
+          <div className="grid grid-cols-1 @lg:grid-cols-12 gap-4 @sm:gap-5 items-stretch">
+            {/* Left Card: Audience + World Map */}
+            <motion.div
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : { duration: 0.65, ease: [0.16, 1, 0.3, 1] }
+              }
+              className={cn(
+                "@lg:col-span-5 rounded-2xl p-5 flex flex-col justify-between",
+                isDark ? "bg-[#141720]" : "bg-white",
+              )}
+            >
+              <div>
+                {/* Header */}
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <h4 className="text-[15px] font-semibold tracking-tight">
+                      Audience
+                    </h4>
+                    <p
+                      className={cn(
+                        "mt-0.5 text-[10.5px]",
+                        isDark ? "text-zinc-400" : "text-zinc-400",
+                      )}
+                    >
+                      Activate for 12 hours
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    className="inline-flex h-8 items-center justify-center rounded-full bg-[#FF5B1F] px-4 text-[11px] font-medium text-white transition-colors hover:bg-[#e84f17] cursor-pointer"
+                  >
+                    Details
+                  </button>
+                </div>
+
+                {/* Big Metric + Country Pill */}
+                <div className="mt-4 flex items-center gap-3">
+                  <span className="text-[28px] @sm:text-[32px] font-semibold tracking-tight leading-none">
+                    14.020
+                  </span>
+                  <span
+                    className={cn(
+                      "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-medium",
+                      isDark
+                        ? "bg-white/[0.07] text-zinc-200"
+                        : "bg-zinc-100 text-zinc-700",
+                    )}
+                  >
+                    <span className="flex size-3.5 items-center justify-center rounded-full bg-[#E11D48] text-[7px] font-bold text-white">
+                      ★
+                    </span>
+                    <span>Russian</span>
+                  </span>
+                </div>
+
+                {/* Gender Breakdown Rows */}
+                <div
+                  className={cn(
+                    "mt-5 divide-y border-t",
+                    isDark
+                      ? "divide-white/[0.07] border-white/[0.07]"
+                      : "divide-zinc-100 border-zinc-100",
+                  )}
+                >
+                  {[
+                    {
+                      symbol: "♂",
+                      label: "Male",
+                      amount: "$2.480",
+                      delta: "+5.6%",
+                      positive: true,
+                    },
+                    {
+                      symbol: "♀",
+                      label: "Female",
+                      amount: "$480",
+                      delta: "-2.6%",
+                      positive: false,
+                    },
+                  ].map((row) => (
+                    <div
+                      key={row.label}
+                      className="flex items-center justify-between py-2.5 text-[11.5px]"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={cn(
+                            "text-[13px] font-medium",
+                            isDark ? "text-zinc-400" : "text-zinc-500",
+                          )}
+                        >
+                          {row.symbol}
+                        </span>
+                        <span
+                          className={cn(
+                            "font-medium",
+                            isDark ? "text-zinc-200" : "text-zinc-700",
+                          )}
+                        >
+                          {row.label}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-4">
+                        <span className="font-semibold tabular-nums">
+                          {row.amount}
+                        </span>
+                        <span
+                          className={cn(
+                            "w-11 text-right font-medium tabular-nums",
+                            row.positive ? "text-emerald-500" : "text-[#FF5B1F]",
+                          )}
+                        >
+                          {row.delta}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* World Map Preview */}
+              <div
+                className={cn(
+                  "relative mt-4 h-36 @sm:h-40 w-full overflow-hidden rounded-xl",
+                  isDark ? "bg-white/[0.03]" : "bg-[#F8F8F8]",
+                )}
+              >
+                <svg
+                  viewBox="0 0 360 170"
+                  className="h-full w-full"
+                  aria-hidden
+                >
+                  {/* Base continents */}
+                  <g
+                    className={
+                      isDark ? "fill-white/[0.12]" : "fill-zinc-200/90"
+                    }
+                  >
+                    {/* North America */}
+                    <path d="M25 28 L64 20 L102 26 L112 42 L95 54 L86 72 L70 84 L58 76 L48 56 L30 46 Z" />
+                    {/* Greenland */}
+                    <path d="M114 14 L142 12 L138 30 L118 32 Z" />
+                    {/* South America */}
+                    <path d="M84 94 L106 98 L118 118 L108 148 L92 158 L84 134 L78 112 Z" />
+                    {/* Europe */}
+                    <path d="M162 28 L198 22 L212 38 L196 52 L170 50 L158 40 Z" />
+                    {/* Africa */}
+                    <path d="M160 62 L198 60 L218 82 L208 118 L188 138 L174 118 L162 88 Z" />
+                    {/* Asia */}
+                    <path d="M210 24 L276 20 L318 36 L328 58 L302 74 L276 88 L244 82 L222 66 L208 46 Z" />
+                    {/* Australia */}
+                    <path d="M286 114 L322 112 L330 134 L310 146 L288 136 Z" />
+                  </g>
+
+                  {/* Highlighted Regions: Alaska/US + Turkey + Japan */}
+                  <path
+                    d="M28 32 L46 28 L42 42 L26 42 Z"
+                    fill="#FF5B1F"
+                  />
+                  <path
+                    d="M46 50 L86 52 L82 68 L58 70 L46 60 Z"
+                    fill="#FF5B1F"
+                  />
+                  <path
+                    d="M198 52 L214 52 L212 60 L196 58 Z"
+                    fill="#FF5B1F"
+                  />
+                  <path
+                    d="M312 52 L322 48 L320 62 L310 62 Z"
+                    fill="#FF5B1F"
+                  />
+                </svg>
+
+                {/* Floating Country Pins */}
+                <div
+                  className={cn(
+                    "absolute left-[50%] top-[44%] -translate-x-1/2 -translate-y-1/2 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[9px] font-medium shadow-sm",
+                    isDark
+                      ? "bg-[#1B1F2C] text-zinc-100 border border-white/10"
+                      : "bg-white text-zinc-800 border border-zinc-100",
+                  )}
+                >
+                  <span className="flex size-3 items-center justify-center rounded-full bg-[#E11D48] text-[6px] text-white">
+                    ☾
+                  </span>
+                  <span>Turkey</span>
+                </div>
+
+                <div
+                  className={cn(
+                    "absolute right-3 top-[54%] inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[9px] font-medium shadow-sm",
+                    isDark
+                      ? "bg-[#1B1F2C] text-zinc-100 border border-white/10"
+                      : "bg-white text-zinc-800 border border-zinc-100",
+                  )}
+                >
+                  <span className="flex size-3 items-center justify-center rounded-full bg-zinc-100">
+                    <span className="size-1.5 rounded-full bg-[#E11D48]" />
+                  </span>
+                  <span>Japan</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Right Column: 2 Stacked Cards */}
+            <div className="@lg:col-span-7 flex flex-col gap-4 @sm:gap-5">
+              {/* Top Card: Our Team */}
+              <motion.div
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={
+                  prefersReducedMotion
+                    ? { duration: 0 }
+                    : { duration: 0.65, delay: 0.08, ease: [0.16, 1, 0.3, 1] }
+                }
+                className={cn(
+                  "rounded-2xl p-5",
+                  isDark ? "bg-[#141720]" : "bg-white",
+                )}
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5 flex-wrap">
+                    <span
+                      className={cn(
+                        "flex size-9 items-center justify-center rounded-full border",
+                        isDark
+                          ? "border-white/10 bg-white/[0.04] text-zinc-300"
+                          : "border-zinc-200/80 bg-zinc-50 text-zinc-600",
+                      )}
+                    >
+                      <Users className="size-4" aria-hidden />
+                    </span>
+
+                    <div
+                      className={cn(
+                        "flex items-center -space-x-2 rounded-full p-1",
+                        isDark ? "bg-white/[0.05]" : "bg-zinc-100/90",
+                      )}
+                    >
+                      {[
+                        {
+                          src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg",
+                          alt: "Team member 1",
+                        },
+                        {
+                          src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg",
+                          alt: "Team member 2",
+                        },
+                        {
+                          src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg",
+                          alt: "Team member 3",
+                        },
+                        {
+                          src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg",
+                          alt: "Team member 4",
+                        },
+                      ].map((avatar, idx) => (
+                        <img
+                          key={idx}
+                          src={avatar.src}
+                          alt={avatar.alt}
+                          className={cn(
+                            "size-7 rounded-full object-cover ring-2",
+                            isDark ? "ring-[#141720]" : "ring-white",
+                          )}
+                        />
+                      ))}
+                      <button
+                        type="button"
+                        aria-label="Invite team member"
+                        className="flex size-7 items-center justify-center rounded-full bg-[#8B7CFF] text-white ring-2 ring-white dark:ring-[#141720] hover:opacity-90 transition-opacity cursor-pointer"
+                      >
+                        <Plus className="size-3.5" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    aria-label="Team options"
+                    className={cn(
+                      "p-1.5 rounded-lg transition-colors cursor-pointer",
+                      isDark
+                        ? "text-zinc-400 hover:bg-white/[0.06] hover:text-zinc-200"
+                        : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800",
+                    )}
+                  >
+                    <MoreHorizontal className="size-4" />
+                  </button>
+                </div>
+
+                <h4 className="mt-5 text-[14px] font-semibold tracking-tight">
+                  Our Team
+                </h4>
+                <p
+                  className={cn(
+                    "mt-1 text-[11px] leading-relaxed",
+                    isDark ? "text-zinc-400" : "text-zinc-500",
+                  )}
+                >
+                  Clarifying roles, responsibilities, and contributions of each team
+                  member to sales.
+                </p>
+              </motion.div>
+
+              {/* Bottom Card: Target Name / Customer Type / Choose Location */}
+              <motion.div
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={
+                  prefersReducedMotion
+                    ? { duration: 0 }
+                    : { duration: 0.65, delay: 0.16, ease: [0.16, 1, 0.3, 1] }
+                }
+                className={cn(
+                  "flex-1 rounded-2xl p-5 flex flex-col justify-between gap-4",
+                  isDark ? "bg-[#141720]" : "bg-white",
+                )}
+              >
+                {/* Target Name */}
+                <div>
+                  <label
+                    htmlFor="mailora-target-name"
+                    className="block text-[11.5px] font-semibold tracking-tight"
+                  >
+                    Target Name
+                  </label>
+                  <input
+                    id="mailora-target-name"
+                    type="text"
+                    value={targetName}
+                    onChange={(e) => setTargetName(e.target.value)}
+                    className={cn(
+                      "mt-2 w-full rounded-xl border px-3.5 py-2 text-[11.5px] outline-none transition-colors",
+                      isDark
+                        ? "border-white/10 bg-white/[0.03] text-zinc-100 focus:border-[#FF5B1F]/60"
+                        : "border-zinc-200/80 bg-white text-zinc-800 focus:border-[#FF5B1F]/60",
+                    )}
+                  />
+                </div>
+
+                {/* Customer Type */}
+                <div>
+                  <p className="text-[11.5px] font-semibold tracking-tight">
+                    Customer Type
+                  </p>
+                  <div className="mt-2 flex flex-wrap items-center gap-2">
+                    {customerTypes.map((tag) => (
+                      <span
+                        key={tag}
+                        className={cn(
+                          "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10.5px] font-medium",
+                          isDark
+                            ? "border-white/10 bg-white/[0.04] text-zinc-300"
+                            : "border-zinc-200/80 bg-zinc-50 text-zinc-700",
+                        )}
+                      >
+                        <span>{tag}</span>
+                        <button
+                          type="button"
+                          aria-label={`Remove ${tag}`}
+                          onClick={() =>
+                            setCustomerTypes((prev) =>
+                              prev.filter((item) => item !== tag),
+                            )
+                          }
+                          className="opacity-60 hover:opacity-100 cursor-pointer"
+                        >
+                          <X className="size-2.5" />
+                        </button>
+                      </span>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={handleAddCustomerType}
+                      className="inline-flex items-center gap-1 rounded-full border border-[#FF5B1F]/40 bg-[#FF5B1F]/[0.06] px-2.5 py-1 text-[10.5px] font-medium text-[#FF5B1F] hover:bg-[#FF5B1F]/[0.12] transition-colors cursor-pointer"
+                    >
+                      <span>Add New</span>
+                      <Plus className="size-2.5" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Choose Location */}
+                <div>
+                  <p className="text-[11.5px] font-semibold tracking-tight">
+                    Choose Location
+                  </p>
+                  <div
+                    className={cn(
+                      "mt-2 flex flex-wrap @sm:flex-nowrap items-center justify-between gap-2.5 rounded-xl px-3.5 py-2.5",
+                      isDark ? "bg-[#FACC15]/10" : "bg-[#FEF3C7]/75",
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        "text-[10.5px] font-medium shrink-0",
+                        isDark ? "text-zinc-200" : "text-zinc-700",
+                      )}
+                    >
+                      Worldwide Audience
+                    </span>
+
+                    <div className="flex items-center gap-1">
+                      {Array.from({ length: 10 }).map((_, idx) => {
+                        const active = idx < audienceReachStep;
+                        return (
+                          <button
+                            key={idx}
+                            type="button"
+                            aria-label={`Set audience reach to ${(idx + 1) * 10}%`}
+                            onClick={() => setAudienceReachStep(idx + 1)}
+                            className={cn(
+                              "size-2.5 rounded-[3px] transition-colors cursor-pointer",
+                              active
+                                ? "bg-[#FF5B1F]"
+                                : isDark
+                                  ? "bg-white/20 hover:bg-white/35"
+                                  : "bg-white hover:bg-white/80",
+                            )}
+                          />
+                        );
+                      })}
+                    </div>
+
+                    <span className="text-[10.5px] font-semibold tabular-nums shrink-0">
+                      {audienceReachStep * 10}%
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Our Service Section */}
+      <section
+        className={cn(
+          "relative z-10 -mx-4 @sm:-mx-6 @lg:-mx-8 mt-10 px-4 @sm:px-6 @lg:px-8 py-14 @sm:py-20 transition-colors",
+          isDark ? "bg-white/[0.03]" : "bg-[#F5F5F5]",
+        )}
+      >
+        <div className="mx-auto max-w-5xl">
+        {/* Top Tag Pill */}
+        <div
+          className={cn(
+            "inline-flex items-center rounded-full border px-3.5 py-1 text-[11px] font-medium shadow-xs",
+            isDark
+              ? "border-white/10 bg-white/[0.05] text-zinc-300"
+              : "border-zinc-200/80 bg-white text-zinc-600",
+          )}
+        >
+          Our Service
+        </div>
+
+        {/* Heading + Overlapping Action Badges */}
+        <div className="mt-4 flex flex-col gap-5 @md:flex-row @md:items-center @md:justify-between">
+          <h3 className="text-[26px] @sm:text-[34px] @lg:text-[38px] font-semibold tracking-tight leading-[1.15]">
+            Design stunning emails with our
+            <br />
+            <span className={isDark ? "text-zinc-500" : "text-zinc-400"}>
+              no-code editor.
+            </span>
+          </h3>
+
+          <div className="flex items-center -space-x-3 self-start @md:self-auto">
+            <span
+              className={cn(
+                "flex size-12 items-center justify-center rounded-full border shadow-sm",
+                isDark
+                  ? "border-white/10 bg-[#141720] text-[#FF5B1F]"
+                  : "border-zinc-200/80 bg-white text-[#FF5B1F]",
+              )}
+            >
+              <TrendingUp className="size-4" aria-hidden />
+            </span>
+            <span className="flex size-14 items-center justify-center rounded-full bg-[#FF5B1F] text-white shadow-[0_10px_24px_rgba(255,91,31,0.3)] ring-2 ring-white dark:ring-[#0B0D12]">
+              <Zap className="size-5 fill-current" aria-hidden />
+            </span>
+          </div>
+        </div>
+
+        {/* 2-Column Service Cards */}
+        <div className="mt-9 grid grid-cols-1 @lg:grid-cols-2 gap-5 items-stretch">
+          {/* Left Card: Create high performing subject line */}
+          <motion.div
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : { duration: 0.65, ease: [0.16, 1, 0.3, 1] }
+            }
+            className={cn(
+              "rounded-3xl border p-5 @sm:p-7 flex flex-col justify-between",
+              isDark
+                ? "border-white/[0.07] bg-[#141720]"
+                : "border-zinc-200/60 bg-white shadow-[0_8px_28px_rgba(15,23,42,0.03)]",
+            )}
+          >
+            <h4 className="text-center text-[15px] @sm:text-[16px] font-semibold tracking-tight">
+              Create high performing subject line
+            </h4>
+
+            <div className="mt-6">
+              {/* Inner AI Generator Card */}
+              <div
+                className={cn(
+                  "rounded-2xl border p-4",
+                  isDark
+                    ? "border-white/[0.07] bg-white/[0.03]"
+                    : "border-zinc-200/70 bg-[#FAFAFA]",
+                )}
+              >
+                <p
+                  className={cn(
+                    "text-[11px] font-medium",
+                    isDark ? "text-zinc-400" : "text-zinc-500",
+                  )}
+                >
+                  Generate with AI
+                </p>
+
+                {/* Blog Traffic Box */}
+                <div
+                  className={cn(
+                    "mt-3 rounded-xl border p-3",
+                    isDark
+                      ? "border-white/10 bg-white/[0.03]"
+                      : "border-zinc-200/70 bg-white",
+                  )}
+                >
+                  <div className="flex items-center justify-between gap-2 text-[11px]">
+                    <span className="font-medium">Blog Traffic</span>
+                    <span className="inline-flex items-center gap-1 font-semibold text-emerald-500">
+                      <TrendingUp className="size-3" aria-hidden />
+                      <span>15.16%</span>
+                    </span>
+                  </div>
+                  <div
+                    className={cn(
+                      "mt-2.5 h-1.5 w-3/4 rounded-full",
+                      isDark ? "bg-white/10" : "bg-zinc-100",
+                    )}
+                  />
+                </div>
+
+                {/* Orange CTA Button */}
+                <button
+                  type="button"
+                  onClick={() =>
+                    setSubjectIndex((i) => (i + 1) % generatedSubjects.length)
+                  }
+                  className="mt-3 flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-[#FF5B1F] text-[11.5px] font-medium text-white shadow-[0_8px_20px_rgba(255,91,31,0.25)] transition-all hover:bg-[#e84f17] active:scale-[0.99] cursor-pointer"
+                >
+                  <Wand2 className="size-3.5" aria-hidden />
+                  <span>Generate Subject Line</span>
+                </button>
+
+                {/* Pill Tags Row */}
+                <div className="mt-3 flex flex-wrap items-center gap-2">
+                  <span
+                    className={cn(
+                      "rounded-lg border px-2.5 py-1 text-[10px] font-medium",
+                      isDark
+                        ? "border-white/10 bg-white/[0.04] text-zinc-300"
+                        : "border-zinc-200/70 bg-zinc-50 text-zinc-700",
+                    )}
+                  >
+                    Add Urgency
+                  </span>
+                  {[48, 56, 44].map((w, idx) => (
+                    <span
+                      key={idx}
+                      style={{ width: `${w}px` }}
+                      className={cn(
+                        "h-6 rounded-lg border",
+                        isDark
+                          ? "border-white/[0.06] bg-white/[0.02]"
+                          : "border-zinc-100 bg-zinc-50/70",
+                      )}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Floating Subject Result Card */}
+              <div
+                className={cn(
+                  "relative z-10 -mt-3 mx-1 rounded-xl border p-3.5",
+                  isDark
+                    ? "border-white/10 bg-[#181C27] shadow-[0_12px_28px_rgba(0,0,0,0.45)]"
+                    : "border-zinc-100 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.07)]",
+                )}
+              >
+                <p className="text-[11.5px] font-medium leading-snug">
+                  {generatedSubjects[subjectIndex]}
+                </p>
+
+                <div
+                  className={cn(
+                    "mt-3 flex items-center justify-between border-t pt-2.5 text-[10px]",
+                    isDark ? "border-white/[0.07]" : "border-zinc-100",
+                  )}
+                >
+                  <span className="inline-flex items-center gap-1.5 font-medium text-emerald-500">
+                    <CheckCircle2 className="size-3.5" aria-hidden />
+                    <span className={isDark ? "text-zinc-200" : "text-zinc-700"}>
+                      Added
+                    </span>
+                  </span>
+
+                  <div
+                    className={cn(
+                      "flex items-center gap-2.5",
+                      isDark ? "text-zinc-400" : "text-zinc-400",
+                    )}
+                  >
+                    <Copy className="size-3" aria-hidden />
+                    <Flag className="size-3" aria-hidden />
+                    <MoreVertical className="size-3" aria-hidden />
+                  </div>
+                </div>
+              </div>
+
+              {/* Subtle Faded Bottom Input Hint */}
+              <div
+                className={cn(
+                  "mt-2 mx-4 flex items-center justify-between rounded-lg border px-3 py-1.5 text-[9.5px] opacity-45",
+                  isDark
+                    ? "border-white/[0.06] text-zinc-400"
+                    : "border-zinc-200/70 text-zinc-400",
+                )}
+              >
+                <span>+ Use Subject Line</span>
+                <div className="flex items-center gap-2">
+                  <Flag className="size-2.5" aria-hidden />
+                  <MoreVertical className="size-2.5" aria-hidden />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Right Card: Connect with your audience */}
+          <motion.div
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : { duration: 0.65, delay: 0.1, ease: [0.16, 1, 0.3, 1] }
+            }
+            className={cn(
+              "relative rounded-3xl border p-5 @sm:p-7 overflow-hidden flex flex-col justify-between",
+              isDark
+                ? "border-white/[0.07] bg-[#141720]"
+                : "border-zinc-200/60 bg-white shadow-[0_8px_28px_rgba(15,23,42,0.03)]",
+            )}
+          >
+            <h4 className="text-center text-[15px] @sm:text-[16px] font-semibold tracking-tight">
+              Connect with your audience
+            </h4>
+
+            <div className="relative mt-6 min-h-[275px]">
+              {/* Top-Right Floating Pills: 1300 Views & 2.8m+ Followers */}
+              <div className="flex flex-col items-end gap-2.5 @sm:absolute @sm:right-0 @sm:top-2 @sm:z-10 mb-4 @sm:mb-0">
+                <div
+                  className={cn(
+                    "inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-[11px] font-medium",
+                    isDark
+                      ? "border-white/10 bg-[#141720] text-zinc-200 shadow-md"
+                      : "border-zinc-200/70 bg-white text-zinc-800 shadow-[0_6px_18px_rgba(15,23,42,0.04)]",
+                  )}
+                >
+                  <Eye className="size-3.5 text-zinc-500" aria-hidden />
+                  <span>1300 Views</span>
+                </div>
+
+                <div
+                  className={cn(
+                    "inline-flex items-center gap-2 rounded-full border px-2.5 py-1.5",
+                    isDark
+                      ? "border-white/10 bg-[#141720] shadow-md"
+                      : "border-zinc-200/70 bg-white shadow-[0_6px_18px_rgba(15,23,42,0.04)]",
+                  )}
+                >
+                  <div className="flex items-center -space-x-1.5">
+                    <img
+                      src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg"
+                      alt="Follower 1"
+                      className="size-5 rounded-full object-cover ring-1 ring-white dark:ring-[#141720]"
+                    />
+                    <img
+                      src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg"
+                      alt="Follower 2"
+                      className="size-5 rounded-full object-cover ring-1 ring-white dark:ring-[#141720]"
+                    />
+                    <span className="flex size-5 items-center justify-center rounded-full bg-[#8B7CFF] text-[7px] font-semibold text-white ring-1 ring-white dark:ring-[#141720]">
+                      28k+
+                    </span>
+                  </div>
+                  <div className="leading-tight pr-1">
+                    <p className="text-[9.5px] font-semibold">2.8m+</p>
+                    <p
+                      className={cn(
+                        "text-[8px]",
+                        isDark ? "text-zinc-400" : "text-zinc-400",
+                      )}
+                    >
+                      Followers
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Left Back Card: Generate with AI + Team Photo */}
+              <div
+                className={cn(
+                  "w-full @sm:w-[58%] rounded-2xl border p-3.5",
+                  isDark
+                    ? "border-white/[0.07] bg-[#141720]"
+                    : "border-zinc-100 bg-white shadow-[0_4px_18px_rgba(15,23,42,0.03)]",
+                )}
+              >
+                <p
+                  className={cn(
+                    "text-[10.5px] font-medium",
+                    isDark ? "text-zinc-400" : "text-zinc-500",
+                  )}
+                >
+                  Generate with AI
+                </p>
+
+                <div className="mt-2.5 overflow-hidden rounded-xl">
+                  <img
+                    src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_fill/v1790145141/pexels-photo-6311475-1790145143489.jpg"
+                    alt="Team collaborating on email campaign"
+                    className="h-24 w-full object-cover"
+                  />
+                </div>
+
+                <p className="mt-2.5 text-[11.5px] font-medium leading-snug">
+                  Discover powerful boost engagement
+                </p>
+
+                <div className="mt-2 space-y-1.5">
+                  <div
+                    className={cn(
+                      "h-1.5 w-full rounded-full",
+                      isDark ? "bg-white/10" : "bg-zinc-100",
+                    )}
+                  />
+                  <div
+                    className={cn(
+                      "h-1.5 w-3/4 rounded-full",
+                      isDark ? "bg-white/10" : "bg-zinc-100",
+                    )}
+                  />
+                </div>
+
+                <div className="mt-3 flex items-center gap-2 pt-2 border-t border-current/5">
+                  <img
+                    src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_80,h_80,c_fill/v1790082180/pexels-photo-1520760-1790082180553.jpg"
+                    alt="Hello Cralencel"
+                    className="size-4 rounded-full object-cover"
+                  />
+                  <span
+                    className={cn(
+                      "text-[9.5px]",
+                      isDark ? "text-zinc-400" : "text-zinc-500",
+                    )}
+                  >
+                    Hello Cralencel
+                  </span>
+                </div>
+              </div>
+
+              {/* Overlapping Front-Right Comment Thread Card */}
+              <div
+                className={cn(
+                  "mt-4 @sm:mt-0 @sm:absolute @sm:right-0 @sm:bottom-0 @sm:w-[60%] z-10 rounded-2xl border p-3.5",
+                  isDark
+                    ? "border-white/10 bg-[#181C27] shadow-[0_14px_32px_rgba(0,0,0,0.5)]"
+                    : "border-zinc-100 bg-white shadow-[0_14px_32px_rgba(15,23,42,0.08)]",
+                )}
+              >
+                {/* Comment 1 */}
+                <div>
+                  <div className="flex items-center gap-2">
+                    <img
+                      src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_80,h_80,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg"
+                      alt="Maxwell"
+                      className="size-5 rounded-full object-cover"
+                    />
+                    <span className="text-[11px] font-semibold">Maxwell</span>
+                  </div>
+                  <p
+                    className={cn(
+                      "mt-1.5 text-[9.5px] leading-relaxed",
+                      isDark ? "text-zinc-300" : "text-zinc-600",
+                    )}
+                  >
+                    <span className="rounded bg-blue-500/15 px-1 py-0.5 font-medium text-blue-600 dark:text-blue-400">
+                      @Gerland
+                    </span>{" "}
+                    this is really interesting. Let&apos;s chat about this more
+                    tomorrow
+                  </p>
+                  <div
+                    className={cn(
+                      "mt-1.5 flex items-center gap-3 text-[8.5px] font-medium",
+                      isDark ? "text-zinc-400" : "text-zinc-500",
+                    )}
+                  >
+                    <span className="cursor-pointer hover:underline">Like</span>
+                    <span className="cursor-pointer hover:underline">Reply</span>
+                  </div>
+                </div>
+
+                {/* Comment 2 (Faded) */}
+                <div
+                  className={cn(
+                    "mt-3 border-t pt-2.5 opacity-60",
+                    isDark ? "border-white/[0.07]" : "border-zinc-100",
+                  )}
+                >
+                  <div className="flex items-center gap-2">
+                    <img
+                      src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_80,h_80,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg"
+                      alt="Julian Smith"
+                      className="size-5 rounded-full object-cover"
+                    />
+                    <span className="text-[10.5px] font-semibold">
+                      Julian Smith
+                    </span>
+                  </div>
+                  <div className="mt-1.5 space-y-1">
+                    <div
+                      className={cn(
+                        "h-1.5 w-full rounded-full",
+                        isDark ? "bg-white/10" : "bg-zinc-100",
+                      )}
+                    />
+                    <div
+                      className={cn(
+                        "h-1.5 w-2/3 rounded-full",
+                        isDark ? "bg-white/10" : "bg-zinc-100",
+                      )}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+        </div>
+      </section>
+
+      {/* 5. Metrics Strip Section */}
+      <section className="relative z-10 mx-auto max-w-5xl py-14 @sm:py-20">
+        <div className="grid grid-cols-1 @md:grid-cols-3 gap-8 @md:gap-0">
+          {[
+            {
+              badge: "Customer",
+              icon: Users,
+              value: "20K",
+              suffix: "+",
+              description: "Design stunning emails with our no-code editor.",
+            },
+            {
+              badge: "Impact",
+              icon: Target,
+              value: "99",
+              suffix: "%",
+              description:
+                "Trigger emails based on user behavior, purchases, or engagement.",
+            },
+            {
+              badge: "Experience",
+              icon: Award,
+              value: "89",
+              suffix: "%",
+              description:
+                "Track open rates, click-throughs, conversions, and ROI.",
+            },
+          ].map((stat, idx) => (
+            <motion.div
+              key={stat.badge}
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : { duration: 0.6, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }
+              }
+              className={cn(
+                "flex flex-col items-start @md:px-8 first:@md:pl-0 last:@md:pr-0",
+                idx < 2 &&
+                  (isDark
+                    ? "@md:border-r @md:border-dashed @md:border-white/10"
+                    : "@md:border-r @md:border-dashed @md:border-zinc-200"),
+              )}
+            >
+              <span
+                className={cn(
+                  "inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-[10.5px] font-medium",
+                  isDark
+                    ? "bg-[#FF5B1F]/15 text-[#FF5B1F]"
+                    : "bg-[#FF5B1F]/12 text-[#FF5B1F]",
+                )}
+              >
+                <stat.icon className="size-3" aria-hidden />
+                <span>{stat.badge}</span>
+              </span>
+
+              <div className="mt-5 flex items-start font-semibold tracking-tight leading-none">
+                <span className="text-[40px] @sm:text-[48px]">{stat.value}</span>
+                <sup className="ml-1 mt-1.5 text-[22px] @sm:text-[26px] font-medium">
+                  {stat.suffix}
+                </sup>
+              </div>
+
+              <p
+                className={cn(
+                  "mt-4 max-w-[230px] text-[12px] leading-relaxed",
+                  isDark ? "text-zinc-400" : "text-zinc-500",
+                )}
+              >
+                {stat.description}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* 6. Email Analytics Section */}
+      <section
+        className={cn(
+          "relative z-10 -mx-4 @sm:-mx-6 @lg:-mx-8 px-4 @sm:px-6 @lg:px-8 py-14 @sm:py-20 transition-colors",
+          isDark ? "bg-white/[0.03]" : "bg-[#F5F5F5]",
+        )}
+      >
+        <div className="mx-auto max-w-5xl">
+          {/* Centered Header */}
+          <div className="text-center">
+            <div
+              className={cn(
+                "inline-flex items-center rounded-full border px-3.5 py-1 text-[11px] font-medium shadow-xs",
+                isDark
+                  ? "border-white/10 bg-white/[0.05] text-zinc-300"
+                  : "border-zinc-200/80 bg-white text-zinc-600",
+              )}
+            >
+              Email Analytics
+            </div>
+
+            <h3 className="mt-4 text-[26px] @sm:text-[34px] @lg:text-[40px] font-semibold tracking-tight leading-[1.15]">
+              We love making good first{" "}
+              <span className={isDark ? "text-zinc-500" : "text-zinc-400"}>
+                Impressions.
+              </span>
+            </h3>
+
+            <p
+              className={cn(
+                "mx-auto mt-3 max-w-md text-[11.5px] @sm:text-[12.5px] leading-relaxed",
+                isDark ? "text-zinc-400" : "text-zinc-500",
+              )}
+            >
+              Reach the right audience at the right time without the tech headaches.
+              Create, send,
+              <br className="hidden @sm:inline" /> &amp; optimize email campaigns.
+            </p>
+          </div>
+
+          {/* 2-Column Analytics Cards */}
+          <div className="mt-10 grid grid-cols-1 @lg:grid-cols-2 gap-5 items-stretch">
+            {/* Left Card: Total Sales */}
+            <motion.div
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : { duration: 0.65, ease: [0.16, 1, 0.3, 1] }
+              }
+              className={cn(
+                "rounded-3xl border p-5 @sm:p-6 flex flex-col justify-between",
+                isDark
+                  ? "border-white/[0.07] bg-[#141720]"
+                  : "border-zinc-200/60 bg-white shadow-[0_8px_28px_rgba(15,23,42,0.03)]",
+              )}
+            >
+              <div>
+                {/* Header */}
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="flex size-6 items-center justify-center rounded-md bg-[#FF5B1F] text-white">
+                      <TrendingUp className="size-3.5" aria-hidden />
+                    </span>
+                    <span className="text-[13px] font-semibold">Total Sales</span>
+                  </div>
+
+                  <button
+                    type="button"
+                    className={cn(
+                      "rounded-lg border px-3 py-1 text-[10.5px] font-medium transition-colors cursor-pointer",
+                      isDark
+                        ? "border-white/10 text-zinc-300 hover:bg-white/[0.05]"
+                        : "border-zinc-200/80 text-zinc-600 hover:bg-zinc-50",
+                    )}
+                  >
+                    Details
+                  </button>
+                </div>
+
+                {/* Big Number + Growth Pill */}
+                <div className="mt-5 flex flex-wrap items-center gap-2.5">
+                  <span className="text-[28px] @sm:text-[32px] font-semibold tracking-tight leading-none">
+                    +$3,224.34
+                  </span>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                    <TrendingUp className="size-2.5" aria-hidden />
+                    <span>+10.8%</span>
+                  </span>
+                </div>
+              </div>
+
+              {/* Channel Bar Rows */}
+              <div
+                className={cn(
+                  "mt-5 border-t pt-5 space-y-2.5",
+                  isDark ? "border-white/[0.07]" : "border-zinc-100",
+                )}
+              >
+                {[
+                  {
+                    name: "Tokopedia",
+                    value: "100k",
+                    width: "w-[78%]",
+                    badgeBg: "bg-[#42B549] text-white",
+                    icon: "T",
+                  },
+                  {
+                    name: "Shopee",
+                    value: "56k",
+                    width: "w-[46%]",
+                    badgeBg: "bg-[#EE4D2D] text-white",
+                    icon: "S",
+                  },
+                  {
+                    name: "Tiktok",
+                    value: "78k",
+                    width: "w-[60%]",
+                    badgeBg: "bg-zinc-950 text-white",
+                    icon: "♪",
+                  },
+                  {
+                    name: "Shopify",
+                    value: "66k",
+                    width: "w-[52%]",
+                    badgeBg: "bg-[#95BF47] text-white",
+                    icon: "S",
+                  },
+                ].map((channel) => (
+                  <div
+                    key={channel.name}
+                    className="flex items-center justify-between gap-3"
+                  >
+                    <div
+                      className={cn(
+                        "flex items-center gap-2.5 rounded-xl px-3 py-2.5 transition-all",
+                        channel.width,
+                        isDark ? "bg-white/[0.05]" : "bg-[#F5F5F5]",
+                      )}
+                    >
+                      <span
+                        className={cn(
+                          "flex size-5 shrink-0 items-center justify-center rounded-md text-[10px] font-bold",
+                          channel.badgeBg,
+                        )}
+                      >
+                        {channel.icon}
+                      </span>
+                      <span className="text-[11.5px] font-medium truncate">
+                        {channel.name}
+                      </span>
+                    </div>
+
+                    <span
+                      className={cn(
+                        "text-[11px] font-medium tabular-nums shrink-0",
+                        isDark ? "text-zinc-400" : "text-zinc-500",
+                      )}
+                    >
+                      {channel.value}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Right Card: Total Visitor */}
+            <motion.div
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : { duration: 0.65, delay: 0.1, ease: [0.16, 1, 0.3, 1] }
+              }
+              className={cn(
+                "rounded-3xl border p-5 @sm:p-6 flex flex-col justify-between",
+                isDark
+                  ? "border-white/[0.07] bg-[#141720]"
+                  : "border-zinc-200/60 bg-white shadow-[0_8px_28px_rgba(15,23,42,0.03)]",
+              )}
+            >
+              <div>
+                {/* Header */}
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="flex size-6 items-center justify-center rounded-md bg-[#8B7CFF]/15 text-[#8B7CFF]">
+                      <Users className="size-3.5" aria-hidden />
+                    </span>
+                    <span className="text-[13px] font-semibold">Total Visitor</span>
+                  </div>
+
+                  <button
+                    type="button"
+                    className={cn(
+                      "rounded-lg border px-3 py-1 text-[10.5px] font-medium transition-colors cursor-pointer",
+                      isDark
+                        ? "border-white/10 text-zinc-300 hover:bg-white/[0.05]"
+                        : "border-zinc-200/80 text-zinc-600 hover:bg-zinc-50",
+                    )}
+                  >
+                    Details
+                  </button>
+                </div>
+
+                {/* Big Number + Negative Pill */}
+                <div className="mt-5 flex items-center gap-2.5">
+                  <span className="text-[28px] @sm:text-[32px] font-semibold tracking-tight leading-none">
+                    84.020
+                  </span>
+                  <span className="inline-flex items-center rounded-full bg-[#FF5B1F]/15 px-2.5 py-0.5 text-[10px] font-semibold text-[#FF5B1F]">
+                    -4%
+                  </span>
+                </div>
+
+                {/* Store Breakdown Rows */}
+                <div
+                  className={cn(
+                    "mt-5 divide-y border-t",
+                    isDark
+                      ? "divide-white/[0.07] border-white/[0.07]"
+                      : "divide-zinc-100 border-zinc-100",
+                  )}
+                >
+                  {[
+                    {
+                      icon: Globe,
+                      label: "Online Store",
+                      amount: "$2.480",
+                      delta: "+5.6%",
+                      positive: true,
+                    },
+                    {
+                      icon: Home,
+                      label: "Offline Store",
+                      amount: "$480",
+                      delta: "-2.6%",
+                      positive: false,
+                    },
+                  ].map((row) => (
+                    <div
+                      key={row.label}
+                      className="flex items-center justify-between py-2.5 text-[11.5px]"
+                    >
+                      <div className="flex items-center gap-2">
+                        <row.icon
+                          className={cn(
+                            "size-3.5",
+                            isDark ? "text-zinc-400" : "text-zinc-500",
+                          )}
+                          aria-hidden
+                        />
+                        <span
+                          className={cn(
+                            "font-medium",
+                            isDark ? "text-zinc-200" : "text-zinc-700",
+                          )}
+                        >
+                          {row.label}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-4">
+                        <span className="font-semibold tabular-nums">
+                          {row.amount}
+                        </span>
+                        <span
+                          className={cn(
+                            "w-11 text-right font-medium tabular-nums",
+                            row.positive ? "text-emerald-500" : "text-[#FF5B1F]",
+                          )}
+                        >
+                          {row.delta}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Purple Gradient Bar Chart */}
+              <div className="mt-5">
+                <div className="flex items-end justify-between gap-1.5 h-28">
+                  {[62, 48, 66, 76, 86, 72, 54, 70].map((h, idx) => (
+                    <div
+                      key={idx}
+                      style={{ height: `${h}%` }}
+                      className="flex-1 rounded-t-xs border-t-2 border-[#8B7CFF]/70 bg-gradient-to-b from-[#8B7CFF]/40 via-[#8B7CFF]/15 to-transparent"
+                    />
+                  ))}
+                </div>
+                <div
+                  className={cn(
+                    "mt-2 flex items-center justify-between px-1 text-[9.5px] font-medium",
+                    isDark ? "text-zinc-500" : "text-zinc-400",
+                  )}
+                >
+                  {["09:00", "12:00", "15:00", "18:00", "21:00"].map((t) => (
+                    <span key={t}>{t}</span>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
@@ -721,6 +2057,38 @@ export function MailoraTemplateView() {
             title: "Hero & Floating Metrics",
             description:
               "Tag pill, two-line headline with inline circular icon badges, dual CTAs, and 4 floating metric/chart cards.",
+          },
+          {
+            id: "home",
+            number: "03",
+            path: "/#key-features",
+            title: "Key Features",
+            description:
+              "Audience analytics with world map, team collaboration card, and interactive target & location builder.",
+          },
+          {
+            id: "home",
+            number: "04",
+            path: "/#our-service",
+            title: "Our Service",
+            description:
+              "No-code AI subject line generator and audience engagement preview cards.",
+          },
+          {
+            id: "home",
+            number: "05",
+            path: "/#metrics",
+            title: "Metrics Strip",
+            description:
+              "Three-column Customer, Impact, and Experience stats separated by dashed dividers.",
+          },
+          {
+            id: "home",
+            number: "06",
+            path: "/#email-analytics",
+            title: "Email Analytics",
+            description:
+              "Total Sales channel bars and Total Visitor store metrics with purple gradient bar chart.",
           },
         ],
       }}
