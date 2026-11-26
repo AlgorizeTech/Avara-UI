@@ -8,7 +8,7 @@ import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Alert
 
-An inline alert banner for persistent status messages in six severity types and four surface variants (`default`, `soft`, `glass`, and `solid`).
+An inline alert banner for persistent status messages in six severity types and five surface variants (`inset`, `default`, `soft`, `glass`, and `solid`).
 
 <ExampleShowcase minHeight={360} headingLevel={2}
   name="alert"
@@ -16,6 +16,19 @@ An inline alert banner for persistent status messages in six severity types and 
   colorControl={false}
   installation={<Installation name="alert" usage="below" />}
   examples={[
+    {
+      title: "Inset",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"inset"',
+          effect: "puts the icon and title on top and the message in an inset well, like the Accordion.",
+        },
+      ],
+      props: { variant: "inset" },
+      usage: extractCode("src/preview/demos/alert-examples/inset.tsx"),
+      code: extractCode("src/components/custom/blocks/Alerts.tsx"),
+    },
     {
       title: "Default",
       propNotes: [
@@ -27,7 +40,6 @@ An inline alert banner for persistent status messages in six severity types and 
       ],
       props: { variant: "default" },
       usage: extractCode("src/preview/demos/alert-examples/default.tsx"),
-      code: extractCode("src/components/custom/blocks/Alerts.tsx"),
     },
     {
       title: "Soft",
@@ -71,7 +83,7 @@ An inline alert banner for persistent status messages in six severity types and 
 
 ## About Shadcn Alert
 
-**What it is.** `Alert` is an inline banner with six `type` values (`neutral`, `info`, `success`, `warning`, `danger` and `loading`) and four `variant` surfaces (`default`, `soft`, `glass`, `solid`). It takes a `title`, a `message`, an optional `action` slot and a `dismissible` close button. `AlertAction` is the matching pill button.
+**What it is.** `Alert` is an inline banner with six `type` values (`neutral`, `info`, `success`, `warning`, `danger` and `loading`) and five `variant` surfaces (`inset`, `default`, `soft`, `glass`, `solid`). It takes a `title`, a `message`, an optional `action` slot and a `dismissible` close button. `AlertAction` is the matching pill button.
 
 **How it is built.** The `type` picks a `lucide-react` icon and a colour, and the `variant` picks the surface. `danger` and `warning` render with `role="alert"`, the other types with `role="status"`, and `loading` adds `aria-busy` with a spinning icon. Dismissing fades the alert out over 200 ms and then calls `onDismiss`.
 
@@ -84,7 +96,7 @@ An inline alert banner for persistent status messages in six severity types and 
 **When to use**
 
 - Persistent inline callouts, validation summaries, and status banners inside page layouts or forms
-- Visual variants (`default`, `soft`, `glass`, `solid`) matched to light, dark, or image/gradient backdrops
+- Visual variants (`inset`, `default`, `soft`, `glass`, `solid`) matched to light, dark, or image/gradient backdrops
 
 **When not to use**
 
@@ -133,7 +145,7 @@ An inline alert banner for persistent status messages in six severity types and 
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "soft" | "glass" | "solid"</code>
+          <code>"inset" | "default" | "soft" | "glass" | "solid"</code>
         </td>
         <td>
           <code>"default"</code>

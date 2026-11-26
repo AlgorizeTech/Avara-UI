@@ -2,7 +2,7 @@ import { Alert, AlertAction } from "@/components/custom/blocks/Alerts";
 
 export default function GlassAlerts() {
   return (
-    <div className="mx-auto w-full max-w-2xl p-4 md:p-8">
+    <div className="mx-auto w-full max-w-3xl p-4 md:p-8">
       {/* Glass needs an image or gradient behind it, and its text is white. */}
       <div className="relative overflow-hidden rounded-2xl p-4 md:p-8">
         <img
@@ -22,7 +22,7 @@ export default function GlassAlerts() {
             variant="glass"
             type="info"
             title="Update available"
-            message="A new version of the application is available. Please refresh to get the latest features and bug fixes."
+            message="A new version is available. Refresh to get the latest features and fixes."
             action={<AlertAction>Refresh</AlertAction>}
           />
           <Alert
@@ -35,7 +35,7 @@ export default function GlassAlerts() {
             variant="glass"
             type="warning"
             title="Payment method expires soon"
-            message="Your Visa ending in 4242 expires on March 28. Update billing to avoid interrupting your Pro subscription."
+            message="Your Visa ending in 4242 expires on March 28. Update billing to keep Pro active."
             action={<AlertAction>Update billing</AlertAction>}
             dismissible
           />

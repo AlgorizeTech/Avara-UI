@@ -439,12 +439,14 @@
       "type": "registry:component",
       "title": "Animated List",
       "author": "AlgorizeTech",
-      "description": "A container component for rendering lists with animated item insertions, reorders, or removals. Ideal for dynamic notifications or feeds.",
+      "description": "A list whose items rise and blur in one after another, then fade in, fade out and glide as items are added, removed or filtered. Use it for feeds, bills and any list that changes.",
       "categories": [
-        "media",
+        "data-display",
         "scroll"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "gsap"
+      ],
       "registryDependencies": [
         "utils"
       ],
@@ -453,9 +455,64 @@
           "path": "src/components/custom/blocks/AnimatedListBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/AnimatedListBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/gsap-motion.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/gsap-motion.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/in-view.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/in-view.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
-      "docs": "Renders animated lists with smooth insertion and deletion transitions."
+      "docs": "Named exports: AnimatedList, AnimatedListItem. AnimatedList renders a ul (`as` for ol or div) and owns only the motion; AnimatedListItem renders an li (`as=\"div\"` inside a div list) and takes any content. Give every item a stable `key`: it decides what counts as added, removed or moved. Titles, filters and totals live outside the list. `staggerDelay` and `duration` tune the entrance. Avoid transform utilities on the item itself, since the motion owns its transform. GSAP build; honours prefers-reduced-motion."
+    },
+    {
+      "name": "animated-number",
+      "type": "registry:component",
+      "title": "Animated Number",
+      "author": "AlgorizeTech",
+      "description": "A number that counts up when it scrolls into view, then counts from where it is to each new value. Use it for totals, balances and statistics that change.",
+      "categories": [
+        "data-display",
+        "typography"
+      ],
+      "dependencies": [
+        "gsap"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/AnimatedNumberBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/AnimatedNumberBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/gsap-motion.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/gsap-motion.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/in-view.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/in-view.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
+        }
+      ],
+      "docs": "Named export: AnimatedNumber. `value` is the target; `format` turns the running number into text (a currency string, say) and defaults to toLocaleString; `duration` is in seconds. Screen readers get the final value, not the count. GSAP build; honours prefers-reduced-motion. For a stat card with a label, use `counter`."
     },
     {
       "name": "animated-timeline",
@@ -1458,29 +1515,6 @@
         }
       ],
       "docs": "Named export: ComponentWall (plus the ComponentWallItem type). Composed from the image-wall, text-animation, copy-button, avatar-stack and half-stars items, which install alongside it, and takes a tech-stack in its `stack` slot. Pass `badge` ({ label, href? }), `heading` (a string, revealed word by word; write `{word}` where `headingWords` take turns every `wordInterval` ms, and name one word in `accent` for the primary colour), `description` (a string or inline JSX — it renders inside a <p>), `install` ({ command } — write `{item}` where the focused card's `slug` goes, e.g. `npx shadcn@latest add @avara-ui/{item}`), `primaryAction`/`secondaryAction` ({ label, href, icon? }), `trust` ({ text, avatars?, rating? }), `items` ({ title, image, slug? }[] — every screenshot sits in the same 493:332 frame; slug defaults to the title in kebab-case) and `stack` (a node — a <TechStack> of <TechStackGroup>s of <TechStackTool name icon />: the tools over the lower wall on desktop and under the band on phones; in the centred layout it closes the copy column, where the compact variant fits). `columns`, `interval` (ms the camera rests; 0 holds still), `order` (serial | shuffle), `zoom`, `intro` (ms the camera drifts with nothing in focus while the copy arrives; default 1800) and `onFocus` pass straight to the wall; `layout` is split (copy left, wall right), center (copy between two walls — the left camera resting high, the right low, taking turns, the second wall dealing the same items from halfway through; the tools sit under the copy; zoom defaults to 0.9; below lg a single band of every card sits between the copy and the tools), or center-background (`persistentBackground`); `showMobileWall` (boolean, default true: set to false to completely hide wall animations on small screens <lg across all layouts); `linkComponent` takes next/link. The headline uses your theme's font-serif, the command font-mono; colours are theme tokens."
-    },
-    {
-      "name": "compute",
-      "type": "registry:component",
-      "title": "Compute",
-      "author": "AlgorizeTech",
-      "description": "A compute-resource panel showing instance sizing and usage as a settings-style card. Use it as a starting point for an infrastructure or plan-usage screen.",
-      "categories": [
-        "data-display",
-        "layout"
-      ],
-      "dependencies": [],
-      "registryDependencies": [
-        "https://avaraui.com/r/ui-base.json"
-      ],
-      "files": [
-        {
-          "path": "src/components/custom/blocks/ComputeBlock.tsx",
-          "type": "registry:component",
-          "target": "components/custom/blocks/ComputeBlock.tsx"
-        }
-      ],
-      "docs": "Named export: ComputeBlock. A self-contained example with hardcoded values and local state — copy and adapt rather than configuring through props. Depends on `ui-base` for ComponentCard."
     },
     {
       "name": "confidential-folder",
@@ -2699,28 +2733,6 @@
       "docs": "Named exports: GlassBackdrop, GlassPanel (plus SurfaceVariant, GlassShape types); useSurface is exported from glass-panel-context.ts, which installs alongside. `GlassBackdrop` washes three `aurora` colours behind a 12-column grid (`gridClassName` for row heights and gaps) and sets `variant` (glass | solid) for every `GlassPanel` inside; panels take `shape` (slab, tile, disc, capsule), `interactive`, and Tailwind column spans."
     },
     {
-      "name": "globe",
-      "type": "registry:component",
-      "title": "Globe",
-      "author": "AlgorizeTech",
-      "description": "An interactive 3D WebGL globe visualization with location markers, arc curves, and rotation controls. Use it for global presence and location showcases.",
-      "categories": [
-        "data-display",
-        "marketing"
-      ],
-      "dependencies": [],
-      "registryDependencies": [
-        "utils"
-      ],
-      "files": [
-        {
-          "path": "src/components/custom/blocks/GlobeBlock.tsx",
-          "type": "registry:component",
-          "target": "components/custom/blocks/GlobeBlock.tsx"
-        }
-      ]
-    },
-    {
       "name": "half-stars",
       "type": "registry:component",
       "title": "Half Stars",
@@ -3850,30 +3862,6 @@
       "docs": "Named exports: ParticleCanvas, WordmarkGlowCanvas. Default export: ParticleCanvas. Variants: repel | wordmark-glow. Features 2D particle physics, cursor repulsion, scroll-timeline rising letters, and pointer-following radial glow."
     },
     {
-      "name": "payment",
-      "type": "registry:component",
-      "title": "Payment",
-      "author": "AlgorizeTech",
-      "description": "A card payment form with number, expiry month/year selects and a simulated submit state. Use it as the checkout step in a commerce flow.",
-      "categories": [
-        "commerce",
-        "forms"
-      ],
-      "dependencies": [],
-      "registryDependencies": [
-        "https://avaraui.com/r/select.json",
-        "https://avaraui.com/r/ui-base.json"
-      ],
-      "files": [
-        {
-          "path": "src/components/custom/blocks/PaymentBlock.tsx",
-          "type": "registry:component",
-          "target": "components/custom/blocks/PaymentBlock.tsx"
-        }
-      ],
-      "docs": "Named export: PaymentBlock. A self-contained example with hardcoded month and year options and a mocked submit — adapt it rather than configuring through props. Depends on `select` and `ui-base`. No payment provider is wired in; never handle raw card numbers without a PCI-compliant processor such as Stripe Elements."
-    },
-    {
       "name": "piano",
       "type": "registry:component",
       "title": "Piano",
@@ -4004,81 +3992,6 @@
         }
       ],
       "docs": "Named exports: PricingCards, PricingBuilder, PricingTable, PricingSlider, PricingTypographic, PricingPlans. The largest pricing item — variants include cards, builder, table, slider, typographic, and interactive service checklist. The tiered cards popular plan features subtle 3D tilt from tilted-card."
-    },
-    {
-      "name": "pricing-plan",
-      "type": "registry:component",
-      "title": "Pricing Plan",
-      "author": "AlgorizeTech",
-      "description": "Three pricing layouts in one item — basic cards, a feature table and a usage slider that recalculates price. Use the slider variant for consumption-based products.",
-      "categories": [
-        "commerce",
-        "marketing"
-      ],
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "https://avaraui.com/r/ui-badge.json",
-        "https://avaraui.com/r/ui-button.json",
-        "https://avaraui.com/r/ui-card.json",
-        "https://avaraui.com/r/ui-slider.json",
-        "utils"
-      ],
-      "files": [
-        {
-          "path": "src/components/custom/blocks/Pricing-plan.tsx",
-          "type": "registry:component",
-          "target": "components/custom/blocks/Pricing-plan.tsx"
-        }
-      ],
-      "docs": "Named exports: BasicPricingPlan, TablePricingPlan, SliderPricingPlan. The heaviest dependency graph in the registry: pulls `ui-badge`, `ui-button`, `ui-card` and `ui-slider`. Note `ui-card` installs to components/ui/card.tsx and will overwrite an existing shadcn card — review before adding to an established project."
-    },
-    {
-      "name": "pricing-section",
-      "type": "registry:component",
-      "title": "Pricing Section",
-      "author": "AlgorizeTech",
-      "description": "A compact pricing section with monthly and annual toggle. Use it when pricing is one part of a longer landing page rather than its own page.",
-      "categories": [
-        "commerce",
-        "marketing"
-      ],
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [],
-      "files": [
-        {
-          "path": "src/components/custom/blocks/PricingSection.tsx",
-          "type": "registry:component",
-          "target": "components/custom/blocks/PricingSection.tsx"
-        }
-      ],
-      "docs": "Named export: PricingSection. Self-contained with hardcoded plans — copy and adapt. Uses next/link, so it needs edits outside Next.js. Installs standalone with no registry dependencies."
-    },
-    {
-      "name": "pricing-section-v4",
-      "type": "registry:component",
-      "title": "Pricing Section V4",
-      "author": "AlgorizeTech",
-      "description": "A refreshed pricing section with a cleaner card treatment and no animation dependency. Use it as the lighter alternative to the GSAP-based pricing sections.",
-      "categories": [
-        "commerce",
-        "marketing"
-      ],
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [],
-      "files": [
-        {
-          "path": "src/components/custom/blocks/PricingSectionV4.tsx",
-          "type": "registry:component",
-          "target": "components/custom/blocks/PricingSectionV4.tsx"
-        }
-      ],
-      "docs": "Named export: PricingSectionV4. Self-contained with hardcoded plans — copy and adapt. Uses next/link, so it needs edits outside Next.js. No GSAP, so it is the lightest of the pricing items."
     },
     {
       "name": "product-card",
@@ -4672,29 +4585,6 @@
       "docs": "Named export: SelectionFrame (also exports the FrameHandles and FrameLine types). Wrap any child; it is measured live with a ResizeObserver. `handles` is square | circle, `line` is solid | dashed | long, `dash` overrides the [dash, gap] pair, `animated` marches dashed/long strokes and pops the handles in, `color` is any CSS colour (Figma blue default), `radius` and `padding` are pixels, and `inline={false}` makes it block-level. Respects prefers-reduced-motion."
     },
     {
-      "name": "settings",
-      "type": "registry:component",
-      "title": "Settings",
-      "author": "AlgorizeTech",
-      "description": "Pre-built settings panels for notification and security preferences, laid out as toggle rows. Use them as a starting point for an account settings page.",
-      "categories": [
-        "forms",
-        "layout"
-      ],
-      "dependencies": [],
-      "registryDependencies": [
-        "https://avaraui.com/r/ui-base.json"
-      ],
-      "files": [
-        {
-          "path": "src/components/custom/blocks/SettingsBlock.tsx",
-          "type": "registry:component",
-          "target": "components/custom/blocks/SettingsBlock.tsx"
-        }
-      ],
-      "docs": "Named exports: NotificationsBlock, SecurityBlock. These are self-contained example panels with their own local state and hardcoded labels — copy and adapt rather than configuring through props. Depends on `ui-base` for ComponentCard and ToggleSwitch."
-    },
-    {
       "name": "sidebar",
       "type": "registry:component",
       "title": "Sidebar",
@@ -4724,42 +4614,6 @@
         }
       ],
       "docs": "Named exports: SidebarProvider, Sidebar, SidebarHeader, SidebarBrand, SidebarContent, SidebarGroup, SidebarFooter, useSidebar (from sidebar-context.ts, which installs alongside). Wrap your app in SidebarProvider; read `expanded` and `isMobileOpen` from useSidebar to drive your own toggle. Variants: attached | floating. Collapsed item labels show in the `tooltip` item, which installs alongside."
-    },
-    {
-      "name": "signup-form",
-      "type": "registry:component",
-      "title": "Signup Form",
-      "author": "AlgorizeTech",
-      "description": "A standalone registration form with inline field validation and animated error states. Use it where sign-up is its own page rather than a tab beside sign-in.",
-      "categories": [
-        "authentication",
-        "forms"
-      ],
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "https://avaraui.com/r/icons.json",
-        "utils"
-      ],
-      "files": [
-        {
-          "path": "src/components/custom/blocks/SignupForm.tsx",
-          "type": "registry:component",
-          "target": "components/custom/blocks/SignupForm.tsx"
-        },
-        {
-          "path": "src/components/custom/blocks/motion-curves.ts",
-          "type": "registry:component",
-          "target": "components/custom/blocks/motion-curves.ts"
-        },
-        {
-          "path": "src/components/custom/blocks/register-form-theme.ts",
-          "type": "registry:component",
-          "target": "components/custom/blocks/register-form-theme.ts"
-        }
-      ],
-      "docs": "Named export: SignupForm. Uses Motion for field-level error transitions. Validation is client-side presentation only — enforce it again on your server."
     },
     {
       "name": "skeleton",
@@ -5075,29 +4929,6 @@
       "docs": "Motion build of `sticky-scroll-stack` — same props, markup and install path; install one or the other. Named export: StickyScrollStack. Each item sets `contentType` (list | image | split | custom) so steps need not share a shape. Uses next/image, so it needs edits outside Next.js."
     },
     {
-      "name": "support-container",
-      "type": "registry:component",
-      "title": "Support Container",
-      "author": "AlgorizeTech",
-      "description": "A support ticket list with filters, detail view and empty state, configured through one content object. Use it to drop a help-desk view into an existing layout.",
-      "categories": [
-        "communication",
-        "layout"
-      ],
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [],
-      "files": [
-        {
-          "path": "src/components/custom/blocks/SupportContainer.tsx",
-          "type": "registry:component",
-          "target": "components/custom/blocks/SupportContainer.tsx"
-        }
-      ],
-      "docs": "Named export: SupportContainer. Configured via a single nested prop object covering header, filters, tickets, emptyState and detailView — all copy is passed in, so it localises without edits. Installs standalone with no registry dependencies."
-    },
-    {
       "name": "support-dashboard",
       "type": "registry:component",
       "title": "Support Dashboard",
@@ -5157,30 +4988,6 @@
         }
       ],
       "docs": "Named export: SupportHero, with parts Card, Integrations, Stat, Photo and Team. Composed from the glass-panel, text-animation, counter and button items, which install alongside it. Cards land in one staggered pass after the headline (`reveal` in-view or immediate); Stats count up when on screen; hover lifts cards, zooms portraits and drifts the faces. `cta` takes a label plus `onClick` or `href`."
-    },
-    {
-      "name": "support-page",
-      "type": "registry:component",
-      "title": "Support Page",
-      "author": "AlgorizeTech",
-      "description": "A customer-facing support page with ticket list, reply composer and details sidebar. Use it as the end-user counterpart to the agent dashboard.",
-      "categories": [
-        "communication"
-      ],
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "https://avaraui.com/r/select.json"
-      ],
-      "files": [
-        {
-          "path": "src/components/custom/blocks/SupportPage.tsx",
-          "type": "registry:component",
-          "target": "components/custom/blocks/SupportPage.tsx"
-        }
-      ],
-      "docs": "Named export: SupportPage. Configured through one nested content object covering header, filters, tickets, replySection and detailsSection. Depends on `select`. For the agent-side view with SLA tracking, use `support-dashboard`."
     },
     {
       "name": "table",
@@ -5844,26 +5651,6 @@
       "docs": "Derived from shadcn/ui (MIT, Copyright (c) 2023 shadcn)."
     },
     {
-      "name": "ui-base",
-      "type": "registry:ui",
-      "title": "UI Base",
-      "author": "AlgorizeTech",
-      "description": "Shared layout scaffolding (ComponentCard, ToggleSwitch) used by the settings, payment, compute and utility blocks.",
-      "categories": [
-        "utilities"
-      ],
-      "dependencies": [],
-      "registryDependencies": [],
-      "files": [
-        {
-          "path": "src/components/custom/ui/base.tsx",
-          "type": "registry:ui",
-          "target": "components/custom/ui/base.tsx"
-        }
-      ],
-      "docs": "Named exports: ComponentCard, ToggleSwitch. Pulled in automatically as a dependency — rarely installed directly."
-    },
-    {
       "name": "ui-button",
       "type": "registry:ui",
       "title": "UI Button",
@@ -5898,7 +5685,7 @@
       "type": "registry:ui",
       "title": "UI Card",
       "author": "AlgorizeTech",
-      "description": "The card surface primitive that the pricing-plan block composes.",
+      "description": "The card surface primitive that other blocks compose.",
       "categories": [
         "utilities"
       ],
@@ -6138,29 +5925,6 @@
         }
       ],
       "docs": "Named exports: UserGraph. Takes orbiting tools, sub-apps and sub-agents, each with its own icon and colour tokens. Presentational — the layout is decorative, not a real graph engine, so it will not lay out arbitrary node counts gracefully."
-    },
-    {
-      "name": "utility",
-      "type": "registry:component",
-      "title": "Utility",
-      "author": "AlgorizeTech",
-      "description": "Two small dashboard panels — a team member list and a command search box — built on the shared card shell. Use them as filler panels while assembling a dashboard layout.",
-      "categories": [
-        "layout",
-        "utilities"
-      ],
-      "dependencies": [],
-      "registryDependencies": [
-        "https://avaraui.com/r/ui-base.json"
-      ],
-      "files": [
-        {
-          "path": "src/components/custom/blocks/UtilityBlocks.tsx",
-          "type": "registry:component",
-          "target": "components/custom/blocks/UtilityBlocks.tsx"
-        }
-      ],
-      "docs": "Named exports: TeamMembersBlock, CommandSearchBlock. Self-contained examples with hardcoded content — copy and adapt rather than configuring through props. Depends on `ui-base`."
     },
     {
       "name": "verify-badge",

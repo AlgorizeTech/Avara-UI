@@ -16,7 +16,7 @@ Each name below is a docs page slug. Its summary, install command and Markdown a
 - **Charts, Maps & Graphs** (components): `agent-graph`, `chart`, `data-maps`, `flowchart`, `infrastructure-topology`, `fleet-tracker`, `network-graph`, `user-graph`
 - **Apps & Messaging** (components): `ai-chat`, `cart`, `chat`, `chat-bubble`, `email`, `piano`
 - **Overlays & Feedback** (components): `alert`, `dialog`, `drawer`, `loader`, `modal`, `popover`, `progress`, `skeleton`, `sonner`, `toast`, `tooltip`
-- **Text & Effects** (components): `animated-list`, `animated-typography`, `apple-select`, `circular-text`, `cursor-animation`, `heart-signal`, `particle-canvas`, `selection-frame`, `text-animation`
+- **Text & Effects** (components): `animated-list`, `animated-number`, `animated-typography`, `apple-select`, `circular-text`, `cursor-animation`, `heart-signal`, `particle-canvas`, `selection-frame`, `text-animation`
 - **Data Display** (components): `animated-timeline`, `api-playground`, `avatar-stack`, `counter`, `custom-code-block`, `data-grid`, `data-table`, `invoice`, `qr-code-generator`, `radial-orbital-timeline`, `split-flap`, `table`, `tech-stack`, `terminal`, `timeline`
 - **Media & Carousels** (components): `audio-player`, `carousel`, `curved-carousel`, `flow-gallery`, `gallery`, `image-compare`, `image-wall`, `marquee`, `squircle-carousel`, `video-accordion`, `video-player`
 - **Cards & Stacks** (components): `book-flip`, `card`, `card-stack`, `design-components-folder`, `draggable-card-list`, `folder`, `memories-card`, `scroll-split-cards`, `scroll-stack`, `secure-envelope`, `tilted-card`, `wallet`

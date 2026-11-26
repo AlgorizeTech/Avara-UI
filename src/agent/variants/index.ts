@@ -189,9 +189,6 @@ export const NO_CHOICE_NEEDED: string[] = [
   // stat tile, blog, profile, shop tile, boarding pass, now playing). The recipe follows the content,
   // not a design preference to ask the user about (audited 2026-11-10).
   "card",
-  // Its variants are entrance animations of one list (flip, slide up, slide left or right, pop),
-  // a motion setting rather than alternative designs; the default is slide-right (audited 2026-11-10).
-  "animated-list",
   // Its two examples are different tools in one item (a 360-degree colour wheel and a gradient
   // generator), chosen by the job, not two designs of one tool (audited 2026-11-10).
   "color-picker",

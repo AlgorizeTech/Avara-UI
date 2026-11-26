@@ -46,6 +46,11 @@ runs on GSAP. Prefer Motion? Many of these also have a
 
 - [Ai-Chat](https://avaraui.com/docs-md/nextjs-ai-chat.md): An LLM chat interface with history, editable titles, a prompt composer with @Mention tools, and a model picker. (Motion build available)
 
+**Text & Effects**
+
+- [Animated List](https://avaraui.com/docs-md/nextjs-animated-list.md): An animated list: items rise and blur in, then fade and glide as they are added, removed or filtered.
+- [Animated Number](https://avaraui.com/docs-md/nextjs-animated-number.md): A number that counts up when it scrolls into view, then counts to each new value.
+
 **More Components**
 
 - [Action Button](https://avaraui.com/docs-md/nextjs-action-buttons.md): Animated action buttons: slide to confirm, hold to delete, star, add to cart, waitlist and payment. (Motion build available)

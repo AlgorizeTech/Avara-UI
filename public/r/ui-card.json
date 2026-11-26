@@ -3,7 +3,7 @@
   "name": "ui-card",
   "title": "UI Card",
   "author": "AlgorizeTech",
-  "description": "The card surface primitive that the pricing-plan block composes.",
+  "description": "The card surface primitive that other blocks compose.",
   "dependencies": [],
   "registryDependencies": [
     "utils"

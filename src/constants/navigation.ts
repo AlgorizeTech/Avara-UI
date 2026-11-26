@@ -119,6 +119,7 @@ const rawNavigation: NavigationItem[] = [
       { label: "Ai-Chat", slug: "ai-chat", badge: "Updated", updatedOn: "2026-11-22" },
       { label: "Alert", slug: "alert", badge: "Updated", updatedOn: "2026-11-22" },
       { label: "Animated List", slug: "animated-list" },
+      { label: "Animated Number", slug: "animated-number", badge: "New", addedOn: "2026-11-26" },
       { label: "Animated Timeline", slug: "animated-timeline", badge: "Updated", updatedOn: "2026-11-22" },
       { label: "Animated Typography", slug: "animated-typography" },
       { label: "Api Playground", slug: "api-playground" },

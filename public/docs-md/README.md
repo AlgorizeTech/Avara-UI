@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-11-25T07:49:46.828Z
-**Total files:** 351
+**Generated at:** 2026-11-26T15:58:19.818Z
+**Total files:** 353
 
 ## Available Files
 
@@ -15,6 +15,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/ai-chat](/docs-md/nextjs-ai-chat.md) - Source: `[framework]\ai-chat\page.mdx`
 - [nextjs/alert](/docs-md/nextjs-alert.md) - Source: `[framework]\alert\page.mdx`
 - [nextjs/animated-list](/docs-md/nextjs-animated-list.md) - Source: `[framework]\animated-list\page.mdx`
+- [nextjs/animated-number](/docs-md/nextjs-animated-number.md) - Source: `[framework]\animated-number\page.mdx`
 - [nextjs/animated-timeline](/docs-md/nextjs-animated-timeline.md) - Source: `[framework]\animated-timeline\page.mdx`
 - [nextjs/animated-typography](/docs-md/nextjs-animated-typography.md) - Source: `[framework]\animated-typography\page.mdx`
 - [nextjs/api-playground](/docs-md/nextjs-api-playground.md) - Source: `[framework]\api-playground\page.mdx`
@@ -190,6 +191,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/ai-chat](/docs-md/reactjs-ai-chat.md) - Source: `[framework]\ai-chat\page.mdx`
 - [reactjs/alert](/docs-md/reactjs-alert.md) - Source: `[framework]\alert\page.mdx`
 - [reactjs/animated-list](/docs-md/reactjs-animated-list.md) - Source: `[framework]\animated-list\page.mdx`
+- [reactjs/animated-number](/docs-md/reactjs-animated-number.md) - Source: `[framework]\animated-number\page.mdx`
 - [reactjs/animated-timeline](/docs-md/reactjs-animated-timeline.md) - Source: `[framework]\animated-timeline\page.mdx`
 - [reactjs/animated-typography](/docs-md/reactjs-animated-typography.md) - Source: `[framework]\animated-typography\page.mdx`
 - [reactjs/api-playground](/docs-md/reactjs-api-playground.md) - Source: `[framework]\api-playground\page.mdx`

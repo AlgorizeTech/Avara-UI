@@ -107,7 +107,7 @@ export const COMPONENT_TYPES = {
 		description: "Animated type, cursors, particles and decorative motion.",
 		icon: Sparkles,
 		kind: "ui",
-		slugs: ["animated-typography", "animated-list", "circular-text", "cursor-animation", "particle-canvas", "heart-signal", "selection-frame", "apple-select", "text-animation"],
+		slugs: ["animated-typography", "animated-list", "animated-number", "circular-text", "cursor-animation", "particle-canvas", "heart-signal", "selection-frame", "apple-select", "text-animation"],
 	},
 	"more-ui": {
 		label: "More Components",

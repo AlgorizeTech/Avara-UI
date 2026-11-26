@@ -1,6 +1,7 @@
 "use client";
 
 import type { AlertVariant } from "@/components/custom/blocks/Alerts";
+import InsetAlerts from "./alert-examples/inset";
 import DefaultAlerts from "./alert-examples/default";
 import GlassAlerts from "./alert-examples/glass";
 import SoftAlerts from "./alert-examples/soft";
@@ -12,6 +13,7 @@ import SolidAlerts from "./alert-examples/solid";
  * the code a reader copies cannot drift apart.
  */
 const EXAMPLES: Record<AlertVariant, React.ComponentType> = {
+  inset: InsetAlerts,
   default: DefaultAlerts,
   soft: SoftAlerts,
   glass: GlassAlerts,

@@ -1,5 +1,6 @@
 "use client";
 
+import { InView } from "@/components/home/in-view";
 import { useId, useRef, useState, type KeyboardEvent } from "react";
 import { ArrowRight } from "lucide-react";
 
@@ -62,7 +63,7 @@ export function ComponentDirectorySection() {
 
 	return (
 		<section id="components" className="relative border-t border-border/40 bg-background pt-10 md:pt-14">
-			<div className="mx-auto max-w-[1160px] px-5 text-center md:px-10">
+			<InView className="reveal mx-auto max-w-[1160px] px-5 text-center md:px-10">
 				<span className="mb-3 inline-block font-mono text-[11px] uppercase tracking-[0.2em] text-foreground/60">
 					Free components
 				</span>
@@ -130,7 +131,7 @@ export function ComponentDirectorySection() {
 						<ArrowRight className="size-3.5" aria-hidden />
 					</Link>
 				</div>
-			</div>
+			</InView>
 
 			{TABS.map((tab) => (
 				<div

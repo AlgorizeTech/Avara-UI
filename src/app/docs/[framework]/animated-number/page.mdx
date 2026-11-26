@@ -1,0 +1,116 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("animated-number");
+
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
+import { extractCode } from "@/lib/code";
+
+# Shadcn Animated Number
+
+A number that counts up when it scrolls into view, then counts to each new value.
+
+<ExampleShowcase minHeight={320} headingLevel={2}
+  name="animated-number"
+  colorControl={false}
+  columns={1}
+  installation={<Installation name="animated-number" usage="below" />}
+  examples={[
+    {
+      title: "Animated number",
+      usage: extractCode("src/preview/demos/animated-number-examples/default.tsx"),
+      code: extractCode("src/components/custom/blocks/AnimatedNumberBlock.tsx"),
+    },
+  ]}
+/>
+
+## About Shadcn Animated Number
+
+**What it is.** `AnimatedNumber` shows one figure. It counts up from zero when it first scrolls into view.
+
+**How it works.** When `value` changes, it counts from the figure on screen to the new one, so a total can count down after a payment. `format` turns the running number into text, such as a currency string.
+
+**When to use it.** Use it for totals, balances and statistics that change. For a stat card with a label, use <DocLink to="counter">Counter</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="animated-number">
+
+**When to use**
+
+- A total, balance or statistic that should count up and follow changes
+- A figure next to a list that changes, such as <DocLink to="animated-list">Animated List</DocLink>
+
+**When not to use**
+
+- A stat card with a label, steppers or a countdown: use <DocLink to="counter">Counter</DocLink>
+
+**Agent notes**
+
+- Named export `AnimatedNumber` from `@/components/custom/blocks/AnimatedNumberBlock`. It renders a `span`; style it with `className`.
+- `format` runs every frame, so keep it cheap. Use `Intl.NumberFormat` created once, outside the component.
+- Screen readers get the final value, not the count.
+- Honours `prefers-reduced-motion`: the figure shows without counting.
+
+</AgentBrief>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>value</code></td>
+        <td><code>number</code></td>
+        <td>Required</td>
+        <td>The number to show. It counts up in view, then to each new value.</td>
+      </tr>
+      <tr>
+        <td><code>format</code></td>
+        <td><code>(n: number) =&gt; string</code></td>
+        <td><code>toLocaleString</code></td>
+        <td>Turns the running number into text, such as a currency string.</td>
+      </tr>
+      <tr>
+        <td><code>duration</code></td>
+        <td><code>number</code></td>
+        <td><code>0.9</code></td>
+        <td>Seconds each count takes.</td>
+      </tr>
+      <tr>
+        <td><code>...props</code></td>
+        <td><code>HTMLAttributes&lt;HTMLSpanElement&gt;</code></td>
+        <td><code>undefined</code></td>
+        <td>Passed to the span, including <code>className</code>.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+## Works with other components
+
+- <DocLink to="animated-list">Animated List</DocLink> for the rows a total adds up.
+- <DocLink to="counter">Counter</DocLink> for labelled stat cards, steppers and countdowns.
+
+## How do I format the number as money?
+
+Pass `format`, for example `(n) => n.toLocaleString("en-US", { style: "currency", currency: "USD" })`. The figure is formatted on every frame of the count.
+
+## Does AnimatedNumber count from zero every time?
+
+Only the first time, when it scrolls into view. After that it counts from the figure on screen to each new `value`.
+
+## How does AnimatedNumber handle reduced motion?
+
+When the visitor prefers reduced motion, the figure appears at its value without counting.
+
+<DocsJsonLd slug="animated-number" />
+<FaqJsonLd slug="animated-number" />

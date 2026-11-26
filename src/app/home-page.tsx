@@ -53,7 +53,7 @@ const FOOTER = typeof window === "undefined"
    spelled out in full so the home stylesheet generator can see them. */
 export default function HomePage() {
 	return (
-		<div className="min-h-screen bg-background text-foreground selection:bg-primary/20 overflow-x-hidden font-site-sans">
+		<div className="min-h-screen bg-background text-foreground selection:bg-primary/20 overflow-x-clip font-site-sans">
 			{/* The page's main landmark, for screen-reader "skip to main" and for
 			    crawlers; the footer stays outside it so it keeps its own role. */}
 			<main>

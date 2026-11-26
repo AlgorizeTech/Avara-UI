@@ -1,12 +1,12 @@
 ---
 title: "Shadcn Alert"
-description: "Shadcn Alert. An inline alert banner for persistent status messages in six severity types and four surface variants (`default`, `soft`, `glass`, and `solid`)."
+description: "Shadcn Alert. An inline alert banner for persistent status messages in six severity types and five surface variants (`inset`, `default`, `soft`, `glass`."
 url: https://avaraui.com/docs/nextjs/alert
 ---
 
 # Shadcn Alert
 
-An inline alert banner for persistent status messages in six severity types and four surface variants (`default`, `soft`, `glass`, and `solid`).
+An inline alert banner for persistent status messages in six severity types and five surface variants (`inset`, `default`, `soft`, `glass`, and `solid`).
 
 ## Installation
 
@@ -23,6 +23,84 @@ npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/alert
 ```
 
+## Inset
+
+- `variant="inset"` puts the icon and title on top and the message in an inset well, like the Accordion.
+
+```tsx
+import { Alert, AlertAction } from "@/components/custom/blocks/Alerts";
+
+export default function InsetAlerts() {
+  return (
+    <div className="mx-auto w-full max-w-3xl p-4 md:p-8">
+      <div className="flex flex-col gap-3">
+        <Alert
+          variant="inset"
+          type="neutral"
+          title="New features available"
+          message="Check out our latest updates including dark mode support and improved accessibility features."
+        />
+        <Alert
+          variant="inset"
+          type="info"
+          title="Update available"
+          message="A new version is available. Refresh to get the latest features and fixes."
+          action={
+            <>
+              <AlertAction appearance="outline">Later</AlertAction>
+              <AlertAction>Refresh</AlertAction>
+            </>
+          }
+        />
+        <Alert
+          variant="inset"
+          type="success"
+          title="Profile updated successfully"
+          dismissible
+        />
+        <Alert
+          variant="inset"
+          type="warning"
+          title="Payment method expires soon"
+          message="Your Visa ending in 4242 expires on March 28. Update billing to keep Pro active."
+          dismissible
+          action={
+            <>
+              <AlertAction appearance="outline">Not now</AlertAction>
+              <AlertAction>Update billing</AlertAction>
+            </>
+          }
+        />
+        <Alert
+          variant="inset"
+          type="danger"
+          title="Unable to connect to server"
+          message="We're experiencing connection issues. Please try the following:"
+          action={
+            <>
+              <AlertAction appearance="outline">Contact support</AlertAction>
+              <AlertAction>Retry</AlertAction>
+            </>
+          }
+        >
+          <ul className="mt-1 list-disc space-y-1 pl-5">
+            <li>Check your internet connection</li>
+            <li>Refresh the page</li>
+            <li>Clear your browser cache</li>
+          </ul>
+        </Alert>
+        <Alert
+          variant="inset"
+          type="loading"
+          title="Processing your request"
+          message="Please wait while we sync your data. This may take a few moments."
+        />
+      </div>
+    </div>
+  );
+}
+```
+
 ## Default
 
 - `variant="default"` is a card surface where only the icon carries the type colour.
@@ -32,7 +110,7 @@ import { Alert, AlertAction } from "@/components/custom/blocks/Alerts";
 
 export default function DefaultAlerts() {
   return (
-    <div className="mx-auto w-full max-w-2xl p-4 md:p-8">
+    <div className="mx-auto w-full max-w-3xl p-4 md:p-8">
       <div className="flex flex-col gap-3">
         <Alert
           type="neutral"
@@ -42,7 +120,7 @@ export default function DefaultAlerts() {
         <Alert
           type="info"
           title="Update available"
-          message="A new version of the application is available. Please refresh to get the latest features and bug fixes."
+          message="A new version is available. Refresh to get the latest features and fixes."
           action={<AlertAction>Refresh</AlertAction>}
         />
         <Alert
@@ -53,7 +131,7 @@ export default function DefaultAlerts() {
         <Alert
           type="warning"
           title="Payment method expires soon"
-          message="Your Visa ending in 4242 expires on March 28. Update billing to avoid interrupting your Pro subscription."
+          message="Your Visa ending in 4242 expires on March 28. Update billing to keep Pro active."
           action={<AlertAction>Update billing</AlertAction>}
           dismissible
         />
@@ -89,7 +167,7 @@ import { Alert, AlertAction } from "@/components/custom/blocks/Alerts";
 
 export default function SoftAlerts() {
   return (
-    <div className="mx-auto w-full max-w-2xl p-4 md:p-8">
+    <div className="mx-auto w-full max-w-3xl p-4 md:p-8">
       <div className="flex flex-col gap-3">
         <Alert
           variant="soft"
@@ -101,13 +179,14 @@ export default function SoftAlerts() {
           variant="soft"
           type="info"
           title="Update available"
-          message="A new version of the application is available. Please refresh to get the latest features and bug fixes."
-        >
-          <div className="mt-3 flex flex-wrap justify-end gap-2">
-            <AlertAction appearance="outline">Later</AlertAction>
-            <AlertAction>Refresh</AlertAction>
-          </div>
-        </Alert>
+          message="A new version is available. Refresh to get the latest features and fixes."
+          action={
+            <>
+              <AlertAction appearance="outline">Later</AlertAction>
+              <AlertAction>Refresh</AlertAction>
+            </>
+          }
+        />
         <Alert
           variant="soft"
           type="success"
@@ -118,29 +197,32 @@ export default function SoftAlerts() {
           variant="soft"
           type="warning"
           title="Payment method expires soon"
-          message="Your Visa ending in 4242 expires on March 28. Update billing to avoid interrupting your Pro subscription."
+          message="Your Visa ending in 4242 expires on March 28. Update billing to keep Pro active."
           dismissible
-        >
-          <div className="mt-3 flex flex-wrap justify-end gap-2">
-            <AlertAction appearance="outline">Not now</AlertAction>
-            <AlertAction>Update billing</AlertAction>
-          </div>
-        </Alert>
+          action={
+            <>
+              <AlertAction appearance="outline">Not now</AlertAction>
+              <AlertAction>Update billing</AlertAction>
+            </>
+          }
+        />
         <Alert
           variant="soft"
           type="danger"
           title="Unable to connect to server"
           message="We're experiencing connection issues. Please try the following:"
+          action={
+            <>
+              <AlertAction appearance="outline">Contact support</AlertAction>
+              <AlertAction>Retry</AlertAction>
+            </>
+          }
         >
           <ul className="mt-1 list-disc space-y-1 pl-5">
             <li>Check your internet connection</li>
             <li>Refresh the page</li>
             <li>Clear your browser cache</li>
           </ul>
-          <div className="mt-3 flex flex-wrap justify-end gap-2">
-            <AlertAction appearance="outline">Contact support</AlertAction>
-            <AlertAction>Retry</AlertAction>
-          </div>
         </Alert>
         <Alert
           variant="soft"
@@ -163,7 +245,7 @@ import { Alert, AlertAction } from "@/components/custom/blocks/Alerts";
 
 export default function GlassAlerts() {
   return (
-    <div className="mx-auto w-full max-w-2xl p-4 md:p-8">
+    <div className="mx-auto w-full max-w-3xl p-4 md:p-8">
       {/* Glass needs an image or gradient behind it, and its text is white. */}
       <div className="relative overflow-hidden rounded-2xl p-4 md:p-8">
         <img
@@ -183,7 +265,7 @@ export default function GlassAlerts() {
             variant="glass"
             type="info"
             title="Update available"
-            message="A new version of the application is available. Please refresh to get the latest features and bug fixes."
+            message="A new version is available. Refresh to get the latest features and fixes."
             action={<AlertAction>Refresh</AlertAction>}
           />
           <Alert
@@ -196,7 +278,7 @@ export default function GlassAlerts() {
             variant="glass"
             type="warning"
             title="Payment method expires soon"
-            message="Your Visa ending in 4242 expires on March 28. Update billing to avoid interrupting your Pro subscription."
+            message="Your Visa ending in 4242 expires on March 28. Update billing to keep Pro active."
             action={<AlertAction>Update billing</AlertAction>}
             dismissible
           />
@@ -235,7 +317,7 @@ import { Alert, AlertAction } from "@/components/custom/blocks/Alerts";
 
 export default function SolidAlerts() {
   return (
-    <div className="mx-auto w-full max-w-2xl p-4 md:p-8">
+    <div className="mx-auto w-full max-w-3xl p-4 md:p-8">
       <div className="flex flex-col gap-3">
         <Alert
           variant="solid"
@@ -247,7 +329,7 @@ export default function SolidAlerts() {
           variant="solid"
           type="info"
           title="Update available"
-          message="A new version of the application is available. Please refresh to get the latest features and bug fixes."
+          message="A new version is available. Refresh to get the latest features and fixes."
           action={<AlertAction>Refresh</AlertAction>}
         />
         <Alert
@@ -260,7 +342,7 @@ export default function SolidAlerts() {
           variant="solid"
           type="warning"
           title="Payment method expires soon"
-          message="Your Visa ending in 4242 expires on March 28. Update billing to avoid interrupting your Pro subscription."
+          message="Your Visa ending in 4242 expires on March 28. Update billing to keep Pro active."
           action={<AlertAction>Update billing</AlertAction>}
           dismissible
         />
@@ -291,7 +373,7 @@ export default function SolidAlerts() {
 
 ## About Shadcn Alert
 
-**What it is.** `Alert` is an inline banner with six `type` values (`neutral`, `info`, `success`, `warning`, `danger` and `loading`) and four `variant` surfaces (`default`, `soft`, `glass`, `solid`). It takes a `title`, a `message`, an optional `action` slot and a `dismissible` close button. `AlertAction` is the matching pill button.
+**What it is.** `Alert` is an inline banner with six `type` values (`neutral`, `info`, `success`, `warning`, `danger` and `loading`) and five `variant` surfaces (`inset`, `default`, `soft`, `glass`, `solid`). It takes a `title`, a `message`, an optional `action` slot and a `dismissible` close button. `AlertAction` is the matching pill button.
 
 **How it is built.** The `type` picks a `lucide-react` icon and a colour, and the `variant` picks the surface. `danger` and `warning` render with `role="alert"`, the other types with `role="status"`, and `loading` adds `aria-busy` with a spinning icon. Dismissing fades the alert out over 200 ms and then calls `onDismiss`.
 
@@ -302,7 +384,7 @@ export default function SolidAlerts() {
 **When to use**
 
 - Persistent inline callouts, validation summaries, and status banners inside page layouts or forms
-- Visual variants (`default`, `soft`, `glass`, `solid`) matched to light, dark, or image/gradient backdrops
+- Visual variants (`inset`, `default`, `soft`, `glass`, `solid`) matched to light, dark, or image/gradient backdrops
 
 **When not to use**
 
@@ -372,7 +454,7 @@ All 4 options as live previews: https://avaraui.com/view/alert
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `type` | `"neutral" \| "info" \| "success" \| "warning" \| "danger" \| "loading"` | `"neutral"` | What the alert is about. Sets the icon and the colour. |
-| `variant` | `"default" \| "soft" \| "glass" \| "solid"` | `"default"` | The visual style. |
+| `variant` | `"inset" \| "default" \| "soft" \| "glass" \| "solid"` | `"default"` | The visual style. |
 | `title` | `ReactNode` | `undefined` | The bold heading. |
 | `message` | `ReactNode` | `undefined` | The text under the title. |
 | `icon` | `ReactNode \| null` | The icon for the type | Replaces the icon. Pass `null` to hide it. |

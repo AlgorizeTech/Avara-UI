@@ -2,7 +2,7 @@ import { Alert, AlertAction } from "@/components/custom/blocks/Alerts";
 
 export default function SoftAlerts() {
   return (
-    <div className="mx-auto w-full max-w-2xl p-4 md:p-8">
+    <div className="mx-auto w-full max-w-3xl p-4 md:p-8">
       <div className="flex flex-col gap-3">
         <Alert
           variant="soft"
@@ -14,13 +14,14 @@ export default function SoftAlerts() {
           variant="soft"
           type="info"
           title="Update available"
-          message="A new version of the application is available. Please refresh to get the latest features and bug fixes."
-        >
-          <div className="mt-3 flex flex-wrap justify-end gap-2">
-            <AlertAction appearance="outline">Later</AlertAction>
-            <AlertAction>Refresh</AlertAction>
-          </div>
-        </Alert>
+          message="A new version is available. Refresh to get the latest features and fixes."
+          action={
+            <>
+              <AlertAction appearance="outline">Later</AlertAction>
+              <AlertAction>Refresh</AlertAction>
+            </>
+          }
+        />
         <Alert
           variant="soft"
           type="success"
@@ -31,29 +32,32 @@ export default function SoftAlerts() {
           variant="soft"
           type="warning"
           title="Payment method expires soon"
-          message="Your Visa ending in 4242 expires on March 28. Update billing to avoid interrupting your Pro subscription."
+          message="Your Visa ending in 4242 expires on March 28. Update billing to keep Pro active."
           dismissible
-        >
-          <div className="mt-3 flex flex-wrap justify-end gap-2">
-            <AlertAction appearance="outline">Not now</AlertAction>
-            <AlertAction>Update billing</AlertAction>
-          </div>
-        </Alert>
+          action={
+            <>
+              <AlertAction appearance="outline">Not now</AlertAction>
+              <AlertAction>Update billing</AlertAction>
+            </>
+          }
+        />
         <Alert
           variant="soft"
           type="danger"
           title="Unable to connect to server"
           message="We're experiencing connection issues. Please try the following:"
+          action={
+            <>
+              <AlertAction appearance="outline">Contact support</AlertAction>
+              <AlertAction>Retry</AlertAction>
+            </>
+          }
         >
           <ul className="mt-1 list-disc space-y-1 pl-5">
             <li>Check your internet connection</li>
             <li>Refresh the page</li>
             <li>Clear your browser cache</li>
           </ul>
-          <div className="mt-3 flex flex-wrap justify-end gap-2">
-            <AlertAction appearance="outline">Contact support</AlertAction>
-            <AlertAction>Retry</AlertAction>
-          </div>
         </Alert>
         <Alert
           variant="soft"
