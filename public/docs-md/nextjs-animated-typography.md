@@ -54,6 +54,21 @@ export default function TypewriterShowcase() {
 
 ## Examples
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/animated-typography.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/animated-typography
+```
+
 ### Typewriter, Fixed Prefix
 
 The same typewriter with the prefix held in place: the line keeps the longest word's width, so only the typed word moves.

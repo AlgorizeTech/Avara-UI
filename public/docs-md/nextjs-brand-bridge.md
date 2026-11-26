@@ -40,31 +40,6 @@ All 2 options as live previews: https://avaraui.com/view/brand-bridge
    - Set these props: `{"variant":"eight-brands"}`
    - Docs: https://avaraui.com/docs/nextjs/brand-bridge#full-ecosystem-bridge
 
-### Core Stack Hub
-
-Six-integration workspace card with autoplay wiring, magnetic gradient curves, glowing comets, and a reactive particle field.
-
-- `autoplay=true` connects each brand one by one in random order, pauses on hover, and stops permanently on click.
-- `particles=48` controls the ambient 2D particle count (0 to 240).
-
-```tsx
-import { BrandBridge } from "@/components/custom/blocks/BrandBridgeBlock";
-
-export default function BrandBridgeExample() {
-  return (
-    <div className="w-full py-8 flex items-center justify-center">
-      <BrandBridge
-        title="Unified Workspace"
-        description="Link your daily stack into a single live pipeline. Click any app to wire it in, or click again to disconnect."
-        onToggle={(id, on) => {
-          console.log(id, on ? "connected" : "disconnected");
-        }}
-      />
-    </div>
-  );
-}
-```
-
 ## Installation
 
 Add the component by URL — no setup needed:

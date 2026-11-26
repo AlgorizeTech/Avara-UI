@@ -10,6 +10,27 @@ A dual-row scroll-driven destination showcase. As the user scrolls down the page
 
 Each card features full-bleed photography, subtle vertical typography by default, smooth hover scaling, and an interactive bordered overlay revealing place counts, tags, and an "Explore" action.
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/top-destinations.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/top-destinations
+```
+
+Or the Motion build (same props, same file — install one):
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/top-destinations-motion.json
+```
+
 ## Dual-row parallax travel
 
 Scroll down to watch top and bottom rows travel in opposite directions across the screen.
@@ -120,27 +141,6 @@ export default function DestinationsShowcase() {
     />
   );
 }
-```
-
-### Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/top-destinations.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/top-destinations
-```
-
-Or the Motion build (same props, same file — install one):
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/top-destinations-motion.json
 ```
 
 ## Features

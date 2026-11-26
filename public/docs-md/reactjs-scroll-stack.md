@@ -136,8 +136,6 @@ export default function HiringFlowStack() {
 }
 ```
 
-The cascade is a container query, not a breakpoint: under 768px of width the cards become a sticky stack instead — each one sticks near the top and the next slides over it, its header left peeking. Drag the preview narrower to see it. Under `prefers-reduced-motion` the cascade simply shows, without the deal.
-
 ## Simple stack
 
 ## Installation
@@ -471,6 +469,27 @@ export default function ServicesSection() {
 ```
 
 ### More examples
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/sticky-scroll-stack.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/sticky-scroll-stack
+```
+
+Or the Motion build (same props, same file — install one):
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/sticky-scroll-stack-motion.json
+```
 
 ### Stack geometry
 
@@ -831,6 +850,21 @@ export default function ProcessRail() {
 ```
 
 ### More examples
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/horizontal-scroll-stack.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/horizontal-scroll-stack
+```
 
 ### Shorter Rail
 

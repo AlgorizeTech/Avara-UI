@@ -61,6 +61,21 @@ All 4 options as live previews: https://avaraui.com/view/image-viewer
    - Set these props: `{"variant":"thumbnails"}`
    - Docs: https://avaraui.com/docs/nextjs/image-viewer#interactive-thumbnail-strip-gallery-viewer
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/image-viewer.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/image-viewer
+```
+
 ## Inner Lens Magnifier Zoom Viewer
 
 - Use `variant="inner-zoom"` magnifies the product image directly within the hero frame upon cursor hover (260% optical scale).
@@ -165,21 +180,6 @@ export default function ThumbnailViewerDemo() {
     />
   );
 }
-```
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/image-viewer.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/image-viewer
 ```
 
 ## Features

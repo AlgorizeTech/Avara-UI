@@ -163,6 +163,10 @@ export const NO_CHOICE_NEEDED: string[] = [
   // Two items on the page, but they do different jobs (render vs scan), not
   // alternative designs of one section (audited 2026-11-09).
   "qr-code-generator",
+  // The soft-table preview installs `table`; the searchable data table installs
+  // `advanced-table`. One is the primitives, the other a ready-made table, not
+  // two designs of one (audited 2026-11-26).
+  "data-table",
   // A components showcase and a decorative frosted-glass folder shape: two
   // different components, not two designs of one (audited 2026-11-09).
   "design-components-folder",

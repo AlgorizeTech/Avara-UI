@@ -57,6 +57,21 @@ All 4 options as live previews: https://avaraui.com/view/product-details
    - Set these props: `{"variant":"bento-editorial-showcase"}`
    - Docs: https://avaraui.com/docs/nextjs/product-details#bento-editorial-showcase-details
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/product-details.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/product-details
+```
+
 ## Color Swatch Synced Image Gallery Details
 
 - Use `variant="color-sync-gallery"` selecting a colorway swatch dynamically updates the main product image without sliders or thumbnails.
@@ -237,21 +252,6 @@ export default function BentoShowcaseDemo() {
     />
   );
 }
-```
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/product-details.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/product-details
 ```
 
 ## Features

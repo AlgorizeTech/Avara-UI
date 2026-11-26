@@ -203,8 +203,9 @@ export function FeedbackVideoModal({
 								setMuted(event.currentTarget.muted);
 								setVolume(event.currentTarget.volume);
 							}}
-							className="block h-auto max-h-[82vh] w-full cursor-pointer bg-black object-contain"
-						/>
+							className="block h-auto max-h-[82vh] w-full cursor-pointer bg-black object-contain">
+							<track kind="captions" src="/captions/silent-demo.vtt" srcLang="en" label="English" default />
+						</video>
 
 						{/* Big centre button, only while stopped. */}
 						{!playing && (

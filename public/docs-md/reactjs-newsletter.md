@@ -53,6 +53,27 @@ All 3 options as live previews: https://avaraui.com/view/newsletter
    - Set these props: `{"variant":"issues"}`
    - Docs: https://avaraui.com/docs/nextjs/newsletter#issues
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/newsletter.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/newsletter
+```
+
+Or the Motion build (same props, same file — install one):
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/newsletter-motion.json
+```
+
 ## Portraits
 
 Four faces around the form, drifting with the pointer. Type an address and press Subscribe — the pill becomes a thank-you with a check that draws itself.
@@ -94,6 +115,8 @@ export default function Signup() {
 }
 ```
 
+## Examples
+
 ## Installation
 
 Add the component by URL — no setup needed:
@@ -114,8 +137,6 @@ Or the Motion build (same props, same file — install one):
 ```bash
 npx shadcn@latest add https://avaraui.com/r/newsletter-motion.json
 ```
-
-## Examples
 
 ### Spotlight
 

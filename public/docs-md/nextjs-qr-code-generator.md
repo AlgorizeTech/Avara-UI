@@ -124,6 +124,21 @@ export default function GeneratorExample() {
 
 ### More examples
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/qr-code-generator.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/qr-code-generator
+```
+
 ### Sizes & levels
 
 - `size={128}` is the box in pixels; the output is SVG, so it stays crisp at any of them.

@@ -135,6 +135,21 @@ All 13 options as live previews: https://avaraui.com/view/auth-forms
 
 Email, password, remember-me and a forgot-password link. `signupHref` points at wherever the register form lives.
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/login-form.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/login-form
+```
+
 ### Login
 
 Email and password with a remember-me checkbox and a forgot-password link, all validated on submit.
@@ -174,6 +189,12 @@ export default function LoginPage() {
 
 ### Install the login form
 
+### More login examples
+
+Every example below is the same `LoginForm` you just installed — only the props change.
+
+## Installation
+
 Add the component by URL — no setup needed:
 
 ```bash
@@ -186,10 +207,6 @@ Or register the @avara-ui registry once per project and add it by name:
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/login-form
 ```
-
-### More login examples
-
-Every example below is the same `LoginForm` you just installed — only the props change.
 
 ### Login — split
 
@@ -367,6 +384,21 @@ export default function RibbonDriftLoginPage() {
 
 Paired name fields, email, password with confirmation, and a terms checkbox whose links you point at your own policies. `loginHref` closes the loop back to the login form.
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/register-form.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/register-form
+```
+
 ### Register
 
 Name fields, a confirm-password field and a terms checkbox, all validated on submit.
@@ -407,6 +439,12 @@ export default function RegisterPage() {
 
 ### Install the register form
 
+### More register examples
+
+Every example below is the same `RegisterForm` you just installed — only the props change.
+
+## Installation
+
 Add the component by URL — no setup needed:
 
 ```bash
@@ -419,10 +457,6 @@ Or register the @avara-ui registry once per project and add it by name:
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/register-form
 ```
-
-### More register examples
-
-Every example below is the same `RegisterForm` you just installed — only the props change.
 
 ### Register — scenic
 

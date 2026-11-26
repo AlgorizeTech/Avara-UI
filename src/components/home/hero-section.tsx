@@ -53,7 +53,7 @@ function ShadcnAvatar({ src, className }: { src: string; className?: string }) {
 
 /* The "Built with" label over the tool strip, in the section eyebrow's voice. */
 const STACK_LABEL = (
-	<span className="text-[11px] uppercase tracking-[0.12em] text-foreground/40">
+	<span className="text-[11px] uppercase tracking-[0.12em] text-foreground/60">
 		Built with
 	</span>
 );

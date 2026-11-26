@@ -174,6 +174,21 @@ export default function ReusableTimelineExample() {
 
 ## Single Orbit Variant
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/radial-orbital-timeline.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/radial-orbital-timeline
+```
+
 ### Single Orbit Timeline
 
 Pass `orbitCount={1}` to render a clean single circular orbit ring.

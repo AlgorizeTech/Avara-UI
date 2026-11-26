@@ -110,7 +110,8 @@ const WallCard = React.memo(function WallCard({
           alt=""
           width={FRAME_W}
           height={FRAME_H}
-          loading="lazy"
+          loading={isFocus && !copy ? "eager" : "lazy"}
+          fetchPriority={isFocus && !copy ? "high" : undefined}
           decoding="async"
           draggable={false}
           className="absolute inset-0 h-full w-full object-cover object-top select-none pointer-events-none"
@@ -702,7 +703,7 @@ export const HomepageHero = forwardRef<HTMLElement, HomepageHeroProps>(
             {primaryAction && (
               <LinkComp
                 href={primaryAction.href}
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-primary px-6 text-[15px] font-semibold text-primary-foreground outline-none transition-[transform,background-color] duration-200 hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.98]"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-[color-mix(in_oklab,var(--primary)_72%,black)] px-6 text-[15px] font-semibold text-primary-foreground outline-none transition-[transform,background-color] duration-200 hover:bg-[color-mix(in_oklab,var(--primary)_62%,black)] focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.98]"
               >
                 {primaryAction.icon}
                 {primaryAction.label}

@@ -60,6 +60,21 @@ All 4 options as live previews: https://avaraui.com/view/cta-section
    - Set these props: `{"variant":"brand-pillars"}`
    - Docs: https://avaraui.com/docs/nextjs/cta-section#brand-pillars-variant-brand-pillars
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/cta-section.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/cta-section
+```
+
 ## Offer Showcase — variant="offer-showcase"
 
 A promotional offer card flanked by moving reels of photos, with the price counting up.
@@ -105,6 +120,8 @@ export default function OfferShowcaseExample() {
 }
 ```
 
+## Examples
+
 ## Installation
 
 Add the component by URL — no setup needed:
@@ -119,8 +136,6 @@ Or register the @avara-ui registry once per project and add it by name:
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/cta-section
 ```
-
-## Examples
 
 ### Concentric Portal — variant="concentric-portal"
 

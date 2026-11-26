@@ -8,14 +8,14 @@
 
 export const SECTION_INNER = "max-w-[1160px] mx-auto px-5 md:px-10";
 export const SECTION_EYEBROW =
-	"inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground/30 mb-3";
+	"inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground/60 mb-3";
 export const SECTION_H2 =
 	"font-serif font-normal text-[clamp(26px,3.6vw,46px)] leading-[1.15] tracking-[-0.02em] text-foreground mb-3";
 export const SECTION_SUB =
-	"text-[15px] leading-[1.65] text-foreground/45 max-w-[490px]";
+	"text-[15px] leading-[1.65] text-foreground/60 max-w-[490px]";
 export const CARD_TITLE =
 	" text-[16px] lg:text-[18px] font-semibold text-foreground mb-[7px]";
-export const CARD_COPY = "text-[13px] leading-[1.65] text-foreground/45";
+export const CARD_COPY = "text-[13px] leading-[1.65] text-foreground/60";
 export const CARD_SURFACE = "border border-foreground/[0.06] bg-card";
 export const EYEBROW_PILL =
 	"inline-flex items-center gap-1.5 rounded-full bg-foreground/[0.04] backdrop-blur px-3 py-1 text-[12px] text-foreground/90";

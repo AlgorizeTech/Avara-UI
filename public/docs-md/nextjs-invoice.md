@@ -84,6 +84,21 @@ export default function InvoicePage() {
 
 ## Variations
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/invoice.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/invoice
+```
+
 ### Asymmetric Split
 
 High-impact editorial split layout with dark charcoal sidebar, themed logo block, angled header divider, and payment details.

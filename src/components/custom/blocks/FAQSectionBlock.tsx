@@ -259,7 +259,7 @@ export function AnimatedFAQBlock({
                           "text-[10px] font-medium uppercase tracking-wider",
                           isActive
                             ? "text-primary font-semibold"
-                            : "text-muted-foreground/70",
+                            : "text-muted-foreground",
                         )}
                       >
                         {item.category}
@@ -465,7 +465,7 @@ export function TwoColumnFAQSection({
                               "text-[10px] font-medium uppercase tracking-wider",
                               isActive
                                 ? "text-primary font-semibold"
-                                : "text-muted-foreground/70",
+                                : "text-muted-foreground",
                             )}
                           >
                             {item.category}

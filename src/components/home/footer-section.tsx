@@ -94,7 +94,7 @@ export function FooterSection() {
 					{/* Wordmark */}
 				<div
 					aria-hidden
-					className="mt-10 select-none whitespace-nowrap font-serif font-bold text-[clamp(44px,13vw,160px)] leading-none tracking-[-0.04em] text-foreground/25">
+					className="mt-10 select-none whitespace-nowrap font-serif font-bold text-[clamp(44px,13vw,160px)] leading-none tracking-[-0.04em] text-foreground/50">
 					Avara <span className="text-brand opacity-80">UI</span>
 				</div>
 

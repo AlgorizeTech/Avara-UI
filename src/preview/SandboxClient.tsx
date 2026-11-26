@@ -192,6 +192,8 @@ export function SandboxClient({ name }: { name: string }) {
   // badge) has its own size, and keeps its border.
   useEffect(() => {
     if (
+      name === "carousel" ||
+      name === "curved-carousel" ||
       name === "designs-toolkit" ||
       name === "falling-tags" ||
       name === "navbar" ||
