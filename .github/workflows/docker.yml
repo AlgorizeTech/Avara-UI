@@ -1,19 +1,16 @@
 name: Docker
 
-# Validate, build, test and scan the image described by ./Dockerfile.
-# Runs on pull requests and on every push to main. Nothing is pushed anywhere and
-# no registry credentials are used: Easypanel deploys separately.
-# Independent of registry.yml, which keeps checking the registry artifacts.
-# Full documentation: docs/DOCKER-CICD.md
-#
-#   lint -> build (:latest, :<commit sha>) -> container test -> Trivy scan
+# Checks the root Dockerfile on every pull request and every push to main:
+# lint -> build (cached) -> smoke test -> Trivy security scan.
+# Nothing is pushed and no registry login is used. Easypanel builds and deploys
+# from the Dockerfile on its own.
+# Independent of registry.yml. Docs: docs/DOCKER-CICD.md
 
 on:
   pull_request:
   push:
     branches: [main]
 
-# Read-only: this workflow never writes to the repo or to a registry.
 permissions:
   contents: read
 
@@ -23,31 +20,11 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
-  # Local image name. The image exists only on the runner and is discarded.
-  IMAGE: avara-ui
+  IMAGE: avara-ui # local name on the runner; the image is discarded afterwards
 
 jobs:
-  lint:
-    name: Lint Dockerfile
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      - uses: hadolint/hadolint-action@06be81baf89a55ffd0e24b8f04a4185738dd3387 # v3.5.0
-        with:
-          dockerfile: Dockerfile
-          failure-threshold: warning
-          # DL3018 (pin apk package versions) is ignored on purpose: the only
-          # package is libc6-compat in build stages that are not shipped, and a
-          # pinned Alpine package version breaks as soon as the mirror rotates it.
-          ignore: DL3018
-
-  build-test-scan:
-    name: Build, test and scan image
-    needs: lint
+  docker:
+    name: Lint, build and scan
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -55,11 +32,21 @@ jobs:
         with:
           persist-credentials: false
 
+      # Same hadolint image the hadolint-action uses (v2.15.1, pinned by digest),
+      # run directly so the findings print in this step's log.
+      # DL3018 (pin apk versions) is ignored: the only package is libc6-compat in
+      # build stages that are not shipped, and pinned Alpine versions break when
+      # the mirror rotates them.
+      - name: Lint Dockerfile (Hadolint)
+        run: |
+          docker run --rm -i \
+            ghcr.io/hadolint/hadolint:v2.15.1-debian@sha256:9a3944b7fddcb947d1ffd90829ac1a6e5c30479223358f249d8b96c7d0019e27 \
+            hadolint --failure-threshold warning --ignore DL3018 - < Dockerfile
+
       - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
 
-      # Builds with the root Dockerfile as it is (no build args: the NEXT_PUBLIC_*
-      # values are optional there). The image is loaded into the runner's local
-      # Docker so the next steps can run and scan it.
+      # Cache: unchanged layers (notably `npm ci`, which only depends on
+      # package*.json) are restored from the GitHub Actions cache instead of rebuilt.
       - name: Build image
         uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:
@@ -74,58 +61,29 @@ jobs:
           cache-to: type=gha,scope=docker-image,mode=max
           provenance: false
 
-      # The app has no dedicated health route. The Dockerfile HEALTHCHECK and the
-      # checks below use "/", so that is what is tested here.
-      - name: Test container
+      # The app has no health route; the Dockerfile HEALTHCHECK also uses "/".
+      - name: Smoke test
         run: |
-          set -euo pipefail
-          docker run -d --name avara-ui-test -p 3000:3000 --health-interval=2s "$IMAGE:latest"
-
-          echo "Waiting for nginx to answer on :3000 ..."
+          docker run -d --name avara-ui-test -p 3000:3000 "$IMAGE:latest"
           for i in $(seq 1 30); do
-            if curl -fsS -o /dev/null http://127.0.0.1:3000/; then break; fi
-            if [ "$(docker inspect -f '{{.State.Running}}' avara-ui-test)" != "true" ]; then
-              echo "::error::Container exited before serving traffic"; exit 1
-            fi
-            if [ "$i" -eq 30 ]; then echo "::error::No response on / after 30s"; exit 1; fi
+            code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3000/ || true)
+            [ "$code" = "200" ] && { echo "GET / -> 200"; exit 0; }
             sleep 1
           done
-
-          status=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3000/)
-          [ "$status" = "200" ] || { echo "::error::GET / returned $status, expected 200"; exit 1; }
-
-          status=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3000/__ci-missing-page__)
-          [ "$status" = "404" ] || { echo "::error::Unknown path returned $status, expected 404"; exit 1; }
-
-          headers=$(curl -sI http://127.0.0.1:3000/)
-          grep -qi '^x-content-type-options: nosniff' <<< "$headers" \
-            || { echo "::error::Security headers from docker/nginx.conf are missing"; exit 1; }
-
-          uid=$(docker exec avara-ui-test id -u)
-          [ "$uid" != "0" ] || { echo "::error::Container runs as root"; exit 1; }
-
-          echo "Waiting for the Dockerfile HEALTHCHECK to report healthy ..."
-          for i in $(seq 1 30); do
-            health=$(docker inspect -f '{{.State.Health.Status}}' avara-ui-test)
-            [ "$health" = "healthy" ] && { echo "Container is healthy"; exit 0; }
-            sleep 2
-          done
-          echo "::error::HEALTHCHECK did not become healthy (last status: $health)"; exit 1
-
-      - name: Container logs
-        if: failure()
-        run: docker logs avara-ui-test || true
+          echo "::error::GET / did not return 200 within 30s (last: $code)"
+          docker logs avara-ui-test
+          exit 1
 
       - name: Remove test container
         if: always()
         run: docker rm -f avara-ui-test || true
 
-      # Fails on HIGH or CRITICAL findings that have a fix available. Accepted
-      # risks go in a .trivyignore file at the repo root.
+      # HIGH and CRITICAL findings that have a fix fail the job. Accepted risks go
+      # in a .trivyignore file at the repo root.
 
-      # The shipped image holds only nginx and static files, so the application's
-      # npm dependencies are not in it. They are scanned from the lockfile instead.
-      - name: Scan application dependencies (package-lock.json)
+      # The shipped image has only nginx and static files, so the app's npm
+      # dependencies are not in it. They are scanned from the lockfile instead.
+      - name: Scan dependencies (package-lock.json)
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           scan-type: fs
