@@ -473,7 +473,7 @@ function VeloceHeroPreview({
           }
           className="hidden @md:flex items-center gap-6 h-8 text-[12px] leading-none"
         >
-          {["Home", "About", "Service", "Blog", "Contact"].map((item, i) => (
+          {["Home", "Platform", "Solutions", "Insights", "Contact"].map((item, i) => (
             <span
               key={item}
               className={cn(
@@ -564,7 +564,7 @@ function VeloceHeroPreview({
                 </div>
 
                 <nav className="mt-4 flex flex-col gap-1">
-                  {["Home", "About", "Service", "Blog", "Contact"].map((item, i) => (
+                  {["Home", "Platform", "Solutions", "Insights", "Contact"].map((item, i) => (
                     <button
                       key={item}
                       type="button"
@@ -601,10 +601,10 @@ function VeloceHeroPreview({
                 >
                   <span className="relative h-4 overflow-hidden flex flex-col">
                     <span className="transition-transform duration-300 group-hover:-translate-y-full">
-                      Get Started
+                      Start Free
                     </span>
                     <span className="transition-transform duration-300 group-hover:-translate-y-full">
-                      Get Started
+                      Start Free
                     </span>
                   </span>
                   <span
@@ -638,7 +638,7 @@ function VeloceHeroPreview({
               }
               className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1"
             >
-              <span>ONE</span>
+              <span>NEW</span>
               <span className="inline-flex items-center -space-x-1.5 align-middle mx-0.5">
                 <span
                   className={cn(
@@ -692,7 +692,7 @@ function VeloceHeroPreview({
                   />
                 </span>
               </span>
-              <span>CLICK</span>
+              <span>PACE</span>
             </motion.span>
 
             <motion.span
@@ -705,7 +705,7 @@ function VeloceHeroPreview({
               }
               className="w-full"
             >
-              MAXIMIZING IMPACT
+              SCALING FASTER
             </motion.span>
           </h3>
 
@@ -722,8 +722,8 @@ function VeloceHeroPreview({
               isDark ? "text-zinc-500" : "text-[#ACACAC]",
             )}
           >
-            Unlock a world of possibilities for your brand. Our streamlined approach ensures that
-            you can maximize your online presence, engagement, and conversions effortlessly.
+            Accelerate every stage of your brand's growth. Our unified workspace helps you
+            elevate visibility, deepen engagement, and turn traffic into lasting revenue.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -737,7 +737,7 @@ function VeloceHeroPreview({
             }
             className="mt-9 flex flex-wrap items-center justify-center gap-2.5"
           >
-            {/* Get Started: Vertical text ticker + rounded arrow exit/enter swap */}
+            {/* Start Free: Vertical text ticker + rounded arrow exit/enter swap */}
             <button
               type="button"
               className={cn(
@@ -749,10 +749,10 @@ function VeloceHeroPreview({
             >
               <span className="relative h-[16px] overflow-hidden flex flex-col leading-[16px]">
                 <span className="transition-transform duration-300 ease-out group-hover:-translate-y-full">
-                  Get Started
+                  Start Free
                 </span>
                 <span className="transition-transform duration-300 ease-out group-hover:-translate-y-full">
-                  Get Started
+                  Start Free
                 </span>
               </span>
               <span
@@ -766,7 +766,7 @@ function VeloceHeroPreview({
               </span>
             </button>
 
-            {/* Learn More (Hero): #F45D5D coral-tinted idle pill; animated #F45D5D underline + circle scale & arrow spin-swap on hover */}
+            {/* Explore More (Hero): #F45D5D coral-tinted idle pill; animated #F45D5D underline + circle scale & arrow spin-swap on hover */}
             <button
               type="button"
               className={cn(
@@ -778,7 +778,7 @@ function VeloceHeroPreview({
             >
               <span className="relative z-10 inline-flex flex-col items-start">
                 <span className="transition-transform duration-300 group-hover:translate-x-0.5">
-                  Learn More
+                  Explore More
                 </span>
                 <span
                   aria-hidden
@@ -811,9 +811,9 @@ function VeloceHeroPreview({
           >
             <div>
               <h4 className="text-[13.5px] font-semibold leading-snug">
-                Mastering the Art
+                Scaling the Craft
                 <br />
-                of Digital Marketing
+                of Modern Growth
               </h4>
             </div>
 
@@ -936,10 +936,10 @@ function VeloceHeroPreview({
                   isDark ? "text-zinc-500" : "text-[#ACACAC]",
                 )}
               >
-                Program that goes beyond the basics, offering you a deep dive into the art and
-                science of digital marketing.
+                Playbooks built beyond surface-level tactics, giving your team a clear edge
+                in modern growth strategy.
               </p>
-              {/* Learn More (Bento): Segmented split-pill with right-to-left #f45d5d sweep, text roll, divider-to-dot morph & diagonal arrow launch */}
+              {/* Explore More (Bento): Segmented split-pill with right-to-left #f45d5d sweep, text roll, divider-to-dot morph & diagonal arrow launch */}
               <button
                 type="button"
                 className={cn(
@@ -955,10 +955,10 @@ function VeloceHeroPreview({
                 />
                 <span className="relative z-10 h-[16px] overflow-hidden flex flex-col leading-[16px]">
                   <span className="transition-transform duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-full">
-                    Learn More
+                    Explore More
                   </span>
                   <span className="transition-transform duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-full">
-                    Learn More
+                    Explore More
                   </span>
                 </span>
                 <span
@@ -1026,10 +1026,10 @@ function VeloceHeroPreview({
                 color={isDark ? "#d4d4d8" : "#52525b"}
                 prefersReducedMotion={prefersReducedMotion}
               />
-              <span>Let&apos;s Growth!</span>
+              <span>Scale Smarter!</span>
             </motion.div>
 
-            {/* Top-right Mini Chart Card: Segmentation */}
+            {/* Top-right Mini Chart Card: Audience Reach */}
             <motion.div
               initial={
                 prefersReducedMotion ? false : { opacity: 0, x: 16, y: -10 }
@@ -1061,7 +1061,7 @@ function VeloceHeroPreview({
                       isDark ? "text-zinc-100" : "text-zinc-900",
                     )}
                   >
-                    Segmentation
+                    Audience Reach
                   </span>
                   <div className="mt-1 flex items-center gap-1.5">
                     <span className="inline-flex items-center gap-1">
@@ -1185,7 +1185,7 @@ function VeloceHeroPreview({
               </div>
             </motion.div>
 
-            {/* Bottom-left Card: Google Ads */}
+            {/* Bottom-left Card: Ad Campaigns */}
             <motion.div
               initial={
                 prefersReducedMotion ? false : { opacity: 0, x: -14, y: 12 }
@@ -1245,11 +1245,11 @@ function VeloceHeroPreview({
                       prefersReducedMotion={prefersReducedMotion}
                     />
                   </span>
-                  Verified!
+                  Active!
                 </span>
               </div>
               <p className="mt-5 text-[15px] font-medium leading-tight tracking-tight">
-                Google Ads
+                Ad Campaigns
               </p>
               <p className="mt-1 text-[10px] leading-none">
                 <span
@@ -1258,15 +1258,15 @@ function VeloceHeroPreview({
                     isDark ? "text-white" : "text-zinc-900",
                   )}
                 >
-                  4,8
+                  4.9
                 </span>
                 <span className={isDark ? "text-zinc-500" : "text-[#ACACAC]"}>
-                  /5 Stars Reviews
+                  /5 Client Rating
                 </span>
               </p>
             </motion.div>
 
-            {/* Bottom-right Pill: 2,924 Views */}
+            {/* Bottom-right Pill: 4,820 Visits */}
             <motion.div
               initial={
                 prefersReducedMotion ? false : { opacity: 0, x: 14, y: 12 }
@@ -1293,7 +1293,7 @@ function VeloceHeroPreview({
                 />
               </span>
               <div>
-                <p className="text-[11px] font-medium leading-none">2,924 Views</p>
+                <p className="text-[11px] font-medium leading-none">4,820 Visits</p>
                 <div className="mt-1.5 flex items-center gap-1">
                   <div
                     className={cn(
@@ -1314,7 +1314,7 @@ function VeloceHeroPreview({
 
           {/* Right Column: 2 Stacked Cards */}
           <div className="flex flex-col gap-3.5">
-            {/* Top Card: Satisfied Customers */}
+            {/* Top Card: Happy Clients */}
             <motion.div
               initial={prefersReducedMotion ? false : { opacity: 0, x: 24 }}
               animate={{ opacity: 1, x: 0 }}
@@ -1325,7 +1325,7 @@ function VeloceHeroPreview({
               }
               className={cn("rounded-2xl p-5 flex-1 flex flex-col justify-between", cardSurface)}
             >
-              <h4 className="text-[13.5px] font-semibold">Satisfied Customers</h4>
+              <h4 className="text-[13.5px] font-semibold">Happy Clients</h4>
 
               <div className="my-3 flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2.5">
@@ -1448,12 +1448,12 @@ function VeloceHeroPreview({
                   isDark ? "text-zinc-500" : "text-[#ACACAC]",
                 )}
               >
-                Our tailored solutions have left a lasting impact on brands seeking to thrive in the
-                digital age.
+                Our focused growth systems have helped ambitious teams stand out and convert
+                in crowded markets.
               </p>
             </motion.div>
 
-            {/* Bottom Card: Potential in the B2B Startup Realm */}
+            {/* Bottom Card: Built for High-Growth Teams */}
             <motion.div
               initial={prefersReducedMotion ? false : { opacity: 0, x: 24 }}
               animate={{ opacity: 1, x: 0 }}
@@ -1466,7 +1466,7 @@ function VeloceHeroPreview({
             >
               <div>
                 <h4 className="text-[13.5px] font-semibold">
-                  Potential in the B2B Startup Realm
+                  Built for High-Growth Teams
                 </h4>
                 <p
                   className={cn(
@@ -1474,8 +1474,8 @@ function VeloceHeroPreview({
                     isDark ? "text-zinc-500" : "text-[#ACACAC]",
                   )}
                 >
-                  Commitment to excellence, agility, and forward-thinking positions us as the
-                  catalyst for your business growth
+                  Speed, clarity, and smart automation come together to power every launch
+                  your team ships
                 </p>
               </div>
 
@@ -1492,7 +1492,7 @@ function VeloceHeroPreview({
                   />
                   <div className="min-w-0">
                     <p className="text-[11px] font-semibold truncate">
-                      Contract with Startup
+                      Team Workspace
                     </p>
                     <p
                       className={cn(
@@ -1500,7 +1500,7 @@ function VeloceHeroPreview({
                         isDark ? "text-zinc-500" : "text-[#ACACAC]",
                       )}
                     >
-                      28 Startup Member
+                      32 Active Members
                     </p>
                   </div>
                 </div>
@@ -1558,7 +1558,7 @@ function VeloceHeroPreview({
           >
             Trusted by{" "}
             <span className="relative inline-block pb-1.5">
-              <span>Growing</span>
+              <span>Leading</span>
               <svg
                 viewBox="0 0 120 12"
                 fill="none"
@@ -1700,7 +1700,7 @@ function VeloceHeroPreview({
         </div>
       </section>
 
-      {/* 4. Content Creation and Marketing Section */}
+      {/* 4. Creative Strategy & Campaigns Section */}
       <section className="mx-auto max-w-[560px] @4xl:max-w-5xl pt-16 pb-10">
         <div
           ref={contentGridRef}
@@ -1712,7 +1712,7 @@ function VeloceHeroPreview({
               aria-hidden
               className="hidden @4xl:block pointer-events-none absolute inset-0 h-full w-full z-0 overflow-visible"
             >
-              {/* Top-left dashed arc: 80% card top-center -> Average Increase Sales left-center */}
+              {/* Top-left dashed arc: 80% card top-center -> Average Revenue Lift left-center */}
               <path
                 fill="none"
                 stroke="currentColor"
@@ -1732,7 +1732,7 @@ function VeloceHeroPreview({
                 className={isDark ? "fill-white" : "fill-zinc-900"}
               />
 
-              {/* Right dashed connector: Average Increase Sales bottom-center -> Active Checklist Item */}
+              {/* Right dashed connector: Average Revenue Lift bottom-center -> Active Checklist Item */}
               <motion.path
                 fill="none"
                 stroke="currentColor"
@@ -1872,7 +1872,7 @@ function VeloceHeroPreview({
                 </div>
 
                 <p className="mt-2.5 text-lg font-bold tracking-tight leading-none">
-                  17K+
+                  24K+
                 </p>
                 <p
                   className={cn(
@@ -1880,11 +1880,11 @@ function VeloceHeroPreview({
                     isDark ? "text-zinc-500" : "text-[#ACACAC]",
                   )}
                 >
-                  1,000K+ Contributions in the last year!
+                  1,200K+ Interactions in the past year!
                 </p>
               </motion.div>
 
-              {/* Bottom-right Card: Advertising Platform */}
+              {/* Bottom-right Card: Channel Integrations */}
               <motion.div
                 initial={prefersReducedMotion ? false : { opacity: 0, x: 18, y: 12 }}
                 whileInView={{ opacity: 1, x: 0, y: 0 }}
@@ -1900,7 +1900,7 @@ function VeloceHeroPreview({
                 )}
               >
                 <p className="text-[9.5px] font-semibold text-center">
-                  Advertising Platform
+                  Channel Integrations
                 </p>
                 <div className="mt-2 flex items-center gap-1.5">
                   {[
@@ -1997,7 +1997,7 @@ function VeloceHeroPreview({
               </motion.div>
             </div>
 
-            {/* Top-right Card: Average Increase Sales */}
+            {/* Top-right Card: Average Revenue Lift */}
             <motion.div
               ref={salesCardRef}
               initial={prefersReducedMotion ? false : { opacity: 0, x: 18, y: -12 }}
@@ -2014,7 +2014,7 @@ function VeloceHeroPreview({
               )}
             >
               <p className="text-[9.5px] font-semibold text-center">
-                Average Increase Sales
+                Average Revenue Lift
               </p>
 
               <div className="mt-2.5 flex items-end gap-1.5 h-20">
@@ -2104,9 +2104,9 @@ function VeloceHeroPreview({
               }
             >
               <h3 className="text-2xl @sm:text-[34px] font-semibold tracking-tight leading-[1.16]">
-                Content Creation
+                Creative Strategy
                 <br />
-                and Marketing
+                & Campaigns
               </h3>
               <p
                 className={cn(
@@ -2114,17 +2114,17 @@ function VeloceHeroPreview({
                   isDark ? "text-zinc-500" : "text-[#ACACAC]",
                 )}
               >
-                Strategic thinkers collaborates to craft compelling narratives that not only
-                captivate your audience but also drive meaningful engagement.
+                Strategists and creators working together to build high-converting stories
+                that resonate with your audience and drive measurable growth.
               </p>
             </motion.div>
 
             <div className="mt-6 space-y-2.5">
               {[
-                "Crafting Compelling Narratives",
-                "Strategic Content Marketing",
-                "Building Authority and Trust",
-                "Measurable Results",
+                "High-Converting Brand Stories",
+                "Full-Funnel Campaign Strategy",
+                "Consistent Audience Trust",
+                "Real-Time Performance Tracking",
               ].map((item, idx) => {
                 const isSelected = selectedFeature === idx;
                 return (
@@ -2175,7 +2175,7 @@ function VeloceHeroPreview({
         </div>
       </section>
 
-      {/* 5. Business Planning and Development Section */}
+      {/* 5. Strategic Planning & Execution Section */}
       <section className="mx-auto max-w-[560px] @4xl:max-w-5xl pt-16 pb-12">
         <div className="grid grid-cols-1 @4xl:grid-cols-12 gap-10 @4xl:gap-8 items-center">
           {/* Left Column: Heading + Subtitle + 2x2 Feature Cards */}
@@ -2191,9 +2191,9 @@ function VeloceHeroPreview({
               }
             >
               <h3 className="text-2xl @sm:text-[34px] font-semibold tracking-tight leading-[1.16]">
-                Business Planning
+                Strategic Planning
                 <br />
-                and Development
+                & Execution
               </h3>
               <p
                 className={cn(
@@ -2201,33 +2201,33 @@ function VeloceHeroPreview({
                   isDark ? "text-zinc-500" : "text-[#ACACAC]",
                 )}
               >
-                At <span className="font-medium text-primary">Veloce</span>, we offer
-                comprehensive solutions designed to guide your business through every stage
-                of its journey.
+                At <span className="font-medium text-primary">Veloce</span>, we deliver
+                structured frameworks built to guide your product and revenue team
+                through every milestone.
               </p>
             </motion.div>
 
             <div className="mt-7 grid grid-cols-1 @sm:grid-cols-2 gap-3.5">
               {[
                 {
-                  title: "Roadmapping",
+                  title: "Growth Roadmaps",
                   description:
-                    "Our strategic roadmaps provide a roadmap for success, outlining the steps needed to reach your objectives.",
+                    "Clear quarterly milestones that align your team and map out the exact steps to hit every target.",
                 },
                 {
-                  title: "Financial Modeling",
+                  title: "Revenue Forecasting",
                   description:
-                    "Forecasts to evaluating investment opportunities, we provide insights that empower informed decision-making.",
+                    "From runway models to expansion scenarios, get the financial clarity needed for confident decisions.",
                 },
                 {
-                  title: "Diversification",
+                  title: "Market Expansion",
                   description:
-                    "Our team explores opportunities for market expansion and diversification, helping you reach new audiences.",
+                    "Identify untapped segments and launch targeted plays that bring high-intent buyers to your brand.",
                 },
                 {
-                  title: "Operational Efficiency",
+                  title: "Workflow Automation",
                   description:
-                    "We assess your current processes and identify areas for improvement to enhance efficiency and reduce costs.",
+                    "Streamline repetitive handoffs and eliminate bottlenecks so your team ships faster with lower overhead.",
                 },
               ].map((card, idx) => {
                 const isCardHovered = hoveredPlanningCard === idx;
@@ -2496,7 +2496,7 @@ function VeloceHeroPreview({
               </motion.div>
             </div>
 
-            {/* Top-Right Floating Card: Verified! */}
+            {/* Top-Right Floating Card: Active! */}
             <motion.div
               ref={verifiedCardRef}
               initial={prefersReducedMotion ? false : { opacity: 0, y: -10 }}
@@ -2523,7 +2523,7 @@ function VeloceHeroPreview({
                 />
               </div>
               <p className="mt-2.5 text-[11.5px] @sm:text-[12px] font-semibold leading-tight">
-                Verified!
+                Active!
               </p>
               <p
                 className={cn(
@@ -2531,11 +2531,11 @@ function VeloceHeroPreview({
                   isDark ? "text-zinc-500" : "text-[#ACACAC]",
                 )}
               >
-                <span className="font-semibold text-[#1ed700]">100%</span> Client Satisfied
+                <span className="font-semibold text-[#1ed700]">100%</span> Team Satisfaction
               </p>
             </motion.div>
 
-            {/* Bottom Floating Card: B2B Income 2023 Area Chart */}
+            {/* Bottom Floating Card: Annual Revenue 2025 Area Chart */}
             <motion.div
               ref={incomeCardRef}
               initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
@@ -2572,7 +2572,7 @@ function VeloceHeroPreview({
                   </span>
                   <div className="min-w-0">
                     <span className="block text-[10.5px] @sm:text-[11.5px] font-semibold tracking-tight leading-tight">
-                      B2B Income 2023
+                      Annual Revenue 2025
                     </span>
                     <div className="mt-1 flex items-center gap-1.5">
                       <span className="inline-flex items-center gap-1">
@@ -2638,7 +2638,7 @@ function VeloceHeroPreview({
                   viewBox="0 0 320 90"
                   preserveAspectRatio="none"
                   className="h-full w-full overflow-visible"
-                  aria-label="B2B Income 2023 chart"
+                  aria-label="Annual Revenue 2025 chart"
                 >
                   <defs>
                     <linearGradient id="veloce-b2b-area" x1="0" y1="0" x2="0" y2="1">
@@ -2731,7 +2731,7 @@ function VeloceHeroPreview({
         </div>
       </section>
 
-      {/* 6. Crafting Solutions Tailored to You Section */}
+      {/* 6. Modular Systems Built for Scale Section */}
       <section className="mx-auto max-w-[560px] @4xl:max-w-5xl pt-16 pb-14">
         {/* Centered Header */}
         <motion.div
@@ -2746,9 +2746,9 @@ function VeloceHeroPreview({
           className="text-center"
         >
           <h3 className="text-2xl @sm:text-[34px] font-semibold tracking-tight leading-[1.16]">
-            Crafting Solutions
+            Modular Systems
             <br />
-            Tailored to You
+            Built for Scale
           </h3>
           <p
             className={cn(
@@ -2756,9 +2756,9 @@ function VeloceHeroPreview({
               isDark ? "text-zinc-500" : "text-[#ACACAC]",
             )}
           >
-            At <span className="font-medium text-primary">Veloce</span>, we take pride
-            in offering a diverse range of solutions meticulously crafted to meet your
-            unique needs.
+            At <span className="font-medium text-primary">Veloce</span>, we craft
+            flexible workflows tailored to how modern product and growth teams
+            actually operate.
           </p>
         </motion.div>
 
@@ -2766,7 +2766,7 @@ function VeloceHeroPreview({
         <div className="mt-10 grid grid-cols-1 @4xl:grid-cols-2 gap-4 @sm:gap-5 items-stretch">
           {/* LEFT COLUMN */}
           <div className="flex flex-col gap-4 @sm:gap-5">
-            {/* Card 1: Subscription */}
+            {/* Card 1: Flexible Plans */}
             <motion.div
               initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -2790,7 +2790,7 @@ function VeloceHeroPreview({
               />
 
               <h4 className="mt-4 text-[17px] @sm:text-[19px] font-semibold tracking-tight">
-                Subscription
+                Flexible Plans
               </h4>
               <p
                 className={cn(
@@ -2798,32 +2798,31 @@ function VeloceHeroPreview({
                   isDark ? "text-zinc-500" : "text-[#ACACAC]",
                 )}
               >
-                Time is valuable, and your needs are unique. That&apos;s why we&apos;ve
-                curated a subscription offering designed to enhance your experience and
-                simplify your life.
+                Every team moves at a different pace. Choose modular plans designed to
+                adapt cleanly as your goals evolve.
               </p>
 
               {/* 4 Stacked Pill Rows */}
               <div className="mt-5 space-y-2.5">
                 {[
                   {
-                    title: "Tailored Convenience",
-                    subtitle: "Customize your subscription",
+                    title: "Custom Workflows",
+                    subtitle: "Tailor modules to your team",
                     bar: "bg-primary",
                   },
                   {
-                    title: "Cost Savings and Value",
-                    subtitle: "Savings and added value with our subscription plans",
+                    title: "Predictable Pricing",
+                    subtitle: "Transparent value with zero hidden fees",
                     bar: "bg-amber-400",
                   },
                   {
-                    title: "Priority Access",
-                    subtitle: "Subscribers are our priority, gain early access",
+                    title: "Early Feature Access",
+                    subtitle: "Test new releases before public rollout",
                     bar: "bg-emerald-500",
                   },
                   {
-                    title: "Seamless Experience",
-                    subtitle: "Benefits without the administrative burdens.",
+                    title: "Zero Admin Friction",
+                    subtitle: "Manage seats and billing in one click",
                     bar: "bg-blue-500",
                   },
                 ].map((item, idx) => (
@@ -2875,7 +2874,7 @@ function VeloceHeroPreview({
               </div>
             </motion.div>
 
-            {/* Card 3: Tracking & Record */}
+            {/* Card 3: Live Analytics */}
             <motion.div
               initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -2900,7 +2899,7 @@ function VeloceHeroPreview({
                 />
 
                 <h4 className="mt-4 text-[17px] @sm:text-[19px] font-semibold tracking-tight">
-                  Tracking & Record
+                  Live Analytics
                 </h4>
                 <p
                   className={cn(
@@ -2908,9 +2907,9 @@ function VeloceHeroPreview({
                     isDark ? "text-zinc-500" : "text-[#ACACAC]",
                   )}
                 >
-                  pivotal role that precision in tracking and record management plays in
-                  enhancing operational efficiency, ensuring compliance, and driving
-                  informed decision-making.
+                  Real-time event tracking and clean audit trails give your team full
+                  visibility, faster reporting, and sharper decisions across every
+                  channel.
                 </p>
               </div>
 
@@ -2974,7 +2973,7 @@ function VeloceHeroPreview({
                   </div>
                 </div>
 
-                {/* 2. Center-left tilted Segmentation Card */}
+                {/* 2. Center-left tilted Audience Reach Card */}
                 <div
                   className={cn(
                     "z-10 translate-y-1 w-32 @sm:w-36 shrink-0 rotate-3 rounded-2xl p-3 pb-4",
@@ -2985,7 +2984,7 @@ function VeloceHeroPreview({
                     <span className="mt-0.5 size-2.5 shrink-0 rounded-full bg-primary" />
                     <div>
                       <span className="block text-[9px] font-semibold leading-tight tracking-tight">
-                        Segmentation
+                        Audience Reach
                       </span>
                       <div className="mt-1 flex items-center gap-1.5">
                         <span className="inline-flex items-center gap-0.5">
@@ -3073,7 +3072,7 @@ function VeloceHeroPreview({
                   </div>
                 </div>
 
-                {/* 3. Center-right Google Ads Card */}
+                {/* 3. Center-right Ad Campaigns Card */}
                 <div
                   className={cn(
                     "translate-y-4 w-28 @sm:w-32 shrink-0 rounded-2xl p-2.5 pb-6",
@@ -3117,11 +3116,11 @@ function VeloceHeroPreview({
                       <span className="flex size-2.5 items-center justify-center rounded-full bg-green-500 text-white">
                         <Check className="size-1.5 stroke-[3]" />
                       </span>
-                      Verified!
+                      Active!
                     </span>
                   </div>
                   <p className="mt-4 text-[12px] @sm:text-[13px] font-medium tracking-tight truncate">
-                    Google Ads
+                    Ad Campaigns
                   </p>
                 </div>
 
@@ -3191,7 +3190,7 @@ function VeloceHeroPreview({
 
           {/* RIGHT COLUMN */}
           <div className="flex flex-col gap-4 @sm:gap-5">
-            {/* Card 2: Advertising */}
+            {/* Card 2: Smart Outreach */}
             <motion.div
               initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -3215,7 +3214,7 @@ function VeloceHeroPreview({
               />
 
               <h4 className="mt-4 text-[17px] @sm:text-[19px] font-semibold tracking-tight">
-                Advertising
+                Smart Outreach
               </h4>
               <p
                 className={cn(
@@ -3223,11 +3222,9 @@ function VeloceHeroPreview({
                   isDark ? "text-zinc-500" : "text-[#ACACAC]",
                 )}
               >
-                captivates and resonates with your audience through our cutting-edge
-                advertising solutions at{" "}
-                <span className="font-medium text-primary">Veloce</span>. In a world
-                flooded with information, it&apos;s not just about being seen; it&apos;s
-                about being remembered.
+                Capture attention and stay top-of-mind with precision campaigns powered by{" "}
+                <span className="font-medium text-primary">Veloce</span>. Standing out
+                isn&apos;t just about impressions—it&apos;s about lasting recall.
               </p>
 
               {/* 5 Square Icon Tiles */}
@@ -3305,7 +3302,7 @@ function VeloceHeroPreview({
               </div>
             </motion.div>
 
-            {/* Card 4: Efficient Management */}
+            {/* Card 4: Team Operations */}
             <motion.div
               initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -3330,7 +3327,7 @@ function VeloceHeroPreview({
                 />
 
                 <h4 className="mt-4 text-[17px] @sm:text-[19px] font-semibold tracking-tight">
-                  Efficient Management
+                  Team Operations
                 </h4>
                 <p
                   className={cn(
@@ -3338,8 +3335,8 @@ function VeloceHeroPreview({
                     isDark ? "text-zinc-500" : "text-[#ACACAC]",
                   )}
                 >
-                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-                  accusantium doloremque laudantium.
+                  Keep projects, owners, and deadlines aligned in one shared workspace
+                  built for calm, focused execution.
                 </p>
               </div>
 
@@ -3366,7 +3363,7 @@ function VeloceHeroPreview({
                         />
                       </span>
                       <span className="text-[11.5px] @sm:text-[12px] font-semibold tracking-tight">
-                        Planning & Goals
+                        Milestones & OKRs
                       </span>
                     </div>
                     <p
@@ -3375,8 +3372,8 @@ function VeloceHeroPreview({
                         isDark ? "text-zinc-500" : "text-[#ACACAC]",
                       )}
                     >
-                      pivotal role that meticulous planning and well-defined goals
-                      steering organizations toward sustainable success.
+                      Align every sprint with measurable outcomes that keep your entire
+                      organization moving forward.
                     </p>
                   </div>
 
@@ -3394,7 +3391,7 @@ function VeloceHeroPreview({
                         />
                       </span>
                       <span className="text-[11.5px] @sm:text-[12px] font-semibold tracking-tight">
-                        Resource Allocation and Optimization
+                        Smart Resource Allocation
                       </span>
                     </div>
                     <p
@@ -3403,15 +3400,15 @@ function VeloceHeroPreview({
                         isDark ? "text-zinc-500" : "text-[#ACACAC]",
                       )}
                     >
-                      including personnel, time, and finances, achieve organizational
-                      goals.
+                      Balance team capacity, budgets, and timelines to deliver key
+                      initiatives on schedule.
                     </p>
                   </div>
 
                   {/* Item 3 (faded) */}
                   <div className="pt-3.5 opacity-60">
                     <p className="pl-7 text-[10.5px] font-semibold tracking-tight">
-                      Leadership and Empowerment
+                      Async Team Alignment
                     </p>
                     <p
                       className={cn(
@@ -3419,7 +3416,7 @@ function VeloceHeroPreview({
                         isDark ? "text-zinc-500" : "text-zinc-400",
                       )}
                     >
-                      nization culture by promoting open communication.
+                      Keep everyone informed with clear updates and shared context.
                     </p>
                   </div>
                 </div>
@@ -3496,10 +3493,10 @@ function VeloceHeroPreview({
                               />
                               <div className="min-w-0">
                                 <p className="text-[7px] font-semibold truncate">
-                                  Tailored Convenience
+                                  Custom Workflows
                                 </p>
                                 <p className="text-[5.5px] text-zinc-400 truncate">
-                                  Customize your subscription
+                                  Tailor modules to your team
                                 </p>
                               </div>
                             </div>
@@ -3532,11 +3529,11 @@ function VeloceHeroPreview({
                       />
                     </span>
                     <span className="text-[8px] font-semibold tracking-tight">
-                      Create Planning & Goals!
+                      New Milestone & Goal!
                     </span>
                   </div>
                   <p className="mt-1 text-[5.5px] text-zinc-400 leading-snug">
-                    Share your plans and objectives in a clear and concise manner.
+                    Outline your target outcomes and key deliverables clearly.
                   </p>
                   <div
                     className={cn(
@@ -3546,7 +3543,7 @@ function VeloceHeroPreview({
                         : "border-zinc-200/80 bg-zinc-50/70",
                     )}
                   >
-                    Title here
+                    Project title
                   </div>
                   <p className="mt-1.5 text-[6px] font-medium">Description</p>
                   <div
@@ -3557,7 +3554,7 @@ function VeloceHeroPreview({
                         : "border-zinc-200/80 bg-zinc-50/70",
                     )}
                   >
-                    Write a description of your project...
+                    Describe your milestone goals...
                   </div>
                 </div>
 
@@ -3591,7 +3588,7 @@ function VeloceHeroPreview({
           className="text-center"
         >
           <h3 className="text-2xl @sm:text-[32px] font-semibold tracking-tight leading-[1.18]">
-            Achievements That Define Our Success!
+            Milestones That Define Our Journey!
           </h3>
           <p
             className={cn(
@@ -3599,8 +3596,8 @@ function VeloceHeroPreview({
               isDark ? "text-zinc-500" : "text-[#ACACAC]",
             )}
           >
-            Step into a world of accolades and achievements that underscore our
-            commitment to excellence at{" "}
+            Explore the industry recognitions and product milestones that reflect our
+            commitment to craft at{" "}
             <span className="font-medium text-primary">Veloce.</span>
           </p>
         </motion.div>
@@ -3609,33 +3606,33 @@ function VeloceHeroPreview({
           {[
             {
               year: "2019",
-              line1: "Excellence in",
-              line2: "Innovation Award",
+              line1: "Breakthrough",
+              line2: "Product Design",
             },
             {
               year: "2020",
-              line1: "Pinnacle of Performance",
-              line2: "Recognition",
+              line1: "Top SaaS",
+              line2: "Performance Award",
             },
             {
               year: "2021",
-              line1: "Visionary Leadership",
-              line2: "Accolade",
+              line1: "Best Growth",
+              line2: "Platform Honor",
             },
             {
               year: "2022",
-              line1: "Outstanding Customer",
-              line2: "Experience Distinction",
+              line1: "Customer Choice",
+              line2: "Excellence Award",
             },
             {
               year: "2023",
-              line1: "Masters of Team",
-              line2: "Collaboration Honor",
+              line1: "Team Workflow",
+              line2: "Innovation Prize",
             },
             {
               year: "2025",
-              line1: "Global Digital",
-              line2: "Excellence Award",
+              line1: "Global Cloud",
+              line2: "Leader Recognition",
             },
           ].map((award, idx) => (
             <motion.div
@@ -3717,7 +3714,7 @@ function VeloceHeroPreview({
         </div>
       </section>
 
-      {/* 8. Frequently Ask Questions Section + Bottom CTA */}
+      {/* 8. Frequently Asked Questions Section + Bottom CTA */}
       <section className="mx-auto max-w-[560px] @4xl:max-w-5xl pt-16 pb-14">
         <motion.div
           initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
@@ -3733,7 +3730,7 @@ function VeloceHeroPreview({
           <h3 className="text-2xl @sm:text-[34px] font-semibold tracking-tight leading-[1.16]">
             Frequently
             <br />
-            Ask Questions
+            Asked Questions
           </h3>
         </motion.div>
 
@@ -3748,27 +3745,26 @@ function VeloceHeroPreview({
         >
           {[
             {
-              question: "What Services Does Veloce Offer?",
+              question: "What Can We Build With Veloce?",
               answer: (
                 <>
-                  Veloce offers business planning, financial modeling, content
-                  creation, strategic marketing, and operational efficiency solutions
-                  tailored to help your business scale.
+                  Veloce brings campaign analytics, revenue forecasting, workflow
+                  automation, and team planning together in one unified platform.
                 </>
               ),
             },
             {
-              question: "How Can I Contact Customer Support?",
+              question: "How Do I Reach the Support Team?",
               answer: (
                 <>
-                  Our customer support team is available{" "}
+                  Our support specialists are online{" "}
                   <span
                     className={cn(
                       "font-medium",
                       isDark ? "text-zinc-200" : "text-zinc-800",
                     )}
                   >
-                    9AM-5PM GMT+7
+                    Mon-Fri, 9AM-6PM UTC
                   </span>
                   . You can reach us by{" "}
                   <span
@@ -3777,7 +3773,7 @@ function VeloceHeroPreview({
                       isDark ? "text-zinc-200" : "text-zinc-800",
                     )}
                   >
-                    support@veloce.com
+                    hello@veloce.com
                   </span>{" "}
                   . For urgent matters, we recommend to call{" "}
                   <span
@@ -3786,38 +3782,37 @@ function VeloceHeroPreview({
                       isDark ? "text-zinc-200" : "text-zinc-800",
                     )}
                   >
-                    +628529241XXXX
+                    +1 (415) 890-XXXX
                   </span>
                 </>
               ),
             },
             {
-              question: "What Sets Veloce Apart From Competitors?",
+              question: "Why Do Teams Choose Veloce?",
               answer: (
                 <>
-                  We combine data-driven strategy with hands-on creative execution,
-                  delivering measurable ROI and dedicated support at every stage of
-                  your growth.
+                  We pair fast, intuitive design with real-time data pipelines,
+                  helping teams launch quicker and measure impact without complex
+                  setup.
                 </>
               ),
             },
             {
               question:
-                "Are There Any Ongoing Support Options After Service Implementation?",
+                "Do You Offer Onboarding and Migration Help?",
               answer: (
                 <>
-                  Yes, we offer ongoing support to ensure the continued success of our
-                  services. Our team is dedicated to providing post-implementation
-                  support, addressing any questions or concerns you may have.
+                  Yes, every plan includes guided onboarding, template setup, and
+                  dedicated migration support to get your team running smoothly.
                 </>
               ),
             },
             {
-              question: "How Do I Get Started With Veloce's Services?",
+              question: "How Quickly Can Our Team Get Started?",
               answer: (
                 <>
-                  Simply reach out through our contact form or schedule a consultation
-                  with our team to discuss your goals and receive a tailored roadmap.
+                  You can spin up your workspace in under two minutes or book a quick
+                  walkthrough with our solutions team for custom setups.
                 </>
               ),
             },
@@ -4000,10 +3995,10 @@ function VeloceHeroPreview({
         >
           <div>
             <p className="text-[10px] @sm:text-[10.5px] font-medium text-primary">
-              Do You Have Any Question
+              Still Have Questions?
             </p>
             <h4 className="mt-0.5 text-lg @sm:text-[20px] font-semibold tracking-tight">
-              Let&apos;s Talk With Us!
+              Start Building Today!
             </h4>
           </div>
 
@@ -4027,7 +4022,7 @@ function VeloceHeroPreview({
 
             {/* Label shifts right cleanly to make room for left icon */}
             <span className="relative z-10 pr-2.5 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-3.5">
-              Login
+              Sign In
             </span>
 
             {/* Right exiting rounded-bg icon */}
@@ -4069,7 +4064,7 @@ function VeloceHeroPreview({
                   isDark ? "text-zinc-500" : "text-zinc-400",
                 )}
               >
-                Built for modern SaaS &amp; AI teams
+                Crafted for fast-moving product teams
               </p>
 
               <a
@@ -4077,7 +4072,7 @@ function VeloceHeroPreview({
                 onClick={(e) => e.preventDefault()}
                 className="mt-2 inline-block text-lg @sm:text-[21px] font-medium tracking-tight hover:opacity-80 transition-opacity"
               >
-                support@veloce.com
+                hello@veloce.com
               </a>
             </div>
 
@@ -4088,7 +4083,7 @@ function VeloceHeroPreview({
                   Pages
                 </h5>
                 <ul className="space-y-2">
-                  {["Home", "About", "Blog", "Contact"].map((item) => (
+                  {["Home", "Platform", "Insights", "Contact"].map((item) => (
                     <li key={item}>
                       <button
                         type="button"
@@ -4173,13 +4168,13 @@ function VeloceHeroPreview({
 
               <div>
                 <h5 className="text-[11px] @sm:text-[11.5px] font-semibold mb-3">
-                  Service
+                  Resources
                 </h5>
                 <ul className="space-y-2">
                   {[
-                    "Privacy & Policy",
-                    "Terms and Conditions",
-                    "FAQ's",
+                    "Privacy Policy",
+                    "Terms of Use",
+                    "FAQ",
                     "Help Center",
                   ].map((item) => (
                     <li key={item}>
@@ -4247,7 +4242,7 @@ function VeloceHeroPreview({
                   isDark ? "hover:text-zinc-300" : "hover:text-zinc-700",
                 )}
               >
-                Go to top
+                Back to top
               </button>
             </div>
           </div>
@@ -4332,33 +4327,33 @@ export function VeloceTemplateView() {
             id: "home",
             number: "04",
             path: "/#content-marketing",
-            title: "Content Marketing",
+            title: "Creative Strategy",
             description:
-              "Portrait showcase with animated donut, sales chart, ad platforms, and interactive checklist.",
+              "Portrait showcase with animated donut, revenue lift chart, channel integrations, and interactive checklist.",
           },
           {
             id: "home",
             number: "05",
             path: "/#business-planning",
-            title: "Business Planning",
+            title: "Strategic Planning",
             description:
-              "2x2 strategy cards paired with portrait, verified badge, and interactive B2B income area chart.",
+              "2x2 strategy cards paired with portrait, active badge, and interactive annual revenue area chart.",
           },
           {
             id: "home",
             number: "06",
             path: "/#solutions",
-            title: "Crafting Solutions",
+            title: "Modular Systems",
             description:
-              "Asymmetric 4-card bento showcase for Subscription, Advertising, Tracking & Record, and Efficient Management.",
+              "Asymmetric 4-card bento showcase for Flexible Plans, Smart Outreach, Live Analytics, and Team Operations.",
           },
           {
             id: "home",
             number: "07",
             path: "/#achievements",
-            title: "Achievements",
+            title: "Milestones",
             description:
-              "Six annual laurel wreath accolades from 2019 to 2025 in a responsive grid.",
+              "Six annual laurel wreath recognitions from 2019 to 2025 in a responsive grid.",
           },
           {
             id: "home",
@@ -4366,7 +4361,7 @@ export function VeloceTemplateView() {
             path: "/#faq",
             title: "FAQ & Contact CTA",
             description:
-              "Interactive multi-open FAQ accordion paired with a bottom Let's Talk With Us! banner.",
+              "Interactive multi-open FAQ accordion paired with a bottom Start Building Today! banner.",
           },
           {
             id: "home",
@@ -4374,7 +4369,7 @@ export function VeloceTemplateView() {
             path: "/#footer",
             title: "Footer",
             description:
-              "Veloce brand footer with contact email, 3-column link directory, and Go to top action.",
+              "Veloce brand footer with contact email, 3-column link directory, and Back to top action.",
           },
         ],
       }}
