@@ -261,7 +261,7 @@ const lavender: ThemePreset = {
       popover: "oklch(1 0 0)",
       "popover-foreground": "oklch(0.178 0 0)",
       primary: "oklch(0.698 0.162 288.379)", // #9b8afb
-      "primary-foreground": "oklch(0.178 0 0)",
+      "primary-foreground": "oklch(1 0 0)",
       secondary: "oklch(0.939 0.007 106.527)", // ink 4% on the page
       "secondary-foreground": "oklch(0.178 0 0)",
       muted: "oklch(0.939 0.007 106.527)",
@@ -282,7 +282,7 @@ const lavender: ThemePreset = {
       popover: "oklch(0.183 0.004 285.994)",
       "popover-foreground": "oklch(1 0 0)",
       primary: "oklch(0.698 0.162 288.379)", // #9b8afb
-      "primary-foreground": "oklch(0.178 0 0)",
+      "primary-foreground": "oklch(1 0 0)",
       secondary: "oklch(0.232 0.004 286.099)", // ink 8% on the page
       "secondary-foreground": "oklch(1 0 0)",
       muted: "oklch(0.232 0.004 286.099)",
