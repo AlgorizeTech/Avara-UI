@@ -1,95 +1,50 @@
-name: Docker
+name: Docker Security Scan
 
-# Checks the root Dockerfile on every pull request and every push to main:
-# lint -> build (cached) -> smoke test -> Trivy security scan.
-# Nothing is pushed and no registry login is used. Easypanel builds and deploys
-# from the Dockerfile on its own.
+# Trivy security scan only: no image build, no push, no registry login.
+# Easypanel builds and deploys from the Dockerfile on its own.
+# Runs only when something that decides what ships changes (the Dockerfile and the
+# npm dependencies), so ordinary component/page PRs do not use Actions minutes.
+# Because of that filter, do NOT make this check "required" in branch protection.
 # Independent of registry.yml. Docs: docs/DOCKER-CICD.md
 
 on:
   pull_request:
+    paths:
+      - Dockerfile
+      - package.json
+      - package-lock.json
+      - .github/workflows/docker.yml
   push:
     branches: [main]
+    paths:
+      - Dockerfile
+      - package.json
+      - package-lock.json
+      - .github/workflows/docker.yml
 
 permissions:
   contents: read
 
 # A newer push to the same PR makes the older run pointless.
 concurrency:
-  group: docker-${{ github.ref }}
+  group: docker-scan-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
-env:
-  IMAGE: avara-ui # local name on the runner; the image is discarded afterwards
-
 jobs:
-  docker:
-    name: Lint, build and scan
+  trivy:
+    name: Trivy scan
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      # Same hadolint image the hadolint-action uses (v2.15.1, pinned by digest),
-      # run directly so the findings print in this step's log.
-      # Ignored rules, each a deliberate choice in the Dockerfile:
-      #   DL3018  pin apk versions: the only package is libc6-compat in build
-      #           stages that are not shipped, and pinned Alpine versions break
-      #           when the mirror rotates them.
-      #   DL3064  "sensitive" ARG/ENV: these are NEXT_PUBLIC_* values (the name
-      #           NEXT_PUBLIC_GOOGLE_FONTS_API_KEY trips it). They are inlined into
-      #           the public JS bundle by design, and only exist in the builder
-      #           stage, not in the shipped image.
-      #   DL3025  JSON form for CMD: the HEALTHCHECK needs a shell for `|| exit 1`.
-      - name: Lint Dockerfile (Hadolint)
-        run: |
-          docker run --rm -i \
-            ghcr.io/hadolint/hadolint:v2.15.1-debian@sha256:9a3944b7fddcb947d1ffd90829ac1a6e5c30479223358f249d8b96c7d0019e27 \
-            hadolint --failure-threshold warning \
-              --ignore DL3018 --ignore DL3064 --ignore DL3025 - < Dockerfile
-
-      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
-
-      # Cache: unchanged layers (notably `npm ci`, which only depends on
-      # package*.json) are restored from the GitHub Actions cache instead of rebuilt.
-      - name: Build image
-        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
-        with:
-          context: .
-          file: Dockerfile
-          push: false
-          load: true
-          tags: |
-            ${{ env.IMAGE }}:latest
-            ${{ env.IMAGE }}:${{ github.sha }}
-          cache-from: type=gha,scope=docker-image
-          cache-to: type=gha,scope=docker-image,mode=max
-          provenance: false
-
-      # The app has no health route; the Dockerfile HEALTHCHECK also uses "/".
-      - name: Smoke test
-        run: |
-          docker run -d --name avara-ui-test -p 3000:3000 "$IMAGE:latest"
-          for i in $(seq 1 30); do
-            code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3000/ || true)
-            [ "$code" = "200" ] && { echo "GET / -> 200"; exit 0; }
-            sleep 1
-          done
-          echo "::error::GET / did not return 200 within 30s (last: $code)"
-          docker logs avara-ui-test
-          exit 1
-
-      - name: Remove test container
-        if: always()
-        run: docker rm -f avara-ui-test || true
-
       # HIGH and CRITICAL findings that have a fix fail the job. Accepted risks go
       # in a .trivyignore file at the repo root.
 
-      # The shipped image has only nginx and static files, so the app's npm
-      # dependencies are not in it. They are scanned from the lockfile instead.
+      # The app's npm dependencies (build-time only: the shipped image has no
+      # node_modules, but they decide what ends up in the static files).
       - name: Scan dependencies (package-lock.json)
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
@@ -101,11 +56,21 @@ jobs:
           ignore-unfixed: true
           exit-code: 1
 
-      - name: Scan image (OS packages and libraries)
+      # The shipped image is the last FROM in the Dockerfile plus static files, so
+      # its OS packages come entirely from that base image. Scanning it directly
+      # avoids a full build, and reading it from the Dockerfile keeps the two in sync.
+      - name: Find the shipped base image
+        id: base
+        run: |
+          ref=$(awk '/^FROM / {img=$2} END {print img}' Dockerfile)
+          echo "Shipped base image: $ref"
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
+
+      - name: Scan shipped base image (OS packages)
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           scan-type: image
-          image-ref: ${{ env.IMAGE }}:${{ github.sha }}
+          image-ref: ${{ steps.base.outputs.ref }}
           vuln-type: os,library
           scanners: vuln
           format: table
