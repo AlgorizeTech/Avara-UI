@@ -34,14 +34,21 @@ jobs:
 
       # Same hadolint image the hadolint-action uses (v2.15.1, pinned by digest),
       # run directly so the findings print in this step's log.
-      # DL3018 (pin apk versions) is ignored: the only package is libc6-compat in
-      # build stages that are not shipped, and pinned Alpine versions break when
-      # the mirror rotates them.
+      # Ignored rules, each a deliberate choice in the Dockerfile:
+      #   DL3018  pin apk versions: the only package is libc6-compat in build
+      #           stages that are not shipped, and pinned Alpine versions break
+      #           when the mirror rotates them.
+      #   DL3064  "sensitive" ARG/ENV: these are NEXT_PUBLIC_* values (the name
+      #           NEXT_PUBLIC_GOOGLE_FONTS_API_KEY trips it). They are inlined into
+      #           the public JS bundle by design, and only exist in the builder
+      #           stage, not in the shipped image.
+      #   DL3025  JSON form for CMD: the HEALTHCHECK needs a shell for `|| exit 1`.
       - name: Lint Dockerfile (Hadolint)
         run: |
           docker run --rm -i \
             ghcr.io/hadolint/hadolint:v2.15.1-debian@sha256:9a3944b7fddcb947d1ffd90829ac1a6e5c30479223358f249d8b96c7d0019e27 \
-            hadolint --failure-threshold warning --ignore DL3018 - < Dockerfile
+            hadolint --failure-threshold warning \
+              --ignore DL3018 --ignore DL3064 --ignore DL3025 - < Dockerfile
 
       - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
 
