@@ -108,16 +108,12 @@ const FacebookIcon = forwardRef<FacebookIconHandle, FacebookIconProps>(
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      fill="currentColor"
       animate={controls}
       initial="normal"
      >
       <m.path
-       d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+       d="M15.12 5.32H17V2.14A26.11 26.11 0 0 0 14.26 2c-2.72 0-4.58 1.66-4.58 4.7v2.62H6.61v3.56h3.07V22h3.68v-9.12h3.06l.46-3.56h-3.52V7.05c0-1.05.29-1.73 1.76-1.73Z"
        variants={iconVariants}
        style={{ transformBox: "view-box", originX: "12px", originY: "12px" }}
       />

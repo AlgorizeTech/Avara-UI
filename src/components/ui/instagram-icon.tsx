@@ -121,27 +121,28 @@ const InstagramIcon = forwardRef<InstagramIconHandle, InstagramIconProps>(
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="2.1"
       strokeLinecap="round"
       strokeLinejoin="round"
       animate={controls}
       initial="normal"
      >
-      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+      <rect width="19" height="19" x="2.5" y="2.5" rx="5.5" ry="5.5" />
       <m.circle
        cx="12"
        cy="12"
-       r="4"
+       r="4.2"
        variants={lensVariants}
        style={{ transformBox: "view-box", originX: "12px", originY: "12px" }}
       />
-      <m.line
-       x1="17.5"
-       x2="17.51"
-       y1="6.5"
-       y2="6.5"
+      <m.circle
+       cx="17.4"
+       cy="6.6"
+       r="1.25"
+       fill="currentColor"
+       stroke="none"
        variants={flashVariants}
-       style={{ transformBox: "view-box", originX: "17.5px", originY: "6.5px" }}
+       style={{ transformBox: "view-box", originX: "17.4px", originY: "6.6px" }}
       />
      </m.svg>
     </m.div>
