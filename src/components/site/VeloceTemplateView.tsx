@@ -10,7 +10,9 @@ import { CoinsIcon } from "@/components/ui/coins-icon";
 import { CompassIcon } from "@/components/ui/compass-icon";
 import { CopyCheckIcon } from "@/components/ui/copy-check-icon";
 import { GlobeIcon } from "@/components/ui/globe-icon";
+import { FacebookIcon } from "@/components/ui/facebook-icon";
 import { HeartIcon } from "@/components/ui/heart-icon";
+import { InstagramIcon } from "@/components/ui/instagram-icon";
 import { MailIcon } from "@/components/ui/mail-icon";
 import { MegaphoneIcon } from "@/components/ui/megaphone-icon";
 import { MousePointerClickIcon } from "@/components/ui/mouse-pointer-click-icon";
@@ -18,7 +20,9 @@ import { RadarIcon, type RadarIconHandle } from "@/components/ui/radar-icon";
 import { RadioIcon } from "@/components/ui/radio-icon";
 import { StarIcon } from "@/components/ui/star-icon";
 import { TargetIcon } from "@/components/ui/target-icon";
+import { TikTokIcon } from "@/components/ui/tiktok-icon";
 import { TrophyIcon } from "@/components/ui/trophy-icon";
+import { TwitterIcon } from "@/components/ui/twitter-icon";
 import { WalletIcon } from "@/components/ui/wallet-icon";
 import {
   ArrowRight,
@@ -1886,45 +1890,72 @@ function VeloceHeroPreview({
                   {[
                     {
                       name: "Facebook",
-                      cls: "bg-[#1877F2] text-white text-[12px] font-bold",
-                      content: "f",
+                      cls: "bg-[#1877F2] text-white",
+                      content: (
+                        <LoopingAnimatedIcon
+                          icon={FacebookIcon}
+                          size={14}
+                          duration={2.0}
+                          delay={0}
+                          color="#ffffff"
+                          prefersReducedMotion={prefersReducedMotion}
+                        />
+                      ),
                     },
                     {
                       name: "Instagram",
                       cls: "bg-gradient-to-tr from-[#F58529] via-[#DD2A7B] to-[#8134AF] text-white",
                       content: (
-                        <svg viewBox="0 0 24 24" className="size-3.5 stroke-current fill-none" strokeWidth="2" aria-hidden>
-                          <rect x="3" y="3" width="18" height="18" rx="5" />
-                          <circle cx="12" cy="12" r="4" />
-                          <circle cx="17.5" cy="6.5" r="1" className="fill-current stroke-none" />
-                        </svg>
+                        <LoopingAnimatedIcon
+                          icon={InstagramIcon}
+                          size={14}
+                          duration={2.0}
+                          delay={0.15}
+                          color="#ffffff"
+                          prefersReducedMotion={prefersReducedMotion}
+                        />
                       ),
                     },
                     {
                       name: "Twitter",
                       cls: "bg-[#1DA1F2] text-white",
                       content: (
-                        <svg viewBox="0 0 24 24" className="size-3.5 fill-current" aria-hidden>
-                          <path d="M22 5.9a8.2 8.2 0 0 1-2.36.65 4.12 4.12 0 0 0 1.8-2.27 8.2 8.2 0 0 1-2.6 1 4.1 4.1 0 0 0-7 3.74A11.64 11.64 0 0 1 3.4 4.7a4.1 4.1 0 0 0 1.27 5.47 4.07 4.07 0 0 1-1.86-.51v.05a4.1 4.1 0 0 0 3.29 4.02 4.1 4.1 0 0 1-1.85.07 4.1 4.1 0 0 0 3.83 2.85A8.23 8.23 0 0 1 2 18.4a11.62 11.62 0 0 0 6.29 1.84c7.55 0 11.68-6.25 11.68-11.67 0-.18 0-.35-.01-.53A8.34 8.34 0 0 0 22 5.9Z" />
-                        </svg>
+                        <LoopingAnimatedIcon
+                          icon={TwitterIcon}
+                          size={14}
+                          duration={2.0}
+                          delay={0.3}
+                          color="#ffffff"
+                          prefersReducedMotion={prefersReducedMotion}
+                        />
                       ),
                     },
                     {
                       name: "TikTok",
                       cls: "bg-zinc-950 text-white",
                       content: (
-                        <svg viewBox="0 0 24 24" className="size-3.5 fill-current" aria-hidden>
-                          <path d="M16.6 5.82s.51.5 0 0A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.33 2.76 5.7 5.69 5.7 3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3s-1.88.09-3.24-1.48Z" />
-                        </svg>
+                        <LoopingAnimatedIcon
+                          icon={TikTokIcon}
+                          size={14}
+                          duration={2.0}
+                          delay={0.45}
+                          color="#ffffff"
+                          prefersReducedMotion={prefersReducedMotion}
+                        />
                       ),
                     },
                     {
                       name: "Gmail",
                       cls: "bg-white text-[#EA4335] shadow-[0_1px_4px_rgba(0,0,0,0.08)]",
                       content: (
-                        <svg viewBox="0 0 24 24" className="size-3.5 fill-current" aria-hidden>
-                          <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z" />
-                        </svg>
+                        <LoopingAnimatedIcon
+                          icon={MailIcon}
+                          size={14}
+                          duration={2.0}
+                          delay={0.6}
+                          color="#EA4335"
+                          prefersReducedMotion={prefersReducedMotion}
+                        />
                       ),
                     },
                   ].map((platform) => (
