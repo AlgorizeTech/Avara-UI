@@ -29,7 +29,7 @@ export default function AIChatWorkspaceDemo({
   defaultPlan?: WorkspacePlan;
 }) {
   return (
-    <div className="w-full py-[12px]">
+    <div className="w-full">
       <AIChatWorkspace
         key={`${color}-${defaultEffort}-${defaultPlan}`}
         color={color}

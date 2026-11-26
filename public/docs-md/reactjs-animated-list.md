@@ -1,16 +1,12 @@
 ---
 title: "Shadcn Animated List"
-description: "Shadcn Animated List. A list that staggers its items into view with 3D perspective transforms and no animation library."
+description: "An animated list: items rise and blur in, then fade, glide and reflow as they are added, removed or filtered. Free shadcn/ui component animated with GSAP."
 url: https://avaraui.com/docs/nextjs/animated-list
 ---
 
 # Shadcn Animated List
 
-A hyper-polished list component that staggers its children into view using 3D perspective transforms (no animation library), complete with a mouse-tracking glassmorphic spotlight hover effect.
-
-Standard list animations often feel rigid. By wrapping your notification or activity feeds in the `AnimatedList` container, the engine sets a `perspective` boundary and plays a staggered entrance (`slide-right` with `back.out(1.5)` easing by default, or the 3D `flip`) on every direct child. Furthermore, the `AnimatedListItem` wrapper brings the component to life _after_ entry by tracking the user's cursor to render a subtle spotlight gradient glow.
-
-Each list plays its entrance once it scrolls into view — use a preview's reload button to replay it. Hover a card afterwards for the cursor-tracking spotlight.
+An animated list: items rise and blur in, then fade and glide as they are added, removed or filtered.
 
 ## Installation
 
@@ -29,547 +25,393 @@ npx shadcn@latest add @avara-ui/animated-list
 
 ## Animated list
 
-Wrap the feed in `AnimatedList` and each row in `AnimatedListItem` — the stagger, perspective and hover spotlight come with it.
-
-- Set `staggerDelay={0.15}` to the gap in seconds between one child starting and the next.
-
 ```tsx
-import {
-  AnimatedList,
-  AnimatedListItem,
-} from "@/components/custom/blocks/AnimatedListBlock";
-import { CheckCircle2, CreditCard, UserPlus, Zap } from "lucide-react";
+import { AnimatedList, AnimatedListItem } from "@/components/custom/blocks/AnimatedListBlock";
+import { AnimatedNumber } from "@/components/custom/blocks/AnimatedNumberBlock";
+import { cn } from "@/lib/utils";
+import { Check, ChevronDown, Cloud, Globe, Loader2, Mail, Server, Zap } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
-const notifications = [
-  {
-    id: 1,
-    icon: CreditCard,
-    color: "text-emerald-500",
-    bg: "bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-500/20",
-    title: "Payment Received",
-    desc: "Stripe successfully processed $129.00",
-    time: "2m",
-  },
-  {
-    id: 2,
-    icon: UserPlus,
-    color: "text-blue-500",
-    bg: "bg-blue-50 dark:bg-blue-500/10 border border-blue-500/20",
-    title: "New Signup",
-    desc: "alice@example.com created a Pro account",
-    time: "15m",
-  },
-  {
-    id: 3,
-    icon: CheckCircle2,
-    color: "text-indigo-500",
-    bg: "bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-500/20",
-    title: "Deployment Successful",
-    desc: "Production deployment (v2.4.1) is live",
-    time: "1h",
-  },
-  {
-    id: 4,
-    icon: Zap,
-    color: "text-rose-500",
-    bg: "bg-rose-50 dark:bg-rose-500/10 border border-rose-500/20",
-    title: "Server Scaled",
-    desc: "Auto-scaled cluster to handle traffic spike",
-    time: "3h",
-  },
+type Status = "idle" | "paying" | "paid" | "failed";
+type FilterId = "all" | "soon" | "autopay";
+
+const FILTERS: { id: FilterId; label: string }[] = [
+  { id: "all", label: "All" },
+  { id: "soon", label: "Due soon" },
+  { id: "autopay", label: "Autopay" },
 ];
 
-// One row. The group-hover styles work because AnimatedListItem is the group.
-function NotificationRow({ notif }: { notif: (typeof notifications)[number] }) {
+const SOON_DAYS = 6;
+
+const subscriptions = [
+  { id: "hosting", name: "Cloud hosting", amount: 48, dueInDays: 2, autopay: true, icon: Server },
+  { id: "domain", name: "Domain renewal", amount: 14.99, dueInDays: 5, icon: Globe },
+  { id: "email", name: "Email delivery", amount: 29, dueInDays: 11, autopay: true, icon: Mail },
+  { id: "storage", name: "Object storage", amount: 18.4, dueInDays: 16, icon: Cloud },
+  { id: "analytics", name: "Analytics", amount: 79, dueInDays: 23, icon: Zap },
+];
+type Subscription = (typeof subscriptions)[number];
+
+const money = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
+
+// Demo only: the first Domain payment is declined so you can see Retry.
+const declined = new Set<string>();
+async function pay(item: Subscription) {
+  await new Promise((resolve) => setTimeout(resolve, 900));
+  if (item.id === "domain" && !declined.has(item.id)) {
+    declined.add(item.id);
+    throw new Error("Card declined");
+  }
+}
+
+const dueLabel = (days: number) =>
+  days <= 0 ? "Due today" : days === 1 ? "Due tomorrow" : `Due in ${days} days`;
+
+// The row's own look. AnimatedList only animates it; nothing here is required.
+function PaymentRow({
+  item,
+  status,
+  onPay,
+}: {
+  item: Subscription;
+  status: Status;
+  onPay: () => void;
+}) {
+  const Icon = item.icon;
+  const amount = money.format(item.amount);
+  const paying = status === "paying";
+  const paid = status === "paid";
+  const failed = status === "failed";
+
   return (
-    <div className="flex items-center gap-3 min-w-0">
-      <div
-        className={[
-          "w-9 h-9 sm:w-10 sm:h-10 rounded-[10px] flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110",
-          notif.bg,
-          notif.color,
-        ].join(" ")}
+    <div
+      className={cn(
+        "group/row flex items-center gap-3 rounded-[1.75rem] bg-card p-3 pr-4 text-card-foreground",
+        "shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-16px_rgba(0,0,0,0.18)] ring-1 ring-[#F7F7F6] dark:ring-border/60",
+        "transition-[background-color] duration-200 hover:bg-muted/50 focus-within:bg-muted/50",
+        (paying || failed) && "bg-muted/50",
+      )}
+    >
+      <span
+        aria-hidden="true"
+        className={cn(
+          "flex size-10 shrink-0 items-center justify-center rounded-full transition-colors duration-300",
+          failed
+            ? "bg-destructive/10 text-destructive"
+            : paid
+              ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+              : "bg-background text-muted-foreground group-hover/row:bg-muted",
+        )}
       >
-        <notif.icon className="w-4 h-4 sm:w-[18px] sm:h-[18px]" strokeWidth={2.5} />
+        <Icon className="size-[18px]" />
+      </span>
+
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-sm font-medium text-foreground">{item.name}</p>
+        <div className="mt-1 flex flex-wrap items-center gap-1.5 text-xs">
+          {failed ? (
+            <span className="rounded-full bg-destructive/10 px-2 py-0.5 font-medium text-destructive">
+              Payment failed
+            </span>
+          ) : paid ? (
+            <span className="text-muted-foreground">Paid</span>
+          ) : item.dueInDays <= SOON_DAYS ? (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/15 px-2 py-0.5 font-medium text-amber-700 dark:text-amber-400">
+              <span className="relative flex size-1.5">
+                <span className="absolute inset-0 rounded-full bg-current opacity-60 motion-safe:animate-ping" />
+                <span className="relative size-1.5 rounded-full bg-current" />
+              </span>
+              {dueLabel(item.dueInDays)}
+            </span>
+          ) : (
+            <span className="text-muted-foreground">{dueLabel(item.dueInDays)}</span>
+          )}
+          {item.autopay && !paid ? (
+            <span className="rounded-full border border-border px-2 py-0.5 font-medium text-muted-foreground">
+              Autopay
+            </span>
+          ) : null}
+        </div>
       </div>
 
-      <div className="flex-1 min-w-0 flex flex-col justify-center">
-        <div className="flex items-center justify-between gap-2">
-          <h4 className="text-[13px] sm:text-[13.5px] font-semibold text-foreground truncate">
-            {notif.title}
-          </h4>
-          <span className="text-[10px] sm:text-[10.5px] font-semibold text-muted-foreground flex-shrink-0">
-            {notif.time}
+      <div className="grid shrink-0 select-none items-center justify-items-stretch [&>*]:col-start-1 [&>*]:row-start-1">
+        {paid ? (
+          <span className="inline-flex h-8 items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 text-sm font-medium text-emerald-700 dark:text-emerald-400">
+            <Check className="size-4" strokeWidth={3} aria-hidden="true" />
+            Paid
           </span>
-        </div>
-        <p className="text-[11.5px] sm:text-[12px] font-medium text-muted-foreground leading-snug break-words line-clamp-2 mt-[1px]">
-          {notif.desc}
-        </p>
+        ) : failed ? (
+          <button
+            type="button"
+            onClick={onPay}
+            className="h-8 cursor-pointer rounded-full bg-destructive/10 px-4 text-sm font-medium text-destructive transition-colors hover:bg-destructive/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive/50"
+          >
+            Retry
+          </button>
+        ) : (
+          <>
+            {/* The amount fades out under the row hover; the Pay button fades in. */}
+            <span
+              aria-hidden="true"
+              className={cn(
+                "pointer-events-none inline-flex h-8 min-w-[4.5rem] items-center justify-center rounded-full bg-muted px-3 text-sm font-medium tabular-nums text-foreground transition-[opacity,filter] duration-200",
+                paying
+                  ? "opacity-0 blur-[3px]"
+                  : "group-hover/row:opacity-0 group-hover/row:blur-[3px] group-focus-within/row:opacity-0 group-focus-within/row:blur-[3px]",
+              )}
+            >
+              {amount}
+            </span>
+            <button
+              type="button"
+              disabled={paying}
+              aria-busy={paying}
+              aria-label={`Pay ${item.name}, ${amount}`}
+              onClick={onPay}
+              className={cn(
+                "inline-flex h-8 min-w-[4.5rem] cursor-pointer items-center justify-center rounded-full bg-foreground px-3 text-sm font-medium text-background transition-[opacity,filter] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                paying
+                  ? "opacity-100"
+                  : "opacity-0 blur-[3px] group-hover/row:opacity-100 group-hover/row:blur-none group-focus-within/row:opacity-100 group-focus-within/row:blur-none",
+              )}
+            >
+              {paying ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : "Pay"}
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
 }
 
-export default function NotificationFeed() {
-  // The wrapper establishes the 3D perspective the children animate inside.
+function FilterMenu({
+  value,
+  onChange,
+}: {
+  value: FilterId;
+  onChange: (value: FilterId) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onPointerDown = (e: PointerEvent) => {
+      const target = e.target as Node;
+      if (!menuRef.current?.contains(target) && !triggerRef.current?.contains(target)) {
+        setOpen(false);
+      }
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        triggerRef.current?.focus();
+      }
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKey);
+    menuRef.current?.querySelector<HTMLElement>('[aria-checked="true"]')?.focus();
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  const onMenuKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const items = Array.from(
+      e.currentTarget.querySelectorAll<HTMLElement>('[role="menuitemradio"]'),
+    );
+    const at = items.indexOf(document.activeElement as HTMLElement);
+    const next =
+      e.key === "ArrowDown"
+        ? (at + 1) % items.length
+        : e.key === "ArrowUp"
+          ? (at - 1 + items.length) % items.length
+          : e.key === "Home"
+            ? 0
+            : e.key === "End"
+              ? items.length - 1
+              : -1;
+    if (next < 0) return;
+    e.preventDefault();
+    items[next].focus();
+  };
+
   return (
-    <AnimatedList staggerDelay={0.15}>
-      {notifications.map((notif) => (
-        <AnimatedListItem key={notif.id} className="p-3.5 sm:p-4">
-          <NotificationRow notif={notif} />
-        </AnimatedListItem>
-      ))}
-    </AnimatedList>
-  );
-}
-```
-
-## Flip
-
-- Use `variant="flip"` to rotate each row in on the X axis against the container's 3D perspective — the signature entrance.
-
-```tsx
-import {
-  AnimatedList,
-  AnimatedListItem,
-} from "@/components/custom/blocks/AnimatedListBlock";
-import { CheckCircle2, CreditCard, UserPlus, Zap } from "lucide-react";
-
-const notifications = [
-  {
-    id: 1,
-    icon: CreditCard,
-    color: "text-emerald-500",
-    bg: "bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-500/20",
-    title: "Payment Received",
-    desc: "Stripe successfully processed $129.00",
-    time: "2m",
-  },
-  {
-    id: 2,
-    icon: UserPlus,
-    color: "text-blue-500",
-    bg: "bg-blue-50 dark:bg-blue-500/10 border border-blue-500/20",
-    title: "New Signup",
-    desc: "alice@example.com created a Pro account",
-    time: "15m",
-  },
-  {
-    id: 3,
-    icon: CheckCircle2,
-    color: "text-indigo-500",
-    bg: "bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-500/20",
-    title: "Deployment Successful",
-    desc: "Production deployment (v2.4.1) is live",
-    time: "1h",
-  },
-  {
-    id: 4,
-    icon: Zap,
-    color: "text-rose-500",
-    bg: "bg-rose-50 dark:bg-rose-500/10 border border-rose-500/20",
-    title: "Server Scaled",
-    desc: "Auto-scaled cluster to handle traffic spike",
-    time: "3h",
-  },
-];
-
-// One row. The group-hover styles work because AnimatedListItem is the group.
-function NotificationRow({ notif }: { notif: (typeof notifications)[number] }) {
-  return (
-    <div className="flex items-center gap-3 min-w-0">
-      <div
-        className={[
-          "w-9 h-9 sm:w-10 sm:h-10 rounded-[10px] flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110",
-          notif.bg,
-          notif.color,
-        ].join(" ")}
+    <div className="relative">
+      <button
+        ref={triggerRef}
+        type="button"
+        aria-haspopup="menu"
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowDown" && !open) {
+            e.preventDefault();
+            setOpen(true);
+          }
+        }}
+        className="inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-full bg-muted pl-3.5 pr-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
-        <notif.icon className="w-4 h-4 sm:w-[18px] sm:h-[18px]" strokeWidth={2.5} />
-      </div>
-
-      <div className="flex-1 min-w-0 flex flex-col justify-center">
-        <div className="flex items-center justify-between gap-2">
-          <h4 className="text-[13px] sm:text-[13.5px] font-semibold text-foreground truncate">
-            {notif.title}
-          </h4>
-          <span className="text-[10px] sm:text-[10.5px] font-semibold text-muted-foreground flex-shrink-0">
-            {notif.time}
-          </span>
-        </div>
-        <p className="text-[11.5px] sm:text-[12px] font-medium text-muted-foreground leading-snug break-words line-clamp-2 mt-[1px]">
-          {notif.desc}
-        </p>
+        {FILTERS.find((f) => f.id === value)?.label}
+        <ChevronDown
+          className={cn("size-4 text-muted-foreground transition-transform duration-300", open && "rotate-180")}
+          aria-hidden="true"
+        />
+      </button>
+      <div
+        ref={menuRef}
+        role="menu"
+        aria-label="Filter"
+        onKeyDown={onMenuKeyDown}
+        className={cn(
+          "absolute right-0 top-full z-20 mt-2 w-40 rounded-2xl border border-border bg-popover p-1 text-popover-foreground shadow-lg transition-[opacity,filter,visibility] duration-200",
+          open ? "visible opacity-100 blur-none" : "invisible opacity-0 blur-sm",
+        )}
+      >
+        {FILTERS.map((f) => (
+          <button
+            key={f.id}
+            type="button"
+            role="menuitemradio"
+            aria-checked={f.id === value}
+            tabIndex={-1}
+            onClick={() => {
+              onChange(f.id);
+              setOpen(false);
+              triggerRef.current?.focus();
+            }}
+            className="flex w-full cursor-pointer items-center justify-between rounded-xl px-3 py-2 text-left text-sm text-foreground hover:bg-muted focus-visible:bg-muted focus-visible:outline-none"
+          >
+            {f.label}
+            {f.id === value ? <Check className="size-4" aria-hidden="true" /> : null}
+          </button>
+        ))}
       </div>
     </div>
   );
 }
 
-export default function FlipFeed() {
-  return (
-    <AnimatedList variant="flip">
-      {notifications.map((notif) => (
-        <AnimatedListItem key={notif.id} className="p-3.5 sm:p-4">
-          <NotificationRow notif={notif} />
-        </AnimatedListItem>
-      ))}
-    </AnimatedList>
+export default function UpcomingPayments() {
+  const [filter, setFilter] = useState<FilterId>("all");
+  const [statuses, setStatuses] = useState<Record<string, Status>>({});
+
+  const statusOf = (id: string): Status => statuses[id] ?? "idle";
+  const total = subscriptions.reduce(
+    (sum, s) => (statusOf(s.id) === "paid" ? sum : sum + s.amount),
+    0,
   );
-}
-```
+  const visible = subscriptions.filter(
+    (s) => filter === "all" || (filter === "soon" ? s.dueInDays <= SOON_DAYS : s.autopay),
+  );
 
-## Slide up
+  const payItem = async (item: Subscription) => {
+    setStatuses((s) => ({ ...s, [item.id]: "paying" }));
+    try {
+      await pay(item);
+      setStatuses((s) => ({ ...s, [item.id]: "paid" }));
+    } catch {
+      setStatuses((s) => ({ ...s, [item.id]: "failed" }));
+    }
+  };
 
-- Use `variant="slide-up"` to translate the rows in from an edge instead of rotating. `slide-left` and `slide-right` do the same from the sides.
-
-```tsx
-import {
-  AnimatedList,
-  AnimatedListItem,
-} from "@/components/custom/blocks/AnimatedListBlock";
-import { CheckCircle2, CreditCard, UserPlus, Zap } from "lucide-react";
-
-const notifications = [
-  {
-    id: 1,
-    icon: CreditCard,
-    color: "text-emerald-500",
-    bg: "bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-500/20",
-    title: "Payment Received",
-    desc: "Stripe successfully processed $129.00",
-    time: "2m",
-  },
-  {
-    id: 2,
-    icon: UserPlus,
-    color: "text-blue-500",
-    bg: "bg-blue-50 dark:bg-blue-500/10 border border-blue-500/20",
-    title: "New Signup",
-    desc: "alice@example.com created a Pro account",
-    time: "15m",
-  },
-  {
-    id: 3,
-    icon: CheckCircle2,
-    color: "text-indigo-500",
-    bg: "bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-500/20",
-    title: "Deployment Successful",
-    desc: "Production deployment (v2.4.1) is live",
-    time: "1h",
-  },
-  {
-    id: 4,
-    icon: Zap,
-    color: "text-rose-500",
-    bg: "bg-rose-50 dark:bg-rose-500/10 border border-rose-500/20",
-    title: "Server Scaled",
-    desc: "Auto-scaled cluster to handle traffic spike",
-    time: "3h",
-  },
-];
-
-// One row. The group-hover styles work because AnimatedListItem is the group.
-function NotificationRow({ notif }: { notif: (typeof notifications)[number] }) {
   return (
-    <div className="flex items-center gap-3 min-w-0">
-      <div
-        className={[
-          "w-9 h-9 sm:w-10 sm:h-10 rounded-[10px] flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110",
-          notif.bg,
-          notif.color,
-        ].join(" ")}
-      >
-        <notif.icon className="w-4 h-4 sm:w-[18px] sm:h-[18px]" strokeWidth={2.5} />
-      </div>
-
-      <div className="flex-1 min-w-0 flex flex-col justify-center">
-        <div className="flex items-center justify-between gap-2">
-          <h4 className="text-[13px] sm:text-[13.5px] font-semibold text-foreground truncate">
-            {notif.title}
-          </h4>
-          <span className="text-[10px] sm:text-[10.5px] font-semibold text-muted-foreground flex-shrink-0">
-            {notif.time}
-          </span>
+    <div className="w-full max-w-md rounded-[2rem] bg-muted/60 p-2.5 dark:bg-muted/40">
+      <div className="flex items-start justify-between gap-4 px-3 pb-1 pt-2">
+        <div>
+          <h3 className="text-sm font-medium text-muted-foreground">Coming up</h3>
+          <AnimatedNumber
+            value={total}
+            format={(n) => money.format(n)}
+            className="mt-1 block text-3xl font-semibold tracking-tight text-foreground"
+          />
         </div>
-        <p className="text-[11.5px] sm:text-[12px] font-medium text-muted-foreground leading-snug break-words line-clamp-2 mt-[1px]">
-          {notif.desc}
-        </p>
+        <FilterMenu value={filter} onChange={setFilter} />
       </div>
+
+      <AnimatedList className="mt-3 flex flex-col gap-2.5">
+        {visible.map((item) => (
+          <AnimatedListItem key={item.id}>
+            <PaymentRow
+              item={item}
+              status={statusOf(item.id)}
+              onPay={() => payItem(item)}
+            />
+          </AnimatedListItem>
+        ))}
+      </AnimatedList>
     </div>
-  );
-}
-
-export default function SlideUpFeed() {
-  return (
-    <AnimatedList variant="slide-up">
-      {notifications.map((notif) => (
-        <AnimatedListItem key={notif.id} className="p-3.5 sm:p-4">
-          <NotificationRow notif={notif} />
-        </AnimatedListItem>
-      ))}
-    </AnimatedList>
-  );
-}
-```
-
-## Pop
-
-- Use `variant="pop"` to scale each row in from small.
-- `ease="elastic.out(1, 0.5)"` adds the overshoot that makes the pop bounce.
-
-```tsx
-import {
-  AnimatedList,
-  AnimatedListItem,
-} from "@/components/custom/blocks/AnimatedListBlock";
-import { CheckCircle2, CreditCard, UserPlus, Zap } from "lucide-react";
-
-const notifications = [
-  {
-    id: 1,
-    icon: CreditCard,
-    color: "text-emerald-500",
-    bg: "bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-500/20",
-    title: "Payment Received",
-    desc: "Stripe successfully processed $129.00",
-    time: "2m",
-  },
-  {
-    id: 2,
-    icon: UserPlus,
-    color: "text-blue-500",
-    bg: "bg-blue-50 dark:bg-blue-500/10 border border-blue-500/20",
-    title: "New Signup",
-    desc: "alice@example.com created a Pro account",
-    time: "15m",
-  },
-  {
-    id: 3,
-    icon: CheckCircle2,
-    color: "text-indigo-500",
-    bg: "bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-500/20",
-    title: "Deployment Successful",
-    desc: "Production deployment (v2.4.1) is live",
-    time: "1h",
-  },
-  {
-    id: 4,
-    icon: Zap,
-    color: "text-rose-500",
-    bg: "bg-rose-50 dark:bg-rose-500/10 border border-rose-500/20",
-    title: "Server Scaled",
-    desc: "Auto-scaled cluster to handle traffic spike",
-    time: "3h",
-  },
-];
-
-// One row. The group-hover styles work because AnimatedListItem is the group.
-function NotificationRow({ notif }: { notif: (typeof notifications)[number] }) {
-  return (
-    <div className="flex items-center gap-3 min-w-0">
-      <div
-        className={[
-          "w-9 h-9 sm:w-10 sm:h-10 rounded-[10px] flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110",
-          notif.bg,
-          notif.color,
-        ].join(" ")}
-      >
-        <notif.icon className="w-4 h-4 sm:w-[18px] sm:h-[18px]" strokeWidth={2.5} />
-      </div>
-
-      <div className="flex-1 min-w-0 flex flex-col justify-center">
-        <div className="flex items-center justify-between gap-2">
-          <h4 className="text-[13px] sm:text-[13.5px] font-semibold text-foreground truncate">
-            {notif.title}
-          </h4>
-          <span className="text-[10px] sm:text-[10.5px] font-semibold text-muted-foreground flex-shrink-0">
-            {notif.time}
-          </span>
-        </div>
-        <p className="text-[11.5px] sm:text-[12px] font-medium text-muted-foreground leading-snug break-words line-clamp-2 mt-[1px]">
-          {notif.desc}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-export default function PopFeed() {
-  return (
-    <AnimatedList variant="pop">
-      {notifications.map((notif) => (
-        <AnimatedListItem key={notif.id} className="p-3.5 sm:p-4">
-          <NotificationRow notif={notif} />
-        </AnimatedListItem>
-      ))}
-    </AnimatedList>
-  );
-}
-```
-
-## Timing
-
-- `staggerDelay={0.35}` is the gap between children.
-- `duration={1.1}` is how long each one takes.
-- `animationDelay={0.3}` is how long the whole sequence waits before starting.
-- `ease="power4.out"` takes any GSAP-style ease name — no GSAP needed.
-
-```tsx
-import {
-  AnimatedList,
-  AnimatedListItem,
-} from "@/components/custom/blocks/AnimatedListBlock";
-import { CheckCircle2, CreditCard, UserPlus, Zap } from "lucide-react";
-
-const notifications = [
-  {
-    id: 1,
-    icon: CreditCard,
-    color: "text-emerald-500",
-    bg: "bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-500/20",
-    title: "Payment Received",
-    desc: "Stripe successfully processed $129.00",
-    time: "2m",
-  },
-  {
-    id: 2,
-    icon: UserPlus,
-    color: "text-blue-500",
-    bg: "bg-blue-50 dark:bg-blue-500/10 border border-blue-500/20",
-    title: "New Signup",
-    desc: "alice@example.com created a Pro account",
-    time: "15m",
-  },
-  {
-    id: 3,
-    icon: CheckCircle2,
-    color: "text-indigo-500",
-    bg: "bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-500/20",
-    title: "Deployment Successful",
-    desc: "Production deployment (v2.4.1) is live",
-    time: "1h",
-  },
-  {
-    id: 4,
-    icon: Zap,
-    color: "text-rose-500",
-    bg: "bg-rose-50 dark:bg-rose-500/10 border border-rose-500/20",
-    title: "Server Scaled",
-    desc: "Auto-scaled cluster to handle traffic spike",
-    time: "3h",
-  },
-];
-
-// One row. The group-hover styles work because AnimatedListItem is the group.
-function NotificationRow({ notif }: { notif: (typeof notifications)[number] }) {
-  return (
-    <div className="flex items-center gap-3 min-w-0">
-      <div
-        className={[
-          "w-9 h-9 sm:w-10 sm:h-10 rounded-[10px] flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110",
-          notif.bg,
-          notif.color,
-        ].join(" ")}
-      >
-        <notif.icon className="w-4 h-4 sm:w-[18px] sm:h-[18px]" strokeWidth={2.5} />
-      </div>
-
-      <div className="flex-1 min-w-0 flex flex-col justify-center">
-        <div className="flex items-center justify-between gap-2">
-          <h4 className="text-[13px] sm:text-[13.5px] font-semibold text-foreground truncate">
-            {notif.title}
-          </h4>
-          <span className="text-[10px] sm:text-[10.5px] font-semibold text-muted-foreground flex-shrink-0">
-            {notif.time}
-          </span>
-        </div>
-        <p className="text-[11.5px] sm:text-[12px] font-medium text-muted-foreground leading-snug break-words line-clamp-2 mt-[1px]">
-          {notif.desc}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-export default function TimedFeed() {
-  // duration is per item; staggerDelay is the gap between them.
-  return (
-    <AnimatedList duration={0.9} staggerDelay={0.25} animationDelay={0.3}>
-      {notifications.map((notif) => (
-        <AnimatedListItem key={notif.id} className="p-3.5 sm:p-4">
-          <NotificationRow notif={notif} />
-        </AnimatedListItem>
-      ))}
-    </AnimatedList>
   );
 }
 ```
 
 ## About Shadcn Animated List
 
-**What it is.** `AnimatedList` and `AnimatedListItem` make a staggered feed. Each direct child enters with one of five `variant` motions (`flip`, `slide-up`, `slide-left`, `slide-right`, `pop`), and each `AnimatedListItem` shows a cursor-tracking spotlight on hover.
+**What it is.** `AnimatedList` and `AnimatedListItem` add motion to a list and nothing else. The row design, title, total and filter are yours.
 
-**How it is built.** `AnimatedList` sets a 1000px `perspective` and runs the entrance in a `requestAnimationFrame` loop, driven by `staggerDelay`, `duration`, `animationDelay` and an `ease` string. It parses GSAP-style ease names itself, so it has no animation dependency, and it imports nothing from `next/*`.
+**How it works.** Items rise and blur in one after another when the list scrolls into view. Afterwards, an item you add fades in, one you remove fades out where it stood, and the rest glide to their new place.
 
-**When to use it.** Use it for notification feeds, activity logs, onboarding checklists and live event streams that should arrive one row at a time.
+**When to use it.** Use it for feeds, bills, renewals and any list that filters, sorts or grows. Pair it with [Animated Number](https://avaraui.com/docs/reactjs/animated-number) for a total that follows the list.
 
 ## For AI agents
 
 **When to use**
 
-- Notification feeds, activity logs
-- Onboarding checklists, live event streams
+- Feeds, bill lists, filtered or sorted lists that should animate
+- Any row content: the item renders whatever you put in it
 
 **When not to use**
 
 - Rows users must reorder by dragging: use [Draggable Card List](https://avaraui.com/docs/reactjs/draggable-card-list)
-- Dated milestones with status markers: use [Timeline](https://avaraui.com/docs/reactjs/timeline)
+- Dated milestones on a rail: use [Timeline](https://avaraui.com/docs/reactjs/timeline)
 
 **Agent notes**
 
-- Named exports `AnimatedList` and `AnimatedListItem` from `@/components/custom/blocks/AnimatedListBlock`. Put `AnimatedListItem` as a direct child: the entrance styles go on the list's direct children only.
-- `variant` is `"flip" | "slide-up" | "slide-left" | "slide-right" | "pop"` and defaults to `"slide-right"`.
-- Timing props are in seconds: `staggerDelay` (0.12), `animationDelay` (0), `duration` (0.6). `ease` defaults to `"back.out(1.5)"`.
-- The entrance runs once on mount and again when one of those props changes. A row added later stays hidden (`AnimatedListItem` starts at `opacity-0`), so remount the list with a new `key` after adding rows.
-- There is no reduced-motion check: pass `duration={0}` and `staggerDelay={0}` yourself for people who prefer less motion.
+- Named exports `AnimatedList` and `AnimatedListItem` from `@/components/custom/blocks/AnimatedListBlock`. `AnimatedList` renders a `ul` and `AnimatedListItem` an `li`.
+- Give every `AnimatedListItem` a stable `key` (an id, never an array index): the key decides what was added, removed or moved.
+- Put titles, filters and totals outside `AnimatedList`. Two lists in one section are two `AnimatedList`s.
+- Use `as="div"` on both for non-list markup.
+- Do not put transform utilities (`translate-*`, `scale-*`) on the item itself; the motion owns its transform. Put them on the content inside.
+- A removed item fades out as a copy, so it cannot be clicked while it fades.
+- Honours `prefers-reduced-motion`: items appear and change without motion.
 
 ## Props Reference
 
 | Component | Prop | Type | Default | Description |
 | --- | --- | --- | --- | --- |
-| `AnimatedList` | `staggerDelay` | `number` | `0.12` | The amount of time (in seconds) to wait before animating the next consecutive child element in the list. |
-| `AnimatedList` | `animationDelay` | `number` | `0` | The total delay (in seconds) before the staggered entrance begins. |
-| `AnimatedList` | `duration` | `number` | `0.6` | The total duration (in seconds) of the entry animation for a single list item. |
-| `AnimatedList` | `ease` | `string` | `"back.out(1.5)"` | The easing applied to the entrance animation, named the GSAP way (`"power4.out"`, `"elastic.out(1, 0.5)"`) and evaluated without the library; CSS keywords and `cubic-bezier()` work too. |
-| `AnimatedList` | `variant` | `"flip" \| "slide-up" \| "slide-left" \| "slide-right" \| "pop"` | `"slide-right"` | Entrance motion for each child. All variants also fade in from a small blur. |
-| `AnimatedList` | `...props` | `HTMLAttributes<HTMLDivElement>` | `undefined` | Passed to the list container, including `className`. |
-| `AnimatedListItem` | `...props` | `HTMLAttributes<HTMLDivElement>` | `undefined` | Accepts all native HTML div attributes. This component automatically handles its own `onMouseMove` and `onMouseLeave` events to drive the glassmorphic spotlight gradient under the hood. |
+| `AnimatedList` | `as` | `"ul" \| "ol" \| "div"` | `"ul"` | The element to render. |
+| `AnimatedList` | `staggerDelay` | `number` | `0.07` | Seconds between one item starting its entrance and the next. |
+| `AnimatedList` | `duration` | `number` | `0.55` | Entrance duration of each item, in seconds. |
+| `AnimatedList` | `...props` | `HTMLAttributes<HTMLElement>` | `undefined` | Passed to the element, including `className` for the layout. |
+| `AnimatedListItem` | `as` | `"li" \| "div"` | `"li"` | The element to render. Use `"div"` inside an `as="div"` list. |
+| `AnimatedListItem` | `...props` | `HTMLAttributes<HTMLElement>` | `undefined` | Passed to the element, including `key`, `className` and children. |
 
 ## Works with other components
 
-- [Item](https://avaraui.com/docs/reactjs/item) for structured rows (media, title, description) to put inside each `AnimatedListItem`.
-- [Draggable Card List](https://avaraui.com/docs/reactjs/draggable-card-list) when people need to reorder the rows, which `AnimatedList` does not support.
-- [Timeline](https://avaraui.com/docs/reactjs/timeline) for dated, status-driven events on a vertical rail instead of a feed of cards.
+- [Animated Number](https://avaraui.com/docs/reactjs/animated-number) for a total that counts up and follows the list.
+- [Item](https://avaraui.com/docs/reactjs/item) for structured rows (media, title, description) to put inside each item.
+- [Draggable Card List](https://avaraui.com/docs/reactjs/draggable-card-list) when people need to reorder rows.
 
-## Does AnimatedList require GSAP when using ease strings like `power4.out`?
+## How do I animate a filtered list with AnimatedList?
 
-No. `AnimatedList` parses the ease string itself and installs no animation library. It understands GSAP names such as `power1` to `power4`, `sine`, `expo`, `circ`, `bounce`, `back`, `elastic` and `steps`, plus CSS keywords and `cubic-bezier()`. An unrecognised name falls back to `power1.out`.
+Render only the matching `AnimatedListItem`s and give each a stable `key`. When the filter changes, items that leave fade out where they stood, new ones fade in and the rest glide to their new place.
 
-## How do I add the cursor-tracking hover spotlight?
+## Can AnimatedListItem hold any content?
 
-Wrap each row in `AnimatedListItem` inside `AnimatedList`; there is nothing to switch on. It tracks `onMouseMove` and draws a 600px white radial glow at 6% opacity under the pointer, which fades out on `onMouseLeave`. The glow is faint on light cards and clearer on dark ones.
+Yes. It animates its own box and nothing inside it, so a row can be a card, a link or your own component. Put the title, total and filter outside `AnimatedList`.
 
-## Why are rows I add to AnimatedList later invisible?
+## Why do my items not animate when the list changes?
 
-`AnimatedListItem` starts at `opacity-0` and only the entrance loop reveals it. That loop runs on mount and again when `staggerDelay`, `animationDelay`, `ease`, `duration` or `variant` change. A row appended afterwards is never animated in, so give the list a new `key` to replay the whole entrance.
+The change is read from each item's `key`. Items with array-index keys look the same before and after, so nothing counts as added or removed. Use an id.
 
-## How do I change the entrance direction of AnimatedList?
+## Can I use AnimatedList for a div layout?
 
-Set `variant`. `slide-right` is the default and moves rows in 60px from the right, `slide-left` does the same from the left, `slide-up` rises 40px, `pop` scales up from 0.6, and `flip` tilts rows in on the X axis against the list's perspective. Every variant also fades in from a small blur.
+Yes. Set `as="div"` on `AnimatedList` and on each `AnimatedListItem`. The list then renders no `ul` or `li`.
 
-## How do I turn the AnimatedList entrance off for reduced motion?
+## How does AnimatedList handle reduced motion?
 
-`AnimatedList` has no built-in `prefers-reduced-motion` check, so add one yourself. Read the media query in your component and pass `duration={0}` and `staggerDelay={0}` when it matches. Rows then appear almost at once instead of animating, and the spotlight hover still works.
+When the visitor prefers reduced motion, items appear at once and changes apply without fades or gliding.
 
 ---
 

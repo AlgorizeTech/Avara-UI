@@ -27,12 +27,13 @@ export type AlertType =
   | "loading";
 
 /**
+ * inset:   Avara's signature card: icon and title on top, the message in an inset well.
  * default: card surface, only the icon carries the colour.
  * soft:    tinted background and border in the type colour.
  * glass:   frosted, for use over an image or gradient.
  * solid:   filled with the type colour.
  */
-export type AlertVariant = "default" | "soft" | "glass" | "solid";
+export type AlertVariant = "inset" | "default" | "soft" | "glass" | "solid";
 
 export interface AlertProps {
   type?: AlertType;
@@ -139,21 +140,23 @@ const GLASS_ACTION =
   "border border-white/30 bg-white/20 text-white hover:bg-white/30";
 
 const DISMISS: Record<AlertVariant, string> = {
+  inset: "bg-foreground/[0.06] text-foreground/60 hover:bg-foreground/[0.12] hover:text-foreground",
   default: "bg-foreground/[0.06] text-foreground/60 hover:bg-foreground/[0.12] hover:text-foreground",
   soft: "text-foreground/60 hover:bg-foreground/10 hover:text-foreground",
   glass: "bg-white/15 text-white hover:bg-white/25",
   solid: "text-current/60 hover:bg-foreground/10 hover:text-current",
 };
 
+/** The accordion's card: a card fill on a faint ring, lifted by a soft shadow instead of a border. */
+const CARD_SURFACE =
+  "bg-card text-card-foreground ring-1 ring-[#F7F7F6] dark:ring-border/60 shadow-[0_1px_2px_rgba(0,0,0,0.06),0_12px_24px_-18px_rgba(0,0,0,0.42)]";
+
 const SURFACE: Record<AlertVariant, string> = {
-  // A hairline border at 8% of the text colour, a top-edge highlight, a tight
-  // contact shadow and a long soft one, all mixed from --foreground so they
-  // follow the theme in light and dark.
-  default:
-    "border border-foreground/[0.08] bg-card text-card-foreground shadow-[inset_0_1px_0_0_color-mix(in_oklab,var(--foreground)_5%,transparent),0_1px_2px_0_color-mix(in_oklab,var(--foreground)_6%,transparent),0_12px_24px_-12px_color-mix(in_oklab,var(--foreground)_24%,transparent)]",
+  inset: CARD_SURFACE,
+  default: CARD_SURFACE,
   // The type colour bleeds in from the left corners over a pale card, the way
   // a tinted window lets light in from one side.
-  soft: "border border-foreground/[0.07] bg-card text-card-foreground bg-[radial-gradient(75%_130%_at_0%_100%,color-mix(in_oklab,var(--alert-tone)_26%,transparent),transparent_70%),radial-gradient(45%_100%_at_0%_0%,color-mix(in_oklab,var(--alert-tone)_16%,transparent),transparent_70%)] shadow-[0_1px_2px_0_color-mix(in_oklab,var(--foreground)_5%,transparent),0_12px_24px_-14px_color-mix(in_oklab,var(--foreground)_20%,transparent)]",
+  soft: "bg-card text-card-foreground ring-1 ring-[#F7F7F6] dark:ring-border/60 bg-[radial-gradient(75%_130%_at_0%_100%,color-mix(in_oklab,var(--alert-tone)_26%,transparent),transparent_70%),radial-gradient(45%_100%_at_0%_0%,color-mix(in_oklab,var(--alert-tone)_16%,transparent),transparent_70%)] shadow-[0_1px_2px_rgba(0,0,0,0.06),0_12px_24px_-18px_rgba(0,0,0,0.42)]",
   glass:
     "border text-white backdrop-blur-xl shadow-[inset_0_1px_0_0_rgb(255_255_255/0.28),0_1px_2px_0_rgb(0_0_0/0.12),0_14px_32px_-12px_rgb(0_0_0/0.45)]",
   solid:
@@ -265,7 +268,7 @@ export const Alert: React.FC<AlertProps> = ({
   const hasChildren = React.Children.toArray(children).length > 0;
 
   const iconColour =
-    variant === "default"
+    variant === "default" || variant === "inset"
       ? tone.icon
       : variant === "glass"
         ? tone.glassIcon
@@ -286,16 +289,92 @@ export const Alert: React.FC<AlertProps> = ({
       icon
     );
 
+  const dismissButton = dismissible && (
+    <button
+      type="button"
+      onClick={handleDismiss}
+      aria-label="Dismiss alert"
+      className={cn(
+        "flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current",
+        DISMISS[variant],
+      )}
+    >
+      <X aria-hidden className="size-4" />
+    </button>
+  );
+
+  // Under `sm` the buttons drop to their own row; from `sm` up they sit on the
+  // right, so a title and message stay a two-line alert.
+  const actionNode = action && (
+    <div className="flex shrink-0 items-center gap-2 max-sm:order-last max-sm:w-full max-sm:justify-end sm:self-center">
+      {action}
+    </div>
+  );
+
+  const rootClass = cn(
+    "relative w-full transition-all duration-200 ease-out",
+    "motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-2",
+    SURFACE[variant],
+    toneSurface(variant, tone),
+    closing && "scale-[0.98] opacity-0",
+  );
+  const role = type === "danger" || type === "warning" ? "alert" : "status";
+
+  if (variant === "inset") {
+    // With no title the message takes the title's place and there is no well.
+    const heading = hasTitle ? title : message;
+    const wellMessage = hasTitle && hasMessage;
+    const hasWell = wellMessage || hasChildren;
+    return (
+      <div
+        role={role}
+        aria-busy={type === "loading" || undefined}
+        className={cn(rootClass, "rounded-[1.75rem] p-2", className)}
+      >
+        <AlertContext.Provider value={{ type, variant }}>
+          <div className="flex flex-wrap items-center gap-3 px-2.5 py-2 sm:flex-nowrap sm:px-3">
+            {iconNode !== null && iconNode !== false && (
+              <div
+                className={cn(
+                  "flex size-9 shrink-0 items-center justify-center rounded-full bg-background",
+                  iconColour,
+                  iconClassName,
+                )}
+              >
+                {iconNode}
+              </div>
+            )}
+            <div
+              className={cn(
+                "min-w-0 flex-1 text-[15px] font-medium leading-6 tracking-[-0.01em] text-foreground",
+                titleClassName,
+              )}
+            >
+              {heading}
+            </div>
+            {actionNode}
+            {dismissButton}
+          </div>
+          {hasWell && (
+            <div className="rounded-[1.25rem] bg-[#F7F7F6] px-3.5 py-3 text-sm leading-6 text-foreground/80 dark:bg-background/50 sm:px-4">
+              {wellMessage && (
+                <p className={cn("text-sm leading-6", messageClassName)}>{message}</p>
+              )}
+              {hasChildren && <div className={wellMessage ? "mt-2" : undefined}>{children}</div>}
+            </div>
+          )}
+        </AlertContext.Provider>
+      </div>
+    );
+  }
+
   return (
     <div
-      role={type === "danger" || type === "warning" ? "alert" : "status"}
+      role={role}
       aria-busy={type === "loading" || undefined}
       className={cn(
-        "relative flex w-full items-start gap-3 rounded-2xl p-4 transition-all duration-200 ease-out",
-        "motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-2",
-        SURFACE[variant],
-        toneSurface(variant, tone),
-        closing && "scale-[0.98] opacity-0",
+        rootClass,
+        "flex flex-wrap items-start gap-3 rounded-2xl p-4 sm:flex-nowrap",
         className,
       )}
     >
@@ -355,21 +434,8 @@ export const Alert: React.FC<AlertProps> = ({
           )}
         </div>
 
-        {action && <div className="shrink-0">{action}</div>}
-
-        {dismissible && (
-          <button
-            type="button"
-            onClick={handleDismiss}
-            aria-label="Dismiss alert"
-            className={cn(
-              "flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current",
-              DISMISS[variant],
-            )}
-          >
-            <X aria-hidden className="size-4" />
-          </button>
-        )}
+        {actionNode}
+        {dismissButton}
       </AlertContext.Provider>
     </div>
   );

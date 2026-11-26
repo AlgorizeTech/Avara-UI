@@ -165,7 +165,7 @@ function AnimatedTimelineNode({
       >
         <div
           className={cn(
-            "flex flex-col gap-2 p-5 rounded-2xl bg-card text-card-foreground border border-border shadow-sm",
+            "flex flex-col gap-2 p-5 rounded-[1.75rem] bg-card text-card-foreground shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-16px_rgba(0,0,0,0.18)]",
             getAnimationClasses(),
           )}
           style={{ transitionDelay: "100ms" }}

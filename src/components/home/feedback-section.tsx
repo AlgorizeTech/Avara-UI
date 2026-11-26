@@ -1,8 +1,9 @@
 "use client";
 
+import { InView } from "@/components/home/in-view";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight, Maximize, MessageCircle, Pause, Play } from "lucide-react";
-import { Fragment, Suspense, lazy, useRef, useState, type ReactNode } from "react";
+import { Fragment, Suspense, lazy, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { SITE_NAME } from "@/config/site";
 import { SECTION_INNER, SECTION_H2, SECTION_SUB, EYEBROW_PILL } from "@/components/home/shared";
 import { FEEDBACK, type FeedbackItem, type FeedbackMedia } from "@/components/home/feedback-data";
@@ -459,13 +460,13 @@ export function FeedbackSection() {
 	const ref = useRef(null);
 
 	return (
-		<section ref={ref} className="py-13 md:py-16 relative overflow-hidden bg-background">
+		<section ref={ref} className="py-13 md:py-16 relative overflow-clip bg-background">
 			{/* Ambient background glows */}
 			<div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-primary/5 rounded-full blur-3xl opacity-70" />
 			<div className="pointer-events-none absolute bottom-0 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl opacity-50" />
 
 			<>
-				<div className={cn(SECTION_INNER, "mb-10 sm:mb-12")}>
+				<InView className={cn("reveal", SECTION_INNER, "mb-10 sm:mb-12")}>
 					<div
 						className="text-center max-w-3xl mx-auto">
 						<div className={cn(EYEBROW_PILL, "mb-4")}>
@@ -478,16 +479,18 @@ export function FeedbackSection() {
 							exploring {SITE_NAME}.
 						</p>
 					</div>
-				</div>
+				</InView>
 
 				{/* CSS columns give the masonry with no JS and identical server/client HTML. */}
 				<div className={cn(SECTION_INNER, "columns-1 gap-4 sm:columns-2 sm:gap-5 lg:columns-3")}>
-					{FEEDBACK.map((item) => (
-						<div
+					{FEEDBACK.map((item, i) => (
+						<InView
 							key={item.id}
-							className="mb-4 break-inside-avoid sm:mb-5">
+							threshold={0.1}
+							className="reveal mb-4 break-inside-avoid sm:mb-5"
+							style={{ "--reveal-i": i % 3 } as CSSProperties}>
 							<FeedbackCard item={item} />
-						</div>
+						</InView>
 					))}
 				</div>
 			</>

@@ -1,5 +1,6 @@
 "use client";
 
+import { InView } from "@/components/home/in-view";
 import { AnimatedFAQBlock } from "@/components/custom/blocks/AnimatedFAQBlock";
 import { HOME_FAQ_GROUPS } from "@/components/home/faq-data";
 import { cn } from "@/lib/utils";
@@ -35,7 +36,7 @@ export function AnimatedFAQSection() {
 		<section
 			ref={ref}
 			id="faq"
-			className="py-13 md:py-16 relative overflow-hidden bg-background border-t border-border/40">
+			className="py-13 md:py-16 relative overflow-clip bg-background border-t border-border/40">
 			<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: FAQ_JSON_LD }} />
 			{/* Ambient background glows */}
 			<div className="pointer-events-none absolute top-10 left-1/4 -translate-x-1/2 w-[600px] h-[300px] bg-primary/5 rounded-full blur-3xl opacity-60" />
@@ -43,8 +44,7 @@ export function AnimatedFAQSection() {
 
 			<div className="max-w-[1320px] mx-auto px-6 md:px-8">
 				{/* Section Header */}
-				<div
-					className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
+				<InView className="reveal text-center max-w-3xl mx-auto mb-10 sm:mb-12">
 					<div className={cn(EYEBROW_PILL, "mb-4")}>
 						<Sparkles className="size-3.5 text-primary" />
 						Common Queries
@@ -56,10 +56,10 @@ export function AnimatedFAQSection() {
 						Everything you need to know about using Avara UI, component
 						integration, licensing, and custom styling.
 					</p>
-				</div>
+				</InView>
 
 				{/* Animated FAQ Block */}
-				<div>
+				<InView className="reveal" threshold={0.1}>
 					{/* Topic tabs — a short list per tab keeps the canvas from standing empty */}
 					<div
 						role="tablist"
@@ -95,7 +95,7 @@ export function AnimatedFAQSection() {
 							showDimensions={false}
 						/>
 					</div>
-				</div>
+				</InView>
 			</div>
 		</section>
 	);

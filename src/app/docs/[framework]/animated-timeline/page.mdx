@@ -91,32 +91,6 @@ export default function CompanyHistory() {
   );
 }`;
 
-export const usageLeft = `import { AnimatedTimelineBlock, type AnimatedTimelineItem } from "@/components/custom/blocks/AnimatedTimelineBlock";
-
-${timelineEvents}
-
-export default function LeftTimeline() {
-  // Rail on the left, every card on the same side — the compact layout for
-  // narrow columns and sidebars.
-  return (
-    <div className="w-full max-w-5xl mx-auto py-24">
-      <AnimatedTimelineBlock items={EVENTS} layout="left" animation="slide-in" />
-    </div>
-  );
-}`;
-
-export const usageRight = `import { AnimatedTimelineBlock, type AnimatedTimelineItem } from "@/components/custom/blocks/AnimatedTimelineBlock";
-
-${timelineEvents}
-
-export default function RightTimeline() {
-  return (
-    <div className="w-full max-w-5xl mx-auto py-24">
-      <AnimatedTimelineBlock items={EVENTS} layout="right" animation="slide-in" />
-    </div>
-  );
-}`;
-
 <ExampleShowcase headingLevel={2}
   name="timeline-cable"
   columns={1}
@@ -247,47 +221,6 @@ export default function RightTimeline() {
       props: { layout: "center", animation: "flip-up" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/AnimatedTimelineBlock.tsx"),
-    },
-  ]}
-/>
-
-### Layouts
-
-
-<ExampleShowcase minHeight={400}
-  name="animated-timeline"
-  colorControl
-  colorLabel="Active Focus Color"
-  columns={1}
-  installation={<Installation name="animated-timeline" usage="below" />}
-  examples={[
-    {
-      title: "Left layout",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "layout",
-          value: '"left"',
-          effect:
-            "to pin the rail to one edge and stack every card beside it — the compact option for narrow columns and sidebars.",
-        },
-      ],
-      props: { layout: "left", animation: "slide-in" },
-      usage: usageLeft,
-    },
-    {
-      title: "Right layout",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "layout",
-          value: '"right"',
-          effect:
-            "to mirror it — useful when the timeline sits next to body copy on the left.",
-        },
-      ],
-      props: { layout: "right", animation: "slide-in" },
-      usage: usageRight,
     },
   ]}
 />

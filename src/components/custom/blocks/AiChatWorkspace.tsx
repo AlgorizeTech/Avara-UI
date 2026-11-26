@@ -2475,7 +2475,7 @@ export default function AIChatWorkspace({
       onKeyDown={onRootKeyDown}
       style={{ ...vars, ...(radius ? ({ "--ws-r": radius } as React.CSSProperties) : null) }}
       className={cn(
-        "relative isolate flex h-[680px] w-full max-w-full overflow-hidden rounded-[var(--ws-r,28px)] bg-muted/70 p-2 font-sans text-foreground [contain:paint] sm:h-[760px]",
+        "relative isolate flex h-[680px] w-full max-w-full overflow-hidden rounded-[var(--ws-r,12px)] bg-muted/70 p-2 font-sans text-foreground [contain:paint] sm:h-[760px]",
         className,
       )}
     >
