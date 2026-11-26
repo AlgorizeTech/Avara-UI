@@ -132,7 +132,7 @@ function LoopingAnimatedIcon({
   size = 20,
   duration = 2.2,
   delay = 0,
-  color = "#f45d5d",
+  color = "var(--primary)",
   prefersReducedMotion,
   className,
 }: {
@@ -246,7 +246,7 @@ function VeloceRadarIconBadge({
         size={20}
         duration={2.4}
         isAnimated={!prefersReducedMotion}
-        color="#f45d5d"
+        color="var(--primary)"
       />
     </div>
   );
@@ -451,7 +451,7 @@ function VeloceHeroPreview({
 
         {/* Brand (Centered on mobile, Left on desktop) */}
         <div className="flex items-center gap-2 h-8 @md:static absolute left-1/2 -translate-x-1/2 @md:translate-x-0">
-          <span className="flex size-6 items-center justify-center rounded-md bg-[#f45d5d] text-white shrink-0">
+          <span className="flex size-6 items-center justify-center rounded-md bg-primary text-primary-foreground shrink-0">
             <svg viewBox="0 0 24 24" className="size-4 fill-current" aria-hidden>
               <path d="M4.5 5.5L12 19.5L19.5 5.5H15.8L12 12.8L8.2 5.5H4.5Z" />
             </svg>
@@ -541,7 +541,7 @@ function VeloceHeroPreview({
               <div>
                 <div className="flex items-center justify-between pb-4 border-b border-current/10">
                   <div className="flex items-center gap-2">
-                    <span className="flex size-6 items-center justify-center rounded-md bg-[#f45d5d] text-white">
+                    <span className="flex size-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
                       <svg viewBox="0 0 24 24" className="size-4 fill-current" aria-hidden>
                         <path d="M4.5 5.5L12 19.5L19.5 5.5H15.8L12 12.8L8.2 5.5H4.5Z" />
                       </svg>
@@ -582,7 +582,7 @@ function VeloceHeroPreview({
                     >
                       <span>{item}</span>
                       {i === 0 && (
-                        <span className="size-1.5 rounded-full bg-[#f45d5d]" />
+                        <span className="size-1.5 rounded-full bg-primary" />
                       )}
                     </button>
                   ))}
@@ -772,8 +772,8 @@ function VeloceHeroPreview({
               className={cn(
                 "group relative inline-flex h-9 items-center gap-2.5 overflow-hidden rounded-full border pl-4 pr-2 text-[11.5px] font-medium cursor-pointer transition-colors duration-300 active:scale-95",
                 isDark
-                  ? "border-[#F45D5D]/50 bg-[#F45D5D]/15 text-[#F45D5D] hover:border-[#F45D5D] hover:bg-[#F45D5D]/20"
-                  : "border-[#F45D5D]/45 bg-[#F45D5D]/[0.08] text-[#F45D5D] hover:border-[#F45D5D] hover:bg-[#F45D5D]/[0.14]",
+                  ? "border-primary/50 bg-primary/15 text-primary hover:border-primary hover:bg-primary/20"
+                  : "border-primary/45 bg-primary/[0.08] text-primary hover:border-primary hover:bg-primary/[0.14]",
               )}
             >
               <span className="relative z-10 inline-flex flex-col items-start">
@@ -782,10 +782,10 @@ function VeloceHeroPreview({
                 </span>
                 <span
                   aria-hidden
-                  className="h-[1.5px] w-0 rounded-full bg-[#F45D5D] transition-all duration-300 ease-out group-hover:w-full"
+                  className="h-[1.5px] w-0 rounded-full bg-primary transition-all duration-300 ease-out group-hover:w-full"
                 />
               </span>
-              <span className="relative z-10 flex size-6 items-center justify-center rounded-full overflow-hidden bg-[#F45D5D] text-white transition-transform duration-300 ease-out group-hover:scale-110">
+              <span className="relative z-10 flex size-6 items-center justify-center rounded-full overflow-hidden bg-primary text-primary-foreground transition-transform duration-300 ease-out group-hover:scale-110">
                 <ArrowRight className="size-3 -rotate-45 transition-all duration-300 ease-out group-hover:rotate-0 group-hover:translate-x-5 group-hover:opacity-0" />
                 <ArrowRight className="absolute size-3 -translate-x-5 rotate-0 opacity-0 transition-all duration-300 ease-out group-hover:translate-x-0 group-hover:-rotate-45 group-hover:opacity-100" />
               </span>
@@ -879,7 +879,7 @@ function VeloceHeroPreview({
                 }
                 className={cn(
                   "pointer-events-none absolute size-28 rounded-full border",
-                  isDark ? "border-rose-400/20" : "border-rose-300/50",
+                  isDark ? "border-primary/20" : "border-primary/35",
                 )}
               />
 
@@ -901,14 +901,14 @@ function VeloceHeroPreview({
                       ease: "easeOut",
                       times: [0, 0.2, 0.65, 1],
                     }}
-                    className="pointer-events-none absolute size-32 rounded-full bg-[radial-gradient(circle,rgba(244,93,93,0.22)_0%,rgba(244,93,93,0.08)_45%,transparent_72%)] blur-[2px]"
+                    className="pointer-events-none absolute size-32 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--primary)_22%,transparent)_0%,color-mix(in_oklab,var(--primary)_8%,transparent)_45%,transparent_72%)] blur-[2px]"
                   />
                 ))}
 
               {/* Soft radial glow */}
               <div
                 aria-hidden
-                className="pointer-events-none absolute size-24 rounded-full bg-[#f45d5d]/12 blur-xl"
+                className="pointer-events-none absolute size-24 rounded-full bg-primary/12 blur-xl"
               />
 
               {/* Floating megaphone image */}
@@ -951,7 +951,7 @@ function VeloceHeroPreview({
               >
                 <span
                   aria-hidden
-                  className="pointer-events-none absolute inset-0 origin-right scale-x-0 rounded-full bg-[#f45d5d] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100"
+                  className="pointer-events-none absolute inset-0 origin-right scale-x-0 rounded-full bg-primary transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100"
                 />
                 <span className="relative z-10 h-[16px] overflow-hidden flex flex-col leading-[16px]">
                   <span className="transition-transform duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-full">
@@ -963,11 +963,16 @@ function VeloceHeroPreview({
                 </span>
                 <span
                   aria-hidden
-                  className={cn(
-                    "relative z-10 h-0 w-px rounded-full opacity-0 transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:h-4 group-hover:opacity-100 group-hover:bg-white",
-                    isDark ? "bg-zinc-950/30" : "bg-white/40",
-                  )}
-                />
+                  className="relative z-10 flex h-4 w-px items-center justify-center"
+                >
+                  <span
+                    className={cn(
+                      "absolute h-4 w-px rounded-full opacity-100 transition-all duration-300 delay-100 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:h-0 group-hover:opacity-0 group-hover:duration-200 group-hover:delay-0",
+                      isDark ? "bg-zinc-950/30" : "bg-white/40",
+                    )}
+                  />
+                  <span className="h-0 w-px rounded-full bg-white opacity-0 transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:h-4 group-hover:opacity-100 group-hover:duration-400 group-hover:delay-150" />
+                </span>
                 <span className="relative z-10 flex size-4 items-center justify-center overflow-hidden">
                   <ArrowRight className="size-3.5 transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-4 group-hover:-translate-y-4 group-hover:opacity-0" />
                   <ArrowRight className="absolute size-3.5 -rotate-45 -translate-x-4 translate-y-4 opacity-0 transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100" />
@@ -1044,10 +1049,10 @@ function VeloceHeroPreview({
                 <span
                   className={cn(
                     "flex size-6 shrink-0 items-center justify-center rounded-full",
-                    isDark ? "bg-rose-500/15" : "bg-rose-50",
+                    isDark ? "bg-primary/15" : "bg-primary/10",
                   )}
                 >
-                  <BarChart2 className="size-3 text-[#f45d5d]" />
+                  <BarChart2 className="size-3 text-primary" />
                 </span>
                 <div className="min-w-0">
                   <span
@@ -1060,7 +1065,7 @@ function VeloceHeroPreview({
                   </span>
                   <div className="mt-1 flex items-center gap-1.5">
                     <span className="inline-flex items-center gap-1">
-                      <span className="size-1.5 rounded-full bg-rose-400" />
+                      <span className="size-1.5 rounded-full bg-primary/80" />
                       <span
                         className={cn(
                           "h-1 w-4 rounded-full",
@@ -1072,7 +1077,7 @@ function VeloceHeroPreview({
                       <span
                         className={cn(
                           "size-1.5 rounded-full",
-                          isDark ? "bg-rose-300/40" : "bg-rose-200",
+                          isDark ? "bg-primary/25" : "bg-primary/20",
                         )}
                       />
                       <span
@@ -1091,11 +1096,11 @@ function VeloceHeroPreview({
                 className="relative mt-2 flex items-end justify-between gap-1.5 h-20"
               >
                 {[
-                  { h: 24, cls: "bg-rose-400/15" },
-                  { h: 40, cls: "bg-rose-400/25" },
-                  { h: 56, cls: "bg-rose-400/35" },
-                  { h: 74, cls: "bg-rose-400/50" },
-                  { h: 96, cls: "bg-rose-400/70" },
+                  { h: 24, cls: "bg-primary/15" },
+                  { h: 40, cls: "bg-primary/25" },
+                  { h: 56, cls: "bg-primary/35" },
+                  { h: 74, cls: "bg-primary/50" },
+                  { h: 96, cls: "bg-primary/70" },
                 ].map((bar, idx) => {
                   const isDimmed = hoveredBar !== null && hoveredBar !== idx;
                   const isHovered = hoveredBar === idx;
@@ -1125,7 +1130,7 @@ function VeloceHeroPreview({
                             ? "bg-white/15"
                             : "bg-zinc-200"
                           : isHovered
-                            ? "bg-rose-500"
+                            ? "bg-primary"
                             : bar.cls,
                       )}
                     />
@@ -1151,14 +1156,14 @@ function VeloceHeroPreview({
                         dx="0"
                         dy="4"
                         stdDeviation="2.5"
-                        floodColor="#f45d5d"
+                        floodColor="var(--primary)"
                         floodOpacity="0.28"
                       />
                     </filter>
                   </defs>
                   <motion.path
                     d="M 42 52 C 62 34, 88 46, 108 38 C 122 33, 130 24, 136 16"
-                    stroke="#f45d5d"
+                    stroke="var(--primary)"
                     strokeWidth="1.5"
                     strokeLinecap="round"
                     filter="url(#segmentation-curve-shadow)"
@@ -1174,8 +1179,8 @@ function VeloceHeroPreview({
                         : { duration: 0.9, delay: 1.15, ease: [0.16, 1, 0.3, 1] }
                     }
                   />
-                  <circle cx="42" cy="52" r="2" fill="#f45d5d" />
-                  <circle cx="136" cy="16" r="3.6" fill="#f45d5d" />
+                  <circle cx="42" cy="52" r="2" fill="var(--primary)" />
+                  <circle cx="136" cy="16" r="3.6" fill="var(--primary)" />
                 </svg>
               </div>
             </motion.div>
@@ -1277,7 +1282,7 @@ function VeloceHeroPreview({
                 floatingSurface,
               )}
             >
-              <span className="flex size-8 items-center justify-center rounded-full bg-[#f45d5d] text-white">
+              <span className="flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
                 <LoopingAnimatedIcon
                   icon={ArrowRightIcon}
                   size={14}
@@ -1343,7 +1348,7 @@ function VeloceHeroPreview({
                           initial={{ scale: 0.7, opacity: 0.7 }}
                           animate={{ scale: 1.65, opacity: 0 }}
                           transition={{ duration: 0.95, ease: [0.16, 1, 0.3, 1] }}
-                          className="pointer-events-none absolute inset-0 rounded-full border border-rose-500/60"
+                          className="pointer-events-none absolute inset-0 rounded-full border border-primary/60"
                         />
                         {LIKE_BURST_PARTICLES.map((particle, idx) => (
                           <motion.span
@@ -1359,7 +1364,7 @@ function VeloceHeroPreview({
                               duration: 0.9,
                               ease: [0.16, 1, 0.3, 1],
                             }}
-                            className="pointer-events-none absolute size-1 rounded-full bg-rose-500"
+                            className="pointer-events-none absolute size-1 rounded-full bg-primary"
                           />
                         ))}
                       </>
@@ -1371,7 +1376,7 @@ function VeloceHeroPreview({
                       height={16}
                       viewBox="0 0 24 24"
                       fill="none"
-                      stroke="#f43f5e"
+                      stroke="var(--primary)"
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -1392,7 +1397,7 @@ function VeloceHeroPreview({
                     >
                       <motion.path
                         d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"
-                        fill="#f43f5e"
+                        fill="var(--primary)"
                         initial={{ fillOpacity: 0 }}
                         animate={
                           likePulse > 0 && !prefersReducedMotion
@@ -1434,12 +1439,6 @@ function VeloceHeroPreview({
                   size="sm"
                   className="m-0 p-0"
                   ringClassName={isDark ? "ring-[#151821]" : "ring-[#F8F8F8]"}
-                  tooltipStyle={
-                    {
-                      "--primary": "#f45d5d",
-                      "--primary-foreground": "#ffffff",
-                    } as React.CSSProperties
-                  }
                 />
               </div>
 
@@ -1489,7 +1488,7 @@ function VeloceHeroPreview({
                 <div className="flex items-center gap-2.5 min-w-0">
                   <span
                     aria-hidden
-                    className="w-[3px] h-7 rounded-full bg-[#F45D5D] shrink-0"
+                    className="w-[3px] h-7 rounded-full bg-primary shrink-0"
                   />
                   <div className="min-w-0">
                     <p className="text-[11px] font-semibold truncate">
@@ -1581,7 +1580,7 @@ function VeloceHeroPreview({
                   stroke="currentColor"
                   strokeWidth="3"
                   strokeLinecap="round"
-                  className="text-[#f45d5d]"
+                  className="text-primary"
                   initial={
                     prefersReducedMotion
                       ? { pathLength: 1, opacity: 1 }
@@ -1833,32 +1832,32 @@ function VeloceHeroPreview({
                 )}
               >
                 <div className="relative mx-auto size-16 flex items-center justify-center">
-                  <svg viewBox="0 0 64 64" className="size-16 -rotate-90" aria-hidden>
+                  <svg viewBox="0 0 64 64" className="size-16 rotate-[72deg]" aria-hidden>
                     <circle
                       cx="32"
                       cy="32"
-                      r="25"
+                      r="24.5"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="6"
-                      className={isDark ? "text-white/10" : "text-rose-100"}
+                      strokeWidth="9"
+                      className={isDark ? "text-white/10" : "text-primary/15"}
                     />
                     <motion.circle
                       cx="32"
                       cy="32"
-                      r="25"
+                      r="24.5"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="6"
+                      strokeWidth="9"
                       strokeLinecap="round"
-                      className="text-rose-500"
-                      strokeDasharray={2 * Math.PI * 25}
+                      className="text-primary"
+                      strokeDasharray={2 * Math.PI * 24.5}
                       initial={
                         prefersReducedMotion
-                          ? { strokeDashoffset: 2 * Math.PI * 25 * 0.2 }
-                          : { strokeDashoffset: 2 * Math.PI * 25 }
+                          ? { strokeDashoffset: 2 * Math.PI * 24.5 * 0.2 }
+                          : { strokeDashoffset: 2 * Math.PI * 24.5 }
                       }
-                      whileInView={{ strokeDashoffset: 2 * Math.PI * 25 * 0.2 }}
+                      whileInView={{ strokeDashoffset: 2 * Math.PI * 24.5 * 0.2 }}
                       viewport={{ once: true, amount: 0.3 }}
                       transition={
                         prefersReducedMotion
@@ -1867,7 +1866,7 @@ function VeloceHeroPreview({
                       }
                     />
                   </svg>
-                  <span className="absolute text-[13px] font-semibold text-rose-500">
+                  <span className="absolute text-[13px] font-semibold text-primary">
                     80%
                   </span>
                 </div>
@@ -2046,11 +2045,11 @@ function VeloceHeroPreview({
                     />
                   ))}
                   {[
-                    { h: 68, cls: isDark ? "bg-[#F45D5D]/18" : "bg-[#F45D5D]/12" },
-                    { h: 52, cls: isDark ? "bg-[#F45D5D]/30" : "bg-[#F45D5D]/22" },
-                    { h: 42, cls: isDark ? "bg-[#F45D5D]/45" : "bg-[#F45D5D]/35" },
-                    { h: 94, cls: isDark ? "bg-[#F45D5D]/70" : "bg-[#F45D5D]/50" },
-                    { h: 74, cls: isDark ? "bg-[#F45D5D]/90" : "bg-[#F45D5D]/65" },
+                    { h: 68, cls: isDark ? "bg-primary/18" : "bg-primary/12" },
+                    { h: 52, cls: isDark ? "bg-primary/30" : "bg-primary/22" },
+                    { h: 42, cls: isDark ? "bg-primary/45" : "bg-primary/35" },
+                    { h: 94, cls: isDark ? "bg-primary/70" : "bg-primary/50" },
+                    { h: 74, cls: isDark ? "bg-primary/90" : "bg-primary/65" },
                   ].map((bar, idx) => {
                     const isHovered = hoveredSalesBar === idx;
                     const isAnyHovered = hoveredSalesBar !== null;
@@ -2078,7 +2077,7 @@ function VeloceHeroPreview({
                           "relative z-10 flex-1 @4xl:flex-none @4xl:w-4 rounded-[5px] cursor-pointer transition-colors duration-200",
                           isAnyHovered
                             ? isHovered
-                              ? "bg-[#F45D5D]"
+                              ? "bg-primary"
                               : isDark
                                 ? "bg-white/10"
                                 : "bg-zinc-200/80"
@@ -2159,7 +2158,7 @@ function VeloceHeroPreview({
                       className={cn(
                         "flex size-5 shrink-0 items-center justify-center rounded-full transition-colors",
                         isSelected
-                          ? "bg-[#f45d5d] text-white ring-4 ring-[#f45d5d]/15"
+                          ? "bg-primary text-primary-foreground ring-4 ring-primary/15"
                           : isDark
                             ? "border border-white/15 bg-white/5"
                             : "border border-zinc-200 bg-zinc-50",
@@ -2202,7 +2201,7 @@ function VeloceHeroPreview({
                   isDark ? "text-zinc-500" : "text-[#ACACAC]",
                 )}
               >
-                At <span className="font-medium text-[#f45d5d]">Veloce</span>, we offer
+                At <span className="font-medium text-primary">Veloce</span>, we offer
                 comprehensive solutions designed to guide your business through every stage
                 of its journey.
               </p>
@@ -2252,8 +2251,8 @@ function VeloceHeroPreview({
                     className={cn(
                       "relative overflow-hidden rounded-2xl p-4 @sm:p-[18px] transition-all duration-300 hover:-translate-y-0.5 cursor-pointer",
                       isDark
-                        ? "bg-white/[0.04] hover:bg-rose-500/[0.10]"
-                        : "bg-[#F8F8F8] hover:bg-rose-50/85 hover:shadow-[0_8px_24px_rgb(244_93_93/0.08)]",
+                        ? "bg-white/[0.04] hover:bg-primary/[0.10]"
+                        : "bg-[#F8F8F8] hover:bg-primary/[0.06] hover:shadow-[0_8px_24px_color-mix(in_oklab,var(--primary)_10%,transparent)]",
                     )}
                   >
                     {/* Rising background dots on hover */}
@@ -2291,7 +2290,7 @@ function VeloceHeroPreview({
                             }}
                             className={cn(
                               "absolute rounded-full",
-                              isDark ? "bg-rose-400/80" : "bg-[#f45d5d]/75",
+                              isDark ? "bg-primary/80" : "bg-primary/75",
                               dot.size,
                             )}
                           />
@@ -2303,7 +2302,7 @@ function VeloceHeroPreview({
                       <div className="flex items-center gap-2.5">
                         <span
                           className={cn(
-                            "flex size-5 shrink-0 items-center justify-center rounded-full bg-[#f45d5d]",
+                            "flex size-5 shrink-0 items-center justify-center rounded-full bg-primary",
                             isDark ? "text-[#0b0d12]" : "text-white",
                           )}
                         >
@@ -2455,8 +2454,8 @@ function VeloceHeroPreview({
                 className={cn(
                   "flex size-12 @sm:size-13 items-center justify-center rounded-2xl shadow-[0_8px_24px_rgb(0_0_0/0.04)]",
                   isDark
-                    ? "bg-[#2A151B] text-rose-400"
-                    : "bg-[#FFEEEF] text-[#f45d5d]",
+                    ? "bg-[color-mix(in_oklab,var(--primary)_16%,#151821)] text-primary"
+                    : "bg-[color-mix(in_oklab,var(--primary)_10%,white)] text-primary",
                 )}
               >
                 <LoopingAnimatedIcon
@@ -2464,7 +2463,7 @@ function VeloceHeroPreview({
                   size={20}
                   duration={2.2}
                   delay={0.15}
-                  color="#f45d5d"
+                  color="var(--primary)"
                   prefersReducedMotion={prefersReducedMotion}
                 />
               </motion.div>
@@ -2482,8 +2481,8 @@ function VeloceHeroPreview({
                 className={cn(
                   "flex size-12 @sm:size-13 items-center justify-center rounded-2xl shadow-[0_8px_24px_rgb(0_0_0/0.04)]",
                   isDark
-                    ? "bg-[#2A151B] text-rose-400"
-                    : "bg-[#FFEEEF] text-[#f45d5d]",
+                    ? "bg-[color-mix(in_oklab,var(--primary)_16%,#151821)] text-primary"
+                    : "bg-[color-mix(in_oklab,var(--primary)_10%,white)] text-primary",
                 )}
               >
                 <LoopingAnimatedIcon
@@ -2491,7 +2490,7 @@ function VeloceHeroPreview({
                   size={20}
                   duration={2.2}
                   delay={0.4}
-                  color="#f45d5d"
+                  color="var(--primary)"
                   prefersReducedMotion={prefersReducedMotion}
                 />
               </motion.div>
@@ -2558,8 +2557,8 @@ function VeloceHeroPreview({
                     className={cn(
                       "flex size-6 items-center justify-center rounded-full shrink-0",
                       isDark
-                        ? "bg-rose-500/15 text-rose-400"
-                        : "bg-rose-50 text-[#f45d5d]",
+                        ? "bg-primary/15 text-primary"
+                        : "bg-primary/10 text-primary",
                     )}
                   >
                     <LoopingAnimatedIcon
@@ -2567,7 +2566,7 @@ function VeloceHeroPreview({
                       size={13}
                       duration={2.0}
                       delay={0.25}
-                      color="#f45d5d"
+                      color="var(--primary)"
                       prefersReducedMotion={prefersReducedMotion}
                     />
                   </span>
@@ -2577,7 +2576,7 @@ function VeloceHeroPreview({
                     </span>
                     <div className="mt-1 flex items-center gap-1.5">
                       <span className="inline-flex items-center gap-1">
-                        <span className="size-1 rounded-full bg-rose-400" />
+                        <span className="size-1 rounded-full bg-primary/80" />
                         <span
                           className={cn(
                             "h-0.5 w-10 rounded-full",
@@ -2589,7 +2588,7 @@ function VeloceHeroPreview({
                         <span
                           className={cn(
                             "size-1 rounded-full",
-                            isDark ? "bg-rose-300/40" : "bg-rose-200",
+                            isDark ? "bg-primary/25" : "bg-primary/20",
                           )}
                         />
                         <span
@@ -2620,7 +2619,7 @@ function VeloceHeroPreview({
                         className={cn(
                           "rounded-full px-2.5 py-0.5 text-[8.5px] @sm:text-[9px] font-medium capitalize transition-[background-color] duration-150 cursor-pointer",
                           active
-                            ? "bg-[#f45d5d] text-white shadow-xs"
+                            ? "bg-primary text-primary-foreground shadow-xs"
                             : isDark
                               ? "text-zinc-400 hover:text-zinc-200"
                               : "text-zinc-500 hover:text-zinc-800",
@@ -2643,8 +2642,8 @@ function VeloceHeroPreview({
                 >
                   <defs>
                     <linearGradient id="veloce-b2b-area" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#f45d5d" stopOpacity="0.42" />
-                      <stop offset="100%" stopColor="#f45d5d" stopOpacity="0.02" />
+                      <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.42" />
+                      <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.02" />
                     </linearGradient>
                   </defs>
 
@@ -2683,7 +2682,7 @@ function VeloceHeroPreview({
                   {/* Line Stroke */}
                   <motion.path
                     fill="none"
-                    stroke="#f45d5d"
+                    stroke="var(--primary)"
                     strokeWidth="1.4"
                     strokeLinejoin="round"
                     strokeLinecap="round"
@@ -2757,7 +2756,7 @@ function VeloceHeroPreview({
               isDark ? "text-zinc-500" : "text-[#ACACAC]",
             )}
           >
-            At <span className="font-medium text-[#f45d5d]">Veloce</span>, we take pride
+            At <span className="font-medium text-primary">Veloce</span>, we take pride
             in offering a diverse range of solutions meticulously crafted to meet your
             unique needs.
           </p>
@@ -2810,7 +2809,7 @@ function VeloceHeroPreview({
                   {
                     title: "Tailored Convenience",
                     subtitle: "Customize your subscription",
-                    bar: "bg-[#f45d5d]",
+                    bar: "bg-primary",
                   },
                   {
                     title: "Cost Savings and Value",
@@ -2944,14 +2943,14 @@ function VeloceHeroPreview({
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="5"
-                        className={isDark ? "text-white/10" : "text-rose-100"}
+                        className={isDark ? "text-white/10" : "text-primary/15"}
                       />
                       <motion.circle
                         cx="24"
                         cy="24"
                         r="19"
                         fill="none"
-                        stroke="#f45d5d"
+                        stroke="var(--primary)"
                         strokeWidth="5"
                         strokeLinecap="round"
                         strokeDasharray={2 * Math.PI * 19}
@@ -2969,7 +2968,7 @@ function VeloceHeroPreview({
                         }
                       />
                     </svg>
-                    <span className="absolute text-[10px] font-semibold text-[#f45d5d]">
+                    <span className="absolute text-[10px] font-semibold text-primary">
                       80%
                     </span>
                   </div>
@@ -2983,14 +2982,14 @@ function VeloceHeroPreview({
                   )}
                 >
                   <div className="flex items-start gap-1.5">
-                    <span className="mt-0.5 size-2.5 shrink-0 rounded-full bg-[#f45d5d]" />
+                    <span className="mt-0.5 size-2.5 shrink-0 rounded-full bg-primary" />
                     <div>
                       <span className="block text-[9px] font-semibold leading-tight tracking-tight">
                         Segmentation
                       </span>
                       <div className="mt-1 flex items-center gap-1.5">
                         <span className="inline-flex items-center gap-0.5">
-                          <span className="size-1 rounded-full bg-[#f45d5d]" />
+                          <span className="size-1 rounded-full bg-primary" />
                           <span
                             className={cn(
                               "h-0.5 w-3.5 rounded-full",
@@ -2999,7 +2998,7 @@ function VeloceHeroPreview({
                           />
                         </span>
                         <span className="inline-flex items-center gap-0.5">
-                          <span className="size-1 rounded-full bg-rose-300" />
+                          <span className="size-1 rounded-full bg-primary/35" />
                           <span
                             className={cn(
                               "h-0.5 w-3.5 rounded-full",
@@ -3041,17 +3040,17 @@ function VeloceHeroPreview({
                             "flex-1 rounded-[4px] cursor-pointer transition-colors duration-200",
                             isAnyHovered
                               ? isHovered
-                                ? "bg-[#f45d5d]"
+                                ? "bg-primary"
                                 : isDark
                                   ? "bg-white/10"
                                   : "bg-zinc-200/80"
                               : i === 4
-                                ? "bg-[#f45d5d]/80"
+                                ? "bg-primary/80"
                                 : i === 3
-                                  ? "bg-[#f45d5d]/55"
+                                  ? "bg-primary/55"
                                   : isDark
-                                    ? "bg-rose-500/25"
-                                    : "bg-rose-200/75",
+                                    ? "bg-primary/25"
+                                    : "bg-primary/25",
                           )}
                         />
                       );
@@ -3065,11 +3064,11 @@ function VeloceHeroPreview({
                     >
                       <path
                         d="M 10 46 Q 48 44, 72 30 T 108 12"
-                        stroke="#f45d5d"
+                        stroke="var(--primary)"
                         strokeWidth="1.35"
                         strokeLinecap="round"
                       />
-                      <circle cx="108" cy="12" r="2.2" fill="#f45d5d" />
+                      <circle cx="108" cy="12" r="2.2" fill="var(--primary)" />
                     </svg>
                   </div>
                 </div>
@@ -3174,11 +3173,11 @@ function VeloceHeroPreview({
                             "flex-1 rounded-t-xs cursor-pointer transition-colors duration-200",
                             isAnyHovered
                               ? isHovered
-                                ? "bg-[#f45d5d]"
+                                ? "bg-primary"
                                 : isDark
                                   ? "bg-white/10"
                                   : "bg-zinc-200/80"
-                              : "bg-rose-300/80",
+                              : "bg-primary/40",
                           )}
                         />
                       );
@@ -3226,7 +3225,7 @@ function VeloceHeroPreview({
               >
                 captivates and resonates with your audience through our cutting-edge
                 advertising solutions at{" "}
-                <span className="font-medium text-[#f45d5d]">Veloce</span>. In a world
+                <span className="font-medium text-primary">Veloce</span>. In a world
                 flooded with information, it&apos;s not just about being seen; it&apos;s
                 about being remembered.
               </p>
@@ -3285,12 +3284,12 @@ function VeloceHeroPreview({
                         size={28}
                         duration={2.2}
                         delay={tile.delay}
-                        color="rgba(244, 93, 93, 0.72)"
+                        color="color-mix(in oklab, var(--primary) 72%, transparent)"
                         prefersReducedMotion={prefersReducedMotion}
                       />
                       <span
                         className={cn(
-                          "absolute flex size-3 items-center justify-center bg-[#f45d5d] text-white text-[7.5px] font-bold",
+                          "absolute flex size-3 items-center justify-center bg-primary text-primary-foreground text-[7.5px] font-bold",
                           tile.badgePos,
                         )}
                       >
@@ -3356,13 +3355,13 @@ function VeloceHeroPreview({
                   {/* Item 1 */}
                   <div className="pb-3.5 border-b border-current/5">
                     <div className="flex items-center gap-2">
-                      <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-rose-500/10 text-[#f45d5d]">
+                      <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
                         <LoopingAnimatedIcon
                           icon={ChartNoAxesColumnIcon}
                           size={11}
                           duration={2.0}
                           delay={0.1}
-                          color="#f45d5d"
+                          color="var(--primary)"
                           prefersReducedMotion={prefersReducedMotion}
                         />
                       </span>
@@ -3384,13 +3383,13 @@ function VeloceHeroPreview({
                   {/* Item 2 */}
                   <div className="py-3.5 border-b border-current/5">
                     <div className="flex items-center gap-2">
-                      <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-rose-500/10 text-[#f45d5d]">
+                      <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
                         <LoopingAnimatedIcon
                           icon={CopyCheckIcon}
                           size={11}
                           duration={1.8}
                           delay={0.3}
-                          color="#f45d5d"
+                          color="var(--primary)"
                           prefersReducedMotion={prefersReducedMotion}
                         />
                       </span>
@@ -3446,7 +3445,7 @@ function VeloceHeroPreview({
                             className={cn(
                               "relative flex size-2.5 shrink-0 items-center justify-center rounded-full border transition-colors",
                               selected
-                                ? "border-[#f45d5d]"
+                                ? "border-primary"
                                 : isDark
                                   ? "border-zinc-600"
                                   : "border-zinc-300",
@@ -3460,7 +3459,7 @@ function VeloceHeroPreview({
                                     ? { duration: 0 }
                                     : { type: "spring", stiffness: 400, damping: 30 }
                                 }
-                                className="absolute inset-0 flex items-center justify-center rounded-full bg-[#f45d5d] text-white"
+                                className="absolute inset-0 flex items-center justify-center rounded-full bg-primary text-primary-foreground"
                               >
                                 <Check className="size-1.5 stroke-[3]" />
                               </motion.span>
@@ -3486,14 +3485,14 @@ function VeloceHeroPreview({
                                 }
                                 className={cn(
                                   "absolute inset-0 -z-10 rounded-md",
-                                  isDark ? "bg-rose-500/15" : "bg-rose-50/95",
+                                  isDark ? "bg-primary/15" : "bg-primary/10",
                                 )}
                               />
                             )}
                             <div className="flex items-center gap-1.5 min-w-0">
                               <span
                                 aria-hidden
-                                className="w-[2px] h-4 rounded-full bg-[#f45d5d] shrink-0"
+                                className="w-[2px] h-4 rounded-full bg-primary shrink-0"
                               />
                               <div className="min-w-0">
                                 <p className="text-[7px] font-semibold truncate">
@@ -3522,13 +3521,13 @@ function VeloceHeroPreview({
                   )}
                 >
                   <div className="flex items-center gap-1.5">
-                    <span className="flex size-4 items-center justify-center rounded-full bg-rose-500/10 text-[#f45d5d]">
+                    <span className="flex size-4 items-center justify-center rounded-full bg-primary/10 text-primary">
                       <LoopingAnimatedIcon
                         icon={ChartNoAxesColumnIcon}
                         size={9}
                         duration={2.0}
                         delay={0.35}
-                        color="#f45d5d"
+                        color="var(--primary)"
                         prefersReducedMotion={prefersReducedMotion}
                       />
                     </span>
@@ -3602,7 +3601,7 @@ function VeloceHeroPreview({
           >
             Step into a world of accolades and achievements that underscore our
             commitment to excellence at{" "}
-            <span className="font-medium text-[#f45d5d]">Veloce.</span>
+            <span className="font-medium text-primary">Veloce.</span>
           </p>
         </motion.div>
 
@@ -3856,69 +3855,68 @@ function VeloceHeroPreview({
                       stroke="currentColor"
                       strokeWidth="1.75"
                       strokeLinecap="round"
+                      initial={false}
                       animate={
                         prefersReducedMotion
                           ? undefined
-                          : { scale: isOpen ? [1, 1.15, 1] : 1 }
+                          : isOpen
+                            ? { rotate: 180, scale: [1, 1.18, 1] }
+                            : {
+                                rotate: [0, 8, 0, -8, 0],
+                                scale: [1, 1.06, 1, 1.06, 1],
+                              }
                       }
-                      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                      transition={
+                        prefersReducedMotion
+                          ? { duration: 0 }
+                          : isOpen
+                            ? {
+                                rotate: { type: "spring", stiffness: 320, damping: 22 },
+                                scale: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
+                              }
+                            : {
+                                duration: 3,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                              }
+                      }
                       aria-hidden
                     >
                       <motion.line
                         x1="3.5"
-                        y1="6"
+                        y1="8"
                         x2="12.5"
-                        y2="6"
+                        y2="8"
                         initial={false}
                         animate={
                           prefersReducedMotion
                             ? undefined
-                            : isOpen
-                              ? { x: 0, y: 2, rotate: 45 }
-                              : { x: [0, 1.4, 0, -1.4, 0], y: 0, rotate: 0 }
+                            : { scaleX: isOpen ? [1, 1.15, 1] : 1 }
                         }
-                        transition={
-                          isOpen
-                            ? { type: "spring", stiffness: 360, damping: 24 }
-                            : {
-                                x: {
-                                  duration: 2.6,
-                                  repeat: Infinity,
-                                  ease: "easeInOut",
-                                },
-                                y: { type: "spring", stiffness: 360, damping: 24 },
-                                rotate: { type: "spring", stiffness: 360, damping: 24 },
-                              }
-                        }
-                        style={{ transformOrigin: "8px 6px" }}
+                        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                        style={{ transformOrigin: "8px 8px" }}
                       />
                       <motion.line
-                        x1="3.5"
-                        y1="10"
-                        x2="12.5"
-                        y2="10"
+                        x1="8"
+                        y1="3.5"
+                        x2="8"
+                        y2="12.5"
                         initial={false}
                         animate={
-                          prefersReducedMotion
-                            ? undefined
-                            : isOpen
-                              ? { x: 0, y: -2, rotate: -45 }
-                              : { x: [0, -1.4, 0, 1.4, 0], y: 0, rotate: 0 }
+                          isOpen
+                            ? { rotate: 90, opacity: 0, scaleY: 0 }
+                            : { rotate: 0, opacity: 1, scaleY: 1 }
                         }
                         transition={
-                          isOpen
-                            ? { type: "spring", stiffness: 360, damping: 24 }
+                          prefersReducedMotion
+                            ? { duration: 0 }
                             : {
-                                x: {
-                                  duration: 2.6,
-                                  repeat: Infinity,
-                                  ease: "easeInOut",
-                                },
-                                y: { type: "spring", stiffness: 360, damping: 24 },
-                                rotate: { type: "spring", stiffness: 360, damping: 24 },
+                                rotate: { type: "spring", stiffness: 340, damping: 24 },
+                                scaleY: { duration: 0.25, ease: [0.22, 1, 0.36, 1] },
+                                opacity: { duration: 0.2, ease: "easeOut" },
                               }
                         }
-                        style={{ transformOrigin: "8px 10px" }}
+                        style={{ transformOrigin: "8px 8px" }}
                       />
                     </motion.svg>
                   </span>
@@ -4001,7 +3999,7 @@ function VeloceHeroPreview({
           )}
         >
           <div>
-            <p className="text-[10px] @sm:text-[10.5px] font-medium text-[#f45d5d]">
+            <p className="text-[10px] @sm:text-[10.5px] font-medium text-primary">
               Do You Have Any Question
             </p>
             <h4 className="mt-0.5 text-lg @sm:text-[20px] font-semibold tracking-tight">
@@ -4022,7 +4020,7 @@ function VeloceHeroPreview({
             {/* Left entering rounded-bg icon */}
             <span
               aria-hidden
-              className="absolute left-2.5 flex size-5 items-center justify-center rounded-full bg-[#f45d5d] text-white -translate-x-10 opacity-0 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0 group-hover:opacity-100"
+              className="absolute left-2.5 flex size-5 items-center justify-center rounded-full bg-primary text-primary-foreground -translate-x-10 opacity-0 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0 group-hover:opacity-100"
             >
               <ArrowRight className="size-3" />
             </span>
@@ -4035,7 +4033,7 @@ function VeloceHeroPreview({
             {/* Right exiting rounded-bg icon */}
             <span
               aria-hidden
-              className="flex size-5 items-center justify-center rounded-full bg-[#f45d5d] text-white translate-x-0 opacity-100 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-12 group-hover:opacity-0"
+              className="flex size-5 items-center justify-center rounded-full bg-primary text-primary-foreground translate-x-0 opacity-100 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-12 group-hover:opacity-0"
             >
               <ArrowRight className="size-3" />
             </span>
@@ -4055,7 +4053,7 @@ function VeloceHeroPreview({
             {/* Left Brand + Contact Info */}
             <div className="@4xl:col-span-6">
               <div className="flex items-center gap-2">
-                <span className="flex size-6 items-center justify-center rounded-md bg-[#f45d5d] text-white shrink-0">
+                <span className="flex size-6 items-center justify-center rounded-md bg-primary text-primary-foreground shrink-0">
                   <svg viewBox="0 0 24 24" className="size-4 fill-current" aria-hidden>
                     <path d="M4.5 5.5L12 19.5L19.5 5.5H15.8L12 12.8L8.2 5.5H4.5Z" />
                   </svg>
@@ -4101,7 +4099,7 @@ function VeloceHeroPreview({
                             : "text-zinc-400 hover:text-zinc-700",
                         )}
                       >
-                        <ArrowRight className="size-3 shrink-0 opacity-65 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-[#f45d5d]" />
+                        <ArrowRight className="size-3 shrink-0 opacity-65 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-primary" />
                         <span>{item}</span>
                       </button>
                     </li>
@@ -4120,7 +4118,7 @@ function VeloceHeroPreview({
                       icon: (
                         <svg
                           viewBox="0 0 24 24"
-                          className="size-3.5 shrink-0 stroke-current fill-none opacity-75 transition-colors group-hover:text-[#f45d5d]"
+                          className="size-3.5 shrink-0 stroke-current fill-none opacity-75 transition-colors group-hover:text-primary"
                           strokeWidth="1.9"
                           aria-hidden
                         >
@@ -4135,7 +4133,7 @@ function VeloceHeroPreview({
                       icon: (
                         <svg
                           viewBox="0 0 24 24"
-                          className="size-3.5 shrink-0 fill-current opacity-75 transition-colors group-hover:text-[#f45d5d]"
+                          className="size-3.5 shrink-0 fill-current opacity-75 transition-colors group-hover:text-primary"
                           aria-hidden
                         >
                           <path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 4v2.2H8v3h2.5V21h3z" />
@@ -4147,7 +4145,7 @@ function VeloceHeroPreview({
                       icon: (
                         <svg
                           viewBox="0 0 24 24"
-                          className="size-3.5 shrink-0 fill-current opacity-75 transition-colors group-hover:text-[#f45d5d]"
+                          className="size-3.5 shrink-0 fill-current opacity-75 transition-colors group-hover:text-primary"
                           aria-hidden
                         >
                           <path d="M22 5.9a8.2 8.2 0 0 1-2.36.65 4.12 4.12 0 0 0 1.8-2.27 8.2 8.2 0 0 1-2.6 1 4.1 4.1 0 0 0-7 3.74A11.64 11.64 0 0 1 3.4 4.7a4.1 4.1 0 0 0 1.27 5.47 4.07 4.07 0 0 1-1.86-.51v.05a4.1 4.1 0 0 0 3.29 4.02 4.1 4.1 0 0 1-1.85.07 4.1 4.1 0 0 0 3.83 2.85A8.23 8.23 0 0 1 2 18.4a11.62 11.62 0 0 0 6.29 1.84c7.55 0 11.68-6.25 11.68-11.67 0-.18 0-.35-.01-.53A8.34 8.34 0 0 0 22 5.9Z" />
@@ -4194,7 +4192,7 @@ function VeloceHeroPreview({
                             : "text-zinc-400 hover:text-zinc-700",
                         )}
                       >
-                        <ArrowRight className="size-3 shrink-0 opacity-65 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-[#f45d5d]" />
+                        <ArrowRight className="size-3 shrink-0 opacity-65 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-primary" />
                         <span>{item}</span>
                       </button>
                     </li>
