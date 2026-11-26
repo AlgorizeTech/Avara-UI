@@ -85,6 +85,21 @@ All 7 options as live previews: https://avaraui.com/view/navbar
    - Set these props: `{"variant":"ecommerce-mega-nav"}`
    - Docs: https://avaraui.com/docs/nextjs/navbar#e-commerce-mega-nav
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/navbar.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/navbar
+```
+
 ## Spotlight Pill Navbar
 
 A sticky pill that narrows and gains a frosted backdrop on scroll, with a sliding hover pill behind the links and a roll-up CTA button.
@@ -107,6 +122,8 @@ export default function SpotlightHeader() {
 }
 ```
 
+## Examples
+
 ## Installation
 
 Add the component by URL — no setup needed:
@@ -121,8 +138,6 @@ Or register the @avara-ui registry once per project and add it by name:
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/navbar
 ```
-
-## Examples
 
 ### Navbar
 

@@ -59,6 +59,21 @@ All 4 options as live previews: https://avaraui.com/view/counter-section
    - Set these props: `{"variant":"halftone-cinema"}`
    - Docs: https://avaraui.com/docs/nextjs/counter-section#3-halftone-cinema-architectural
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/counter-section.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/counter-section
+```
+
 ## 1. Cyber HUD (Terminal & Telemetry)
 
 Developer and fintech terminal HUD with bracket corner crosshairs [+], subtle scanlines, live status LEDs, and character scramble decryption on reveal.
@@ -273,21 +288,6 @@ export default function SpotlightGradientCounter() {
     />
   );
 }
-```
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/counter-section.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/counter-section
 ```
 
 ## Features

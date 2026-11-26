@@ -16,9 +16,6 @@ import { LazyHydrate } from "@/components/home/lazy-hydrate";
      of section code was fetched before the hero had painted.)
    - `load`: the dynamic import the browser runs when the section is needed. */
 /* eslint-disable @typescript-eslint/no-require-imports */
-const SHOWCASE = typeof window === "undefined"
-	? (require("@/components/home/component-showcase") as typeof import("@/components/home/component-showcase")).ComponentShowcase
-	: null;
 const WHY = typeof window === "undefined"
 	? (require("@/components/home/why-choose-us-section") as typeof import("@/components/home/why-choose-us-section")).WhyChooseUsSection
 	: null;
@@ -46,7 +43,7 @@ const FOOTER = typeof window === "undefined"
    MAIN PAGE ENTRY POINT
    ═══════════════════════════════════════════════ */
 
-/* Everything below the showcase is skipped by the renderer until it nears the
+/* Everything below the hero is skipped by the renderer until it nears the
    viewport (`content-visibility: auto`): without it, the first style + layout
    pass covered all ~3.6k elements of the static HTML in one ~600 ms task, which
    is most of the page's blocking time. `contain-intrinsic-size: auto <px>` keeps
@@ -61,16 +58,6 @@ export default function HomePage() {
 			    crawlers; the footer stays outside it so it keeps its own role. */}
 			<main>
 				<HeroSection />
-								{/* Eager: the showcase's demos are sized by FitToWidth after mount, so
-				    its server HTML is ~1.6k px shorter than the live section (varies with
-				    the viewport, so it can't be reserved). It comes alive as soon as the
-				    first paint has settled instead of waiting to be scrolled near, but
-				    no longer holds up the hero's hydration or preloads its ~150 KB. */}
-				<LazyHydrate
-					eager
-					server={SHOWCASE}
-					load={() => import("@/components/home/component-showcase").then((m) => m.ComponentShowcase)}
-				/>
 				<LazyHydrate
 					server={WHY}
 					className="[content-visibility:auto] [contain-intrinsic-size:auto_1750px] md:[contain-intrinsic-size:auto_2050px] lg:[contain-intrinsic-size:auto_1190px]"
@@ -78,7 +65,7 @@ export default function HomePage() {
 				/>
 				<LazyHydrate
 					server={GRID}
-					className="[content-visibility:auto] [contain-intrinsic-size:auto_3270px] md:[contain-intrinsic-size:auto_1770px] lg:[contain-intrinsic-size:auto_1290px]"
+					className="[content-visibility:auto] [contain-intrinsic-size:auto_4900px] md:[contain-intrinsic-size:auto_2550px] lg:[contain-intrinsic-size:auto_1900px]"
 					load={() =>
 						import("@/components/home/component-preview-grid-section").then(
 							(m) => m.ComponentPreviewGridSection,

@@ -107,6 +107,21 @@ The breakpoints are **container queries** (`@container/timeline`, `@container/tl
 
 ## Examples
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/timeline.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/timeline
+```
+
 ### Center layout
 
 - Set `layout="center"` to alternate cards either side of the rail. It folds back to one column below 576px — and that is a **container** query, so it tracks the column the timeline sits in, not the window.

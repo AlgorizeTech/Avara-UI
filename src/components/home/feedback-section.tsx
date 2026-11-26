@@ -165,13 +165,15 @@ function VideoPlayer({ media, name, alt }: { media: FeedbackMedia; name: string;
 				poster={media.poster}
 				preload={media.poster ? "none" : "metadata"}
 				playsInline
+				muted
 				aria-label={alt}
 				{...size}
 				onPlay={() => setPlaying(true)}
 				onPause={() => setPlaying(false)}
 				onEnded={() => setPlaying(false)}
-				className="block h-auto w-full object-cover"
-			/>
+				className="block h-auto w-full object-cover">
+				<track kind="captions" src="/captions/silent-demo.vtt" srcLang="en" label="English" default />
+			</video>
 			<span
 				aria-hidden="true"
 				className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/45 to-transparent"
@@ -382,7 +384,7 @@ function Author({ item, platform }: { item: FeedbackItem; platform: Platform }) 
 				{item.name}
 			</span>
 			{handle && (
-				<span className="mt-0.5 block truncate text-[12.5px] text-foreground/45 transition-colors duration-200 group-hover/author:text-primary/70">
+				<span className="mt-0.5 block truncate text-[12.5px] text-foreground/60 transition-colors duration-200 group-hover/author:text-primary/70">
 					{handle}
 				</span>
 			)}
@@ -400,7 +402,7 @@ function Author({ item, platform }: { item: FeedbackItem; platform: Platform }) 
 					href={item.profile}
 					target="_blank"
 					rel="noopener noreferrer"
-					aria-label={`${item.name} on ${PLATFORM_LABEL[platform]}`}
+					aria-label={`${item.name}${handle ? ` ${handle}` : ""} on ${PLATFORM_LABEL[platform]}`}
 					className="group/author relative z-10 block min-w-0 rounded-md leading-tight outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-card">
 					{text}
 				</a>

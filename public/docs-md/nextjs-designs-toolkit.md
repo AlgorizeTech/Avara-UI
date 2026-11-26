@@ -41,6 +41,21 @@ All 2 options as live previews: https://avaraui.com/view/designs-toolkit
    - Set these props: `{"variant":"roadmap"}`
    - Docs: https://avaraui.com/docs/nextjs/designs-toolkit#winding-roadmap-pathway
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/designs-toolkit.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/designs-toolkit
+```
+
 ## Pinned toolkit corkboard
 
 Staggered 3-column pinned resource cards with 3D pushpins, custom icons, and connected dashed paths.
@@ -139,7 +154,9 @@ export default function CreativeResourcesSection() {
 }
 ```
 
-### Installation
+## Examples
+
+## Installation
 
 Add the component by URL — no setup needed:
 
@@ -153,8 +170,6 @@ Or register the @avara-ui registry once per project and add it by name:
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/designs-toolkit
 ```
-
-## Examples
 
 ### Winding Roadmap Pathway
 

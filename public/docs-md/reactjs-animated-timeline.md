@@ -112,6 +112,21 @@ export default function CompanyHistory() {
 
 ### Layouts
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/animated-timeline.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/animated-timeline
+```
+
 ### Left layout
 
 - Use `layout="left"` to pin the rail to one edge and stack every card beside it — the compact option for narrow columns and sidebars.

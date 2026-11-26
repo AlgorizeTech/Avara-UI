@@ -40,6 +40,21 @@ All 2 options as live previews: https://avaraui.com/view/faq-section
    - Set these props: `{"variant":"two-column"}`
    - Docs: https://avaraui.com/docs/nextjs/faq-section#2-two-column-support-faq
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/faq-section.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/faq-section
+```
+
 ## 1. Homepage FAQ Section
 
 The complete homepage FAQ section. Features a centered header, ambient background glows, an architectural nature photography canvas that morphs dynamically with each open question, and an accessible accordion list.
@@ -86,21 +101,6 @@ export default function TwoColumnFAQExample() {
     />
   );
 }
-```
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/faq-section.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/faq-section
 ```
 
 ## Props Reference

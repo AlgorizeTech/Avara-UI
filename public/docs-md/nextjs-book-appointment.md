@@ -40,6 +40,21 @@ All 2 options as live previews: https://avaraui.com/view/book-appointment
    - Set these props: `{"variant":"solid"}`
    - Docs: https://avaraui.com/docs/nextjs/book-appointment#solid
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/book-appointment.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/book-appointment
+```
+
 ## Clinic booking page
 
 Pick a day and a time, then press Book. The button stays busy while your `onBook` promise runs, then the confirmation draws itself in.
@@ -200,21 +215,6 @@ export default function BookAppointmentPage() {
     />
   );
 }
-```
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/book-appointment.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/book-appointment
 ```
 
 ## Just the booking panel

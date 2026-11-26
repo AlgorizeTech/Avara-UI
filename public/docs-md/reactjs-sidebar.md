@@ -12,6 +12,21 @@ Building a good sidebar is one of the hardest parts of dashboard development. It
 
 Click the collapse trigger in each preview's header to watch the labels hide and the icons centre — hover a collapsed icon and its label appears in a [Tooltip](https://avaraui.com/docs/reactjs/tooltip). Switch a preview to the phone size and the sidebar becomes a dismissible flyout instead.
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/sidebar.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/sidebar
+```
+
 ## Categorized Dashboard Sidebar
 
 Modern SaaS sidebar layout with workspace switcher, collapsible category groups, counter badges, and user profile footer.
@@ -101,6 +116,8 @@ export default function CategorizedSidebarDemo() {
 }
 ```
 
+## Examples
+
 ## Installation
 
 Add the component by URL — no setup needed:
@@ -115,8 +132,6 @@ Or register the @avara-ui registry once per project and add it by name:
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/sidebar
 ```
-
-## Examples
 
 ### Curved
 

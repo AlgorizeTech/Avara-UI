@@ -10,6 +10,21 @@ A scroll-driven curved arc process section with dynamic SVG progress strokes, an
 
 As the user scrolls through the section, the arc stroke traces along the curve with your theme color, rotating the orbital nodes and revealing each project milestone at the apex.
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/arc-process.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/arc-process
+```
+
 ## Arc Process Section
 
 Scroll-driven dome arc process with live colored progress border, animated header underline, orbital badge nodes, and milestone card details.
@@ -89,21 +104,6 @@ export default function ArcProcessDemo() {
     />
   );
 }
-```
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/arc-process.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/arc-process
 ```
 
 ## Props Reference

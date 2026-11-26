@@ -63,7 +63,7 @@ export function ComponentDirectorySection() {
 	return (
 		<section id="components" className="relative border-t border-border/40 bg-background pt-10 md:pt-14">
 			<div className="mx-auto max-w-[1160px] px-5 text-center md:px-10">
-				<span className="mb-3 inline-block font-mono text-[11px] uppercase tracking-[0.2em] text-foreground/45">
+				<span className="mb-3 inline-block font-mono text-[11px] uppercase tracking-[0.2em] text-foreground/60">
 					Free components
 				</span>
 				<h2 className={`${SECTION_H2} mx-auto max-w-[18ch] sm:max-w-none`}>
@@ -118,7 +118,7 @@ export function ComponentDirectorySection() {
 										on ? "bg-foreground text-background" : "text-foreground/60 hover:text-foreground",
 									)}>
 									{tab.label}
-									<span className="tabular-nums opacity-60">{tab.cells.length}</span>
+									<span className="tabular-nums opacity-80">{tab.cells.length}</span>
 								</button>
 							);
 						})}
