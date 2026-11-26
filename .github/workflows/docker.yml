@@ -59,14 +59,18 @@ jobs:
       # The shipped image is the last FROM in the Dockerfile plus static files, so
       # its OS packages come entirely from that base image. Scanning it directly
       # avoids a full build, and reading it from the Dockerfile keeps the two in sync.
+      # `!cancelled()` so this still runs, and reports, when the lockfile scan above
+      # failed. The job still ends red if either scan fails.
       - name: Find the shipped base image
         id: base
+        if: ${{ !cancelled() }}
         run: |
           ref=$(awk '/^FROM / {img=$2} END {print img}' Dockerfile)
           echo "Shipped base image: $ref"
           echo "ref=$ref" >> "$GITHUB_OUTPUT"
 
       - name: Scan shipped base image (OS packages)
+        if: ${{ !cancelled() }}
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           scan-type: image
