@@ -703,7 +703,7 @@ export const HomepageHero = forwardRef<HTMLElement, HomepageHeroProps>(
             {primaryAction && (
               <LinkComp
                 href={primaryAction.href}
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-[color-mix(in_oklab,var(--primary)_72%,black)] px-6 text-[15px] font-semibold text-primary-foreground outline-none transition-[transform,background-color] duration-200 hover:bg-[color-mix(in_oklab,var(--primary)_62%,black)] focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.98]"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-foreground px-6 text-[15px] font-semibold text-background outline-none transition-[transform,background-color] duration-200 hover:bg-foreground/90 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.98]"
               >
                 {primaryAction.icon}
                 {primaryAction.label}
