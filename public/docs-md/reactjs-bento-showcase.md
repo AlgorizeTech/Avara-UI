@@ -10,6 +10,21 @@ A six-card marketing bento grid for agency and services landing pages: a hero wi
 
 `BentoShowcase` is built from library pieces: the moving cards are [Marquee](https://avaraui.com/docs/reactjs/marquee), the conversation is [Chat Bubble](https://avaraui.com/docs/reactjs/chat-bubble), the rating is [Half Stars](https://avaraui.com/docs/reactjs/half-stars), the device is [Mobile Mockup](https://avaraui.com/docs/reactjs/mobile-mockup) and the call to action is [Button](https://avaraui.com/docs/reactjs/button). Each card is a named part — `Hero`, `CaseStudies`, `Headline`, `Stats`, `Phone`, `Team` — so a page can leave one out, reorder them, or add its own with `BentoShowcase.Card`.
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/bento-showcase.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/bento-showcase
+```
+
 ## Managed call centre
 
 Three columns at desktop, two at tablet, one on phones. The figures scroll up and the team scrolls left; both pause under the pointer.
@@ -101,21 +116,6 @@ export default function Showcase() {
     </BentoShowcase>
   );
 }
-```
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/bento-showcase.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/bento-showcase
 ```
 
 ## Your own card

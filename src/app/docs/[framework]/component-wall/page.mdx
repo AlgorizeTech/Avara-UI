@@ -175,6 +175,7 @@ export const usageSplit = {
   controls={[
     { name: "intervalTime", label: "Interval Time", min: 1000, max: 10000, step: 100, defaultValue: 5500, unit: "ms" },
   ]}
+  installation={<Installation name="component-wall" usage="below" />}
   examples={[
     {
       title: "Build interactive interfaces",
@@ -202,16 +203,13 @@ export const usageSplit = {
   ]}
 />
 
-## Installation
-
-<Installation name="component-wall" />
-
 ## More Examples
 
 <ExampleShowcase
   name="component-wall"
   columns={1}
   minHeight={550}
+  installation={<Installation name="component-wall" usage="below" />}
   examples={[
     {
       title: "Centred with persistent background",

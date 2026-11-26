@@ -52,6 +52,21 @@ All 3 options as live previews: https://avaraui.com/view/dashboard
    - Set these props: `{"variant":"liquid-glass"}`
    - Docs: https://avaraui.com/docs/nextjs/dashboard#liquid-glass
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/dashboard.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/dashboard
+```
+
 ## Admin overview
 
 Switch Daily, Weekly and Monthly, open a metric tab, and hover the gauge or a legend row to light up a share.
@@ -844,21 +859,6 @@ export default function AdminDashboard({ variant = "liquid-glass", bgImage }: { 
     />
   );
 }
-```
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/dashboard.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/dashboard
 ```
 
 ## Features

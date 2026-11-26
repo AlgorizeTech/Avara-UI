@@ -86,6 +86,21 @@ export default function Showcase() {
 
 ## Examples
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/image-wall.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/image-wall
+```
+
 ### A band, shuffled
 
 A short strip: the camera pulls back so a few cards show, and visits them in a random order.

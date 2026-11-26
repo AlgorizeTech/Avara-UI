@@ -10,6 +10,21 @@ A section that shows where the data comes from and what comes out: source cards 
 
 `DataFlow` is built on [Flowchart](https://avaraui.com/docs/nextjs/flowchart) and [Apple Select](https://avaraui.com/docs/nextjs/apple-select), which install alongside. Every card is a named part — `Source`, `Core`, `Output` — so the content is entirely yours. The example fills its output cards with [Half Stars](https://avaraui.com/docs/nextjs/half-stars) and [Button](https://avaraui.com/docs/nextjs/button), which you add as you need them.
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/data-flow.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/data-flow
+```
+
 ## Sources, core, outputs
 
 Three columns on desktop with curves drawn between them; below that the columns stack. Reload the preview to watch the reveal again.
@@ -83,21 +98,6 @@ export default function Intelligence() {
     </DataFlow>
   );
 }
-```
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/data-flow.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/data-flow
 ```
 
 ## How the lines are drawn

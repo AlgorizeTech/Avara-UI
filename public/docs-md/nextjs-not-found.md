@@ -77,6 +77,21 @@ All 6 options as live previews: https://avaraui.com/view/not-found
    - Set these props: `{"variant":"quantum-hologram"}`
    - Docs: https://avaraui.com/docs/nextjs/not-found#quantum-hologram-404-advanced-animated
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/not-found.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/not-found
+```
+
 ## Component Wall Mosaic 404
 
 - `variant="component-wall"` activates clean monumental 404 mosaic formed by rounded screenshot and graphic cards from the component library.
@@ -94,6 +109,8 @@ export default function NotFound() {
 }
 ```
 
+## Examples
+
 ## Installation
 
 Add the component by URL — no setup needed:
@@ -108,8 +125,6 @@ Or register the @avara-ui registry once per project and add it by name:
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/not-found
 ```
-
-## Examples
 
 ### Architectural CAD Blueprint 404 (Zero Shadow)
 

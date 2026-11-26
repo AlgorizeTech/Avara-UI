@@ -64,6 +64,21 @@ All 5 options as live previews: https://avaraui.com/view/error
    - Set these props: `{"variant":"prismatic-glass"}`
    - Docs: https://avaraui.com/docs/nextjs/error#prismatic-aurora-glass
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/error.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/error
+```
+
 ## Cyberpunk Terminal Section
 
 - `errorCode="500"` displays the error status code or exception type.
@@ -115,6 +130,8 @@ export default function ErrorPage({
 }
 ```
 
+## Variations
+
 ## Installation
 
 Add the component by URL — no setup needed:
@@ -129,8 +146,6 @@ Or register the @avara-ui registry once per project and add it by name:
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/error
 ```
-
-## Variations
 
 ### Modern Animated Orbital Pulse
 

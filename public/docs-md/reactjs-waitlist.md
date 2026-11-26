@@ -53,6 +53,21 @@ All 3 options as live previews: https://avaraui.com/view/waitlist
    - Set these props: `{"variant":"queue"}`
    - Docs: https://avaraui.com/docs/nextjs/waitlist#queue
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/waitlist.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/waitlist
+```
+
 ## Launch
 
 Your mark, a countdown to the opening date and the form on a wide panel. Submit an address and the form becomes your place in line, with an invite link to copy.
@@ -95,6 +110,8 @@ export default function EarlyAccess() {
 }
 ```
 
+## Examples
+
 ## Installation
 
 Add the component by URL — no setup needed:
@@ -109,8 +126,6 @@ Or register the @avara-ui registry once per project and add it by name:
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/waitlist
 ```
-
-## Examples
 
 ### Card
 

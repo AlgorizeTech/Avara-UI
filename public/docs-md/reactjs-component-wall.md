@@ -46,6 +46,21 @@ All 2 options as live previews: https://avaraui.com/view/component-wall
    - Set these props: `{"layout":"split"}`
    - Docs: https://avaraui.com/docs/nextjs/component-wall#copy-beside-the-wall
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/component-wall.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/component-wall
+```
+
 ## Build interactive interfaces
 
 The copy in the middle, a wall on each side. Wait a few seconds: each camera glides to a new card in turn, and the install line changes to name it.
@@ -123,6 +138,8 @@ export default function Hero() {
 }
 ```
 
+## More Examples
+
 ## Installation
 
 Add the component by URL — no setup needed:
@@ -137,8 +154,6 @@ Or register the @avara-ui registry once per project and add it by name:
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/component-wall
 ```
-
-## More Examples
 
 ### Centred with persistent background
 

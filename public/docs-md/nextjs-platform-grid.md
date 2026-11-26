@@ -10,6 +10,21 @@ Everything a product offers, as one hairline grid: small tiles with an icon and 
 
 `PlatformGrid` is built on [Tilted Card](https://avaraui.com/docs/nextjs/tilted-card), which installs alongside. Every cell is a named part — `Tile`, `Feature` — with `Mock` and `Pill` for what goes on a feature's card. The example's platform marks come from the library's `icons` item.
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/platform-grid.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/platform-grid
+```
+
 ## Fifty-six cells, four features
 
 Eight columns at desktop, narrowing to two; the features stay 2×2 throughout. Move the pointer across the grid and hover a feature.
@@ -202,21 +217,6 @@ export default function Platform() {
     </PlatformGrid>
   );
 }
-```
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/platform-grid.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/platform-grid
 ```
 
 ## How the grid packs

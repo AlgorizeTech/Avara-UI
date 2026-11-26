@@ -65,6 +65,21 @@ All 5 options as live previews: https://avaraui.com/view/reviews
    - Set these props: `{"variant":"up-down-vertical-marquee"}`
    - Docs: https://avaraui.com/docs/nextjs/reviews#updown-vertical-marquee
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/reviews.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/reviews
+```
+
 ## Interactive Testimonial Switcher
 
 - Spotlight Switcher & Video Lightbox `variant="interactive-testimonial-switcher"` renders an active spotlight card with bottom-aligned thumbnail swapper, dynamic quote updates, and video playback badge.
@@ -399,21 +414,6 @@ export default function LogoCarouselDemo() {
     />
   );
 }
-```
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/reviews.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/reviews
 ```
 
 ## Features

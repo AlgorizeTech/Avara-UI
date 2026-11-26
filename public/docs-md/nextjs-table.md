@@ -8,6 +8,21 @@ url: https://avaraui.com/docs/nextjs/table
 
 A set of composable, stateless table primitives (`Table`, `TableHead`, `TableRow`, `TableCell`) that map any API data shape directly into JSX.
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/table.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/table
+```
+
 ### Comparison (soft)
 
 The same soft table as a plan comparison: features down the side, plans across the top, ticks and limits centred under their headers.

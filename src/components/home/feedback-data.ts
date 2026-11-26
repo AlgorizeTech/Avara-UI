@@ -57,7 +57,7 @@ export const FEEDBACK: FeedbackItem[] = [
 			/* Cloudinary renders the first frame when the same asset is asked for as an image. */
 			poster:
 				"https://res.cloudinary.com/dodndg7ai/video/upload/f_webp,q_auto,so_0/v1793704596/ic-ay7eptvhd-ace-1793704646032.jpg",
-			alt: "Wallet card component built with Avara UI",
+			alt: "Silent screen recording of a wallet card component built with Avara UI: the card stack is shown and interacted with",
 			width: 640,
 			height: 360,
 		},

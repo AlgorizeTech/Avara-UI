@@ -96,7 +96,7 @@ export function CLIInstallationVisual() {
             <Check className="size-3 shrink-0" />
             <span>Generated src/components/custom/blocks/AnimatedFAQBlock.tsx</span>
           </p>
-          <p className="flex items-center gap-1.5 text-neutral-500 font-sans">
+          <p className="flex items-center gap-1.5 text-neutral-500 dark:text-neutral-400 font-sans">
             <Sparkles className="size-3 text-primary shrink-0" />
             <span>Zero build lock-in • Pure TypeScript & Tailwind CSS</span>
           </p>
@@ -104,7 +104,7 @@ export function CLIInstallationVisual() {
       </div>
 
       {/* Terminal Footer Status */}
-      <div className="pt-2.5 border-t border-neutral-200 dark:border-neutral-800/80 flex items-center justify-between text-[10px] text-neutral-500 font-sans">
+      <div className="pt-2.5 border-t border-neutral-200 dark:border-neutral-800/80 flex items-center justify-between text-[10px] text-neutral-500 dark:text-neutral-400 font-sans">
         <span className="flex items-center gap-1.5">
           <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
           Ready to Import
@@ -328,7 +328,7 @@ export function PerformanceVisual() {
         <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-medium">
           <Cpu className="size-3" /> transform: translate3d
         </span>
-        <span className="text-neutral-500">Hardware Accelerated</span>
+        <span className="text-neutral-500 dark:text-neutral-400">Hardware Accelerated</span>
       </div>
     </div>
   );

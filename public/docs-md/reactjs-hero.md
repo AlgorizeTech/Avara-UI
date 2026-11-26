@@ -160,6 +160,21 @@ A travel hero on a dark ground that shifts colour: a huge white word on the left
 
 The word's letters over the photographs, the rule, the arrows and the call to action take your theme's `primary`, so switching themes repaints them.
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/honeycomb-hero.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/honeycomb-hero
+```
+
 ### Wander the fjords
 
 Copy on the left, the honeycomb on the right. Wait four seconds or use the arrows: every hexagon moves one step, and the section eases to the new photograph's colour.
@@ -203,21 +218,6 @@ export default function Hero() {
 }
 ```
 
-### Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/honeycomb-hero.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/honeycomb-hero
-```
-
 ### Features
 
 The nine cells sit on a real hexagonal lattice, and the queue snakes around it so every step is a hop between neighbours. Each cell glides to its next place with a short stagger — the one heading for the feature spot leads, the one leaving it follows last.
@@ -249,6 +249,21 @@ Arrows at the foot and the keyboard's arrow keys step the queue either way; a li
 A full-bleed photo hero for a place worth travelling to: an eyebrow pill, a large light headline, a glass panel with a call to action, and a queue of cards. The front card is the slide on screen. Every five seconds, or when a card is clicked, the queue slides forward and the photograph, headline and caption follow it.
 
 `HeroCarousel` composes the library: the faces are an [AvatarStack](https://avaraui.com/docs/reactjs/avatar-stack). Accents use the theme's `--primary`, which `accent` pins.
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/hero-carousel.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/hero-carousel
+```
 
 ### Watch the dawn from the summit
 
@@ -335,21 +350,6 @@ export default function Hero() {
 }
 ```
 
-### Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/hero-carousel.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/hero-carousel
-```
-
 ### Height
 
 The section takes the height its content needs — about 44rem on a desktop — and never uses viewport units of its own, so it behaves inside any container. For a screen-tall hero, size it from outside:
@@ -390,6 +390,21 @@ Every card is a button with a visible focus ring; arrow keys walk the queue, a s
 A fashion hero: a bold two-line headline between a turning video badge and a stack of faces, five staggered columns of looks — each a person on a flat colour that tilts under the pointer — and a call to action on the middle look.
 
 `FashionHero` is built from library pieces: the badge is [Circular Text](https://avaraui.com/docs/reactjs/circular-text), the faces are [Avatar Stack](https://avaraui.com/docs/reactjs/avatar-stack), the headline is [Text Animation](https://avaraui.com/docs/reactjs/text-animation), every look is a [Tilted Card](https://avaraui.com/docs/reactjs/tilted-card), and the badge opens a [Dialog](https://avaraui.com/docs/reactjs/dialog).
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/fashion-hero.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/fashion-hero
+```
 
 ### Daring designs
 
@@ -437,21 +452,6 @@ export default function Hero() {
 }
 ```
 
-### Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/fashion-hero.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/fashion-hero
-```
-
 ### Photos on colour
 
 The reference look is a person cut out on a flat colour. Cut-outs are expensive; a studio shot on a plain background is not. With `blend` on, the photo is drawn with `mix-blend-mode: multiply` over its `tone`, so white becomes the tone and the person keeps their colours — and the effect is strongest with lighter tones and darker clothes. A shot that already has a coloured background is better left unblended: pass `blend: false` and pick a `tone` that matches its edges.
@@ -486,6 +486,21 @@ The call to action, the plus beside the faces and the teaser are anchors — pas
 A product hero on a soft grey ground: a headline that rises in word by word, one call to action, then a bento of frosted cards — integrations, counting figures, portraits and a team card. The cards land in one staggered pass; after that only the pointer moves anything.
 
 `SupportHero` is built from library pieces: the cards are [Glass Panel](https://avaraui.com/docs/reactjs/glass-panel), the headline is [Text Animation](https://avaraui.com/docs/reactjs/text-animation), the figures are [Counter](https://avaraui.com/docs/reactjs/counter) and the call to action is [Button](https://avaraui.com/docs/reactjs/button). Every card is a named part — `Integrations`, `Stat`, `Photo`, `Team` — plus a plain `Card` for anything else.
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/support-hero.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/support-hero
+```
 
 ### Headline, call to action, six cards
 
@@ -547,21 +562,6 @@ export default function Hero() {
     </SupportHero>
   );
 }
-```
-
-### Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/support-hero.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/support-hero
 ```
 
 ### Layout
@@ -637,6 +637,21 @@ A hero for a place that is warm and busy — a kindergarten here, but any studio
 
 `CollageHero` is built from library pieces: the scroll pill is [Button](https://avaraui.com/docs/reactjs/button) and the video opens in a [Dialog](https://avaraui.com/docs/reactjs/dialog). The accent is `--primary` (pin it with `accent`) and the second colour is `highlight`.
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/collage-hero.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/collage-hero
+```
+
 ### A bright place
 
 Badge, headline and pills across the top, five columns of photographs, and a quote and video trigger along the foot. Hover the photographs and pills, or open the video.
@@ -679,21 +694,6 @@ export default function Hero() {
 }
 ```
 
-### Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/collage-hero.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/collage-hero
-```
-
 ### The badge
 
 `CollageHero.Badge` is exported on its own: the `brand` text set on an SVG circle with `textPath`, turning once every 22 seconds, around a `logo` — three dots in the accent and highlight by default, or anything you pass. Under `prefers-reduced-motion` it does not turn.
@@ -734,6 +734,21 @@ The video trigger is keyboard-operable and opens a proper dialog with focus hand
 ## Hero Block
 
 Several hero layouts in one component, chosen with `variant`. Built with Tailwind CSS and plain CSS animations, with no animation library.
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/hero.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/hero
+```
 
 ### Orbit Ring Hero
 
@@ -790,24 +805,24 @@ export default function OrbitHeroExample() {
 }
 ```
 
-### Installation
+## Bento Cascade Hero
+
+An infinite vertical bento marquee hero that loops seamlessly, with staggered cards, soft edge fades and no visible reset jump.
+
+## Installation
 
 Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest add https://avaraui.com/r/hero.json
+npx shadcn@latest add https://avaraui.com/r/bento-cascade-hero.json
 ```
 
 Or register the @avara-ui registry once per project and add it by name:
 
 ```bash
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/hero
+npx shadcn@latest add @avara-ui/bento-cascade-hero
 ```
-
-## Bento Cascade Hero
-
-An infinite vertical bento marquee hero that loops seamlessly, with staggered cards, soft edge fades and no visible reset jump.
 
 ### Bento Cascade Infinite Motion Hero
 
@@ -837,24 +852,24 @@ export default function Hero() {
 }
 ```
 
-### Installation
+## Breathe Hero
+
+A serif headline over a staggered five-card curved arch. On scroll the centre card grows while the others drift outward and dim. Headline fonts load from Google Fonts at runtime; if that request is blocked (strict CSP), it falls back to your sans or serif font.
+
+## Installation
 
 Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest add https://avaraui.com/r/bento-cascade-hero.json
+npx shadcn@latest add https://avaraui.com/r/breathe-hero.json
 ```
 
 Or register the @avara-ui registry once per project and add it by name:
 
 ```bash
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/bento-cascade-hero
+npx shadcn@latest add @avara-ui/breathe-hero
 ```
-
-## Breathe Hero
-
-A serif headline over a staggered five-card curved arch. On scroll the centre card grows while the others drift outward and dim. Headline fonts load from Google Fonts at runtime; if that request is blocked (strict CSP), it falls back to your sans or serif font.
 
 ### Breathe Arch Stagger Hero
 
@@ -890,24 +905,24 @@ export default function Hero() {
 }
 ```
 
-### Installation
+## Solar Snapshot Hero
+
+A lightweight hero with a pointer-following sun orb, typographic curtain buttons, an avatar group and a click-to-capture Polaroid stack of section screenshots. Fonts load from Google Fonts at runtime; if that request is blocked (strict CSP), it falls back to your sans font.
+
+## Installation
 
 Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest add https://avaraui.com/r/breathe-hero.json
+npx shadcn@latest add https://avaraui.com/r/solar-snapshot-hero.json
 ```
 
 Or register the @avara-ui registry once per project and add it by name:
 
 ```bash
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/breathe-hero
+npx shadcn@latest add @avara-ui/solar-snapshot-hero
 ```
-
-## Solar Snapshot Hero
-
-A lightweight hero with a pointer-following sun orb, typographic curtain buttons, an avatar group and a click-to-capture Polaroid stack of section screenshots. Fonts load from Google Fonts at runtime; if that request is blocked (strict CSP), it falls back to your sans font.
 
 ### Solar Snapshot Sun-Cursor Hero
 
@@ -935,21 +950,6 @@ export default function Hero() {
     />
   );
 }
-```
-
-### Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/solar-snapshot-hero.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/solar-snapshot-hero
 ```
 
 ### Props Reference

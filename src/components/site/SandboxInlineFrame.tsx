@@ -179,7 +179,8 @@ function InlineStage({
   // exactly as SandboxClient does inside the iframe.
   useEffect(() => {
     const content = contentRef.current;
-    if (!content) return;
+    // Carousels are set off by the stage padding, not drawn full-bleed.
+    if (!content || name === "carousel" || name === "curved-carousel") return;
     let frame: HTMLElement | null = null;
     const isFrame = (el: HTMLElement) => {
       const style = getComputedStyle(el);
