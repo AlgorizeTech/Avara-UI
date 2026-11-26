@@ -1,13 +1,15 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { flushSync } from "react-dom";
+import { createPortal, flushSync } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   ArrowRight,
+  ArrowUpRight,
   ChevronLeft,
   ChevronRight,
   Lock,
+  Maximize2,
   Monitor,
   Moon,
   RotateCcw,
@@ -15,6 +17,7 @@ import {
   Sparkles,
   Sun,
   Tablet,
+  X,
 } from "lucide-react";
 import { Cli } from "@/components/site/cli";
 import { AnimatedSectionTitle } from "@/components/site/AnimatedSectionTitle";
@@ -136,10 +139,12 @@ function AnimatedUrlPill({
   domain,
   path,
   className,
+  isDark = false,
 }: {
   domain: string;
   path: string;
   className?: string;
+  isDark?: boolean;
 }) {
   const prefersReducedMotion = useReducedMotion();
   const suffix = path === "/" ? "" : path;
@@ -170,7 +175,10 @@ function AnimatedUrlPill({
           : { duration: 0.55, ease: [0.16, 1, 0.3, 1] }
       }
       className={cn(
-        "rounded-full bg-foreground/[0.04] text-[11px] font-mono text-foreground/55 overflow-hidden shrink-0",
+        "rounded-full text-[11px] font-mono overflow-hidden shrink-0",
+        isDark
+          ? "bg-white/[0.06] text-zinc-300"
+          : "bg-foreground/[0.04] text-foreground/55",
         className,
       )}
     >
@@ -178,7 +186,13 @@ function AnimatedUrlPill({
         ref={contentRef}
         className="w-max flex items-center gap-1.5 px-3 py-1 whitespace-nowrap"
       >
-        <Lock className="size-3 shrink-0 text-foreground/45" aria-hidden />
+        <Lock
+          className={cn(
+            "size-3 shrink-0",
+            isDark ? "text-zinc-400" : "text-foreground/45",
+          )}
+          aria-hidden
+        />
         <span className="flex items-center">
           <span>{domain}</span>
           <AnimatePresence mode="popLayout" initial={false}>
@@ -264,6 +278,7 @@ export function TemplatePage({
   const [activeIndex, setActiveIndex] = useState(0);
   const [previewTheme, setPreviewTheme] = useState<"light" | "dark">("light");
   const [device, setDevice] = useState<"desktop" | "tablet" | "mobile">("desktop");
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [reloadKey, setReloadKey] = useState(0);
   const previewRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
@@ -281,6 +296,26 @@ export function TemplatePage({
       },
     );
   };
+
+  useEffect(() => {
+    if (!isFullscreen) return;
+    const prevBodyOverflow = document.body.style.overflow;
+    const prevHtmlOverflow = document.documentElement.style.overflow;
+    const prevHtmlGutter = document.documentElement.style.scrollbarGutter;
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+    document.documentElement.style.scrollbarGutter = "auto";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsFullscreen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prevBodyOverflow;
+      document.documentElement.style.overflow = prevHtmlOverflow;
+      document.documentElement.style.scrollbarGutter = prevHtmlGutter;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [isFullscreen]);
 
   const activePage = pages[activeIndex] ?? pages[0];
   const canPrev = activeIndex > 0;
@@ -301,12 +336,23 @@ export function TemplatePage({
           </p>
         </div>
 
-        <a
-          href="#choose-your-access"
-          className="not-prose inline-flex h-9 shrink-0 items-center justify-center rounded-md bg-primary px-4 text-[13px] font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 self-start sm:self-end"
-        >
-          {buyButtonLabel}
-        </a>
+        <div className="flex flex-wrap items-center gap-2.5 shrink-0 self-start sm:self-end">
+          <a
+            href="#choose-your-access"
+            className="not-prose inline-flex h-9 shrink-0 items-center justify-center rounded-md bg-primary px-4 text-[13px] font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
+          >
+            {buyButtonLabel}
+          </a>
+
+          <button
+            type="button"
+            onClick={() => setIsFullscreen(true)}
+            className="not-prose inline-flex h-9 shrink-0 items-center justify-center gap-1.5 rounded-md bg-white px-4 text-[13px] font-medium text-neutral-900 shadow-[0_0_8px_rgba(0,0,0,0.06)] transition-colors hover:bg-white/80 dark:bg-neutral-800 dark:text-white dark:shadow-[0_0_8px_rgba(0,0,0,0.25)] dark:hover:bg-neutral-700 cursor-pointer"
+          >
+            <span>Live Preview</span>
+            <ArrowUpRight className="size-3.5" aria-hidden="true" />
+          </button>
+        </div>
       </div>
 
       {/* Preview Box (Avara UI Sandbox Shell Style) */}
@@ -375,6 +421,16 @@ export function TemplatePage({
                 </button>
               ))}
             </div>
+
+            <button
+              type="button"
+              onClick={() => setIsFullscreen(true)}
+              aria-label="Open full page preview"
+              title="Full page preview"
+              className="flex items-center justify-center rounded-lg bg-foreground/[0.04] p-1.5 text-foreground/65 hover:text-foreground transition-colors cursor-pointer"
+            >
+              <Maximize2 className="size-3.5" />
+            </button>
 
             <button
               type="button"
@@ -668,6 +724,122 @@ export function TemplatePage({
           </div>
         </>
       )}
+
+      {/* Full Page Preview Overlay */}
+      {isFullscreen &&
+        createPortal(
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${title} full page preview`}
+            className={cn(
+              "not-prose fixed inset-0 z-50 flex flex-col overflow-y-auto overflow-x-hidden [scrollbar-width:thin] [scrollbar-color:rgba(128,128,128,0.28)_transparent] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-foreground/15 hover:[&::-webkit-scrollbar-thumb]:bg-foreground/30",
+              previewTheme === "dark"
+                ? "bg-[#0D0E12] text-zinc-100"
+                : "bg-background",
+            )}
+          >
+            <div
+              className={cn(
+                "sticky top-0 z-20 flex items-center justify-between gap-2 border-b backdrop-blur-[2px] px-4 py-2.5",
+                previewTheme === "dark"
+                  ? "border-white/[0.08] bg-[#0D0E12]/20"
+                  : "border-foreground/[0.08] bg-background/5",
+              )}
+            >
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="flex items-center gap-1.5 px-1" aria-hidden>
+                  <span className="size-2.5 rounded-full bg-[#ff5f57] ring-1 ring-black/10" />
+                  <span className="size-2.5 rounded-full bg-[#febc2e] ring-1 ring-black/10" />
+                  <span className="size-2.5 rounded-full bg-[#28c840] ring-1 ring-black/10" />
+                </div>
+                <AnimatedUrlPill
+                  domain={demoDomain}
+                  path={activePage.path}
+                  isDark={previewTheme === "dark"}
+                />
+                <div
+                  className={cn(
+                    "flex items-center gap-0.5 rounded-lg p-0.5",
+                    previewTheme === "dark"
+                      ? "bg-white/[0.06]"
+                      : "bg-foreground/[0.04]",
+                  )}
+                >
+                  <button
+                    type="button"
+                    aria-label="Previous page"
+                    disabled={!canPrev}
+                    onClick={() => canPrev && setActiveIndex((i) => i - 1)}
+                    className={cn(
+                      "p-1 rounded-md disabled:opacity-30 disabled:pointer-events-none cursor-pointer",
+                      previewTheme === "dark"
+                        ? "text-zinc-400 hover:text-white"
+                        : "text-foreground/55 hover:text-foreground",
+                    )}
+                  >
+                    <ChevronLeft className="size-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Next page"
+                    disabled={!canNext}
+                    onClick={() => canNext && setActiveIndex((i) => i + 1)}
+                    className={cn(
+                      "p-1 rounded-md disabled:opacity-30 disabled:pointer-events-none cursor-pointer",
+                      previewTheme === "dark"
+                        ? "text-zinc-400 hover:text-white"
+                        : "text-foreground/55 hover:text-foreground",
+                    )}
+                  >
+                    <ChevronRight className="size-3.5" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={handleTogglePreviewTheme}
+                  aria-label={`Switch preview to ${previewTheme === "dark" ? "light" : "dark"} mode`}
+                  className={cn(
+                    "flex items-center justify-center rounded-lg p-1.5 transition-colors cursor-pointer",
+                    previewTheme === "dark"
+                      ? "bg-white/[0.06] text-zinc-300 hover:text-white"
+                      : "bg-foreground/[0.04] text-foreground/65 hover:text-foreground",
+                  )}
+                >
+                  {previewTheme === "dark" ? (
+                    <Moon className="size-3.5" />
+                  ) : (
+                    <Sun className="size-3.5" />
+                  )}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsFullscreen(false)}
+                  aria-label="Close full page preview"
+                  className={cn(
+                    "flex items-center justify-center rounded-lg p-1.5 transition-colors cursor-pointer",
+                    previewTheme === "dark"
+                      ? "bg-white/[0.06] text-zinc-300 hover:text-white"
+                      : "bg-foreground/[0.04] text-foreground/65 hover:text-foreground",
+                  )}
+                >
+                  <X className="size-4" />
+                </button>
+              </div>
+            </div>
+
+            <div
+              key={reloadKey}
+              className="flex-1 w-full min-w-0"
+            >
+              {activePage.render(previewTheme, handleTogglePreviewTheme)}
+            </div>
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }
