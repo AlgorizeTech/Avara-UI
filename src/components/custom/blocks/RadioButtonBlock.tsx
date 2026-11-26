@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -83,7 +82,6 @@ export const RadioButtonGroup = React.forwardRef<
   },
   ref,
 ) {
-  const still = !!useReducedMotion();
   const isControlled = value !== undefined;
   const [internal, setInternal] = React.useState<string>(
     defaultValue ?? options.find((o) => !o.disabled)?.value ?? "",
@@ -99,7 +97,7 @@ export const RadioButtonGroup = React.forwardRef<
 
   const select = (opt: RadioButtonOption, e?: React.MouseEvent<HTMLButtonElement>) => {
     if (disabled || opt.disabled) return;
-    if (hasRipple && !still && e && e.detail > 0) {
+    if (hasRipple && e && e.detail > 0) {
       const rect = e.currentTarget.getBoundingClientRect();
       const size = Math.max(rect.width, rect.height) * 1.4;
       const x = e.clientX - rect.left - size / 2;
@@ -165,6 +163,22 @@ export const RadioButtonGroup = React.forwardRef<
 
   return (
     <div ref={ref} className={cn("mx-auto", containerWidth, className)}>
+      <style>{`
+        @keyframes avara-radio-ripple {
+          from { transform: scale(0); opacity: 0.35; }
+          to { transform: scale(1); opacity: 0; }
+        }
+        @keyframes avara-radio-pop {
+          from { transform: scale(0); opacity: 0; }
+          to { transform: scale(1); opacity: 1; }
+        }
+        .avara-radio-ripple { animation: avara-radio-ripple 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+        .avara-radio-pop { animation: avara-radio-pop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+        @media (prefers-reduced-motion: reduce) {
+          .avara-radio-ripple { display: none; }
+          .avara-radio-pop { animation: none; }
+        }
+      `}</style>
       {(label || description) && (
         <div className="mb-3 space-y-0.5">
           {label && (
@@ -238,12 +252,9 @@ export const RadioButtonGroup = React.forwardRef<
               {/* Press ripple (only when ripple is enabled) */}
               {hasRipple &&
                 (ripples[opt.value] ?? []).map((r) => (
-                  <motion.span
+                  <span
                     key={r.id}
                     aria-hidden
-                    initial={{ scale: 0, opacity: 0.35 }}
-                    animate={{ scale: 1, opacity: 0 }}
-                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                     style={{
                       left: r.x,
                       top: r.y,
@@ -251,7 +262,7 @@ export const RadioButtonGroup = React.forwardRef<
                       height: r.size,
                     }}
                     className={cn(
-                      "pointer-events-none absolute rounded-full",
+                      "avara-radio-ripple pointer-events-none absolute rounded-full",
                       isInverted && isSelected
                         ? "bg-background/25"
                         : "bg-primary/20",
@@ -398,40 +409,20 @@ export const RadioButtonGroup = React.forwardRef<
                         : "border-foreground/25 bg-transparent text-transparent group-hover:border-foreground/45",
                   )}
                 >
-                  <AnimatePresence initial={false}>
-                    {isSelected &&
-                      (resolvedIndicator === "check" ? (
-                        <motion.span
-                          key="check"
-                          initial={still ? false : { scale: 0, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          exit={
-                            still ? undefined : { scale: 0, opacity: 0 }
-                          }
-                          transition={{
-                            type: "spring",
-                            stiffness: 500,
-                            damping: 28,
-                          }}
-                          className="grid place-items-center"
-                        >
-                          <Check className="size-3 stroke-[3]" />
-                        </motion.span>
-                      ) : (
-                        <motion.span
-                          key="dot"
-                          initial={still ? false : { scale: 0 }}
-                          animate={{ scale: 1 }}
-                          exit={still ? undefined : { scale: 0 }}
-                          transition={{
-                            type: "spring",
-                            stiffness: 500,
-                            damping: 28,
-                          }}
-                          className="size-1.5 rounded-full bg-primary-foreground"
-                        />
-                      ))}
-                  </AnimatePresence>
+                  {isSelected &&
+                    (resolvedIndicator === "check" ? (
+                      <span
+                        key="check"
+                        className="avara-radio-pop grid place-items-center"
+                      >
+                        <Check className="size-3 stroke-[3]" />
+                      </span>
+                    ) : (
+                      <span
+                        key="dot"
+                        className="avara-radio-pop size-1.5 rounded-full bg-primary-foreground"
+                      />
+                    ))}
                 </span>
               )}
             </button>

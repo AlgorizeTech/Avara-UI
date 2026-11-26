@@ -3,7 +3,7 @@
   "name": "folder-folder-drop-target",
   "type": "registry:block",
   "title": "Folder — Folder drop target",
-  "description": "The `Folder` block as an upload surface: drop files on it or click to browse. Each dropped file becomes a card with its own progress bar.",
+  "description": "The \"Folder drop target\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

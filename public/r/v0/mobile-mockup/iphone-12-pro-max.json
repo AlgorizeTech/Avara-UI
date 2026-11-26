@@ -3,7 +3,7 @@
   "name": "mobile-mockup-iphone-12-pro-max",
   "type": "registry:block",
   "title": "Mobile Mockup — iPhone 12 Pro Max",
-  "description": "Flat edges and a notch, at a 19.5:9 aspect ratio.",
+  "description": "The \"iPhone 12 Pro Max\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

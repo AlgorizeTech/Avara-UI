@@ -4,14 +4,11 @@ export const metadata = docsPageMetadata("half-stars");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Half Star Rating
 
-A sleek, customizable star rating component for Next.js applications that supports exact decimal ratings (e.g., 3.7 or 4.5) through SVG clip paths. It also supports interactive mode, allowing users to hover and click to set their own rating.
-
-It provides an accurate fractional fill, allowing you to beautifully display user reviews, product ratings, and satisfaction scores without being limited to just full or half stars.
-
-Explore the different variations of the Half Stars component — each example shows a live preview with the exact code to copy. Hover and click any preview to set a rating.
+A zero-dependency star rating component (`HalfStars`) that fills each star to an exact decimal with a CSS clip, and optionally lets visitors pick a rating by hovering and clicking.
 
 export const usageFull = `"use client";
 
@@ -93,10 +90,13 @@ export default function TenStarRating() {
   );
 }`;
 
-<ExampleShowcase minHeight={220} headingLevel={2}
+<ExampleShowcase
+  minHeight={220}
+  headingLevel={2}
   name="half-stars"
   colorControl
   columns={1}
+  installation={<Installation name="half-stars" usage="below" />}
   examples={[
     {
       title: "Full stars",
@@ -117,20 +117,6 @@ export default function TenStarRating() {
       usage: usageFull,
       code: extractCode("src/components/custom/blocks/HalfStarsBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="half-stars" />
-
-## Examples
-
-<ExampleShowcase minHeight={220}
-  name="half-stars"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Half stars",
       propNotes: [
@@ -184,35 +170,35 @@ export default function TenStarRating() {
   ]}
 />
 
-## Features
-Discover the Half Stars rating component's precise visual feedback, supporting fractional SVG rendering for accurate reviews.
+## About Shadcn Half Star Rating
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="High Precision">
-    <p>Supports exact decimal ratings (e.g., 4.2 or 3.7) by dynamically calculating SVG clip paths for pixel-perfect fills.</p>
-  </InfoCard>
-  <InfoCard title="Interactive Mode">
-    <p>Allow users to hover and click to submit their own ratings. Includes smooth animations and fractional steps.</p>
-  </InfoCard>
-  <InfoCard title="Fully Custom">
-    <p>Easily change colors, sizes, and the maximum number of stars using standard Tailwind CSS utility classes.</p>
-  </InfoCard>
-  <InfoCard title="Zero Dependencies">
-    <p>Built entirely with React and raw SVGs. No heavy external rating libraries required.</p>
-  </InfoCard>
-</div>
+**What it is.** `HalfStars` renders fractional star ratings (such as `3.7` or `4.5`) by clipping a filled SVG star to the fractional width, with optional interactive hover/click selection (`interactive`, `allowHalf`, `step`), custom `maxStars`, pixel `size`, and Tailwind color classes.
 
-## Best Practices & Guidelines
+**How it is built.** Built with React and inline SVGs (zero external dependencies): an empty star in `inactiveColor` (`text-foreground/15` by default) sits under a filled star in `activeColor` (`text-primary` by default) that is clipped to the rating. It is controlled: you hold the rating and update it from `onRatingChange`.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Precision Steps">
-    <p>If you are allowing user input via <code>interactive={true}</code>, it is recommended to set <code>allowHalf={true}</code> (step 0.5) or <code>step={1}</code> for standard reviews. Setting <code>step={0.1}</code> can make it difficult for users to intentionally click a precise score like 4.0 exactly.</p>
-  </InfoCard>
-  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Color Contrast</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Ensure your <code>inactiveColor</code> provides enough contrast against your background so users can clearly see the empty stars. The default, <code>text-foreground/15</code>, follows the theme in light and dark mode.</p>
-  </div>
-</div>
+**When to use it.** Use `HalfStars` on product cards, review summaries, testimonials, and user rating forms.
+
+## For AI agents
+
+<AgentBrief name="half-stars">
+
+**When to use**
+
+- Read-only fractional rating displays (`rating={4.3}`) or interactive star pickers (`interactive`, `onRatingChange`)
+
+**When not to use**
+
+- Binary favorite/like toggles — use <DocLink to="toggle">Toggle</DocLink> or <DocLink to="action-buttons">Action Button</DocLink> (`StarButton`)
+
+**Agent notes**
+
+- Named export: `import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock"`
+- `activeColor` and `inactiveColor` take Tailwind text color classes (e.g., `"text-yellow-400"`), not raw hex strings
+- Passing `step` (e.g. `0.1`) overrides `allowHalf`
+- Controlled: store the value in state and update it in `onRatingChange`, otherwise a click does not change what is shown. `onHoverChange` receives `0` when the pointer leaves.
+- Interactive mode is pointer-only: there is no keyboard handling or ARIA rating role, so add your own accessible control if you need one.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -336,6 +322,32 @@ interface HalfStarsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onC
 }
 ```
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Embed `HalfStars` inside <DocLink to="card">Card</DocLink> (`ProductCard`) layouts, or beside testimonials in a <DocLink to="reviews">Reviews</DocLink> section.
+- Pair interactive `HalfStars` with <DocLink to="form">Form</DocLink> for review submission dialogs.
+- <DocLink to="book-appointment">Book Appointment</DocLink> shows named scores out of 5 with `HalfStars`.
+- For a like or upvote toggle rather than a score, use <DocLink to="action-buttons">Action Button</DocLink> (`StarButton`).
+
+## How do I show a rating like 4.3 with partial stars in HalfStars?
+
+Pass the number as `rating`, for example `<HalfStars rating={4.3} />`. Each star is clipped to its share of the value, so the fifth star here fills to 30%. Values are clamped between 0 and `maxStars`, and `showText={false}` hides the "4.3 / 5" label.
+
+## How do I make HalfStars interactive and save the rating?
+
+Set `interactive` and keep the rating in state, updating it from `onRatingChange`. The component does not store a chosen value itself, so without that update the stars snap back after a click. Hover shows a preview rating, and `onHoverChange` reports it.
+
+## How should I configure step vs allowHalf for interactive ratings?
+
+`allowHalf` (on by default) picks in 0.5 steps, and `allowHalf={false}` picks whole stars. `step` overrides both, so `step={0.1}` allows tenths. For user-submitted ratings, whole or half stars are easier to click accurately than `0.1` precision.
+
+## How do I change the HalfStars colour and size?
+
+Use `activeColor` and `inactiveColor` with Tailwind text colour classes such as `text-yellow-400`, not hex values, because the stars use `currentColor`. `size` sets each star's width and height in pixels (24 by default), and `maxStars` changes the scale length from 5.
+
+## Is HalfStars keyboard accessible?
+
+Not in interactive mode. Picking a rating relies on mouse movement and clicks over each star, and the component adds no ARIA role or label. For a form, pair it with a labelled input or buttons for keyboard users. A read-only rating needs no interaction, and `showText` prints the number beside it.
 
 <DocsJsonLd slug="half-stars" />
+<FaqJsonLd slug="half-stars" />

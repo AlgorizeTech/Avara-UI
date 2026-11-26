@@ -1,80 +1,39 @@
 ---
 title: "Shadcn Scroll Stack"
-description: "A premium collection of scroll-driven 3D card stacking layouts engineered exclusively with GSAP's ScrollTrigger plugin. Shadcn/ui with GSAP and Motion builds."
+description: "Scroll-driven 3D card stacks built with GSAP ScrollTrigger: cards stick while the next one slides up over them. Shadcn/ui with GSAP and Motion builds."
 url: https://avaraui.com/docs/nextjs/scroll-stack
 ---
 
 # Shadcn Scroll Stack
 
-A premium collection of scroll-driven 3D card stacking layouts engineered exclusively with **GSAP's ScrollTrigger plugin**. As users scroll down the page, feature cards stick to the viewport while the next card slides up to cover them, creating a simulated 3D deck with silky 60fps performance across both light and dark modes.
+Scroll-driven 3D card stacks built with GSAP ScrollTrigger: cards stick while the next one slides up over them.
 
 Five independent scroll-driven layouts share this page, each with its own block file. **Scroll inside a preview box** to drive its ScrollTrigger timeline.
 
-## For AI agents
-
-**Ask before you pick.** This page has 6 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
-
-All 6 options as live previews: https://avaraui.com/view/scroll-stack
-
-**When to use it.** Scroll-driven card layouts built on GSAP ScrollTrigger: cards that stack, fan out, pin beside a column or travel sideways as the visitor scrolls. Six layouts, each a different structure.
-
-**When to use something else:**
-
-- [Modern Scroll Stack](https://avaraui.com/docs/nextjs/modern-scroll-stack): for a service-card stack with a different look.
-
-**Gotchas:**
-
-- Each layout is its own registry item: install only the chosen one, not the whole page.
-- Install the GSAP build. A Motion build exists for some layouts; never install both builds of one layout.
-
-### The 6 variants
-
-1. **Fan stack** (`fan-stack`): Three numbered steps dealt from one pile into a tilted cascade as the stack scrolls into view.
-   - Live: https://avaraui.com/view/scroll-stack/fan-stack
-   - Best for: a short numbered sequence: steps, phases, a three-part system
-   - Avoid if: you have many steps or long copy per step (it suits a short sequence)
-   - Traits: GSAP, numbered cards, tilted cascade, photo can hang off a card edge
-   - Install: `npx shadcn@latest add @avara-ui/fan-stack`
-   - Docs: https://avaraui.com/docs/nextjs/scroll-stack#fan-stack
-2. **Scroll stack** (`scroll-stack`): Cards stick to the viewport and the next slides up over them, offset by a pixel gap so titles stay readable.
-   - Live: https://avaraui.com/view/scroll-stack/scroll-stack
-   - Best for: step-by-step feature walkthroughs
-   - Avoid if: each step needs a different kind of content (the sticky stack takes lists, images and splits)
-   - Traits: GSAP ScrollTrigger, 3D deck, adjustable card gap, per-card background colour
-   - Install: `npx shadcn@latest add @avara-ui/scroll-stack`
-   - Docs: https://avaraui.com/docs/nextjs/scroll-stack#card-gap
-3. **Sticky scroll stack** (`sticky-stack`): A headed section where each card sticks and the next overlaps it; a card body can be a list, image, split or custom.
-   - Live: https://avaraui.com/view/scroll-stack/sticky-stack
-   - Best for: feature sections with varied content per step
-   - Avoid if: every step looks the same (the plain scroll stack is simpler)
-   - Traits: GSAP, headed section, list, image, split or custom bodies, tunable scale and offset
-   - Install: `npx shadcn@latest add @avara-ui/sticky-scroll-stack`
-   - Docs: https://avaraui.com/docs/nextjs/scroll-stack#sticky-stack
-4. **Split scroll stack** (`split-stack`): Two columns: one column pins while the cards stack and advance in the other; it pins left or right.
-   - Live: https://avaraui.com/view/scroll-stack/split-stack
-   - Best for: feature tours that pair narrative with visuals
-   - Avoid if: you want a single full-width column
-   - Traits: GSAP, two columns, pinned side (left or right)
-   - Install: `npx shadcn@latest add @avara-ui/split-scroll-stack`
-   - Docs: https://avaraui.com/docs/nextjs/scroll-stack#pinned-right
-5. **Horizontal scroll stack** (`horizontal-stack`): The section pins and vertical scrolling turns into horizontal travel across the cards, with a progress indicator.
-   - Live: https://avaraui.com/view/scroll-stack/horizontal-stack
-   - Best for: process timelines and step sequences
-   - Avoid if: you do not want the page held in place while the cards move
-   - Traits: GSAP, pinned section, vertical-to-horizontal scroll, progress indicator
-   - Install: `npx shadcn@latest add @avara-ui/horizontal-scroll-stack`
-   - Docs: https://avaraui.com/docs/nextjs/scroll-stack#horizontal-scroll-stack
-6. **Horizontal rail** (`horizontal-rail`): A horizontal rail of cards that slide across the viewport without stacking.
-   - Live: https://avaraui.com/view/scroll-stack/horizontal-rail
-   - Best for: showcasing products, media cards or other horizontal content
-   - Avoid if: you want cards that pile on top of each other
-   - Traits: horizontal, no stacking, navigation controls
-   - Install: `npx shadcn@latest add @avara-ui/horizontal-rail`
-   - Docs: https://avaraui.com/docs/nextjs/scroll-stack#horizontal-rail-track
-
-## Fan stack
+## Fan Stack Cascade
 
 Overlapping cards in a tilted diagonal cascade, each with a photo hanging off its edge. As the stack scrolls into view the cards are dealt out of one pile into place, scrubbed by the scrollbar. It is built from small primitives, so a card holds whatever your data has.
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/fan-stack.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/fan-stack
+```
+
+Or the Motion build (same props, same file — install one):
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/fan-stack-motion.json
+```
 
 ### Fan stack
 
@@ -181,28 +140,22 @@ export default function HiringFlowStack() {
 
 The cascade is a container query, not a breakpoint: under 768px of width the cards become a sticky stack instead — each one sticks near the top and the next slides over it, its header left peeking. Drag the preview narrower to see it. Under `prefers-reduced-motion` the cascade simply shows, without the deal.
 
-### Installation
+## Simple stack
+
+## Installation
 
 Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest add https://avaraui.com/r/fan-stack.json
+npx shadcn@latest add https://avaraui.com/r/scroll-stack.json
 ```
 
 Or register the @avara-ui registry once per project and add it by name:
 
 ```bash
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/fan-stack
+npx shadcn@latest add @avara-ui/scroll-stack
 ```
-
-Or the Motion build (same props, same file — install one):
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/fan-stack-motion.json
-```
-
-## Simple stack
 
 ### Card gap
 
@@ -409,22 +362,28 @@ export default function GappedStack() {
 }
 ```
 
-### Installation
+## Sticky Card Stack
+
+## Installation
 
 Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest add https://avaraui.com/r/scroll-stack.json
+npx shadcn@latest add https://avaraui.com/r/sticky-scroll-stack.json
 ```
 
 Or register the @avara-ui registry once per project and add it by name:
 
 ```bash
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/scroll-stack
+npx shadcn@latest add @avara-ui/sticky-scroll-stack
 ```
 
-## Sticky stack
+Or the Motion build (same props, same file — install one):
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/sticky-scroll-stack-motion.json
+```
 
 ### Sticky stack
 
@@ -511,27 +470,6 @@ export default function ServicesSection() {
     />
   );
 }
-```
-
-### Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/sticky-scroll-stack.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/sticky-scroll-stack
-```
-
-Or the Motion build (same props, same file — install one):
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/sticky-scroll-stack-motion.json
 ```
 
 ### More examples
@@ -628,6 +566,21 @@ export default function TunedStickyStack() {
 ```
 
 ## Split stack
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/split-scroll-stack.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/split-scroll-stack
+```
 
 ### Pinned right
 
@@ -791,22 +744,22 @@ export default function PinnedRightStack() {
 }
 ```
 
-### Installation
+### More examples
+
+## Installation
 
 Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest add https://avaraui.com/r/split-scroll-stack.json
+npx shadcn@latest add https://avaraui.com/r/horizontal-scroll-stack.json
 ```
 
 Or register the @avara-ui registry once per project and add it by name:
 
 ```bash
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/split-scroll-stack
+npx shadcn@latest add @avara-ui/horizontal-scroll-stack
 ```
-
-### More examples
 
 ### Horizontal Scroll Stack
 
@@ -877,21 +830,6 @@ const steps = [
 export default function ProcessRail() {
   return <HorizontalScrollStack items={steps} />;
 }
-```
-
-### Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/horizontal-scroll-stack.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/horizontal-scroll-stack
 ```
 
 ### More examples
@@ -981,24 +919,91 @@ npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/horizontal-rail
 ```
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+## About Shadcn Scroll Stack
 
-Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
+**What it is.** **Shadcn Scroll Stack** is a family of five independently installable scroll-driven card layout blocks: `FanStack`, `ScrollStack`, `StickyScrollStack`, `SplitScrollStack`, and `HorizontalScrollStack` (plus `HorizontalRail`).
 
-Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
+**How it is built.** Each block is tailored to its motion pattern — from container-query responsive tilted fan cascades to sticky overlap decks, two-column pinned split sections, and vertical-to-horizontal pinned rails — with automatic light and dark theme adaptation and `prefers-reduced-motion` support.
 
-Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
+**When to use it.** Use it for landing page feature tours, multi-step onboarding sequences, capability showcases, and narrative case-study sections.
 
-Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.
+- Landing page feature tours, multi-step onboarding sequences
+- Capability showcases, narrative case-study sections
 
-### State Management
+**When not to use**
 
-When triggering animations via state changes, ensure you wrap state updates in `startTransition` or use lightweight stores to prevent React rendering bottlenecks during the animation tick.
+- A different scroll-stack style or a scroll-split layout: use [Modern Scroll Stack](https://avaraui.com/docs/nextjs/modern-scroll-stack)
+- A static bento grid with no scroll choreography: use [Magic Bento](https://avaraui.com/docs/nextjs/magic-bento)
+
+**Agent notes**
+
+- Install only the specific block needed (`fan-stack`, `scroll-stack`, `sticky-scroll-stack`, `split-scroll-stack`, `horizontal-scroll-stack`, or `horizontal-rail`).
+- Use `FanStack` for a tilted scroll-scrubbed cascade that collapses into a sticky stack below 768px container width.
+- Use `StickyScrollStack` with `headerMode` and `contentType` (`"list" | "image" | "split" | "custom"`) for headed vertical overlap sections, or `SplitScrollStack` with `stickySide="left" | "right"` for two-column layouts.
+
+**Ask before you pick.** This page has 6 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 6 options as live previews: https://avaraui.com/view/scroll-stack
+
+**When to use it.** Scroll-driven card layouts built on GSAP ScrollTrigger: cards that stack, fan out, pin beside a column or travel sideways as the visitor scrolls. Six layouts, each a different structure.
+
+**When to use something else:**
+
+- [Modern Scroll Stack](https://avaraui.com/docs/nextjs/modern-scroll-stack): for a service-card stack with a different look.
+
+**Gotchas:**
+
+- Each layout is its own registry item: install only the chosen one, not the whole page.
+- Install the GSAP build. A Motion build exists for some layouts; never install both builds of one layout.
+
+### The 6 variants
+
+1. **Fan stack** (`fan-stack`): Three numbered steps dealt from one pile into a tilted cascade as the stack scrolls into view.
+   - Live: https://avaraui.com/view/scroll-stack/fan-stack
+   - Best for: a short numbered sequence: steps, phases, a three-part system
+   - Avoid if: you have many steps or long copy per step (it suits a short sequence)
+   - Traits: GSAP, numbered cards, tilted cascade, photo can hang off a card edge
+   - Install: `npx shadcn@latest add @avara-ui/fan-stack`
+   - Docs: https://avaraui.com/docs/nextjs/scroll-stack#fan-stack
+2. **Scroll stack** (`scroll-stack`): Cards stick to the viewport and the next slides up over them, offset by a pixel gap so titles stay readable.
+   - Live: https://avaraui.com/view/scroll-stack/scroll-stack
+   - Best for: step-by-step feature walkthroughs
+   - Avoid if: each step needs a different kind of content (the sticky stack takes lists, images and splits)
+   - Traits: GSAP ScrollTrigger, 3D deck, adjustable card gap, per-card background colour
+   - Install: `npx shadcn@latest add @avara-ui/scroll-stack`
+   - Docs: https://avaraui.com/docs/nextjs/scroll-stack#card-gap
+3. **Sticky scroll stack** (`sticky-stack`): A headed section where each card sticks and the next overlaps it; a card body can be a list, image, split or custom.
+   - Live: https://avaraui.com/view/scroll-stack/sticky-stack
+   - Best for: feature sections with varied content per step
+   - Avoid if: every step looks the same (the plain scroll stack is simpler)
+   - Traits: GSAP, headed section, list, image, split or custom bodies, tunable scale and offset
+   - Install: `npx shadcn@latest add @avara-ui/sticky-scroll-stack`
+   - Docs: https://avaraui.com/docs/nextjs/scroll-stack#sticky-stack
+4. **Split scroll stack** (`split-stack`): Two columns: one column pins while the cards stack and advance in the other; it pins left or right.
+   - Live: https://avaraui.com/view/scroll-stack/split-stack
+   - Best for: feature tours that pair narrative with visuals
+   - Avoid if: you want a single full-width column
+   - Traits: GSAP, two columns, pinned side (left or right)
+   - Install: `npx shadcn@latest add @avara-ui/split-scroll-stack`
+   - Docs: https://avaraui.com/docs/nextjs/scroll-stack#pinned-right
+5. **Horizontal scroll stack** (`horizontal-stack`): The section pins and vertical scrolling turns into horizontal travel across the cards, with a progress indicator.
+   - Live: https://avaraui.com/view/scroll-stack/horizontal-stack
+   - Best for: process timelines and step sequences
+   - Avoid if: you do not want the page held in place while the cards move
+   - Traits: GSAP, pinned section, vertical-to-horizontal scroll, progress indicator
+   - Install: `npx shadcn@latest add @avara-ui/horizontal-scroll-stack`
+   - Docs: https://avaraui.com/docs/nextjs/scroll-stack#horizontal-scroll-stack
+6. **Horizontal rail** (`horizontal-rail`): A horizontal rail of cards that slide across the viewport without stacking.
+   - Live: https://avaraui.com/view/scroll-stack/horizontal-rail
+   - Best for: showcasing products, media cards or other horizontal content
+   - Avoid if: you want cards that pile on top of each other
+   - Traits: horizontal, no stacking, navigation controls
+   - Install: `npx shadcn@latest add @avara-ui/horizontal-rail`
+   - Docs: https://avaraui.com/docs/nextjs/scroll-stack#horizontal-rail-track
 
 ## Props Reference
 
@@ -1023,6 +1028,30 @@ When triggering animations via state changes, ensure you wrap state updates in `
 | `StackItem` | `icon` | `React.ElementType` | `undefined` | Optional Lucide React icon rendered inside an adaptive badge box above the title. |
 | `StackItem` | `content` | `React.ReactNode` | `undefined` | Optional custom JSX/UI payload (e.g., code blocks, interactive graphs, mockups) rendered on the right half of the card on desktop viewports. |
 | `StackItem` | `color` | `string` | `"bg-card border-border..."` | Optional Tailwind background, text, and border classes applied to the card surface (e.g., `"bg-indigo-600 text-white"`). Omitting this allows the card to adapt automatically to light and dark modes. |
+
+## Works with other components
+
+Combine `ScrollStack` blocks with [Modern Scroll Stack](https://avaraui.com/docs/nextjs/modern-scroll-stack) for alternating color cards, [Scroll Split Cards](https://avaraui.com/docs/nextjs/scroll-split-cards) for split-panel reveals, and [Magic Bento](https://avaraui.com/docs/nextjs/magic-bento) for grid highlights.
+
+## Do I have to install all the Scroll Stack blocks?
+
+No. Each layout is its own registry item, for example `fan-stack`, `sticky-scroll-stack`, `split-scroll-stack` and `horizontal-scroll-stack`, so you install only the one you use. Each has its own block file and its own props, and you can mix different layouts on one page.
+
+## How does FanStack behave on smaller screens?
+
+`FanStack` uses a CSS container query rather than a viewport breakpoint. Below `768px` of container width it switches from the tilted cascade to a sticky vertical stack. Under `prefers-reduced-motion` it renders without the scroll-scrubbed deal animation.
+
+## How do I run a scroll stack inside a scrollable container instead of the page?
+
+Pass the scrolling element to `scrollerRef` on `FanStack`. It defaults to `window`, so you only need it when the stack sits inside a container that scrolls on its own, such as a modal body or a fixed-height panel.
+
+## How do I change the colour of FanStack cards?
+
+Set `tone` on `FanStackCard` to `"muted"`, `"light"` or `"accent"`. The card surface is tinted from `--primary`, so your theme drives it. If you leave `tone` unset, the cards step through the three tones in order.
+
+## How do I stop FanStack cards sliding under a fixed header?
+
+Raise `stickyTop`. Below `768px` it is the gap in px above the first stuck card, and it defaults to `16`. Use `scrub`, default `0.6`, to control how many seconds the cards take to catch up with the scrollbar. `0` locks them to it.
 
 ---
 

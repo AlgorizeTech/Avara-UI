@@ -3,15 +3,14 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("image-compare");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Image Compare
 
-An interactive, responsive image comparison slider component featuring 10 distinct visual comparison modes, fluid touch/mouse drag physics, custom label badges, and dynamic site theme color binding.
+A before-and-after image slider with ten handle and reveal styles, label badges, and mouse or touch control.
 
-`ImageCompare` allows users to seamlessly compare before-and-after visual states for photo editing, design variations, AI enhancements, or product upgrades.
-
-<AgentVariants slug="image-compare" />
+`ImageCompare` suits photo editing, design variations, AI enhancements and product upgrades.
 
 export const usageClassic = `import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
 
@@ -77,6 +76,7 @@ export default function DiagonalSplitDemo() {
   name="image-compare"
   colorControl
   columns={1}
+  installation={<Installation name="image-compare" usage="below" />}
   examples={[
     {
       title: "Classic Slider",
@@ -97,20 +97,6 @@ export default function DiagonalSplitDemo() {
       usage: usageClassic,
       code: extractCode("src/components/custom/blocks/ImageCompareBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="image-compare" />
-
-## Examples
-
-<ExampleShowcase minHeight={370}
-  name="image-compare"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Split Handle",
       propNotes: [
@@ -240,34 +226,38 @@ export default function DiagonalSplitDemo() {
   ]}
 />
 
-## Features
+## About Shadcn Image Compare
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
-  <div className="p-4 rounded-xl border border-border bg-muted/50">
-    <h3 data-toc-skip className="font-semibold text-foreground mb-1">10 Unique Interaction Variants</h3>
-    <p className="text-sm text-muted-foreground">Includes classic sliders, split badges, glowing lines, hover reveals, vertical slides, and circular lens scopes.</p>
-  </div>
-  <div className="p-4 rounded-xl border border-border bg-muted/50">
-    <h3 data-toc-skip className="font-semibold text-foreground mb-1">100% Theme Color Engine</h3>
-    <p className="text-sm text-muted-foreground">Integrates with site primary CSS variable <code>var(--primary)</code> or explicit color swatches.</p>
-  </div>
-  <div className="p-4 rounded-xl border border-border bg-muted/50">
-    <h3 data-toc-skip className="font-semibold text-foreground mb-1">Touch & Gesture Responsive</h3>
-    <p className="text-sm text-muted-foreground">Smooth dragging for mobile touch screens, trackpads, and mouse pointers.</p>
-  </div>
-  <div className="p-4 rounded-xl border border-border bg-muted/50">
-    <h3 data-toc-skip className="font-semibold text-foreground mb-1">Custom Labels & Images</h3>
-    <p className="text-sm text-muted-foreground">Pass custom Before/After labels and image URLs through flexible props.</p>
-  </div>
-</div>
+**What it is.** **Shadcn Image Compare** (`ImageCompare`) is a before-and-after image comparison component with 10 handle and reveal styles (`classic-slider`, `split-handle`, `glowing-divider`, `badge-overlay`, `minimal-line`, `hover-reveal`, `vertical-slide`, `circle-magnifier`, `glass-handle`, and `diagonal-split`).
 
-## Best Practices & Guidelines
+**How it is built.** `beforeImage` fills the frame and `afterImage` sits on top, clipped to the handle position, so dragging right (or down in `vertical-slide`) reveals more of the after image. `beforeLabel` and `afterLabel` are the corner badges and the images' `alt` text, and `color` defaults to your theme's `--primary`.
 
-<div className="space-y-3 my-6">
-  <InfoCard title="When to Use">
-    <p>Use <code>ImageCompare</code> to showcase photo retouching, AI enhancement models, design redrafts, dark mode vs light mode UI previews, or product quality upgrades.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use it for AI photo restoration demos, design system light/dark comparisons, retouching portfolios, and hardware/product upgrade showcases.
+
+## For AI agents
+
+<AgentBrief name="image-compare">
+
+**When to use**
+
+- AI photo restoration demos, design system light/dark comparisons
+- Retouching portfolios, hardware/product upgrade showcases
+
+**When not to use**
+
+- Browsing many images in sequence: use <DocLink to="carousel">Carousel</DocLink>
+- Expanding video panels: use <DocLink to="video-accordion">Video Accordion</DocLink>
+
+**Agent notes**
+
+- `ImageCompare` accepts `beforeImage`, `afterImage`, `beforeLabel`, `afterLabel`, and `variant`.
+- Available `variant` values: `"classic-slider" | "split-handle" | "glowing-divider" | "badge-overlay" | "minimal-line" | "hover-reveal" | "vertical-slide" | "circle-magnifier" | "glass-handle" | "diagonal-split"`.
+- Supports mouse drag, touch gestures, and pointer-following (`"hover-reveal"`, which listens on the whole window).
+- The frame is fixed at 480px tall (560px from `sm`); change it with `className`, for example `h-[360px] sm:h-[420px]` (set both, because the `sm:` class otherwise wins on wider screens).
+- No keyboard control or ARIA slider role, so pair it with text that states the difference.
+- `"diagonal-split"` is a straight vertical split with a diamond-shaped handle, not a diagonal cut.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -302,9 +292,9 @@ export default function DiagonalSplitDemo() {
           <code>string</code>
         </td>
         <td>
-          <code>Unsplash Preset</code>
+          <code>built-in sample photo</code>
         </td>
-        <td>URL of the base before image displayed on the left/top.</td>
+        <td>URL of the image that fills the frame underneath. It stays visible on the right (or bottom) of the handle.</td>
       </tr>
       <tr>
         <td>
@@ -316,7 +306,7 @@ export default function DiagonalSplitDemo() {
         <td>
           <code>Unsplash Preset</code>
         </td>
-        <td>URL of the enhanced after image revealed by dragging.</td>
+        <td>URL of the image drawn on top and revealed from the left (or top) edge up to the handle.</td>
       </tr>
       <tr>
         <td>
@@ -352,7 +342,7 @@ export default function DiagonalSplitDemo() {
         <td>
           <code>50</code>
         </td>
-        <td>Starting percentage position of the slider handle (0 - 100).</td>
+        <td>Starting position of the handle, as a percentage of the width (0 - 100). In <code>vertical-slide</code> it is a percentage of the height.</td>
       </tr>
       <tr>
         <td>
@@ -364,7 +354,7 @@ export default function DiagonalSplitDemo() {
         <td>
           <code>"primary"</code>
         </td>
-        <td>Applies dynamic theme color palettes (<code>"primary" | "indigo" | "rose" | "emerald" | "zinc"</code> or custom hex).</td>
+        <td>Accent for the handle and the after badge: <code>"primary"</code> (your theme's <code>--primary</code>), <code>"indigo"</code>, <code>"rose"</code>, <code>"emerald"</code>, <code>"zinc"</code> or a hex string starting with <code>#</code>. Other values fall back to <code>primary</code>.</td>
       </tr>
       <tr>
         <td>
@@ -376,12 +366,37 @@ export default function DiagonalSplitDemo() {
         <td>
           <code>""</code>
         </td>
-        <td>Custom Tailwind CSS classes applied to the root container.</td>
+        <td>Classes for the root container, which is full width and 480px tall (560px from <code>sm</code>) by default.</td>
       </tr>
     </tbody>
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Combine `ImageCompare` with <DocLink to="carousel">Carousel</DocLink> to page through several before-and-after pairs.
+- <DocLink to="video-accordion">Video Accordion</DocLink> is the option when the media is video panels rather than stills.
+- <DocLink to="image-viewer">Image Viewer</DocLink> adds zoom and thumbnails for a single product photo.
+
+## Can users compare images without clicking and dragging in ImageCompare?
+
+Yes. Set `variant="hover-reveal"` and the divider follows the pointer with no press needed. It listens on the whole window, so the position keeps tracking while the cursor is outside the frame, clamped to its edges. `circle-magnifier` also follows the pointer, as a lens.
+
+## Which image shows first, and how do I set the starting position in ImageCompare?
+
+`beforeImage` fills the frame and `afterImage` is revealed from the left edge (the top in `vertical-slide`) up to the handle. Set `initialPosition` from 0 to 100 for where the handle starts. The default is 50, which shows half of each image.
+
+## Does the ImageCompare diagonal-split variant cut at an angle?
+
+No. `diagonal-split` divides the images with a straight vertical edge, like the classic slider, and only the handle differs: a 45-degree rotated diamond with a scan icon. For a split in the other direction, use `vertical-slide`, which divides top to bottom and is dragged up and down.
+
+## How does the ImageCompare circle-magnifier variant work?
+
+`circle-magnifier` shows `afterImage` only inside a 240px circular lens, a 120px radius, that follows the pointer in both axes. Everywhere outside the lens you see `beforeImage`. Press or touch the frame to jump the lens to that spot, then drag.
+
+## How do I change the ImageCompare size and colour?
+
+The frame is 480px tall, or 560px from `sm`, so pass `className` such as `h-[360px] sm:h-[420px]` to resize it; set both, because the `sm:` class otherwise wins on wider screens. `color` takes `primary`, `indigo`, `rose`, `emerald`, `zinc` or a `#` hex string and tints the handle and the after badge.
 
 <DocsJsonLd slug="image-compare" />
+<FaqJsonLd slug="image-compare" />

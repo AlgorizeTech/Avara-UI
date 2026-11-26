@@ -1,16 +1,31 @@
 ---
 title: "Shadcn Custom Code Block"
-description: "A beautiful, robust code block component with manual syntax highlighting, automatic language icons, and clipboard copy functionality. Free shadcn/ui component."
+description: "A code block with a built-in syntax highlighter, language icons, multi-file tabs, line numbers and a copy button. Free shadcn/ui Custom Code Block."
 url: https://avaraui.com/docs/nextjs/custom-code-block
 ---
 
 # Shadcn Custom Code Block
 
-A beautiful, robust code block component with manual syntax highlighting, automatic language icons, and clipboard copy functionality.
+A code block with a built-in syntax highlighter, language icons, multi-file tabs, line numbers and a copy button.
 
 This `CustomCodeBlock` provides an elegant interface to display code snippets, complete with macOS-style window controls, dynamic language badges, and a custom syntax highlighter optimized for both light and dark themes.
 
-Every block ships with macOS window controls, a language badge derived from `language`, and a copy button.
+Every block ships with macOS window controls, a header badge that shows `fileName` (or the language name when there is none), and a copy button.
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/custom-code-block.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/custom-code-block
+```
 
 ## Code block
 
@@ -63,24 +78,7 @@ export default function Snippet() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/custom-code-block.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/custom-code-block
-```
-
-## Examples
-
-### TypeScript
+## TypeScript
 
 - Set `language="tsx"` — or `"ts"` — for TypeScript highlighting and the matching badge.
 
@@ -159,7 +157,7 @@ export default function TypeScriptBlock() {
 }
 ```
 
-### Shell commands
+## Shell commands
 
 - Set `language="bash"` to swap the badge for a terminal icon and dim comment lines.
 
@@ -194,7 +192,7 @@ export default function ShellBlock() {
 }
 ```
 
-### Multiple files
+## Multiple files
 
 - Pass `tabs` instead of `code` to group related files behind a switcher in one block.
 
@@ -351,20 +349,33 @@ export default function MultiFileSnippet() {
 }
 ```
 
-## Features
-Explore the Custom Code Block's syntax highlighting features, complete with copy-to-clipboard functionality and line numbering.
+## About Shadcn Custom Code Block
 
-Uses a lightweight, custom regex engine for syntax highlighting. No need to install heavy libraries like PrismJS or Shiki.
+**What it is.** **Shadcn Custom Code Block** (`CustomCodeBlock`) is a code viewer with macOS-style window controls, language badges, line numbers, multi-file tab switching, and clipboard copy feedback. It needs no highlighter library; the only npm dependency is `lucide-react`.
 
-Automatically displays the correct language icon (React, JS, TS, HTML, CSS, Bash) in the macOS-style header.
+**How it is built.** Instead of bundling PrismJS or Shiki, `CustomCodeBlock` uses a lightweight regex syntax highlighter tuned for light and dark themes, driven by `language` and `fileName` (or `tabs` for multi-file groups). It has dedicated rules for `html`/`xml`, `css` and `bash`/`sh`; every other language uses the JavaScript and TypeScript rules.
 
-Includes a built-in copy button with a temporary success state (checkmark) for an excellent developer experience.
+**When to use it.** Use it for developer documentation, interactive tutorials, component installation snippets, and technical blog posts.
 
-The syntax highlighter colors are carefully chosen to look gorgeous on both light and dark backgrounds.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Make sure to pass the correct `language` prop (e.g., `"tsx"`, `"bash"`, `"css"`). This prop drives both the regex syntax highlighting engine and the language icon rendered in the header.
+- Developer documentation, interactive tutorials
+- Component installation snippets, technical blog posts
+
+**When not to use**
+
+- A shell command in a terminal window: use [Terminal](https://avaraui.com/docs/reactjs/terminal)
+- Requests the reader can send and inspect: use [API Playground](https://avaraui.com/docs/reactjs/api-playground)
+
+**Agent notes**
+
+- `CustomCodeBlock` accepts `code` (raw string), `language` (defaults to `"typescript"`), and `fileName`.
+- Pass `tabs` instead of `code` to group multiple related files behind a built-in tab switcher.
+- Uses a lightweight custom regex highlighter with no external PrismJS or Shiki dependencies.
+- Pass `language` in lowercase (`"html"`, `"css"`, `"bash"`); the highlighter compares it exactly, so `"HTML"` falls back to the JavaScript rules.
+- A `tabs` item is `{ code, language, fileName }` and all three fields are required. Line numbers are always shown.
 
 ## Props Reference
 
@@ -372,7 +383,38 @@ Make sure to pass the correct `language` prop (e.g., `"tsx"`, `"bash"`, `"css"`)
 | --- | --- | --- | --- | --- |
 | `CustomCodeBlock` | `code` | `string` | - | The raw code string to display. |
 | `CustomCodeBlock` | `language` | `string` | `"typescript"` | The programming language for syntax highlighting (e.g. "javascript", "tsx", "html", "bash"). |
-| `CustomCodeBlock` | `fileName` | `string` | - | Optional custom file name to display in the header (e.g. "app.tsx"). |
+| `CustomCodeBlock` | `fileName` | `string` | - | Optional custom file name to display in the header (e.g. "app.tsx"). Without it the header shows the language name. |
+| `CustomCodeBlock` | `tabs` | `{ code: string; language: string; fileName: string }[]` | - | Groups several files behind a tab switcher. When non-empty it replaces `code`, `language` and `fileName`. |
+
+## Works with other components
+
+- Pair `CustomCodeBlock` with [Terminal Snippet](https://avaraui.com/docs/reactjs/terminal) for CLI-focused command windows.
+- Use [API Playground](https://avaraui.com/docs/reactjs/api-playground) for live request testing.
+- Use [Copy Button](https://avaraui.com/docs/reactjs/copy-button) for standalone inline copy triggers.
+
+## Does CustomCodeBlock require Prism or Shiki?
+
+No. It runs a built-in regex highlighter, so there is nothing to configure and no highlighter in your bundle. The only npm dependency is `lucide-react` for the header and copy icons. Because the highlighter is simple, it colours tokens by pattern and does not parse the language the way Shiki does.
+
+## Which languages does CustomCodeBlock highlight?
+
+It has dedicated rules for `html` or `xml`, `css`, and `bash` or `sh`. Any other value, including `json` or `python`, is highlighted with the JavaScript and TypeScript rules. Pass `language` in lowercase, because those checks are exact, and note that the header icon is matched case-insensitively.
+
+## How do I display multiple files in one block?
+
+Pass an array to `tabs` instead of `code`. Each entry needs `code`, `language` and `fileName`, and the tab label is the `fileName`. The header icon, highlighting and the copy button all follow the active tab. Once `tabs` is non-empty, the `code`, `language` and `fileName` props are ignored.
+
+## What does the copy button copy, and why might it fail?
+
+It copies the active tab's raw `code` without line numbers, using `navigator.clipboard.writeText`, and shows a check for two seconds. There is no fallback, so on a non-secure (http) page or when permission is denied, it only logs an error to the console. [Copy Button](https://avaraui.com/docs/reactjs/copy-button) has a fallback and a visible failed state.
+
+## How do I change or hide the file name and line numbers?
+
+Set `fileName` to change the label beside the language icon. Without it, the header shows the language name, such as `TypeScript`, or `Terminal` for `bash`. Line numbers are always rendered and there is no prop to hide them, so remove the numbered `span` in the installed source if you do not want them.
+
+## Is it safe to show untrusted code in CustomCodeBlock?
+
+The code is displayed as text. Before highlighting, the component escapes `&`, `<` and `>` in the `code` string, and only then wraps tokens in styled `span` elements injected with `dangerouslySetInnerHTML`. HTML tags inside a snippet therefore appear literally and do not run.
 
 ---
 

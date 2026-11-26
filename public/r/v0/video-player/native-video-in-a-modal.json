@@ -3,7 +3,7 @@
   "name": "video-player-native-video-in-a-modal",
   "type": "registry:block",
   "title": "Video Player — Native video in a modal",
-  "description": "The same file behind the poster hero, opening ultrawide at full viewport size.",
+  "description": "The \"Native video in a modal\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

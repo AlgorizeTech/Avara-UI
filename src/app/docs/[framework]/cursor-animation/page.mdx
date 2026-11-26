@@ -3,15 +3,14 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("cursor-animation");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Cursor Animation
 
-An interactive, 100% full-width and responsive custom cursor component with 10 distinct animation variants including fluid physics, particle trails, magnetic targeting, spotlight masking, and precision crosshairs.
+An interactive, 100% full-width and responsive custom cursor component with 11 distinct animation variants including fluid physics, particle trails, magnetic targeting, spotlight masking, and precision crosshairs.
 
 `CursorAnimation` enhances pointer interactions over designated containers with customizable animations, seamless dark mode support, and fluid responsive physics for all devices.
-
-<AgentVariants slug="cursor-animation" />
 
 export const usageGlow = `import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
 import { Sparkles } from "lucide-react";
@@ -261,6 +260,7 @@ export default function ImageTrailCursorDemo() {
   name="cursor-animation"
   colorControl
   columns={1}
+  installation={<Installation name="cursor-animation" usage="below" />}
   examples={[
     {
       title: "Image Trail Cursor",
@@ -272,20 +272,6 @@ export default function ImageTrailCursorDemo() {
       usage: usageImageTrail,
       code: extractCode("src/components/custom/blocks/CursorAnimationBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="cursor-animation" />
-
-## Examples
-
-<ExampleShowcase minHeight={370}
-  name="cursor-animation"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Glow Cursor",
       propNotes: [
@@ -371,32 +357,37 @@ export default function ImageTrailCursorDemo() {
   ]}
 />
 
-## Features
+## About Shadcn Cursor Animation
 
-Discover the key interactive capabilities of the `CursorAnimation` block:
+**What it is.** **Shadcn Cursor Animation** (`CursorAnimation` and `MainContent`) adds custom pointer effects inside any container across 11 variants: `image-trail`, `glow`, `magnetic`, `trail`, `badge`, `spotlight`, `expand`, `crosshair`, `ring`, `pulse`, and `sonar`.
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="10 Distinct Variants">
-    <p>Choose from glow, magnetic, particle trail, badge label, spotlight, crosshair, and 4 other fluid styles.</p>
-  </InfoCard>
-  <InfoCard title="Fluid Physics & Lerp">
-    <p>Smooth linear interpolation (LERP) physics ensures natural inertia and responsive cursor tracking.</p>
-  </InfoCard>
-  <InfoCard title="100% Full-Width Responsive">
-    <p>Adapts seamlessly to container boundaries across desktop, tablet, and mobile screens without breaking overflow.</p>
-  </InfoCard>
-  <InfoCard title="Dark Mode Native">
-    <p>Pre-configured with zinc dark mode palettes matching site design tokens and contrast guidelines.</p>
-  </InfoCard>
-</div>
+**How it is built.** Using smooth LERP interpolation physics, `CursorAnimation` tracks mouse movement within its bounds with a `requestAnimationFrame` loop that runs only while the pointer is over it, supports theme colors (`primary`, `indigo`, `rose`, `emerald`, `zinc`, or hex), and adapts cleanly across light and dark modes. It listens to mouse events only and has no `prefers-reduced-motion` check. The only npm dependency is `lucide-react`.
 
-## Best Practices & Guidelines
+**When to use it.** Use it for interactive hero canvases, creative agency portfolios, image showcase zones, and custom action regions.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Use <code>CursorAnimation</code> to highlight hero sections, portfolio cards, interactive canvas areas, or custom action areas. Ensure pointer-events are set correctly when layering over interactive text or buttons.</p>
-  </InfoCard>
-</div>
+## For AI agents
+
+<AgentBrief name="cursor-animation">
+
+**When to use**
+
+- Interactive hero canvases, creative agency portfolios
+- Image showcase zones, custom action regions
+
+**When not to use**
+
+- Text that forms from particles: use <DocLink to="particle-canvas">Particle Canvas</DocLink>
+- A static bounding box around a phrase: use <DocLink to="selection-frame">Selection Frame</DocLink>
+
+**Agent notes**
+
+- `CursorAnimation` wraps `MainContent` and accepts `variant` (`"image-trail" | "glow" | "magnetic" | "trail" | "badge" | "spotlight" | "expand" | "crosshair" | "ring" | "pulse" | "sonar"`) and `color`.
+- Use `label` with `variant="badge"` and `trailCount` with `variant="trail"`.
+- `MainContent` sets `pointer-events-none`, so add `pointer-events-auto` to any button or link inside it that must stay clickable.
+- The container hides the native cursor (`cursor-none`) and defaults to `h-[480px] sm:h-[560px]`; override the height with `className`.
+- `variant="image-trail"` takes an `images` array of URLs; without it the eight bundled remote photos are used.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -416,7 +407,7 @@ Discover the key interactive capabilities of the `CursorAnimation` block:
           <code>variant</code>
         </td>
         <td>
-          <code>"glow" | "magnetic" | "trail" | "badge" | "spotlight" | "expand" | "crosshair" | "ring" | "pulse" | "sonar"</code>
+          <code>"glow" | "magnetic" | "trail" | "badge" | "spotlight" | "expand" | "crosshair" | "ring" | "pulse" | "sonar" | "image-trail"</code>
         </td>
         <td>
           <code>"glow"</code>
@@ -461,6 +452,18 @@ Discover the key interactive capabilities of the `CursorAnimation` block:
       </tr>
       <tr>
         <td>
+          <code>images</code>
+        </td>
+        <td>
+          <code>string[]</code>
+        </td>
+        <td>
+          <code>8 bundled photo URLs</code>
+        </td>
+        <td>Image URLs cycled in order by <code>variant="image-trail"</code>. Ignored by every other variant.</td>
+      </tr>
+      <tr>
+        <td>
           <code>className</code>
         </td>
         <td>
@@ -487,6 +490,34 @@ Discover the key interactive capabilities of the `CursorAnimation` block:
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Pair `CursorAnimation` with <DocLink to="particle-canvas">Particle Canvas</DocLink> for interactive dot-field heroes.
+- Use <DocLink to="selection-frame">Selection Frame</DocLink> for design-tool callouts and <DocLink to="hover-peek">Hover Peek</DocLink> for pointer-driven photo reveals.
+
+## How do I customize the text pill on variant="badge"?
+
+Pass `label` alongside `variant="badge"`, for example `label="View Project"`. The pill floats beside the pointer and shows that text, and it falls back to `"Explore"` when you leave `label` out. Every other variant ignores `label`, so it has no effect unless the variant is `"badge"`.
+
+## Can I control how many particles appear in variant="trail"?
+
+Yes. Pass `trailCount`, which defaults to `6`. The trail records the pointer position roughly every 20 ms and keeps only the newest `trailCount` points, so a larger number gives a longer, denser tail. Only `variant="trail"` reads this prop; the other variants ignore it.
+
+## How do I use my own pictures in the image-trail variant?
+
+Pass an `images` array of URLs with `variant="image-trail"`. A new 140 by 180 px card spawns each time the pointer moves more than 45 px from the last one, cycling through your list in order, with about seven on screen at once. Without `images`, it uses eight remote demo photos.
+
+## Why is the normal cursor hidden, and why can't I click links inside CursorAnimation?
+
+The container sets `cursor-none` so the effect replaces the native cursor inside it. `MainContent` also sets `pointer-events-none`, which its children inherit. Add `pointer-events-auto` to any button or link that should stay clickable, and consider a visible focus style for it.
+
+## Does CursorAnimation work on touch screens or with reduced motion?
+
+It is built for mouse pointers. The component listens to `onMouseMove`, `onMouseEnter`, `onMouseLeave`, `onMouseDown` and `onMouseUp` only, has no dedicated touch handling, and does not check `prefers-reduced-motion`. Treat it as a desktop enhancement and keep important content readable without the effect.
+
+## How do I change the CursorAnimation color and size?
+
+Set `color` to `"primary"` (follows your `--primary` token), `"indigo"`, `"rose"`, `"emerald"`, `"zinc"` or a hex string like `"#10b981"`; unknown names fall back to primary. The container is full width and `480px` tall, or `560px` from the `sm` breakpoint, and `className` is merged with `tailwind-merge`, so `h-96` overrides it.
 
 <DocsJsonLd slug="cursor-animation" />
+<FaqJsonLd slug="cursor-animation" />

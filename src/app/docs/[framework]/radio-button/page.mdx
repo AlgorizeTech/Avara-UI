@@ -3,14 +3,12 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("radio-button");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Radio Button
 
-An accessible, animated radio button group with card-style options, keyboard arrow navigation, optional press ripple feedback, and eleven distinct examples.
-
-<AgentVariants slug="radio-button" />
+An accessible, animated radio button group (`RadioButtonGroup`) with card-style options, keyboard arrow navigation, and optional press ripple feedback.
 
 export const usageDefault = `import { RadioButtonGroup } from "@/components/custom/blocks/RadioButtonBlock";
 
@@ -242,14 +240,16 @@ export default function RadioButtonRippleExample() {
 }`;
 
 <ExampleShowcase
-  minHeight={360}
+  minHeight={260}
+  headingLevel={2}
   name="radio-button"
   colorControl
   columns={1}
+  installation={<Installation name="radio-button" usage="below" />}
   examples={[
     {
       title: "Select a Plan",
-      subheading:
+      description:
         "Vertical card stack with top-right radio dot indicator, descriptions, and right-aligned pricing.",
       propNotes: [
         {
@@ -262,22 +262,9 @@ export default function RadioButtonRippleExample() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/RadioButtonBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="radio-button" />
-
-<ExampleShowcase
-  minHeight={360}
-  name="radio-button"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Delivery And Payment",
-      subheading:
+      description:
         "Combined checkout layout pairing a 3-column delivery grid with a 2-column payment icon grid.",
       props: { variant: "delivery-and-payment" },
       usage: usageDeliveryAndPayment,
@@ -285,7 +272,7 @@ export default function RadioButtonRippleExample() {
     },
     {
       title: "Subscription Plans",
-      subheading:
+      description:
         "Inverted high-contrast selected state with discount badge, centered check indicator, and press ripple.",
       props: { variant: "subscription-plans" },
       usage: usageSubscription,
@@ -293,7 +280,7 @@ export default function RadioButtonRippleExample() {
     },
     {
       title: "Controlled",
-      subheading:
+      description:
         "Controlled radio group with live selected value readout below the cards.",
       props: { variant: "controlled" },
       usage: usageControlled,
@@ -301,7 +288,7 @@ export default function RadioButtonRippleExample() {
     },
     {
       title: "Custom Indicator",
-      subheading:
+      description:
         "Three-column grid with an animated spring check-circle indicator in the top-right corner.",
       props: { variant: "custom-indicator" },
       usage: usageCustomIndicator,
@@ -309,7 +296,7 @@ export default function RadioButtonRippleExample() {
     },
     {
       title: "Disabled Group",
-      subheading:
+      description:
         "Read-only disabled state when option changes are temporarily unavailable.",
       props: { variant: "disabled-group" },
       usage: usageDisabled,
@@ -317,7 +304,7 @@ export default function RadioButtonRippleExample() {
     },
     {
       title: "Grid Layout",
-      subheading:
+      description:
         "Three-column responsive grid for compact delivery or shipping options.",
       props: { variant: "grid" },
       usage: usageGrid,
@@ -325,7 +312,7 @@ export default function RadioButtonRippleExample() {
     },
     {
       title: "Icon Cards",
-      subheading:
+      description:
         "Wide plan cards with leading icon boxes, highlight badges, pricing, and checkmark indicators.",
       props: { variant: "icon-cards" },
       usage: usageIconCards,
@@ -333,7 +320,7 @@ export default function RadioButtonRippleExample() {
     },
     {
       title: "No Indicator",
-      subheading:
+      description:
         "Clean border and ring selection with no radio dot or checkmark indicator.",
       props: { variant: "no-indicator" },
       usage: usageNoIndicator,
@@ -341,7 +328,7 @@ export default function RadioButtonRippleExample() {
     },
     {
       title: "With Icons",
-      subheading:
+      description:
         "Two-column horizontal icon cards with no radio dot indicator.",
       props: { variant: "with-icons" },
       usage: usageWithIcons,
@@ -349,7 +336,7 @@ export default function RadioButtonRippleExample() {
     },
     {
       title: "With Ripple",
-      subheading:
+      description:
         "Three-column deploy region grid with tactile press ripple feedback on click.",
       props: { variant: "with-ripple" },
       usage: usageWithRipple,
@@ -357,6 +344,38 @@ export default function RadioButtonRippleExample() {
     },
   ]}
 />
+
+## About Radio Button
+
+**What it is.** `RadioButtonGroup` is a card-based radio selector supporting vertical stacks, multi-column grids, leading icons, inverted subscription cards, custom check indicators, and tactile press ripples.
+
+**How it is built.** Implements accessible `role="radiogroup"` / `role="radio"` semantics with full arrow-key navigation, controlled or uncontrolled value management, and theme-synced active borders.
+
+**When to use it.** Use `RadioButtonGroup` when users choose one option from rich cards (plans, shipping methods, payment options, deploy regions). For compact inline toggle buttons, use <DocLink to="toggle-group">Toggle Group</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="radio-button">
+
+**When to use**
+
+- Single-choice card selectors for pricing plans, delivery/payment options, or deploy regions
+- Rich option items with `label`, `description`, `meta` pricing, icons, or press ripple feedback
+
+**When not to use**
+
+- Compact toolbar/segmented switches — use <DocLink to="toggle-group">Toggle Group</DocLink>
+- Long lists of options in a dropdown — use <DocLink to="select">Select</DocLink>
+
+**Agent notes**
+
+- Named export: `import { RadioButtonGroup } from "@/components/custom/blocks/RadioButtonBlock"`
+- `options` is required and each `value` must be unique. The group is controlled when `value` is not `undefined`; otherwise pass `defaultValue` (it falls back to the first enabled option).
+- Pass `label` or `ariaLabel` so the `radiogroup` has an accessible name; with neither it is named "Options".
+- `delivery-and-payment` and `controlled` are demo names with no styling of their own; they render like `default`.
+- Needs the `lucide-react` package, which the registry install adds. It uses no animation library.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -441,4 +460,34 @@ export default function RadioButtonRippleExample() {
   </table>
 </div>
 
+## Works with other components
+
+- Combine `RadioButtonGroup` inside <DocLink to="form">Form</DocLink>, <DocLink to="wizard">Wizard</DocLink>, or <DocLink to="booking-card">Booking Card</DocLink> flows.
+- Pair with <DocLink to="action-buttons">Action Button</DocLink> (`PaymentButton`) for checkout confirmation.
+
+## Does RadioButtonGroup support keyboard navigation?
+
+Yes. The arrow keys (Up, Down, Left, Right) move focus and selection to the next enabled option, wrap at the ends and skip options marked `disabled`. Only the selected card is in the tab order, so Tab enters and leaves the group in one stop.
+
+## How do I make RadioButtonGroup controlled?
+
+Pass `value` together with `onValueChange`. The group counts as controlled whenever `value` is not `undefined`, and `onValueChange` receives the option's `value` string on every click or arrow-key move. Without `value`, it keeps its own state starting from `defaultValue`.
+
+## How do I change the selection indicator on RadioButtonGroup?
+
+Set `indicator` to `"dot"`, `"check"` or `"none"`. Without it the variant decides: `with-icons` and `no-indicator` show none, `subscription-plans`, `custom-indicator` and `icon-cards` show a check, and every other variant shows a dot in the top-right corner.
+
+## How do I turn the press ripple on or off in RadioButtonGroup?
+
+Pass `ripple={true}` or `ripple={false}`. It defaults to on only for `subscription-plans` and `with-ripple`. The ripple starts from the pointer position on a real click, so keyboard selection never triggers it, and it is skipped when the user prefers reduced motion.
+
+## Can I disable a single option in RadioButtonGroup?
+
+Yes. Set `disabled: true` on that entry in `options` and only it is dimmed, marked `aria-disabled` and skipped by arrow-key navigation. The group-level `disabled` prop does the same for every option at once and sets `aria-disabled` on the `radiogroup`.
+
+## Does RadioButtonGroup work in Vite or only Next.js?
+
+It works in both. The file imports nothing from `next/*`, only React, `lucide-react` and the `cn` helper. The `"use client"` line at the top is ignored outside Next.js, and the install adds the `lucide-react` npm package.
+
 <DocsJsonLd slug="radio-button" />
+<FaqJsonLd slug="radio-button" />

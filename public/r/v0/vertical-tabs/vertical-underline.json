@@ -3,7 +3,7 @@
   "name": "vertical-tabs-vertical-underline",
   "type": "registry:block",
   "title": "Tabs — Vertical underline",
-  "description": "The bar rotates onto the leading edge and travels down the rail, with no track line to compete with it.",
+  "description": "The \"Vertical underline\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

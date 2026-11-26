@@ -1,14 +1,29 @@
 ---
 title: "Shadcn User Graph"
-description: "An interactive multi-tiered User & AI Agent Hierarchy Network Graph built for Next.js and React. Free shadcn/ui User Graph component for React and Tailwind CSS."
+description: "An interactive hierarchy graph linking a user to AI agents, orbiting tools and app integrations. Free shadcn/ui User Graph component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/user-graph
 ---
 
 # Shadcn User Graph
 
-An interactive multi-tiered User & AI Agent Hierarchy Network Graph built for Next.js and React. It features an interactive orbiting tool cluster around the main user node, SVG connecting curves, specialized sub-agent team nodes, app integration badges, and full light mode design.
+An interactive hierarchy graph linking a user to AI agents, orbiting tools and app integrations.
 
 Three tiers stack top to bottom: an orbit of channel nodes around the user, the orchestrator, and the specialist sub-agents with their app badges. Below 640px the SVG hierarchy swaps itself for a vertical timeline — the component measures its own container, so it adapts inside the preview, not just at the window edge.
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/user-graph.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/user-graph
+```
 
 ## User graph
 
@@ -96,36 +111,31 @@ export default function UserGraphDemo() {
 }
 ```
 
-## Installation
+## About Shadcn User Graph
 
-Add the component by URL — no setup needed:
+**What it is.** **Shadcn User Graph** (`UserGraph`) is an interactive multi-tiered hierarchy diagram linking a central user and orbiting channel tools down through an orchestrator to specialized sub-agent nodes.
 
-```bash
-npx shadcn@latest add https://avaraui.com/r/user-graph.json
-```
+**How it is built.** Using SVG cubic bezier curves with animated pulse highlights and container-width measurement, `UserGraph` displays the full three-tier diagram on wider containers and automatically collapses into a vertical timeline below 640px.
 
-Or register the @avara-ui registry once per project and add it by name:
+**When to use it.** Use it for AI assistant architecture diagrams, omnichannel routing overviews, and team/agent delegation maps.
 
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/user-graph
-```
+## For AI agents
 
-## Features
+**When to use**
 
-Discover the key capabilities of the User Graph hierarchy tree:
+- AI assistant architecture diagrams, omnichannel routing overviews
+- Team/agent delegation maps
 
-Interactive orbiting ring featuring 10 integrated channels including Voice, Telegram, Email, and MCP plugins.
+**When not to use**
 
-Cubic bezier SVG connecting paths with glowing animated pulses highlighting selected agent hierarchy paths.
+- An agent hierarchy with status pills and token meters: use [Agent Graph](https://avaraui.com/docs/nextjs/agent-graph)
+- Avatars orbiting in rings: use [Network Graph](https://avaraui.com/docs/nextjs/network-graph)
 
-Dedicated team nodes for Sales, Marketing, Support, Accounting, and Data Analytics with online status badges.
+**Agent notes**
 
-Crafted with high-contrast slate and white light theme aesthetics, full dark mode support, and smooth responsiveness.
-
-## Best Practices & Guidelines
-
-Ensure nodes are grouped logically into User, Orchestrator, and Sub-Agent tiers so the hierarchy flows naturally from top to bottom.
+- `UserGraph` renders an orbiting `OrbitTool` cluster around the user node, an orchestrator tier, and `SubAgent` team cards.
+- Clicking any orbit node moves the active highlight path and updates its label tooltip.
+- Adapts automatically to a vertical timeline when the container width drops below 640px.
 
 ## Props Reference
 
@@ -137,6 +147,30 @@ Ensure nodes are grouped logically into User, Orchestrator, and Sub-Agent tiers 
 | subAgents | SubAgent[] | 5 sample agents | The bottom tier. Each entry carries `title`, `role`, `avatarUrl`, `status`, its `apps` badges, and two positions: `percentX` for the card and `svgX` for the connector curve in the 1000-wide viewBox. |
 | orchestrator | {"{ name, role, avatarUrl }"} | sample lead | The middle-tier node linking the orbit to the sub-agents. |
 | className | string | undefined | Merged onto the outer container. Every other `div` prop is spread there too. |
+
+## Works with other components
+
+Pair `UserGraph` with [Agent Graph](https://avaraui.com/docs/nextjs/agent-graph) for multi-agent workflow trees, [Network Graph](https://avaraui.com/docs/nextjs/network-graph) for radial orbit rings, and [Infrastructure Topology](https://avaraui.com/docs/nextjs/infrastructure-topology) for service pipelines.
+
+## How do I build an AI agent hierarchy diagram in React?
+
+Render `UserGraph` and pass `orbitTools`, an `orchestrator` object and `subAgents`. It draws three tiers connected by SVG curves: the user with orbiting channel nodes, the orchestrator, and the specialist sub-agents. With no props it shows built-in sample data.
+
+## Can I customize the orbiting channel tools and sub-agents?
+
+Yes. `orbitTools` is an array of `{ id, name, icon }` where `icon` is any React component, and the ring re-balances for any length. Each entry of `subAgents` carries `title`, `role`, `avatarUrl`, `status`, its `apps` badges, and `percentX` and `svgX` positions.
+
+## How does UserGraph adapt on mobile or narrow sidebars?
+
+It measures its own container width and switches from the SVG hierarchy tree to a vertical timeline layout below `640px`. That means it responds to the width of the column it sits in, so a narrow sidebar triggers the compact layout even on a wide screen.
+
+## How do I choose which channel node is highlighted?
+
+Set `defaultSelectedTool` to the `id` of an entry in `orbitTools`. It defaults to `"phone"`. After the first render, clicking another orbit node takes over the highlight. `color` tints the avatar ring, the selected node and the ambient glow.
+
+## When should I use UserGraph instead of Agent Graph or Network Graph?
+
+Use `UserGraph` for a user, orchestrator and specialist-agent hierarchy. Pick [Agent Graph](https://avaraui.com/docs/nextjs/agent-graph) for multi-agent workflow trees and [Network Graph](https://avaraui.com/docs/nextjs/network-graph) for radial orbit rings of many nodes. `UserGraph` is the only one of the three built around a central user with channel tools.
 
 ---
 

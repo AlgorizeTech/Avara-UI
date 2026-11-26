@@ -1,12 +1,33 @@
 ---
 title: "Shadcn Card Stack"
-description: "Shadcn Card Stack. A layered deck of cards featuring fluid drag-to-discard gestures, button-driven directional slide animations."
+description: "Shadcn Card Stack. A layered card deck (`CardStack`) with drag-to-discard swipes, previous and next buttons, optional looping."
 url: https://avaraui.com/docs/nextjs/card-stack
 ---
 
 # Shadcn Card Stack
 
-A layered deck of cards featuring fluid drag-to-discard gestures, button-driven directional slide animations, and realistic depth perspective. Users can swipe cards left or right to review and discard them, with the next cards seamlessly stepping forward.
+A layered card deck (`CardStack`) with drag-to-discard swipes, previous and next buttons, optional looping, and a choice of GSAP or Motion builds.
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/card-stack.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/card-stack
+```
+
+Or the Motion build (same props, same file — install one):
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/card-stack-motion.json
+```
 
 ## Swipe to Discard
 
@@ -91,30 +112,7 @@ export default function SwipeToDiscardDemo() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/card-stack.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/card-stack
-```
-
-Or the Motion build (same props, same file — install one):
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/card-stack-motion.json
-```
-
-## Examples
-
-### Infinite Loop
+## Infinite Loop
 
 Continuous cyclical navigation where swiping cards seamlessly wraps around to the beginning with no header.
 
@@ -194,7 +192,7 @@ export default function InfiniteLoopDemo() {
 }
 ```
 
-### With navigation buttons
+## With navigation buttons
 
 Arrow button controls to slide cards forwards and backwards with disabled bounds at the ends.
 
@@ -246,7 +244,7 @@ export default function ButtonStackDemo() {
 }
 ```
 
-### Left Slide Direction
+## Left Slide Direction
 
 Slide the top card out toward the left when progressing forward with button controls.
 
@@ -326,6 +324,34 @@ export default function LeftSlideDemo() {
 }
 ```
 
+## About Shadcn Card Stack
+
+**What it is.** `CardStack` shows a deck of `CardStackItem` cards, each offset and tilted slightly behind the one in front. Drag the top card away with `swipeToDismiss`, step with the header arrows (`showNavigation`), wrap around with `loop`, and set the depth with `visibleCards`.
+
+**How it is built.** Cards settle into place with a spring and the top card tilts as you drag it. The GSAP build (`card-stack`) installs `gsap` and skips the motion under `prefers-reduced-motion`; the Motion build (`card-stack-motion`) installs `motion`. Neither imports `next/*`.
+
+**When to use it.** Use `CardStack` for swipeable onboarding decks, notification stacks, and card reviews. For a photo deck with 3D pointer tilt, use [Memories Card](https://avaraui.com/docs/nextjs/memories-card); for scroll-driven card stacks, use [Scroll Stack](https://avaraui.com/docs/nextjs/scroll-stack).
+
+## For AI agents
+
+**When to use**
+
+- Swipe-to-discard or button-driven layered card decks (`swipeToDismiss`, `loop`, `showNavigation`)
+
+**When not to use**
+
+- Scroll-driven sticky card stacks — use [Scroll Stack](https://avaraui.com/docs/nextjs/scroll-stack)
+- Reorderable drag-and-drop lists — use [Draggable Card List](https://avaraui.com/docs/nextjs/draggable-card-list)
+
+**Agent notes**
+
+- Named exports: `CardStack`, `type CardStackItem` from `@/components/custom/blocks/CardStackBlock`; there is also a default export. The GSAP build (`card-stack`) and the Motion twin (`card-stack-motion`) install to the same path, so add only one
+- Every `CardStackItem` needs a unique `id` and a `title`; `description`, `category`, `date`, `meta`, `icon` (a node or an image URL string) and `href` are optional
+- Set `loop={true}` for infinite cycling; without `loop`, the final card stays pinned unless `canDismissLastCard` is true
+- `renderCard` receives `(item, offset, isTop)`, where `offset` is 0 for the front card and grows toward the back
+- Cards have a fixed height (about 200px) and clip overflow, so keep custom content short
+- `swipeToDismiss` is off by default, so the deck only moves from the header buttons until you enable it
+
 ## Props Reference
 
 | Prop | Type | Default | Description |
@@ -333,17 +359,42 @@ export default function LeftSlideDemo() {
 | `items` | `CardStackItem[]` | Required | Array of card items to display in the stack. |
 | `title` | `string` | — | Optional heading text. If omitted, the counter (e.g. `1 of 8`) is placed on the left with navigation buttons on the right. |
 | `swipeToDismiss` | `boolean` | `false` | Whether to enable dragging and swiping the top card left or right to discard. |
-| `canDismissLastCard` | `boolean` | `false` | Whether the last card in the stack can be swiped away/dismissed. Defaults to `false` so the final card stays in place. |
+| `canDismissLastCard` | `boolean` | `false` | Whether the last card can be swiped away, which shows a "Replay deck" panel. Defaults to `false` so the final card stays in place. Not needed when `loop` is set. |
 | `showHeader` | `boolean` | `true` | Whether to render the header bar (title, counter, and navigation). Set to `false` for a pure card stack. |
-| `showNavigation` | `boolean` | `true` | Whether to show header navigation arrow buttons. Set to `false` for pure swipe mode. |
+| `showNavigation` | `boolean` | `true` | Whether to show header navigation arrow buttons. They sit inside the header, so turning `showHeader` off hides them too. |
 | `visibleCards` | `number` | `3` | Maximum number of cards visually stacked (front card + cards behind). |
 | `slideDirection` | `"right" \| "left"` | `"right"` | Direction the front card slides out when advancing forward via buttons. |
-| `loop` | `boolean` | `false` | Whether navigation wraps around continuously or stops at the ends. |
+| `loop` | `boolean` | `false` | Whether buttons and swipes wrap around continuously or stop at the ends. |
 | `defaultIndex` | `number` | `0` | Initial active index of the stack on mount. |
 | `onCardChange` | `(index: number) => void` | — | Callback fired whenever the active card changes. |
 | `onDismiss` | `(item, direction) => void` | — | Callback fired when a card is swiped/dismissed with the item and direction (`"left" \| "right"`). |
-| `renderCard` | `(item, offset, isTop) => ReactNode` | — | Custom render function to replace the default card body. |
+| `renderCard` | `(item, offset, isTop) => ReactNode` | — | Custom render function to replace the default card body. The second argument is the card's depth, 0 for the front card. |
 | `cardClassName` | `string` | — | Optional custom className applied to each individual card container. |
+
+## Works with other components
+
+- Compare with [Memories Card](https://avaraui.com/docs/nextjs/memories-card) for 3D-tilting photo decks and [Scroll Stack](https://avaraui.com/docs/nextjs/scroll-stack) for scroll-linked decks.
+- Use [Draggable Card List](https://avaraui.com/docs/nextjs/draggable-card-list) when users should reorder a list rather than discard cards one by one.
+
+## How do I make CardStack cycle infinitely when swiping?
+
+Pass `loop={true}` to `CardStack`. Swiping or pressing the arrows past the last card then wraps back to the first item, and the previous and next buttons are never disabled. Without `loop`, the deck stops at the ends, and `canDismissLastCard` decides whether the final card can be swiped away.
+
+## How do I enable swipe to dismiss on CardStack?
+
+Set `swipeToDismiss` to `true`, and add `showHeader={false}` if you want a pure swipe deck. The front card then drags left or right and is discarded when released past 80px or faster than 280px per second; otherwise it springs back. `onDismiss(item, direction)` reports each discard.
+
+## How do I track which card is on top in CardStack?
+
+Pass `onCardChange`, which receives the new active index each time the front card changes, from the arrow buttons or a swipe. `defaultIndex` sets the starting card and is clamped to the item range. `onDismiss` adds the discarded item and its direction, `"left"` or `"right"`, for swipes only.
+
+## How do I render my own card content in CardStack?
+
+Pass `renderCard`, called as `renderCard(item, offset, isTop)`, to replace the default body. The wrapper still supplies the rounded, bordered surface and the drag behaviour, and `cardClassName` adds classes to it. `item` keeps any extra fields you add, since `CardStackItem` accepts arbitrary keys. Cards are about 200px tall and clip overflow.
+
+## Should I use the GSAP or the Motion build of CardStack?
+
+Pick the library your project already ships. `card-stack` uses `gsap` and checks `prefers-reduced-motion`, placing cards without animation when it is set. `card-stack-motion` uses `motion` and has no reduced-motion check of its own. Both take the same props and install to the same path, so add only one.
 
 ---
 

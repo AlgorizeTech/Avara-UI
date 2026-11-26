@@ -3,7 +3,7 @@
   "name": "mobile-mockup-samsung-s24-ultra",
   "type": "registry:block",
   "title": "Mobile Mockup — Samsung S24 Ultra",
-  "description": "Squared-off corners and a centred punch-hole camera.",
+  "description": "The \"Samsung S24 Ultra\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

@@ -3,7 +3,7 @@
   "name": "audio-player-native-controls",
   "type": "registry:block",
   "title": "Audio Player — Native controls",
-  "description": "The browser's own audio controls under the artwork — nothing custom to keep in sync.",
+  "description": "The \"Native controls\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

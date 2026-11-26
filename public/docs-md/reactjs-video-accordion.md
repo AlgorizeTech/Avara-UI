@@ -1,16 +1,31 @@
 ---
 title: "Shadcn Video Accordion"
-description: "A cinematic video accordion, an expanding gallery component animated with plain CSS transitions — no animation library. Free shadcn/ui component."
+description: "An expanding video gallery in plain CSS: one panel plays while the others compress and pause. Free shadcn/ui component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/video-accordion
 ---
 
 # Shadcn Video Accordion
 
-A cinematic video accordion, an expanding gallery component animated with plain **CSS transitions** — no animation library. It keeps one panel visually dominant and plays its assigned video, while the rest seamlessly compress into an obscured track-rail and pause.
+An expanding video gallery in plain CSS: one panel plays while the others compress and pause.
 
 This layout is incredibly useful for portfolio reels, storytelling feature sections, and high-impact editorial landing pages. On mobile viewports, it intelligently re-flows into a vertically expanding stack automatically.
 
 Hover a compressed panel to expand it — a CSS transition interpolates the flex-grow of every sibling and the newly dominant panel starts playing while the others pause.
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/video-accordion.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/video-accordion
+```
 
 ## Opened on load
 
@@ -69,24 +84,7 @@ export default function OpenedOnLoad() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/video-accordion.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/video-accordion
-```
-
-## Examples
-
-### Fewer panels
+## Fewer panels
 
 - `panels` sets the rail's divisions — space redistributes automatically, so a two-panel reel works as well as a five-panel one.
 
@@ -143,24 +141,31 @@ export default function ShortReel() {
 }
 ```
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+## About Shadcn Video Accordion
 
-Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
+**What it is.** **Shadcn Video Accordion** (`VideoAccordion`) is a multi-panel expanding video gallery where hovering or selecting a panel expands it smoothly and plays its video while sibling panels compress and pause.
 
-Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
+**How it is built.** Animated purely with CSS `flex-grow` transitions (no external animation library), `VideoAccordion` automatically redistributes space for any panel count and stacks vertically on mobile viewports.
 
-Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
+**When to use it.** Use it for portfolio reels, feature storytelling strips, editorial landing heroes, and interactive media showcases.
 
-Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.
+- Portfolio reels, feature storytelling strips
+- Editorial landing heroes, interactive media showcases
 
-### State Management
+**When not to use**
 
-When triggering animations via state changes, ensure you wrap state updates in `startTransition` or use lightweight stores to prevent React rendering bottlenecks during the animation tick.
+- A single video with playback controls: use [Video Player](https://avaraui.com/docs/reactjs/video-player)
+- Text-only expandable sections: use [Accordion](https://avaraui.com/docs/reactjs/accordion)
+
+**Agent notes**
+
+- `VideoAccordion` accepts `panels` (`AccordionPanel[]`) and optional `defaultActiveId`.
+- Omit `defaultActiveId` to start with all panels in their collapsed resting state; pass a panel ID to expand it on load.
+- Uses pure CSS transitions with automatic video play/pause synchronization per panel.
 
 ## Props Reference
 
@@ -174,6 +179,30 @@ When triggering animations via state changes, ensure you wrap state updates in `
 | `AccordionPanel` | `description` | `string` | Required | Detailed paragraph text explaining the video. This text automatically hides when the panel is collapsed. |
 | `AccordionPanel` | `videoSrc` | `string` | Required | The URL to the background `.mp4` or `.webm` file. |
 | `AccordionPanel` | `posterUrl` | `string` | `undefined` | Optional (but highly recommended) URL to a fallback image. This displays immediately while the video is buffering to prevent black flashes. |
+
+## Works with other components
+
+Combine `VideoAccordion` with [Video Player](https://avaraui.com/docs/reactjs/video-player) for modal video heroes, [Accordion](https://avaraui.com/docs/reactjs/accordion) for text-based FAQs, and [Gallery](https://avaraui.com/docs/reactjs/gallery) for 3D media showcases.
+
+## How do I build an expanding video gallery in React?
+
+Pass a `panels` array to `VideoAccordion`. Each panel needs an `id`, `title`, `description` and `videoSrc`, which is an `.mp4` or `.webm` URL. Hovering or selecting a panel expands it and plays its video while the other panels compress and pause.
+
+## Does VideoAccordion require Motion or GSAP?
+
+No. Panel expansion and compression run on plain CSS `flex-grow` transitions, and space is redistributed for any number of panels. Nothing beyond the component file is needed, so it adds no animation library to your bundle.
+
+## How does VideoAccordion handle mobile viewports?
+
+On smaller screens the horizontal rail switches to a vertically expanding stack, so every video panel stays legible. You do not configure a breakpoint yourself, and the same `panels` array drives both layouts.
+
+## How do I choose which panel is open on load?
+
+Set `defaultActiveId` to the `id` of a panel. If you leave it out, the accordion starts with every panel collapsed. A panel's `description` is hidden while it is collapsed, so users only see the full text of the expanded one.
+
+## Why do I need a posterUrl on each panel?
+
+`posterUrl` is an optional fallback image that shows immediately while the video buffers, so the panel is never blank. It is optional but highly recommended, especially for large video files on slower connections.
 
 ---
 

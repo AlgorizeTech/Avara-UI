@@ -3,7 +3,7 @@
   "name": "skeleton-card",
   "type": "registry:block",
   "title": "Skeleton — Card",
-  "description": "A composite placeholder that mirrors a media card layout.",
+  "description": "The \"Card\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

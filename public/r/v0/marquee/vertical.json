@@ -3,7 +3,7 @@
   "name": "marquee-vertical",
   "type": "registry:block",
   "title": "Marquee — Vertical",
-  "description": "Vertical marquees need a bounded height. Without one the container grows to fit both tracks and nothing appears to move.",
+  "description": "The \"Vertical\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

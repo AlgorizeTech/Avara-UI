@@ -3,7 +3,7 @@
   "name": "menubar-menubar",
   "type": "registry:block",
   "title": "Menubar",
-  "description": "Nest `MenubarMenu` → `MenubarTrigger` + `MenubarContent`.",
+  "description": "The \"Menubar\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

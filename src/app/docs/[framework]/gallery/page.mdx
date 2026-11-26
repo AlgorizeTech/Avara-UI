@@ -3,15 +3,14 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("gallery");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractMotionCode } from "@/lib/code";
 
 # Shadcn Gallery
 
-A dynamic visual showcase featuring six interactive variants: a revolving 3D circular photo orbit ring, an interactive 3D video sphere gallery, a self-rearranging moving bento grid, an interactive circular reel dial spinner, a 3D layered pill carousel, and a Framer-inspired 3D curved arc carousel gallery.
+A media gallery with six interactive layouts, from 3D orbit rings and video spheres to a moving bento grid.
 
 {/* The snippets below pass next/link so links route client-side in Next.js. The React tab is the same file without it: the component's default <a> needs no import. */}
-
-<AgentVariants slug="gallery" />
 
 export const nextAndReact = (code) => ({
   nextjs: code,
@@ -493,10 +492,11 @@ export default function VideoSphereGalleryExample() {
   colorControl
   columns={1}
   minHeight={460}
+  installation={<Installation name="gallery" usage="below" />}
   examples={[
     {
       title: "Orbit Gallery",
-      subheading: "Revolving 3D circular photo orbit ring with upright cards and smooth hover pause.",
+      description: "Revolving 3D circular photo orbit ring with upright cards and smooth hover pause.",
       propNotes: [
         {
           prop: "variant",
@@ -519,7 +519,7 @@ export default function VideoSphereGalleryExample() {
     },
     {
       title: "Moving Bento",
-      subheading: "A self-rearranging image bento with a dominant centre slot. Hovering holds the items still; clicking one brings it to the hero slot.",
+      description: "A self-rearranging image bento with a dominant centre slot. Hovering holds the items still; clicking one brings it to the hero slot.",
       propNotes: [
         {
           prop: "variant",
@@ -542,7 +542,7 @@ export default function VideoSphereGalleryExample() {
     },
     {
       title: "Circular Reel",
-      subheading: "A scroll-driven circular dial: each item sits on a segmented ring that turns with scroll and idles in a slow passive rotation.",
+      description: "A scroll-driven circular dial: each item sits on a segmented ring that turns with scroll and idles in a slow passive rotation.",
       propNotes: [
         {
           prop: "variant",
@@ -560,7 +560,7 @@ export default function VideoSphereGalleryExample() {
     },
     {
       title: "3D Pill Carousel",
-      subheading: "Layered diagonal pill-shaped cards with 3D depth, click-to-focus and keyboard navigation.",
+      description: "Layered diagonal pill-shaped cards with 3D depth, click-to-focus and keyboard navigation.",
       propNotes: [
         {
           prop: "variant",
@@ -583,7 +583,7 @@ export default function VideoSphereGalleryExample() {
     },
     {
       title: "Arc Carousel Gallery",
-      subheading: "A curved 3D carousel along a concave arc that drifts on its own and spins with momentum when dragged.",
+      description: "A curved 3D carousel along a concave arc that drifts on its own and spins with momentum when dragged.",
       propNotes: [
         {
           prop: "variant",
@@ -606,7 +606,7 @@ export default function VideoSphereGalleryExample() {
     },
     {
       title: "Video Sphere Gallery",
-      subheading: "Videos and images drift along a rotating sphere with drag navigation, depth-based blur and a popup preview.",
+      description: "Videos and images drift along a rotating sphere with drag navigation, depth-based blur and a popup preview.",
       propNotes: [
         {
           prop: "variant",
@@ -630,9 +630,37 @@ export default function VideoSphereGalleryExample() {
   ]}
 />
 
-## Installation
+## About Shadcn Gallery
 
-<Installation name="gallery" />
+**What it is.** **Shadcn Gallery** (`Gallery`) is a multi-mode media showcase offering six 3D and interactive layouts: `orbit-gallery`, `moving-bento`, `circular-reel`, `pill-carousel`, `arc-carousel`, and `video-sphere`.
+
+**How it is built.** Each mode renders from dedicated item props (`images`, `items`, `reelItems`, `pillItems`, `arcItems`, `sphereItems`) with drag momentum, hover pause, optional `link` navigation on pill and arc cards, and a video popup modal on the sphere. The default build uses GSAP; `gallery-motion` is the same API on Motion.
+
+**When to use it.** Use it for creative agency portfolios, product lookbooks, interactive media walls, and editorial visual storytelling.
+
+## For AI agents
+
+<AgentBrief name="gallery">
+
+**When to use**
+
+- Creative agency portfolios, product lookbooks
+- Interactive media walls, editorial visual storytelling
+
+**When not to use**
+
+- Only a curved 3D arc deck: use <DocLink to="curved-carousel">Curved Carousel</DocLink>
+- A continuously cascading image stream: use <DocLink to="flow-gallery">Flow Gallery</DocLink>
+
+**Agent notes**
+
+- `Gallery` switches layout via `variant`: `"orbit-gallery" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel" | "video-sphere"`.
+- `variant` defaults to `"orbit"`; `"orbit-gallery"`, `"arc-carousel-gallery"` and `"video-sphere-gallery"` are accepted aliases.
+- There is no `linkComponent` prop. Pill and arc items open their `link` string with `window.open` or `window.location`, so a router `Link` is not used.
+- Install `gallery` (GSAP) or `gallery-motion` (Motion), not both.
+- Each variant reads its corresponding typed item array (`images`, `items`, `reelItems`, `pillItems`, `arcItems`, or `sphereItems`).
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -649,7 +677,7 @@ export default function VideoSphereGalleryExample() {
     <tbody>
       <tr>
         <td><code>variant</code></td>
-        <td><code>"orbit" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel" | "video-sphere"</code></td>
+        <td><code>"orbit" | "orbit-gallery" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel" | "arc-carousel-gallery" | "video-sphere" | "video-sphere-gallery"</code></td>
         <td><code>"orbit"</code></td>
         <td>Selects the revolving 3D circular photo orbit ring, 3D video sphere gallery, moving bento, circular reel dial spinner, 3D pill carousel, or 3D curved arc carousel gallery.</td>
       </tr>
@@ -669,7 +697,7 @@ export default function VideoSphereGalleryExample() {
         <td><code>items</code></td>
         <td><code>MovingBentoItem[]</code></td>
         <td>8 landscapes</td>
-        <td>The cards for the <code>"moving-bento"</code> variant.</td>
+        <td>The cards ({`{ id, title, description?, image }`}) for the <code>"moving-bento"</code> variant.</td>
       </tr>
       <tr>
         <td><code>swapInterval</code></td>
@@ -687,7 +715,7 @@ export default function VideoSphereGalleryExample() {
         <td><code>autoPlay</code></td>
         <td><code>boolean</code></td>
         <td><code>true</code></td>
-        <td>Controls whether automatic card swaps or idle passive rotation are enabled.</td>
+        <td>Controls automatic card swaps or idle rotation in every variant except <code>"orbit"</code>, which is driven by <code>duration</code>.</td>
       </tr>
       <tr>
         <td><code>reelItems</code></td>
@@ -800,7 +828,7 @@ export default function VideoSphereGalleryExample() {
       <tr>
         <td><code>sphereItems</code></td>
         <td><code>VideoSphereItem[]</code></td>
-        <td>9 video scenes</td>
+        <td>15 default cards</td>
         <td>The items ({`{ id, src, poster, title, description, link }`}) for the <code>"video-sphere"</code> variant.</td>
       </tr>
       <tr>
@@ -852,27 +880,47 @@ export default function VideoSphereGalleryExample() {
         <td>Max number of front-facing videos actively playing at once for performance optimization.</td>
       </tr>
       <tr>
-        <td><code>highlights</code></td>
-        <td><code>&#123; label: string; color?: string &#125;[]</code></td>
-        <td>three facts</td>
-        <td>The dotted row under the actions.</td>
-      </tr>
-      <tr>
         <td><code>color</code></td>
         <td><code>string</code></td>
         <td>theme primary</td>
         <td>Accent colour — a preset name or any CSS colour.</td>
       </tr>
       <tr>
-        <td><code>linkComponent</code></td>
-        <td><code>ElementType</code></td>
-        <td><code>"a"</code></td>
-        <td>What renders every link; pass <code>next/link</code> in Next.js.</td>
+        <td><code>onCardClick</code></td>
+        <td><code>{"(item: any, index: number) => void"}</code></td>
+        <td><code>undefined</code></td>
+        <td>Called when a card is clicked in the <code>"video-sphere"</code> variant.</td>
       </tr>
     </tbody>
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- <DocLink to="curved-carousel">Curved Carousel</DocLink> is the standalone 3D arc deck when you only need that one layout.
+- <DocLink to="flow-gallery">Flow Gallery</DocLink> streams images diagonally instead of orbiting them.
+- <DocLink to="carousel">Carousel</DocLink> covers standard hero and thumbnail sliders.
+- <DocLink to="image-viewer">Image Viewer</DocLink> is for product photos with magnifying zoom, thumbnails and a lightbox.
+
+## Which Gallery variant should I use for my content?
+
+Set `variant` to `"orbit"` for a ring of photos, `"moving-bento"` for a self-rearranging grid, `"circular-reel"` for a scroll dial, `"pill-carousel"`, `"arc-carousel"`, or `"video-sphere"`. Each variant reads its own item prop, such as `images`, `items`, `reelItems`, `pillItems`, `arcItems` or `sphereItems`.
+
+## Can the Gallery video sphere mix images and videos?
+
+Yes. Each `sphereItems` entry has a `src` and an optional `type` of `"image"` or `"video"`. When `type` is omitted, anything without an image file extension is treated as video. Clicking a card opens a preview modal while `enablePopup` is true, and Escape closes it.
+
+## How do I make a Gallery card open a link?
+
+Add a `link` string to a `pillItems` or `arcItems` entry. Clicking the card opens it in a new tab with `window.open`. There is no `linkComponent` prop, so client-side routing is not available. For custom behaviour in the video sphere, use `onCardClick` instead.
+
+## How do I stop the Gallery from moving on its own?
+
+Set `autoPlay={false}` for the bento, reel, pill, arc and sphere variants. The pill carousel also has `autoSlide` and `autoPlayInterval`. The orbit ring is a CSS animation timed by `duration`, so it keeps turning, and it pauses on hover and under `prefers-reduced-motion`.
+
+## Can I use the keyboard with Gallery, and does it need Next.js?
+
+The pill carousel listens for the arrow keys on the window, and Escape closes the sphere's video preview; other variants are pointer-driven. Gallery has no `next/*` imports, so it runs in Vite. Install `gallery` (GSAP) or `gallery-motion` (Motion), each with `lucide-react`.
 
 <DocsJsonLd slug="gallery" />
+<FaqJsonLd slug="gallery" />

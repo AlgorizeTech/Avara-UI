@@ -1,18 +1,27 @@
 ---
 title: "Shadcn Collapsible"
-description: "An interactive component which expands/collapses a panel. Free shadcn/ui Collapsible component for React, Next.js and Tailwind CSS."
+description: "Shadcn Collapsible. A dependency-free disclosure panel (`Collapsible`, `CollapsibleTrigger`."
 url: https://avaraui.com/docs/nextjs/collapsible
 ---
 
 # Shadcn Collapsible
 
-An interactive component which expands/collapses a panel.
+A dependency-free disclosure panel (`Collapsible`, `CollapsibleTrigger`, `CollapsibleContent`) animated via CSS Grid `0fr` → `1fr` transitions with free nesting.
 
-Traditional collapsible components rely on Javascript (like `Element.scrollHeight`) to calculate the exact height of the content before animating it. This causes layout thrashing and stuttering.
+## Installation
 
-The `CollapsibleBlock` is **100% dependency-free** and utilizes a modern CSS grid trick (`grid-template-rows: 0fr` transitioning to `1fr`) to handle dynamic height animations natively in the browser. This guarantees perfect 60fps performance without writing any Javascript measuring logic.
+Add the component by URL — no setup needed:
 
-From a bare disclosure to a nested file tree — the same three parts every time.
+```bash
+npx shadcn@latest add https://avaraui.com/r/collapsible.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/collapsible
+```
 
 ## Settings panel
 
@@ -150,24 +159,7 @@ export default function SettingsPanel() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/collapsible.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/collapsible
-```
-
-## Examples
-
-### File tree
+## File tree
 
 Collapsibles nest freely; each level keeps its own open state.
 
@@ -248,20 +240,30 @@ export default function FileTree() {
 }
 ```
 
-## Features
-Discover the Collapsible component's accessible disclosure patterns and smooth height transitions for hiding detailed content.
+## About Shadcn Collapsible
 
-Easily adapt the component's styling and behavior to fit your application's unique design system.
+**What it is.** `Collapsible`, `CollapsibleTrigger`, and `CollapsibleContent` provide a composable expand/collapse disclosure panel that can be nested to any depth (for example, file trees and settings drawers).
 
-Built with accessibility in mind, ensuring all users can interact with your application effectively.
+**How it is built.** `CollapsibleContent` switches between the Tailwind classes `grid-rows-[0fr]` and `grid-rows-[1fr]` with a 200 ms transition that also fades opacity, so no height is measured in JavaScript and no animation library is needed. It only depends on the shadcn `utils` helper (`cn`).
 
-Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+**When to use it.** Use `Collapsible` for single disclosures or nested file trees. For coordinated multi-item FAQ lists, use [Accordion](https://avaraui.com/docs/reactjs/accordion).
 
-Optimized for maximum performance with minimal re-renders and efficient state management.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+- Single expandable panels, advanced-settings disclosures, or nested file trees (`defaultOpen` per level)
+
+**When not to use**
+
+- Multi-item FAQ or exclusive-open sections — use [Accordion](https://avaraui.com/docs/reactjs/accordion)
+
+**Agent notes**
+
+- Named exports: `Collapsible`, `CollapsibleTrigger`, `CollapsibleContent` from `@/components/custom/blocks/CollapsibleBlock`
+- `CollapsibleTrigger` and `CollapsibleContent` read the root's context and throw if rendered outside a `Collapsible`.
+- Closed content stays mounted: `CollapsibleContent` only sets `aria-hidden` and collapses its height, so lazy-load heavy children yourself.
+- Style the open state with the `data-state="open"` / `"closed"` attribute that the root, trigger and content all carry; the trigger also sets `aria-expanded`.
 
 ## Props Reference
 
@@ -272,6 +274,35 @@ Follow standard design principles when implementing this component. Ensure prope
 | `Collapsible` | `onOpenChange` | `(open: boolean) => void` | `undefined` | Event handler called when the open state of the collapsible changes. |
 | `Collapsible` | `disabled` | `boolean` | `false` | When true, prevents the user from interacting with the `CollapsibleTrigger`. |
 | All Components | `className` | `string` | `undefined` | Standard Tailwind CSS overrides for customized styling or spacing. |
+
+## Works with other components
+
+- Pair `Collapsible` inside [Card](https://avaraui.com/docs/reactjs/card) or [Sidebar](https://avaraui.com/docs/reactjs/sidebar) navigation trees.
+- Use [Accordion](https://avaraui.com/docs/reactjs/accordion) when you want a styled multi-row FAQ list.
+
+## Can Collapsible panels be nested inside each other?
+
+Yes. Each `Collapsible` creates its own context and open state, from `defaultOpen` or the controlled `open` prop. A `CollapsibleTrigger` therefore only toggles its nearest parent `Collapsible`, so a file tree can expand a child folder without opening or closing its parent.
+
+## How do I control a Collapsible from my own state?
+
+Pass `open` together with `onOpenChange`. Once `open` is defined the component is controlled and never updates itself, so the panel only moves when your handler changes the value. Leave `open` undefined and set `defaultOpen` for the uncontrolled mode, where the root keeps its own state.
+
+## How do I change the trigger label or icon when the panel is open?
+
+Style from the `data-state` attribute. The trigger and the root both carry `data-state="open"` or `"closed"`, so a class such as `group-data-[state=open]:rotate-90` on a chevron inside a `group` trigger works without any state of your own. The trigger also sets `aria-expanded` for assistive technology.
+
+## What happens to the content when a Collapsible is closed?
+
+It stays in the DOM. `CollapsibleContent` keeps its children mounted and only collapses the grid row to `0fr`, fades opacity to 0 and sets `aria-hidden`. Inputs or links inside a closed panel can still receive keyboard focus, so avoid placing focusable controls there or render them conditionally.
+
+## What does the disabled prop do on Collapsible?
+
+It blocks toggling. With `disabled` on the root, the trigger renders as a disabled button at 50% opacity and `onOpenChange` is not called, even in controlled mode. The root and trigger also expose `data-disabled`, so you can style that state. It does not force the panel open or closed.
+
+## Does Collapsible need Next.js or extra packages?
+
+No. The file has no `next/*` imports and installs only through the shadcn `utils` registry item, with no npm dependencies of its own, so it works in Vite and any other React app. It is marked `"use client"`, which Next.js needs because it uses state and context.
 
 ---
 

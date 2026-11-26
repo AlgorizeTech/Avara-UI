@@ -4,14 +4,11 @@ export const metadata = docsPageMetadata("resizable");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Resizable
 
-A high-performance system for building resizable panel layouts, complete with keyboard accessibility and nested group support.
-
-Most UI frameworks rely on massive, complex external libraries to handle the math of dragging panels. This `ResizableBlock` uses a sophisticated direct-DOM manipulation engine instead. By directly writing to `element.style.flex`, it bypasses the React render cycle during drag operations, resulting in **zero-latency, 60fps butter-smooth resizing** without sacrificing declarative React composition.
-
-Drag any handle to resize. Click a handle to focus it, then use the arrow keys — the engine ships with the ARIA separator semantics and keyboard stepping already wired.
+A 60fps resizable split-panel system (`ResizablePanelGroup`, `ResizablePanel`, `ResizableHandle`) with nested groups, min/max constraints, and keyboard ARIA separator stepping.
 
 export const paneHelper = `// Panel bodies — swap these for your own content.
 function Pane({ label }: { label: string }) {
@@ -244,10 +241,11 @@ export default function ConstrainedSidebar() {
 <ExampleShowcase minHeight={330} headingLevel={2}
   name="resizable"
   columns={1}
+  installation={<Installation name="resizable" usage="below" />}
   examples={[
     {
       title: "Resizable layout",
-      subheading: "Groups nest, so a full IDE layout is a few lines.",
+      description: "Groups nest, so a full IDE layout is a few lines.",
       propNotes: [
         {
           prop: "direction",
@@ -259,19 +257,6 @@ export default function ConstrainedSidebar() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ResizableBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="resizable" />
-
-## Examples
-
-<ExampleShowcase minHeight={250}
-  name="resizable"
-  columns={1}
-  examples={[
     {
       title: "Horizontal split",
       propNotes: [
@@ -319,31 +304,32 @@ export default function ConstrainedSidebar() {
   ]}
 />
 
-## Features
-Learn about the Resizable component's panel layout capabilities, supporting drag handles, collapsible panes, and nested groups.
+## About Shadcn Resizable
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**What it is.** `ResizablePanelGroup`, `ResizablePanel`, and `ResizableHandle` compose horizontal, vertical, and nested split-pane layouts with `defaultSize`, `minSize`, `maxSize`, and optional `withHandle` grips.
 
-## Best Practices & Guidelines
+**How it is built.** Updates `element.style.flex` directly during pointer drag to bypass React re-renders for 60fps resizing, and wires `role="separator"` keyboard arrow stepping out of the box.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `Resizable` for IDE panes, code playgrounds, split previews, and adjustable sidebars.
+
+## For AI agents
+
+<AgentBrief name="resizable">
+
+**When to use**
+
+- User-resizable split panes (`direction="horizontal" | "vertical"`) and nested IDE/dashboard layouts
+
+**When not to use**
+
+- Static bento/card grids — use <DocLink to="masonry-grid">Masonry Grid</DocLink> or <DocLink to="glass-panel">Glass Panel</DocLink>
+
+**Agent notes**
+
+- Named exports: `ResizablePanelGroup`, `ResizablePanel`, `ResizableHandle` from `@/components/custom/blocks/ResizableBlock`
+- `defaultSize`, `minSize`, and `maxSize` are percentages of the enclosing group
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -469,6 +455,29 @@ Learn about the Resizable component's panel layout capabilities, supporting drag
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Combine `ResizablePanel` panes with <DocLink to="scroll-area">Scroll Area</DocLink>, <DocLink to="terminal">Terminal</DocLink>, and <DocLink to="custom-code-block">Custom Code Block</DocLink> for IDE/playground layouts.
+
+## How do I make a resizable split panel layout in React?
+
+Wrap `ResizablePanel` children in a `ResizablePanelGroup` and put a `ResizableHandle` between each pair of panels. Set `direction` to `"horizontal"` or `"vertical"` on the group, then give each panel a `defaultSize` as a percentage of the parent.
+
+## How do I set minimum and maximum panel sizes?
+
+Pass `minSize` and `maxSize` to `ResizablePanel` as percentages of the parent. They default to `0` and `100`, so set `minSize` on sidebars and editors you never want dragged shut. The handle stops at those limits while the user drags.
+
+## Can I nest Resizable panels for an IDE-style layout?
+
+Yes. Put a `ResizablePanelGroup` inside a `ResizablePanel` and give the inner group the opposite `direction`, for example a vertical editor and terminal split inside a horizontal sidebar split. Each panel keeps its own `defaultSize`, `minSize` and `maxSize` values.
+
+## Does Resizable support keyboard resizing?
+
+Yes. `ResizableHandle` renders with `role="separator"` and steps with the arrow keys, so panels can be resized without a mouse. Add `withHandle` to draw a small grip icon in the centre of the separator so users can see where to grab.
+
+## Why does dragging a Resizable panel stay smooth?
+
+During a pointer drag it writes `element.style.flex` directly instead of updating React state, which bypasses re-renders and keeps resizing at 60fps. Its only npm dependency is `lucide-react` for the grip icon, and it has no `next/*` imports, so it also runs in Vite.
 
 <DocsJsonLd slug="resizable" />
+<FaqJsonLd slug="resizable" />

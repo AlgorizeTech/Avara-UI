@@ -3,7 +3,7 @@
   "name": "carousel-hero-carousel",
   "type": "registry:block",
   "title": "Carousel — Hero carousel",
-  "description": "`HeroCarousel` overlays copy on a full-bleed image — click any image card to set it as the background.",
+  "description": "The \"Hero carousel\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

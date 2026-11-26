@@ -3,7 +3,7 @@
   "name": "calendar-calendar-dashboard",
   "type": "registry:block",
   "title": "Calendar — Calendar dashboard",
-  "description": "Everything past the initial events is internal state.",
+  "description": "The \"Calendar dashboard\" example from the Avara UI docs.",
   "dependencies": [
     "@radix-ui/react-slot",
     "class-variance-authority",

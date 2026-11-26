@@ -23,15 +23,15 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"],
 
-  // Skip type and lint checks during build (Vercel deploy)
-  // Type and lint errors fail the build. This repo publishes source code as a
-  // shadcn registry, so type errors here land in consumers' projects — they
-  // must not be suppressed. Warnings are still allowed through.
+  // Type and lint checks are skipped here because they exhaust memory on the
+  // deploy hosts. They are enforced in CI (.github/workflows/registry.yml) and
+  // locally by `npm run build:full`. This repo publishes source code as a
+  // shadcn registry, so keep that CI job a required check on main.
   typescript: {
-    ignoreBuildErrors: false,
+    ignoreBuildErrors: true,
   },
   eslint: {
-    ignoreDuringBuilds: false,
+    ignoreDuringBuilds: true,
   },
 
   // SEO and Performance Optimizations

@@ -11,7 +11,7 @@ import { agentBlockForSlug } from "@/agent/variants/render";
  * Closed by default so it stays out of a reader's way. The text is in the
  * static HTML either way, which is what an agent fetching the page reads.
  */
-export function AgentVariants({ slug }: { slug: string }) {
+export function AgentVariants({ slug, embedded = false }: { slug: string; embedded?: boolean }) {
   const block = agentBlockForSlug(slug);
   if (!block) {
     // A page that renders this must have a variants file; check:variants says so.
@@ -21,7 +21,10 @@ export function AgentVariants({ slug }: { slug: string }) {
   const link = "text-primary underline-offset-4 hover:underline";
 
   return (
-    <details data-toc-skip className="not-prose group my-6 rounded-xl border border-foreground/[0.08] bg-foreground/[0.02] text-[14px] leading-relaxed text-foreground/60">
+    <details
+      data-toc-skip
+      className={`not-prose group ${embedded ? "mt-4 mb-0" : "my-6"} rounded-xl border border-foreground/[0.08] bg-foreground/[0.02] text-[14px] leading-relaxed text-foreground/60`}
+    >
       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-[14px] font-medium text-foreground [&::-webkit-details-marker]:hidden">
         <span>
           For AI agents

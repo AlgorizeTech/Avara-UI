@@ -3,6 +3,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("animated-typography");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Animated Typography
@@ -68,10 +69,11 @@ export default function ElasticSpringShowcase() {
   colorControl
   colorLabel="Text Color"
   columns={1}
+  installation={<Installation name="animated-typography" usage="below" />}
   examples={[
     {
       title: "Typewriter",
-      subheading: "Types each word, holds it, deletes it and moves on behind a blinking caret, as in the Hero's typing title. The prefix re-centres as the word changes, just like the hero.",
+      description: "Types each word, holds it, deletes it and moves on behind a blinking caret, as in the Hero's typing title. The prefix re-centres as the word changes, just like the hero.",
       propNotes: [
         { prop: "variant", value: '"typewriter"', effect: "types and deletes each word in turn." },
         { prop: "prefixPosition", value: '"fluid"', effect: "the default here: the text before the word re-centres as it types and deletes." },
@@ -82,10 +84,6 @@ export default function ElasticSpringShowcase() {
     },
   ]}
 />
-
-## Installation
-
-<Installation name="animated-typography" />
 
 ## Examples
 
@@ -239,7 +237,7 @@ export default function ColorWipeShowcase() {
   examples={[
     {
       title: "Typewriter, Fixed Prefix",
-      subheading: "The same typewriter with the prefix held in place: the line keeps the longest word's width, so only the typed word moves.",
+      description: "The same typewriter with the prefix held in place: the line keeps the longest word's width, so only the typed word moves.",
       propNotes: [
         { prop: "prefixPosition", value: '"fixed"', effect: "reserves the longest word's width, so the text before it never moves." },
         { prop: "variant", value: '"typewriter"', effect: "types and deletes each word in turn." },
@@ -249,7 +247,7 @@ export default function ColorWipeShowcase() {
     },
     {
       title: "Letter Bounce Word Rotator",
-      subheading: "The word leaves letter by letter; the next springs in one letter at a time, as in the Hero's bounce title.",
+      description: "The word leaves letter by letter; the next springs in one letter at a time, as in the Hero's bounce title.",
       propNotes: [
         { prop: "variant", value: '"letter-bounce"', effect: "rotates words, each letter springing in and out." },
         { prop: "words", value: '["Interfaces", …]', effect: "the words to cycle through after titlePrefix." },
@@ -259,7 +257,7 @@ export default function ColorWipeShowcase() {
     },
     {
       title: "Word Flip",
-      subheading: "The word slides up and out, then the next slides up in from below, as in the homepage hero.",
+      description: "The word slides up and out, then the next slides up in from below, as in the homepage hero.",
       propNotes: [
         { prop: "variant", value: '"word-flip"', effect: "slides words vertically through a clipped slot." },
         { prop: "interval", value: "2400", effect: "milliseconds each word stays." },
@@ -269,7 +267,7 @@ export default function ColorWipeShowcase() {
     },
     {
       title: "Blur Swap",
-      subheading: "The outgoing word lifts away into a blur as the next sharpens out of one, as in the Hero Carousel headline.",
+      description: "The outgoing word lifts away into a blur as the next sharpens out of one, as in the Hero Carousel headline.",
       propNotes: [
         { prop: "variant", value: '"blur-swap"', effect: "cross-fades words through a blur." },
         { prop: "words", value: '["Interfaces", …]', effect: "the words to cycle through after titlePrefix." },
@@ -279,7 +277,7 @@ export default function ColorWipeShowcase() {
     },
     {
       title: "Blur Rise",
-      subheading: "The whole line rises out of a soft blur, as the Collage Hero heading does.",
+      description: "The whole line rises out of a soft blur, as the Collage Hero heading does.",
       propNotes: [
         { prop: "variant", value: '"blur-rise"', effect: "lifts the line in while it comes into focus." },
         { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
@@ -289,7 +287,7 @@ export default function ColorWipeShowcase() {
     },
     {
       title: "Color Wipe",
-      subheading: "An accent copy of the text is unclipped left to right over the foreground, the technique behind the Honeycomb Hero title.",
+      description: "An accent copy of the text is unclipped left to right over the foreground, the technique behind the Honeycomb Hero title.",
       propNotes: [
         { prop: "variant", value: '"color-wipe"', effect: "sweeps the text color from foreground to the accent." },
         { prop: "color", value: '"primary"', effect: "the color the wipe ends in." },
@@ -299,7 +297,7 @@ export default function ColorWipeShowcase() {
     },
     {
       title: "Color Reveal Staggered Sweep",
-      subheading: "Characters start in muted gray and transition left-to-right into active theme color.",
+      description: "Characters start in muted gray and transition left-to-right into active theme color.",
       propNotes: [
         { prop: "variant", value: '"color-reveal"', effect: "transitions text from gray to active theme color from left to right." },
         { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
@@ -309,7 +307,7 @@ export default function ColorWipeShowcase() {
     },
     {
       title: "Wavy Float Sine Wave",
-      subheading: "Continuous sine-wave floating vertical movement across characters.",
+      description: "Continuous sine-wave floating vertical movement across characters.",
       propNotes: [
         { prop: "variant", value: '"wavy-float"', effect: "animates characters in a smooth sine wave float." },
         { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
@@ -319,7 +317,7 @@ export default function ColorWipeShowcase() {
     },
     {
       title: "3D Perspective Flip",
-      subheading: "Words enter with 3D rotateX perspective and spring settling.",
+      description: "Words enter with 3D rotateX perspective and spring settling.",
       propNotes: [
         { prop: "variant", value: '"3d-perspective-flip"', effect: "flips words in 3D around their bottom edge." },
         { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
@@ -329,7 +327,7 @@ export default function ColorWipeShowcase() {
     },
     {
       title: "Elastic Spring Overshoot",
-      subheading: "Playful spring bounce entrance scaling up with overshoot physics.",
+      description: "Playful spring bounce entrance scaling up with overshoot physics.",
       propNotes: [
         { prop: "variant", value: '"elastic-spring"', effect: "bounces words with elastic spring curve." },
         { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
@@ -339,7 +337,7 @@ export default function ColorWipeShowcase() {
     },
     {
       title: "Spotlight Focus Reveal",
-      subheading: "Localized spotlight beam effect revealing text out of heavy blur.",
+      description: "Localized spotlight beam effect revealing text out of heavy blur.",
       propNotes: [
         { prop: "variant", value: '"spotlight-reveal"', effect: "focuses text from dark blur to sharp text." },
         { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
@@ -349,7 +347,7 @@ export default function ColorWipeShowcase() {
     },
     {
       title: "Split Stagger Entrance",
-      subheading: "Alternating letters slide in from top and bottom directions.",
+      description: "Alternating letters slide in from top and bottom directions.",
       propNotes: [
         { prop: "variant", value: '"split-stagger"', effect: "splits alternating characters from top/bottom offsets." },
         { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
@@ -359,7 +357,7 @@ export default function ColorWipeShowcase() {
     },
     {
       title: "Underline Stroke Draw",
-      subheading: "Synchronized liquid SVG underline stroke drawing beneath text.",
+      description: "Synchronized liquid SVG underline stroke drawing beneath text.",
       propNotes: [
         { prop: "variant", value: '"underline-draw"', effect: "animates an SVG path underline beneath text." },
         { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
@@ -369,7 +367,7 @@ export default function ColorWipeShowcase() {
     },
     {
       title: "Matrix Scramble Decryption",
-      subheading: "Cyberpunk symbol scrambling effect resolving to crisp text.",
+      description: "Cyberpunk symbol scrambling effect resolving to crisp text.",
       propNotes: [
         { prop: "variant", value: '"matrix-scramble"', effect: "scrambles text through glyphs before resolving." },
         { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
@@ -380,23 +378,37 @@ export default function ColorWipeShowcase() {
   ]}
 />
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+## About Shadcn Animated Typography
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="14 Animation Patterns">
-    <p>From Matrix decryption to liquid underlines, plus every hero title effect — letter bounce, typewriter, word flip, blur swap, blur rise and color wipe.</p>
-  </InfoCard>
-  <InfoCard title="Highly Accessible">
-    <p>Automatically renders an sr-only version for screen readers while displaying child visual spans.</p>
-  </InfoCard>
-  <InfoCard title="Responsive Sizing">
-    <p>Supports semantic tags (h1-h6, p) with Tailwind size overrides and pixel/rem custom sizing.</p>
-  </InfoCard>
-  <InfoCard title="Hardware Accelerated">
-    <p>GPU-optimized CSS keyframes and spring physics for smooth 60fps animations.</p>
-  </InfoCard>
-</div>
+**What it is.** `AnimatedTypographyBlock` renders text with one of 14 `variant` animations: `matrix-scramble`, `color-reveal`, `wavy-float`, `3d-perspective-flip`, `elastic-spring`, `spotlight-reveal`, `split-stagger`, `underline-draw`, `letter-bounce`, `typewriter`, `word-flip`, `blur-swap`, `blur-rise` and `color-wipe`. `letter-bounce`, `typewriter`, `word-flip` and `blur-swap` cycle through a `words` list.
+
+**How it is built.** It renders the real tag you choose with `as`, puts a plain-text copy in an `sr-only` span, and marks the animated copy `aria-hidden`. Motion comes from CSS keyframes and a few timers, with no animation library. `size` sets the visual size separately from the tag, and the base styles keep the text on one line.
+
+**When to use it.** Use it for hero headlines, rotating value propositions, callouts and section titles where the wording itself should move.
+
+## For AI agents
+
+<AgentBrief name="animated-typography">
+
+**When to use**
+
+- Hero headlines, rotating value propositions
+- Interactive callouts, kinetic section titles
+
+**When not to use**
+
+- Lightweight CSS-only text reveals with no animation library: use <DocLink to="text-animation">Text Animation</DocLink>
+- Text set along a rotating circle: use <DocLink to="circular-text">Circular Text</DocLink>
+
+**Agent notes**
+
+- Named export `AnimatedTypographyBlock` from `@/components/custom/blocks/AnimatedTypographyBlock`. `as` defaults to `"p"` and `variant` to `"matrix-scramble"`.
+- `text` is what screen readers announce. For the rotating variants (`letter-bounce`, `typewriter`, `word-flip`, `blur-swap`) pass the words in `words` and set `text` to the first word.
+- `prefixPosition` is `"fixed"` or `"fluid"`. It defaults to `"fluid"` for `typewriter` and `"fixed"` for the others; use `"fixed"` when the text before the word must stay still.
+- `size` takes a Tailwind key such as `"3xl"` or a CSS length such as `"2rem"`. `color` takes `primary`, `indigo`, `rose`, `emerald`, `zinc` or a hex string.
+- `delay` is in milliseconds and `speed` multiplies the stagger and animation times. Set `play={false}` to hold the text at rest until it should start.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -617,11 +629,68 @@ Discover the key capabilities that make this component an excellent choice for m
         </td>
         <td>Controls the CSS text alignment of the underlying container.</td>
       </tr>
+      <tr>
+        <td><code>AnimatedTypographyBlock</code></td>
+        <td><code>color</code></td>
+        <td><code>"primary" | "indigo" | "rose" | "emerald" | "zinc" | "default" | (hex string)</code></td>
+        <td><code>"primary"</code></td>
+        <td>Text colour. Not applied when <code>bare</code> is set unless you pass it.</td>
+      </tr>
+      <tr>
+        <td><code>AnimatedTypographyBlock</code></td>
+        <td><code>size</code></td>
+        <td><code>string</code></td>
+        <td>Per tag</td>
+        <td>A Tailwind size key such as <code>"3xl"</code> (scaled down on small screens) or a CSS length such as <code>"2rem"</code>, which is clamped from 10px up to that value.</td>
+      </tr>
+      <tr>
+        <td><code>AnimatedTypographyBlock</code></td>
+        <td><code>delay</code></td>
+        <td><code>number</code></td>
+        <td><code>0</code></td>
+        <td>Base delay in milliseconds before the animation starts.</td>
+      </tr>
+      <tr>
+        <td><code>AnimatedTypographyBlock</code></td>
+        <td><code>speed</code></td>
+        <td><code>number</code></td>
+        <td><code>1</code></td>
+        <td>Multiplier for the stagger and animation times. Higher is slower.</td>
+      </tr>
     </tbody>
   </table>
 </div>
 
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- <DocLink to="text-animation">Text Animation</DocLink> for scroll-reveal headlines driven by GSAP, when you want text to animate as it enters the viewport.
+- <DocLink to="circular-text">Circular Text</DocLink> for text set around a rotating ring, such as a badge.
+- <DocLink to="hover-peek">Hover Peek</DocLink> for interactive editorial statements, alongside a heading from `AnimatedTypographyBlock`.
+
+## Does AnimatedTypographyBlock break screen readers?
+
+No. It renders your text once in an `sr-only` span, including `titlePrefix` and `titleSuffix`, and wraps the animated copy in a span with `aria-hidden="true"`. Screen readers therefore hear the sentence, not individual letters. For rotating variants they hear `text`, so set it to the first word.
+
+## How do I keep the `titlePrefix` from shifting during typewriter animations?
+
+Pass `prefixPosition="fixed"`. The typewriter defaults to `"fluid"`, where the text before the word re-centres as letters are typed and deleted. With `"fixed"` the block reserves the width of the longest entry in `words`, so `titlePrefix` stays where it is for the whole cycle.
+
+## How do I rotate through several words with AnimatedTypographyBlock?
+
+Use `variant="typewriter"`, `"letter-bounce"`, `"word-flip"` or `"blur-swap"` and pass `words`, for example `words={["Interfaces", "Components"]}` with `titlePrefix="Build "`. Each word stays `interval` ms (2400 by default, 1800 for the typewriter), or pass `index` to choose the word yourself.
+
+## How do I change the size of AnimatedTypographyBlock without changing the heading tag?
+
+Pass `size` and keep `as="h1"`. A Tailwind key such as `"3xl"` maps to a responsive text class, and any other value, such as `"2rem"` or `"24px"`, becomes a clamped font size that shrinks on small screens. The tag, and so the heading outline, does not change.
+
+## How do I start an AnimatedTypographyBlock animation when it scrolls into view?
+
+Control `play` yourself. While `play` is `false` the text renders at rest, and the animation starts the moment it becomes `true`. Set it from an IntersectionObserver or your own in-view hook, since the block does not watch scrolling on its own.
+
+## Does AnimatedTypographyBlock respect reduced motion?
+
+Mostly. A `prefers-reduced-motion: reduce` rule cuts the CSS animations to near zero duration, and the typewriter types and deletes whole words at once. `matrix-scramble` runs on a timer, so the media rule does not cover it; pass `play={false}` for people who prefer less motion.
 
 <DocsJsonLd slug="animated-typography" />
+<FaqJsonLd slug="animated-typography" />

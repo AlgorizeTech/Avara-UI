@@ -14,6 +14,21 @@ Crucially, this `ApiPlaygroundBlock` uses a `mockHandler` pattern. It does not b
 
 Each playground below is fully interactive: edit params, headers or the JSON body, then hit **Send**. Nothing leaves the browser — a `mockHandler` decides the response.
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/api-playground.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/api-playground
+```
+
 ## API playground
 
 A split-pane request builder.
@@ -68,43 +83,31 @@ export default function UsersEndpointDocs() {
 }
 ```
 
-## Installation
+## About Shadcn API Playground
 
-Add the component by URL — no setup needed:
+**What it is.** `ApiPlaygroundBlock` is a split-pane request builder and response viewer for API documentation. The left pane has a method picker, URL bar and Params, Headers and Body tabs, and the right pane shows the status, the time and the JSON response.
 
-```bash
-npx shadcn@latest add https://avaraui.com/r/api-playground.json
-```
+**How it is built.** Pressing Send calls your async `mockHandler` with `{ method, url, headers, params, body }` and renders the `{ status, timeMs, data }` it returns. The component never calls `fetch` itself, and without a handler it returns a built-in echo of the request. It uses the `select` registry item for the method dropdown and `lucide-react` icons.
 
-Or register the @avara-ui registry once per project and add it by name:
+**When to use it.** Use it for REST API docs, SDK quickstarts, webhook simulators and developer portals where readers should try a request without leaving the page.
 
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/api-playground
-```
+## For AI agents
 
-## Features & Core Capabilities
-Explore the interactive API Playground component capabilities designed to elevate API documentation:
+**When to use**
 
-### Split-Pane Architecture
+- REST API docs, SDK quickstarts, webhook simulators, and developer portals where readers test payloads interactively
 
-Interactive dual-panel interface with real-time HTTP Request Builder on the left and Live JSON Response Viewer on the right.
+**When not to use**
 
-### CORS-Safe Mock Handler
+- A static, read-only code sample: use [Custom Code Block](https://avaraui.com/docs/reactjs/custom-code-block)
+- Shell commands and install snippets: use [Terminal](https://avaraui.com/docs/reactjs/terminal)
 
-Uses a client-side `mockHandler` async function to simulate network latency, dynamic endpoints, and custom status codes safely without CORS issues.
+**Agent notes**
 
-### Full Header & Query Params Editor
-
-Add, enable/disable, or remove HTTP headers and query parameters dynamically before executing API calls.
-
-### JSON Body Payload & Syntax Highlighting
-
-Built-in raw JSON request body editor with syntax highlighting, automatic JSON formatting, error handling, and response timing metrics.
-
-## Best Practices & Guidelines
-
-Provide realistic mock handlers with simulated delays (e.g. 100ms - 500ms) to give users an authentic API testing experience directly inside your documentation.
+- Named export `ApiPlaygroundBlock` from `@/components/custom/blocks/ApiPlaygroundBlock`. Props are `mockHandler`, `defaultUrl`, `defaultMethod`, `color` and `className`.
+- Annotate the handler as `ApiMockHandler`. It receives `{ method, url, headers, params, body }` (`body` is the raw string from the textarea) and must return a promise of `{ status, timeMs, data }`.
+- `headers` and `params` include rows the reader switched off, with `enabled: false`, so filter on `enabled`.
+- Without `mockHandler` a built-in handler echoes the request after about 600 ms. The component does no network call of its own.
 
 ## Props Reference
 
@@ -112,8 +115,8 @@ Provide realistic mock handlers with simulated delays (e.g. 100ms - 500ms) to gi
 | --- | --- | --- | --- |
 | `defaultUrl` | `string` | `"https://api.example.com/v1/users"` | Initial API URL displayed in the request address bar. |
 | `defaultMethod` | `"GET" \| "POST" \| "PUT" \| "PATCH" \| "DELETE"` | `"GET"` | Initial HTTP method selected in the method dropdown. |
-| `color` | `ApiColor` | `"primary"` | Accent color theme (`"primary" \| "indigo" \| "rose" \| "emerald" \| "zinc"` or custom hex). |
-| `mockHandler` | `ApiMockHandler` | `undefined` | Async function that receives request details and returns simulated API response data. |
+| `color` | `ApiColor` | `"primary"` | Accent color theme (`"primary" \| "default" \| "lavender" \| "indigo" \| "rose" \| "emerald" \| "zinc"` or custom hex). |
+| `mockHandler` | `ApiMockHandler` | `undefined` | Async function that receives request details and returns the response to show. Without it, a built-in handler echoes the request. |
 | `className` | `string` | `undefined` | Additional CSS classes applied to the root container. |
 
 ### mockHandler Object Signatures
@@ -150,6 +153,32 @@ The Response Object — exported as `ApiResponse` (required return type):
   data: any; // A Javascript object or array. The component will format this as JSON automatically.
 }
 ```
+
+## Works with other components
+
+- [Custom Code Block](https://avaraui.com/docs/reactjs/custom-code-block) for the SDK or request samples shown beside the playground.
+- [Terminal](https://avaraui.com/docs/reactjs/terminal) for a cURL equivalent of the request the reader just built.
+- [Tabs](https://avaraui.com/docs/reactjs/vertical-tabs) to switch between languages or endpoints above a playground.
+
+## Does ApiPlaygroundBlock make live network requests?
+
+Not by itself. `ApiPlaygroundBlock` never calls `fetch`; Send runs your `mockHandler` and shows what it returns. The handler can still call a real API if you write it that way, and then CORS and exposed keys become your concern. Without a handler it returns a built-in echo.
+
+## What should `mockHandler` return?
+
+Return a promise that resolves to `{ status, timeMs, data }`. `status` is a number, `timeMs` is the duration shown in the header, and `data` is any JSON-serialisable value, which is printed with `JSON.stringify(data, null, 2)`. A status below 400 shows green and anything else shows red.
+
+## What happens if I do not pass a mockHandler to ApiPlaygroundBlock?
+
+A built-in handler waits about 600 ms and returns status 201 for POST and 200 otherwise. The `data` holds `message: "Success"` and an `echo` of the method, URL, enabled params and headers, and parsed body. It is good for trying the layout before you write real responses.
+
+## How do params and the URL stay in sync in ApiPlaygroundBlock?
+
+Editing a row on the Params tab rebuilds the query string in the URL bar, using only enabled rows with a key. Typing a query string into the URL bar parses it back into Params rows. `defaultUrl` is parsed the same way, so `?limit=10` starts as a row.
+
+## How do I handle errors and invalid JSON in ApiPlaygroundBlock?
+
+Return an error status yourself, for example `{ status: 400, timeMs: 15, data: { error: "bad_request" } }`, after a `JSON.parse` try/catch on `req.body`. If your handler throws or rejects, the playground shows status 500 with the error message instead of crashing.
 
 ---
 

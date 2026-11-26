@@ -3,7 +3,7 @@
   "name": "folder-motion-icon",
   "type": "registry:block",
   "title": "Folder — Icon",
-  "description": "Pick an icon — it and the pocket take their shades from the theme colour chosen at the top of the page.",
+  "description": "The \"Icon\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

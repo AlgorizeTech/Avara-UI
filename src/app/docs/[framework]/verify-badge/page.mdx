@@ -2,28 +2,16 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 export const metadata = docsPageMetadata("verify-badge", {
   title: "Verify Badge",
   description: "A highly customizable verified badge component similar to Twitter/X or premium verified markers, with built-in animation support."
 });
 
-<style dangerouslySetInnerHTML={{__html: `
-  .prose h2 {
-    margin-bottom: 12px !important;
-  }
-  .prose h2 + * {
-    margin-top: 0 !important;
-  }
-`}} />
-
 # Shadcn Verify Badge
 
-A versatile verified badge component that can be customized with various styles (blue, gold, dark, gray), sizes, and an optional subtle pulse animation for premium aesthetics.
-
-It includes distinct customization options to match different areas of your application.
-
-Explore the different variations of the Verify Badge — each example shows a live preview with the exact code to copy. Hover a badge to see its shine effect.
+A crisp SVG verified badge (`VerifyBadge`) with customizable colors, four sizes (`sm`, `md`, `lg`, `xl`), hover shine, and optional pulse animation.
 
 export const usageDefault = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
 
@@ -160,14 +148,17 @@ export default function NotificationCard() {
   );
 }`;
 
-<ExampleShowcase minHeight={280} headingLevel={2}
+<ExampleShowcase
+  minHeight={260}
+  headingLevel={2}
   name="verify-badge"
   colorControl
   columns={1}
+  installation={<Installation name="verify-badge" usage="below" />}
   examples={[
     {
       title: "Verify Badge",
-      subheading: "A verified marker sitting beside a display name.",
+      description: "A verified marker sitting beside a display name.",
       propNotes: [
         {
           prop: "color",
@@ -179,20 +170,6 @@ export default function NotificationCard() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/VerifyBadgeBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="verify-badge" />
-
-## Examples
-
-<ExampleShowcase minHeight={280}
-  name="verify-badge"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Sizes",
       propNotes: [
@@ -236,35 +213,32 @@ export default function NotificationCard() {
   ]}
 />
 
-## Features
-Explore the Verify Badge's authentic design features, providing recognizable trust signals with subtle animated glows.
+## About Shadcn Verify Badge
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="SVG Based">
-    <p>Uses standard SVG elements that scale perfectly to any size without losing quality.</p>
-  </InfoCard>
-  <InfoCard title="Custom Themes">
-    <p>Easily pass any custom hex color or use predefined themes to match your branding.</p>
-  </InfoCard>
-  <InfoCard title="Micro-Animations">
-    <p>Built-in optional subtle pulse animations to draw attention to verified status.</p>
-  </InfoCard>
-  <InfoCard title="Flexible Sizing">
-    <p>Comes with 4 preset sizes (sm, md, lg, xl) that integrate seamlessly into any layout.</p>
-  </InfoCard>
-</div>
+**What it is.** `VerifyBadge` is an inline SVG verification checkmark badge supporting custom `color` values, four sizes (`sm`, `md`, `lg`, `xl`), a subtle hover shine, and an optional `animate` pulse.
 
-## Best Practices & Guidelines
+**How it is built.** Built with resolution-independent inline SVGs and theme-aware defaults so badges stay sharp on any display and calm in dense lists (`animate` defaults to `false`).
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Accessibility First">
-    <p>Always ensure that you add an <code>aria-label</code> or <code>title</code> to the badge so that screen readers can convey the "Verified" status to visually impaired users.</p>
-  </InfoCard>
-  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Proper Sizing</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Use the <code>sm</code> or <code>md</code> sizes when placing the badge directly next to standard text (like usernames). The <code>lg</code> and <code>xl</code> sizes are best reserved for profile headers or prominent display cards.</p>
-  </div>
-</div>
+**When to use it.** Use `VerifyBadge` beside user names, creator profiles, organization headers, and verified account rows.
+
+## For AI agents
+
+<AgentBrief name="verify-badge">
+
+**When to use**
+
+- Verified account markers next to usernames (`size="sm"` / `"md"`) or profile headers (`size="lg"` / `"xl"`)
+
+**When not to use**
+
+- Generic status pills or counts — use <DocLink to="live-pulse-pill">Live Pulse Pill</DocLink> or <DocLink to="table">Table</DocLink> `TableBadge`
+
+**Agent notes**
+
+- Named export: `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock"`
+- Pass `aria-label` or `title` for screen-reader accessibility; `animate` defaults to `false`
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -353,6 +327,30 @@ Explore the Verify Badge's authentic design features, providing recognizable tru
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Display beside names in <DocLink to="profile-card">Profile Card</DocLink>, <DocLink to="avatar-stack">Avatar Stack</DocLink>, and <DocLink to="data-table">Data Table</DocLink>.
+- Pair with <DocLink to="tooltip">Tooltip</DocLink> to explain verification criteria on hover.
+
+## How do I add a verified checkmark badge next to a username?
+
+Render `VerifyBadge` beside the name. It is an inline SVG checkmark with a hover shine, so it stays sharp at any size. It accepts native div attributes such as `className` and `id`, and it follows your primary colour unless you set `color`.
+
+## Which size should I use next to usernames?
+
+Use `size="sm"` or `size="md"` inline with body text or display names so the badge complements rather than outweighs the label. Reserve `lg` and `xl` for profile headers. `"md"` is the default.
+
+## How do I change the colour of the verified badge?
+
+Pass any CSS colour to `color`, such as a hex value or a variable. The default is `var(--primary)`, so the badge follows your theme and restyles when theme presets change. There is no separate dark-mode prop to manage.
+
+## How do I make the badge pulse?
+
+Set `animate` to `true`. It adds a continuous, subtle pulse to the badge background and is `false` by default. The hover shine is always on. Use the pulse sparingly, for example on one featured profile, so it keeps drawing the eye.
+
+## How do I explain what verified means?
+
+Pair `VerifyBadge` with <DocLink to="tooltip">Tooltip</DocLink> to show a short explanation on hover and focus. It also fits next to names in <DocLink to="profile-card">Profile Card</DocLink>, <DocLink to="avatar-stack">Avatar Stack</DocLink> and <DocLink to="data-table">Data Table</DocLink> rows.
 
 <DocsJsonLd slug="verify-badge" />
+<FaqJsonLd slug="verify-badge" />

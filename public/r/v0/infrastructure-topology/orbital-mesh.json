@@ -3,7 +3,7 @@
   "name": "infrastructure-topology-orbital-mesh",
   "type": "registry:block",
   "title": "Infrastructure Topology — Orbital Mesh",
-  "description": "Modern glassmorphic topology with curved Bezier pipelines, travelling glowing packet orbs, counter-rotating orbital core rings, and click-to-inspect route highlighting.",
+  "description": "The \"Orbital Mesh\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

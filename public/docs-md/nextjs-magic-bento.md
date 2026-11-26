@@ -1,18 +1,33 @@
 ---
 title: "Shadcn Magic Bento"
-description: "Shadcn Magic Bento. A bento grid layout system featuring CSS masking, continuously spinning gradient borders, and a real-time mouse-tracking spotlight effect."
+description: "Shadcn Magic Bento. A bento grid layout system featuring CSS masking, an optional spinning gradient border, and a real-time mouse-tracking spotlight effect."
 url: https://avaraui.com/docs/nextjs/magic-bento
 ---
 
 # Shadcn Magic Bento
 
-A bento grid layout system featuring CSS masking, continuously spinning gradient borders, and a real-time mouse-tracking spotlight effect.
+A bento grid layout system featuring CSS masking, an optional spinning gradient border, and a real-time mouse-tracking spotlight effect.
 
 This component writes pointer coordinates straight into CSS variables
 without triggering heavy React state re-renders, ensuring the volumetric
 glows remain silky smooth — no animation library needed.
 
 Move your cursor over a card: `MagicBentoCard` tracks the pointer with CSS variables — not React state — so the 1px border track and inner glow stay smooth.
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/magic-bento.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/magic-bento
+```
 
 ## Glow Spotlight Grid
 
@@ -133,24 +148,7 @@ export default function FeatureGrid() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/magic-bento.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/magic-bento
-```
-
-## Examples
-
-### Highlight card
+## Highlight card
 
 - Add `highlight` to spin a conic gradient behind the 1px mask continuously — use it on the one card the eye should land on first. Without it, the border only lights where the cursor is.
 
@@ -191,7 +189,7 @@ export default function HighlightedBento() {
 
 ## Theming the glow
 
-Every effect — the spinning `highlight` border, the pointer-tracked border and the inner glow — reads one colour. Out of the box it is your shadcn `--primary`, so the component works with no extra setup. To re-tint a whole grid, set the two CSS variables on any ancestor:
+Every effect — the spinning `highlight` border, the pointer-tracked border and the inner glow — reads one colour. Out of the box it is your theme's `--primary`, so the component works with no extra setup. To re-tint a whole grid, set the two CSS variables on any ancestor:
 
 ```tsx
 <div
@@ -206,24 +204,32 @@ Every effect — the spinning `highlight` border, the pointer-tracked border and
 
 `--magic-glow` is optional — when only `--magic-color` is set, the glow is derived from it at 15% opacity.
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+## About Shadcn Magic Bento
 
-Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
+**What it is.** **Shadcn Magic Bento** (`MagicBento` and `MagicBentoCard`) is an interactive bento grid with cursor-tracking spotlight borders and an optional continuously spinning highlight border on any card.
 
-Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
+**How it is built.** `MagicBento` is a plain responsive grid: one column, two from `md` and four from `lg`. Each `MagicBentoCard` listens for `mousemove` itself and writes the pointer position into CSS variables, so a mouse move never re-renders React. Tint the glow with `--magic-color` / `--magic-glow`, and size cards with Tailwind `col-span-*` and `row-span-*` classes. It needs no npm dependency.
 
-Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
+**When to use it.** Use it for feature showcases, product highlight grids, AI capability overviews, and interactive landing page bento layouts.
 
-Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.
+- Feature showcases, product highlight grids
+- AI capability overviews, interactive landing page bento layouts
 
-### State Management
+**When not to use**
 
-When triggering animations via state changes, ensure you wrap state updates in `startTransition` or use lightweight stores to prevent React rendering bottlenecks during the animation tick.
+- Cards of varying heights in columns: use [Masonry Grid](https://avaraui.com/docs/nextjs/masonry-grid)
+- A single frosted panel: use [Glass Panel](https://avaraui.com/docs/nextjs/glass-panel)
+
+**Agent notes**
+
+- Compose `MagicBento` as the grid container with `MagicBentoCard` children, sized with `col-span-*` and `row-span-*` classes in each card's `className`.
+- Customize spotlight hue with `--magic-color` and `--magic-glow` CSS variables; `--magic-glow` automatically derives at 15% opacity from `--magic-color` when omitted.
+- `MagicBentoCard` has one prop of its own, `highlight`, which turns on the spinning border. Everything else is standard `div` attributes, but a custom `onMouseMove` replaces the built-in spotlight handler.
+- Both components are `forwardRef` named exports from `@/components/custom/blocks/MagicBentoBlock`. The spotlight needs a mouse pointer, and nothing here reads `prefers-reduced-motion`.
 
 ## Props Reference
 
@@ -236,6 +242,34 @@ When triggering animations via state changes, ensure you wrap state updates in `
 | `MagicBentoCard` | `className` | `string` | `undefined` | Used to control the grid spanning and dimensions of the specific card (e.g., `col-span-1 md:col-span-2 lg:row-span-2`). |
 | CSS variable | `--magic-color` | `<color>` | `var(--primary)` | Colour of the spinning `highlight` border and the pointer-tracked border. Set it on any ancestor to re-tint every card below it. |
 | CSS variable | `--magic-glow` | `<color>` | `--magic-color` at 15% | Colour of the soft inner glow that follows the cursor. Defaults to a translucent version of `--magic-color`. |
+
+## Works with other components
+
+Pair `MagicBento` with [Masonry Grid](https://avaraui.com/docs/nextjs/masonry-grid) for editorial image galleries, [Glass Panel](https://avaraui.com/docs/nextjs/glass-panel) for translucent card surfaces, and [Card](https://avaraui.com/docs/nextjs/card) for standard content blocks.
+
+## How do I customize the spotlight glow color?
+
+Set the `--magic-color` CSS variable on `MagicBento` or any ancestor element, and every `MagicBentoCard` below it picks it up. `--magic-glow` is optional: when you leave it out, the inner glow is `--magic-color` mixed to 15% opacity. With neither set, both follow your theme's `--primary`.
+
+## Can I control individual card sizes in the bento grid?
+
+Yes. Add Tailwind `col-span-*` and `row-span-*` classes to a card's `className` to span multiple grid tracks. The grid is one column on mobile, two from `md` and four from `lg`, and you can override `auto-rows-*` on `MagicBento` to change the base row height. Each card also has a `min-h-[200px]`.
+
+## How does Magic Bento track the cursor without re-rendering React?
+
+Each `MagicBentoCard` handles `onMouseMove`, reads its bounding box, and calls `style.setProperty` for `--mb-x` and `--mb-y` directly on the two glow layers. A `radial-gradient` reads those variables, so the browser repaints the gradient and React state never changes. No animation library is involved.
+
+## What does the highlight prop do on a MagicBentoCard?
+
+`highlight` adds a conic gradient in `--magic-color` that spins behind the 1px content mask on a 4-second linear loop. It runs whether or not the cursor is over the card, and it brightens on hover. Without it, the border only lights up where the pointer is.
+
+## Does the Magic Bento spotlight work on touch screens?
+
+Mostly not. The spotlight and glow layers stay at `opacity-0` until the card is hovered, and the position comes from `mousemove`, so a finger gives little or no effect. A `highlight` card still spins, because that animation does not depend on the pointer. The animation does not check `prefers-reduced-motion`.
+
+## Does Magic Bento need an animation library or Next.js?
+
+No. It is plain CSS plus one `mousemove` handler, with `cn` from `@/lib/utils` as the only registry dependency and no npm packages. The file has no `next/*` imports, so it runs in Vite and any other React app. Both `MagicBento` and `MagicBentoCard` forward refs and accept standard `div` attributes.
 
 ---
 

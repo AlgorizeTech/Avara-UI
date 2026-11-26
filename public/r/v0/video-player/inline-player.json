@@ -3,7 +3,7 @@
   "name": "video-player-inline-player",
   "type": "registry:block",
   "title": "Video Player — Inline player",
-  "description": "Same poster hero, but the player swaps into the card instead of opening an overlay.",
+  "description": "The \"Inline player\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

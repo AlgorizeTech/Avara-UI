@@ -3,7 +3,7 @@
   "name": "image-wall-a-camera-over-the-wall",
   "type": "registry:block",
   "title": "Image Wall — A camera over the wall",
-  "description": "Wait a few seconds: the camera pulls back, glides to the next card and settles on it. Hover to hold it.",
+  "description": "The \"A camera over the wall\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

@@ -1,18 +1,31 @@
 ---
 title: "Shadcn Data Grid"
-description: "A high-performance, fully keyboard-navigable data table with Excel-style inline editing. Free shadcn/ui Data Grid component for React, Next.js and Tailwind CSS."
+description: "A keyboard-navigable data grid with Excel-style inline editing. Free shadcn/ui Data Grid component for React, Next.js and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/data-grid
 ---
 
 # Shadcn Data Grid
 
-A high-performance, fully keyboard-navigable data table with Excel-style inline editing.
+A keyboard-navigable data grid with Excel-style inline editing.
 
-Building an interactive spreadsheet is notoriously difficult. Most developers give up and install massive, 500kb third-party libraries just to get basic arrow-key navigation.
-
-This `DataGridBlock` is built **100% dependency-free**. It manages focus through a highly optimized internal roving coordinate state (`{row, col}`) rather than attaching thousands of DOM event listeners. It fully supports `ArrowUp/Down/Left/Right` navigation, `Tab` flow, `Enter` to edit/save, and instantly updates the underlying data array.
+`DataGridBlock` needs no grid library; its only npm dependency is `lucide-react`. It tracks the active cell as a `{ row, col }` coordinate, supports `ArrowUp/Down/Left/Right` navigation, `Tab` flow and `Enter` to edit and save, and passes the updated rows to `onChange`.
 
 Click any cell and drive the grid from the keyboard: arrows to move, `Tab` to flow, `Enter` (or a double-click) to edit, `Enter` again to save and drop to the next row.
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/data-grid.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/data-grid
+```
 
 ## Data grid
 
@@ -60,24 +73,7 @@ export default function Ledger() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/data-grid.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/data-grid
-```
-
-## Examples
-
-### Read only
+## Read only
 
 - Set `readOnly` to lock every cell against double-click and keyboard editing, while arrow-key navigation still works.
 
@@ -119,20 +115,33 @@ export default function ReadOnlyGrid() {
 }
 ```
 
-## Features
-Explore the Data Grid's powerful features for displaying complex datasets, including virtualized scrolling, cell editing, and column resizing.
+## About Shadcn Data Grid
 
-Easily adapt the component's styling and behavior to fit your application's unique design system.
+**What it is.** **Shadcn Data Grid** (`DataGridBlock`) is a keyboard-navigable, Excel-style inline editing table with column definitions, roving cell focus, and configurable read-only mode.
 
-Built with accessibility in mind, ensuring all users can interact with your application effectively.
+**How it is built.** Built around a `{ row, col }` roving coordinate state with no grid library, `DataGridBlock` handles arrow-key movement, `Tab` flow, `Enter` or double-click cell editing, and emits the updated row array via `onChange`.
 
-Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+**When to use it.** Use it for spreadsheet-like editors, bulk inventory tables, pricing matrices, and financial or operational dashboards where users edit cells directly in place.
 
-Optimized for maximum performance with minimal re-renders and efficient state management.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+- Spreadsheet-like editors, bulk inventory tables, pricing matrices, and financial or operational dashboards where users edit cells directly in place
+
+**When not to use**
+
+- A read-only table with sorting and filtering: use [Data Table](https://avaraui.com/docs/reactjs/data-table)
+- A simple static table: use [Table](https://avaraui.com/docs/reactjs/table)
+
+**Agent notes**
+
+- `DataGridBlock` accepts `columns` (`{ field, headerName }[]`), `data` (row objects), `onChange`, `readOnly`, and `color`.
+- Each `field` in `columns` must match a key on the row objects; arrow keys, `Tab`, `Enter`, and double-click editing work out of the box.
+- Pass `readOnly={true}` to disable editing while preserving keyboard cell navigation.
+- Pass `data` as a stable reference (state or a constant): the grid re-syncs whenever the `data` prop changes identity, so an array literal created in render resets edits.
+- The title row, description and `Export CSV` button render only when `title` or `description` is set.
+- It renders every row with no virtualization or pagination, and a column whose `field` is `"status"` is drawn as a coloured pill.
 
 ## Props Reference
 
@@ -141,13 +150,13 @@ Follow standard design principles when implementing this component. Ensure prope
 | `DataGridBlock` | `columns` | `GridColumn[]` | Required | Defines the schema, headers, and specific behaviors of the grid columns. See the GridColumn object reference below. |
 | `DataGridBlock` | `data` | `Record<string, any>[]` | Required | The array of row objects to display in the grid. The keys in these objects must perfectly match the `field` strings defined in your columns array. |
 | `DataGridBlock` | `onChange` | `(newData: T[]) => void` | `undefined` | A callback fired immediately after a user successfully edits and saves a cell value (via Enter, Tab, or clicking away). Returns the newly mutated data array. |
-| `DataGridBlock` | `color` | `"blue" \| "indigo" \| "emerald" \| "rose" \| "zinc" \| string` | `"primary"` | The accent color applied to the active cell's focus ring and the interactive drag handle. Fully supports custom hex codes. |
-| `DataGridBlock` | `showRowNumbers` | `boolean` | `true` | If true, renders a sticky left-aligned column displaying the 1-based index of every row. |
+| `DataGridBlock` | `color` | `"blue" \| "indigo" \| "emerald" \| "rose" \| "zinc" \| string` | `"primary"` | The accent color applied to the active cell's focus ring, the corner handle, the header tint and the export button. Accepts a preset name or a custom hex code. |
+| `DataGridBlock` | `showRowNumbers` | `boolean` | `true` | If true, renders a left-hand column displaying the 1-based index of every row. |
 | `DataGridBlock` | `readOnly` | `boolean` | `false` | If true, globally disables all double-click and keyboard editing capabilities across the entire grid, while preserving the ability to navigate via arrow keys. |
 | `DataGridBlock` | `title` | `string` | `undefined` | An optional header title displayed above the grid (e.g. &quot;Financial Ledger&quot;). |
 | `DataGridBlock` | `description` | `string` | `undefined` | An optional subtitle or instructions rendered below the title. |
-| `DataGridBlock` | `showExport` | `boolean` | `true` | Whether to render the built-in &quot;Export CSV&quot; button in the header. |
-| `DataGridBlock` | `exportFileName` | `string` | `&quot;data-grid.csv&quot;` | Custom file name for the downloaded CSV file. |
+| `DataGridBlock` | `showExport` | `boolean` | `true` | Whether to render the built-in &quot;Export CSV&quot; button in the header. The header only appears when `title` or `description` is set. |
+| `DataGridBlock` | `exportFileName` | `string` | `undefined` | Custom file name for the downloaded CSV file. Without it the name is the slugified `title` plus `.csv`, or `data-grid.csv` when there is no title. |
 | `DataGridBlock` | `onExport` | `(data: T[]) => void` | `undefined` | Optional callback triggered when the user clicks the &quot;Export CSV&quot; button. |
 
 ### GridColumn Object
@@ -156,9 +165,39 @@ Follow standard design principles when implementing this component. Ensure prope
 | --- | --- | --- | --- | --- |
 | `GridColumn` | `field` | `string` | Required | The object key to look up in your `data` array to populate this specific column's cells. |
 | `GridColumn` | `headerName` | `string` | Required | The human-readable title displayed inside the sticky table header for this column. |
-| `GridColumn` | `width` | `string \| number` | `120` | The fixed and minimum width of the column. Can be a number (pixels) or a CSS string (e.g., `"250px"`). |
-| `GridColumn` | `type` | `"text" \| "number"` | `"text"` | Determines the underlying HTML input type rendered during inline editing. Setting this to `"number"` also applies a monospaced font to the cell values for better numerical alignment. |
+| `GridColumn` | `width` | `string \| number` | `120` | The minimum width of the column. Can be a number (pixels) or a CSS string (e.g., `"250px"`). |
+| `GridColumn` | `type` | `"text" \| "number"` | `"text"` | Determines the underlying HTML input type rendered during inline editing. Setting this to `"number"` also applies a monospaced font to the cell values and stores edits as numbers (an empty or invalid entry becomes `0`). |
 | `GridColumn` | `readOnly` | `boolean` | `false` | If true, completely locks editing capabilities for this specific column (e.g., for auto-generated IDs or timestamps), even if the global grid itself is editable. |
+
+## Works with other components
+
+- Combine `DataGridBlock` with [Data Table](https://avaraui.com/docs/reactjs/data-table) for filterable read-only reporting.
+- Use [Table](https://avaraui.com/docs/reactjs/table) for simple static tables.
+- Pair it with [Toast](https://avaraui.com/docs/reactjs/toast) to confirm cell saves from `onChange`.
+
+## What keyboard shortcuts does DataGridBlock support?
+
+Click a cell, then use the arrow keys to move and `Tab` or `Shift+Tab` to flow across rows. `Enter` or `F2` starts editing, as does typing a character, and `Enter` again saves and drops one row. `Tab` saves and moves right, `Escape` cancels an edit, and `Delete` or `Backspace` clears the cell.
+
+## Does DataGridBlock require external grid libraries?
+
+No grid library is needed. `DataGridBlock` handles cell focus and inline editing with its own `{ row, col }` state, and its only npm dependency is `lucide-react` for the export icon. The file has no `next/*` imports, so it works the same way in Next.js and Vite projects.
+
+## How do I get edited rows back into my state or API?
+
+Pass `onChange`. It receives the whole updated array after a save from `Enter`, `Tab` or clicking away, and after `Delete` clears a cell. Hold the rows in `useState` and pass the setter. Keep the `data` reference stable, because the grid resets its rows whenever that prop changes identity.
+
+## How do number columns behave when editing?
+
+Set `type: "number"` on the column. The editor becomes an `input type="number"`, the cell uses a monospaced font, and the saved value is stored as a number. An empty or invalid entry is saved as `0`, not as an empty cell, so validate it in `onChange` if blanks matter.
+
+## How do I lock one column but keep the rest editable?
+
+Set `readOnly: true` on that `GridColumn`. Its cells show dimmed, cannot be edited and are skipped by `Delete`, while other columns stay editable. The grid-level `readOnly` prop locks every column. In both cases, arrow-key navigation still works, so people can move through and read the cells.
+
+## How do I export DataGridBlock to CSV?
+
+Set a `title` or `description`, and the header shows an `Export CSV` button, enabled by default through `showExport`. It downloads every row and column with values in quotes. Use `exportFileName` to set the file name, which otherwise comes from the title, and `onExport` to react after the download.
 
 ---
 

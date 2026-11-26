@@ -3,7 +3,7 @@
   "name": "progress-stage-colours",
   "type": "registry:block",
   "title": "Progress — Stage colours",
-  "description": "Run it: neutral while starting, the brand colour from 10%, green at 100 — or red the moment it fails. The ring and the bar share one value, so they always agree.",
+  "description": "The \"Stage colours\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

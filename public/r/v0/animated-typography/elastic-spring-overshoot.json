@@ -3,7 +3,7 @@
   "name": "animated-typography-elastic-spring-overshoot",
   "type": "registry:block",
   "title": "Animated Typography — Elastic Spring Overshoot",
-  "description": "Playful spring bounce entrance scaling up with overshoot physics.",
+  "description": "The \"Elastic Spring Overshoot\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

@@ -3,7 +3,7 @@
   "name": "tech-stack-built-with",
   "type": "registry:block",
   "title": "Tech Stack — Built with",
-  "description": "Two groups taking turns: seven front-end tools, three over four, then four services. Wait a few seconds for the swap. Names sit beside the marks on wide screens.",
+  "description": "The \"Built with\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

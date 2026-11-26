@@ -3,7 +3,7 @@
   "name": "animated-typography-3d-perspective-flip",
   "type": "registry:block",
   "title": "Animated Typography — 3D Perspective Flip",
-  "description": "Words enter with 3D rotateX perspective and spring settling.",
+  "description": "The \"3D Perspective Flip\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

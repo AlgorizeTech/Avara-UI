@@ -3,7 +3,7 @@
   "name": "animated-typography-color-reveal-staggered-sweep",
   "type": "registry:block",
   "title": "Animated Typography — Color Reveal Staggered Sweep",
-  "description": "Characters start in muted gray and transition left-to-right into active theme color.",
+  "description": "The \"Color Reveal Staggered Sweep\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

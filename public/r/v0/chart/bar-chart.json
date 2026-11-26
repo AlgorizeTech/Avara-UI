@@ -3,7 +3,7 @@
   "name": "chart-bar-chart",
   "type": "registry:block",
   "title": "Chart — Bar chart",
-  "description": "Bars are pure HTML/CSS flexbox, so they always sit flat on the axis regardless of container size.",
+  "description": "The \"Bar chart\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

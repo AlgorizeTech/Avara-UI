@@ -3,7 +3,7 @@
   "name": "secure-envelope-auto-flip-classic-voucher-classified",
   "type": "registry:block",
   "title": "Secure Envelope — Auto Flip (Classic Voucher / Classified)",
-  "description": "The first click slides the card out and flips it in place to its back; the second flips it back and returns it inside.",
+  "description": "The \"Auto Flip (Classic Voucher / Classified)\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

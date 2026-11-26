@@ -3,7 +3,7 @@
   "name": "circular-text-stamps",
   "type": "registry:block",
   "title": "Circular Text — Stamps",
-  "description": "Two marks with their own separators, one with the inner ring — the first puts the theme colour on the ring, the second on the centre dot.",
+  "description": "The \"Stamps\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

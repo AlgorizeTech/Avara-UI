@@ -4,14 +4,11 @@ export const metadata = docsPageMetadata("command");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Command
 
-A powerful, composable command menu palette for searching data and triggering quick actions.
-
-Most robust command palettes force you to install heavy third-party libraries like `cmdk`, which ship with massive virtualized lists and complex React state syncing. This `CommandBlock` achieves the exact same functionality using a **100% native, dependency-free DOM architecture**. It handles keyboard navigation (up/down/enter), automatic empty-state detection, and dialog trapping entirely through efficient native DOM events and modern CSS `:has()` rules.
-
-Type in any search box to filter — empty groups vanish on their own. `ArrowUp` / `ArrowDown` move the selection and `Enter` fires it.
+A command menu with no `cmdk` dependency (`Command`, `CommandDialog`, `CommandInput`, `CommandList`, `CommandGroup`, `CommandItem`, `CommandShortcut`) with keyboard navigation and automatic empty-group hiding.
 
 export const usageGroups = `"use client";
 
@@ -192,10 +189,11 @@ export default function ExternalFiltering() {
   name="command"
   colorControl
   columns={1}
+  installation={<Installation name="command" usage="below" />}
   examples={[
     {
       title: "Groups, separators & shortcuts",
-      subheading: "`CommandSeparator` divides groups; `CommandShortcut` right-aligns the hotkey.",
+      description: "`CommandSeparator` divides groups; `CommandShortcut` right-aligns the hotkey.",
       propNotes: [
         {
           lead: "Give",
@@ -208,23 +206,9 @@ export default function ExternalFiltering() {
       usage: usageGroups,
       code: extractCode("src/components/custom/blocks/CommandBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="command" />
-
-## Examples
-
-<ExampleShowcase minHeight={330}
-  name="command"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Command dialog",
-      subheading: "Swap `Command` for `CommandDialog` to get the ⌘K overlay — try the shortcut.",
+      description: "Swap `Command` for `CommandDialog` to get the ⌘K overlay — try the shortcut.",
       propNotes: [
         {
           prop: "open",
@@ -255,31 +239,34 @@ export default function ExternalFiltering() {
   ]}
 />
 
-## Features
-Learn about the Command palette's features, including fuzzy search, keyboard shortcuts, and nested group navigation.
+## About Shadcn Command
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**What it is.** `Command` (`CommandDialog`, `CommandInput`, `CommandList`, `CommandEmpty`, `CommandGroup`, `CommandItem`, `CommandSeparator`, `CommandShortcut`) provides searchable, keyboard-navigable command menus.
 
-## Best Practices & Guidelines
+**How it is built.** Uses native DOM events and CSS `:has()` rules (zero `cmdk` dependency) to handle `ArrowUp`/`ArrowDown`/`Enter` navigation, empty-state detection, and auto-hiding empty groups. The only npm dependency is `lucide-react` for the search icon.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `Command` when composing custom searchable action menus or `⌘K` dialogs. For opinionated Linear-style, nested drill-down, or Ask-AI palettes, use <DocLink to="command-palette">Command Palette</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="command">
+
+**When to use**
+
+- Composable searchable command menus (`Command`) or `⌘K` modal overlays (`CommandDialog`) with `shouldFilter` toggle for API-backed search
+
+**When not to use**
+
+- Pre-styled Linear, nested drill-down, or Ask-AI palettes — use <DocLink to="command-palette">Command Palette</DocLink>
+
+**Agent notes**
+
+- Named exports from `@/components/custom/blocks/CommandBlock`
+- `CommandDialog` is strictly controlled (`open` + `onOpenChange`) and has no built-in `⌘K` binding; add your own `keydown` listener
+- Pass `shouldFilter={false}` when filtering results externally on a server
+- `CommandItem` matches the query against `value`, or the text of its children when `value` is omitted; `onSelect` receives that same string
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -321,14 +308,14 @@ Learn about the Command palette's features, including fuzzy search, keyboard sho
         <td><code>value</code></td>
         <td><code>string</code></td>
         <td><code>undefined</code></td>
-        <td>An explicit string used for fuzzy searching. If omitted, the component automatically falls back to searching the rendered <code>textContent</code> of the item.</td>
+        <td>An explicit string matched against the search text (case-insensitive substring). If omitted, the text of the item's children is used instead.</td>
       </tr>
       <tr>
         <td><code>CommandItem</code></td>
         <td><code>onSelect</code></td>
         <td><code>{`(value: string) => void`}</code></td>
         <td><code>undefined</code></td>
-        <td>Callback fired when the item is clicked with the mouse or activated via the Enter key during keyboard navigation.</td>
+        <td>Callback fired with the item's match string (<code>value</code>, or its text) when the item is clicked or activated via the Enter key during keyboard navigation.</td>
       </tr>
       <tr>
         <td><strong>All Components</strong></td>
@@ -341,6 +328,34 @@ Learn about the Command palette's features, including fuzzy search, keyboard sho
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Display <DocLink to="kbd">Kbd</DocLink> inside `CommandShortcut` or trigger buttons.
+- Compare with <DocLink to="command-palette">Command Palette</DocLink> for pre-styled Linear, nested, and Ask-AI variants.
+
+## How do I disable built-in filtering for server-side search?
+
+Pass `shouldFilter={false}` on `Command`. Every `CommandItem` then stays visible whatever is typed into `CommandInput`, so you render the results your API returned yourself. With the default `true`, each item hides unless its `value` or text contains the query.
+
+## How do I open the Command dialog with Cmd+K or Ctrl+K?
+
+`CommandDialog` ships no shortcut of its own. Register a `keydown` listener on `document` that toggles your own `open` state when `e.metaKey || e.ctrlKey` and `e.key === "k"`, then pass that state to `open`. The dialog closes itself through `onOpenChange` on Escape or a backdrop click.
+
+## How does keyboard navigation work in Command?
+
+`ArrowDown` and `ArrowUp` move the highlight through visible items and wrap at both ends, and `Enter` activates the highlighted item's `onSelect`. The first visible item is highlighted whenever the query changes. The highlighted row carries `data-selected="true"`, which you can style with `data-[selected=true]:` classes.
+
+## What does CommandItem search against, and is it fuzzy?
+
+It is not fuzzy. `CommandItem` does a case-insensitive substring match against `value`, or against the text of its children when `value` is omitted. Set `value` when the visible label differs from what people type, such as adding keywords. `onSelect` receives that same string.
+
+## Does Command use cmdk, and does it work in Vite?
+
+It does not use `cmdk`. Navigation and filtering are built from DOM events and CSS `:has()` rules, and the only npm dependency is `lucide-react`. The file has no `next/*` imports, so it installs the same way in Next.js and Vite projects.
+
+## When should I use Command instead of Command Palette?
+
+Use `Command` when you want to compose your own menu from `CommandInput`, `CommandList`, `CommandGroup` and `CommandItem`. Use <DocLink to="command-palette">Command Palette</DocLink> when you want a ready-made launcher with `linear`, `nested`, `inline` or `ai` variants and a built-in `Ctrl+K` trigger.
 
 <DocsJsonLd slug="command" />
+<FaqJsonLd slug="command" />

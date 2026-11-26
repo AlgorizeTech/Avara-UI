@@ -45,7 +45,7 @@ export default function ButtonDemo({
 
   return (
     <div
-      className="w-full min-h-[460px] h-full flex flex-col items-center justify-center p-4 sm:p-8 m-0"
+      className="w-full h-full flex flex-col items-center justify-center p-4 sm:p-8 m-0"
       style={themeStyle}
     >
       {layout === "shards-panel" && (

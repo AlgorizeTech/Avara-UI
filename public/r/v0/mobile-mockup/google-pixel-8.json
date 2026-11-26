@@ -3,7 +3,7 @@
   "name": "mobile-mockup-google-pixel-8",
   "type": "registry:block",
   "title": "Mobile Mockup — Google Pixel 8",
-  "description": "Heavily rounded corners and a 20:9 screen.",
+  "description": "The \"Google Pixel 8\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

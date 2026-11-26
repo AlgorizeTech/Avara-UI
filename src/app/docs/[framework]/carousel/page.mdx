@@ -3,15 +3,14 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("carousel");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode, extractMotionCode } from "@/lib/code";
 
 # Shadcn Carousel
 
-A collection of highly interactive carousel components for image galleries, hero sections, and fluid presentations.
+Carousel components for image galleries, hero sections, product wheels and fluid presentations.
 
-Five carousels live on this page: four in `carousel.tsx` (`ImageCarousel`, `HeroCarousel`, `CustomCarousel`, `RadialCarousel`) plus the `FluidGlassSlider`, and the `ThreeDCarousel` fan, which installs on its own as `carousel-3d`.
-
-<AgentVariants slug="carousel" />
+Six carousels live on this page: five in `carousel.tsx` (`ImageCarousel`, `HeroCarousel`, `CustomCarousel`, `RadialCarousel` and `FluidGlassSlider`) and the `ThreeDCarousel` fan, which installs on its own as `carousel-3d`.
 
 ## Carousels
 
@@ -270,10 +269,11 @@ export default function MinimalControlsCarousel() {
   name="carousel"
   colorControl={false}
   columns={1}
+  installation={<Installation name="carousel" usage="below" />}
   examples={[
     {
       title: "Radial carousel",
-      subheading: "`RadialCarousel` arranges cards on a 360-degree 3D wheel around a central hub, with drag momentum. The hub plays or pauses autoplay.",
+      description: "`RadialCarousel` arranges cards on a 360-degree 3D wheel around a central hub, with drag momentum. The hub plays or pauses autoplay.",
       propNotes: [
         {
           lead: "Pass",
@@ -292,11 +292,6 @@ export default function MinimalControlsCarousel() {
   ]}
 />
 
-### Installation
-
-<Installation name="carousel" />
-
-All five carousels (`RadialCarousel`, `FluidGlassSlider`, `ImageCarousel`, `HeroCarousel`, `CustomCarousel`) ship together in a single self-contained `carousel.tsx` file when installing `carousel`. You can import components directly or pass `variant="radial" | "glass" | "image" | "hero" | "thumbnails"` into the default `Carousel` component.
 
 <ExampleShowcase minHeight={360}
   name="carousel"
@@ -305,7 +300,7 @@ All five carousels (`RadialCarousel`, `FluidGlassSlider`, `ImageCarousel`, `Hero
   examples={[
     {
       title: "Fluid glass slider",
-      subheading: "`FluidGlassSlider` is a liquid glass distortion slider featuring dynamic cursor tracking, glassmorphism overlays, and smooth progress tracking.",
+      description: "`FluidGlassSlider` is a liquid glass distortion slider featuring dynamic cursor tracking, glassmorphism overlays, and smooth progress tracking.",
       propNotes: [
         {
           lead: "Pass",
@@ -319,7 +314,7 @@ All five carousels (`RadialCarousel`, `FluidGlassSlider`, `ImageCarousel`, `Hero
     },
     {
       title: "Image carousel",
-      subheading: "`ImageCarousel` handles arrows, dots, swipe and autoplay for you.",
+      description: "`ImageCarousel` handles arrows, dots, swipe and autoplay for you.",
       propNotes: [
         {
           lead: "Pass",
@@ -342,7 +337,7 @@ All five carousels (`RadialCarousel`, `FluidGlassSlider`, `ImageCarousel`, `Hero
     },
     {
       title: "Hero carousel",
-      subheading: "`HeroCarousel` overlays copy on a full-bleed image — click any image card to set it as the background.",
+      description: "`HeroCarousel` overlays copy on a full-bleed image — click any image card to set it as the background.",
       propNotes: [
         {
           lead: "Pass",
@@ -355,7 +350,7 @@ All five carousels (`RadialCarousel`, `FluidGlassSlider`, `ImageCarousel`, `Hero
     },
     {
       title: "Thumbnail rail",
-      subheading: "`CustomCarousel` adds a clickable thumbnail strip.",
+      description: "`CustomCarousel` adds a clickable thumbnail strip.",
       propNotes: [
         {
           prop: "imageButtonPosition",
@@ -386,7 +381,7 @@ All five carousels (`RadialCarousel`, `FluidGlassSlider`, `ImageCarousel`, `Hero
   ]}
 />
 
-## 3D Carousel
+## 3D Fanned Deck
 
 A fanned 3D deck with drag gestures, keyboard arrows, circular endless fanning and an autoplay timer that pauses on hover.
 
@@ -396,6 +391,7 @@ Drag the center card left or right, use the arrow keys, or click a fanned neighb
   name="carousel-3d"
   colorControl
   columns={1}
+  installation={<Installation name="carousel-3d" usage="below" />}
   examples={[
     {
       title: "3D carousel",
@@ -449,36 +445,39 @@ Drag the center card left or right, use the arrow keys, or click a fanned neighb
   ]}
 />
 
-### Installation
+## About Shadcn Carousel
 
-<Installation name="carousel-3d" />
+**What it is.** **Shadcn Carousel** bundles five interactive slider modes in `carousel.tsx` (`RadialCarousel`, `FluidGlassSlider`, `ImageCarousel`, `HeroCarousel`, and `CustomCarousel`) alongside the standalone `ThreeDCarousel` (`carousel-3d`) fanned deck.
 
-## Features
-Discover the Carousel's powerful features, including touch-swipe support, autoplay functionality, and accessible navigation controls.
+**How it is built.** Use the default `Carousel` with a `variant` prop (`"image"` by default, then `"hero"`, `"thumbnails"`, `"radial"` or `"glass"`), or import a carousel by name. `carousel.tsx` is CSS and React state only and installs just `lucide-react`. `ThreeDCarousel` ships a GSAP build (`carousel-3d`, `gsap`) and a Motion build (`carousel-3d-motion`, `motion`). Nothing imports `next/*`; images render through a plain `img` unless you pass `imageComponent`.
 
+**When to use it.** Use it for hero sliders, product image galleries with thumbnails, 360-degree radial wheels, and fanned 3D card decks. Reach for `ImageCarousel` when you only need images with arrows and dots.
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+## For AI agents
 
-## Best Practices & Guidelines
+<AgentBrief name="carousel">
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use**
+
+- Hero sliders, product image galleries with thumbnails
+- 360-degree radial wheels, interactive fanned 3D card decks
+
+**When not to use**
+
+- A full-width curved 3D arc deck: use <DocLink to="curved-carousel">Curved Carousel</DocLink>
+- A mixed media wall rather than a slider: use <DocLink to="gallery">Gallery</DocLink>
+
+**Agent notes**
+
+- Install `carousel` for `RadialCarousel`, `FluidGlassSlider`, `ImageCarousel`, `HeroCarousel`, and `CustomCarousel`, or `carousel-3d` for `ThreeDCarousel`.
+- On `CustomCarousel`, set `imageButtonPosition` to `"bottom"`, `"left"`, or `"right"` and pass `items` (not `images`). Its autoplay is on by default, and the interval prop is `interval`, not `autoPlayInterval`.
+- `ImageCarousel`, `HeroCarousel`, `CustomCarousel` and `RadialCarousel` take `imageComponent`; pass `next/image` there in Next.js. `StaticImageData` objects only work with it, and `HeroCarousel` and `CustomCarousel` paint the main image as a CSS background, so give them URL strings.
+- `ImageCarousel` and `ThreeDCarousel` wrap around at the ends; `FluidGlassSlider` disables its buttons at the first and last slide.
+- `FluidGlassSlider` autoplays every 5 seconds with no prop to change that, and always shows a "Fluid Glass" heading.
+- `ThreeDCarousel` listens for the left and right arrow keys on the whole window, so avoid mounting two on one page.
+- `ImageCarousel` and `HeroCarousel` size from their own default classes; override them with `rootClassName`, not `className`.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -497,9 +496,9 @@ Discover the Carousel's powerful features, including touch-swipe support, autopl
     <tbody>
       <tr>
         <td><code>variant</code></td>
-        <td><code>"radial" | "glass" | "image" | "hero" | "thumbnails"</code></td>
+        <td><code>"image" | "hero" | "thumbnails" | "radial" | "glass" | "fluid"</code></td>
         <td><code>"image"</code></td>
-        <td>The layout variant to render.</td>
+        <td>The layout variant to render. <code>"fluid"</code> is an alias for <code>"glass"</code>. Each variant takes the props of the carousel below it.</td>
       </tr>
       <tr>
         <td><code>images</code></td>
@@ -509,13 +508,13 @@ Discover the Carousel's powerful features, including touch-swipe support, autopl
       </tr>
       <tr>
         <td><code>slides</code></td>
-        <td><code>any[]</code></td>
+        <td><code>HeroSlide[] | FluidGlassSlide[]</code></td>
         <td><code>[]</code></td>
-        <td>Array of slide objects (for <code>"glass"</code> or <code>"hero"</code> variants).</td>
+        <td>Array of slide objects (for <code>"hero"</code> or <code>"glass"</code> variants).</td>
       </tr>
       <tr>
         <td><code>items</code></td>
-        <td><code>any[]</code></td>
+        <td><code>RadialCarouselItem[] | CustomItem[]</code></td>
         <td><code>[]</code></td>
         <td>Array of item objects (for <code>"radial"</code> or <code>"thumbnails"</code> variants).</td>
       </tr>
@@ -523,7 +522,7 @@ Discover the Carousel's powerful features, including touch-swipe support, autopl
         <td><code>className</code></td>
         <td><code>string</code></td>
         <td><code>-</code></td>
-        <td>Custom CSS styling classes for the outer wrapper.</td>
+        <td>Classes for the outer wrapper on the <code>"image"</code>, <code>"radial"</code> and <code>"glass"</code> variants. On <code>"image"</code> it replaces the default root classes, height included. The <code>"hero"</code> and <code>"thumbnails"</code> variants ignore it.</td>
       </tr>
     </tbody>
   </table>
@@ -545,14 +544,14 @@ Discover the Carousel's powerful features, including touch-swipe support, autopl
       <tr>
         <td><code>items</code></td>
         <td><code>RadialCarouselItem[]</code></td>
-        <td><code>[]</code></td>
-        <td>Array of cards with <code>{`{ title, category, rating, price?, img }`}</code> radiating in 360 degrees.</td>
+        <td>Built-in sample cards</td>
+        <td>Array of cards with <code>{`{ title, img, category?, rating?, price?, des? }`}</code> radiating in 360 degrees. Fewer than 10 items are repeated to fill the wheel.</td>
       </tr>
       <tr>
         <td><code>autoPlay</code></td>
         <td><code>boolean</code></td>
         <td><code>false</code></td>
-        <td>If true, continuously rotates the 3D wheel.</td>
+        <td>If true, the wheel starts rotating. The hub button then pauses and resumes it.</td>
       </tr>
       <tr>
         <td><code>autoPlayInterval</code></td>
@@ -563,8 +562,26 @@ Discover the Carousel's powerful features, including touch-swipe support, autopl
       <tr>
         <td><code>stepAngle</code></td>
         <td><code>number</code></td>
-        <td><code>360 / items.length</code></td>
-        <td>Rotation angle step per card in degrees.</td>
+        <td><code>360 / cards shown</code></td>
+        <td>Rotation angle step per card in degrees. The default divides the circle by the number of cards on the wheel, after short lists are repeated.</td>
+      </tr>
+      <tr>
+        <td><code>showArrows</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Shows previous and next buttons.</td>
+      </tr>
+      <tr>
+        <td><code>showDots</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Shows pagination dots.</td>
+      </tr>
+      <tr>
+        <td><code>imageComponent</code></td>
+        <td><code>React.ElementType</code></td>
+        <td><code>"img"</code></td>
+        <td>Element used for card images. Pass <code>Image</code> from <code>next/image</code> in Next.js.</td>
       </tr>
       <tr>
         <td><code>className</code></td>
@@ -592,8 +609,8 @@ Discover the Carousel's powerful features, including touch-swipe support, autopl
       <tr>
         <td><code>slides</code></td>
         <td><code>FluidGlassSlide[]</code></td>
-        <td><code>DEFAULT_SLIDES</code></td>
-        <td>Array of glass slides with <code>{`{ id, image, title, subtitle }`}</code>.</td>
+        <td>Three built-in slides</td>
+        <td>Array of glass slides with <code>{`{ id, image, title, subtitle }`}</code>, where <code>id</code> is a number and <code>image</code> a URL string. Autoplay advances every 5 seconds and cannot be changed.</td>
       </tr>
       <tr>
         <td><code>className</code></td>
@@ -622,7 +639,7 @@ Discover the Carousel's powerful features, including touch-swipe support, autopl
         <td><code>images</code></td>
         <td><code>ImgSrc[]</code></td>
         <td><code>[]</code></td>
-        <td>Array of string URLs or Next.js StaticImageData objects.</td>
+        <td>Array of string URLs, or Next.js StaticImageData objects when <code>imageComponent</code> is <code>Image</code> from <code>next/image</code>.</td>
       </tr>
       <tr>
         <td><code>autoPlay</code></td>
@@ -665,6 +682,12 @@ Discover the Carousel's powerful features, including touch-swipe support, autopl
         <td><code>number</code></td>
         <td><code>540</code></td>
         <td>Default image height in pixels.</td>
+      </tr>
+      <tr>
+        <td><code>imageComponent</code></td>
+        <td><code>React.ElementType</code></td>
+        <td><code>"img"</code></td>
+        <td>Element used for the slides. Pass <code>Image</code> from <code>next/image</code> in Next.js to keep image optimisation.</td>
       </tr>
     </tbody>
   </table>
@@ -733,13 +756,13 @@ Discover the Carousel's powerful features, including touch-swipe support, autopl
       <tr>
         <td><code>autoPlay</code></td>
         <td><code>boolean</code></td>
-        <td><code>false</code></td>
-        <td>If true, auto-advances through thumbnail items.</td>
+        <td><code>true</code></td>
+        <td>Auto-advances through the items. Set to <code>false</code> to turn it off.</td>
       </tr>
       <tr>
-        <td><code>autoPlayInterval</code></td>
+        <td><code>interval</code></td>
         <td><code>number</code></td>
-        <td><code>3000</code></td>
+        <td><code>5000</code></td>
         <td>Time (in ms) between slide changes.</td>
       </tr>
     </tbody>
@@ -859,6 +882,33 @@ Discover the Carousel's powerful features, including touch-swipe support, autopl
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Combine `Carousel` with <DocLink to="curved-carousel">Curved Carousel</DocLink> for oscillating 3D arcs, <DocLink to="squircle-carousel">Squircle Carousel</DocLink> for masked tile grids, and <DocLink to="gallery">Gallery</DocLink> for multi-mode 3D media showcases.
+
+## Should I install `carousel` or `carousel-3d`?
+
+Install `carousel` for `RadialCarousel`, `FluidGlassSlider`, `ImageCarousel`, `HeroCarousel`, and `CustomCarousel`; it needs only `lucide-react`. Install `carousel-3d` for the fanned `ThreeDCarousel` deck, which adds `gsap`. `carousel-3d-motion` is the same deck on `motion`; add one build, not both.
+
+## How do I position the thumbnail strip on `CustomCarousel`?
+
+Set `imageButtonPosition` to `"bottom"` (the default), `"left"` or `"right"`, and pass your slides through `items` rather than `images`. Each item is `{ img, title, des }`. The carousel autoplays every 5 seconds by default; change that with `interval`, or pass `autoPlay={false}`.
+
+## How do I use next/image with ImageCarousel?
+
+Pass `imageComponent={Image}` with `Image` from `next/image`. Without it, `ImageCarousel` renders a plain `img`, so the file also runs in Vite. `StaticImageData` imports only work with `imageComponent`. `HeroCarousel` and `CustomCarousel` use their image as a CSS background, so give them URL strings.
+
+## Which carousels autoplay by default?
+
+`CustomCarousel` (5000 ms `interval`), `ThreeDCarousel` (`autoPlay`, 4000 ms) and `FluidGlassSlider` (fixed 5000 ms) start playing. `ImageCarousel` (3000 ms), `HeroCarousel` (3000 ms) and `RadialCarousel` (3500 ms) stay still until you set `autoPlay`. `ThreeDCarousel` pauses while the pointer is over it.
+
+## How do the ThreeDCarousel drag and keyboard controls work?
+
+Drag the centre card more than 50px to move one slide, click a side card to bring it forward, or press the left and right arrow keys. The keys are caught on the whole window, not only when the deck is focused. Arrows, pause button and dots are labelled; `showArrows` and `showDots` hide them.
+
+## Are the carousels accessible?
+
+`RadialCarousel` is a `region` with `aria-roledescription="carousel"`, a screen-reader-only title announced while autoplay is paused, and a labelled Play and Pause hub button. Its card transitions switch off under `motion-reduce`. `ImageCarousel` dots are labelled "Go to slide N", but its arrows have no text unless you pass `prevIcon` and `nextIcon` that carry it.
 
 <DocsJsonLd slug="carousel" />
+<FaqJsonLd slug="carousel" />

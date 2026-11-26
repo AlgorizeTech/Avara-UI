@@ -3,7 +3,7 @@
   "name": "video-player-direct-embed",
   "type": "registry:block",
   "title": "Video Player — Direct embed",
-  "description": "No poster at all — the embed renders on load and keeps its own title chrome.",
+  "description": "The \"Direct embed\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

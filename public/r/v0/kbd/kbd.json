@@ -3,7 +3,7 @@
   "name": "kbd-kbd",
   "type": "registry:block",
   "title": "Kbd",
-  "description": "A single key, rendered as a semantic `<kbd>` element.",
+  "description": "The \"Kbd\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

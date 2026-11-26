@@ -3,7 +3,7 @@
   "name": "card-stat-grid",
   "type": "registry:block",
   "title": "Card — Stat grid",
-  "description": "`CardHeader` stacks its children by default; override that to line a title up against an icon.",
+  "description": "The \"Stat grid\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

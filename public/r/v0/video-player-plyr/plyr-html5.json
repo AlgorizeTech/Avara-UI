@@ -3,7 +3,7 @@
   "name": "video-player-plyr-plyr-html5",
   "type": "registry:block",
   "title": "Video Player (Plyr) — Plyr — HTML5",
-  "description": "A self-hosted mp4 behind Plyr's control bar, skinned with a single CSS variable.",
+  "description": "The \"Plyr — HTML5\" example from the Avara UI docs.",
   "dependencies": [
     "plyr",
     "tw-animate-css"

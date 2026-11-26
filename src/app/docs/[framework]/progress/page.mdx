@@ -4,16 +4,11 @@ export const metadata = docsPageMetadata("progress");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Progress
 
-A smoothly animated progress indicator for loading states, storage meters and step-by-step wizards. Every form fills from zero when it first appears, and any number it shows counts up alongside the fill.
-
-It is split into composable pieces: the core `<Progress />` bar, the `<ProgressField />` wrapper for labels and percentage text, `<MultiProgress />` with `<ProgressSegment />` children for several values on one track, and `<CircularProgress />` for the same value as a ring.
-
-Colour carries state: `stages` changes the fill as thresholds are crossed, and `status` overrides it with the conventional success, warning and error hues so a failed job never looks like it is still running.
-
-<AgentVariants slug="progress" />
+A composable progress suite (`Progress`, `ProgressField`, `MultiProgress`, `ProgressSegment`, `CircularProgress`) with count-up animations, threshold `stages`, and semantic `status` hues.
 
 export const usageStages = `"use client";
 
@@ -159,10 +154,11 @@ export default function CreditsRing() {
     { name: "value", label: "Percentage", min: 0, max: 100, step: 1, defaultValue: 45, unit: "%" },
   ]}
   columns={1}
+  installation={<Installation name="progress" usage="below" />}
   examples={[
     {
       title: "Progress",
-      subheading: "The bare bar. Drag the slider above to move it; hover the bar for the readout.",
+      description: "The bare bar. Drag the slider above to move it; hover the bar for the readout.",
       propNotes: [
         {
           prop: "value",
@@ -186,7 +182,7 @@ export default function CreditsRing() {
     },
     {
       title: "Circular progress",
-      subheading: "The same value, drawn as a ring.",
+      description: "The same value, drawn as a ring.",
       propNotes: [
         {
           prop: "circleSize",
@@ -217,24 +213,9 @@ export default function CreditsRing() {
       props: { example: "circular-custom", variant: "default", barSize: "lg", value: 45, tooltip: true },
       usage: usageCircularCustom,
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="progress" />
-
-## Examples
-
-<ExampleShowcase minHeight={170}
-  name="progress"
-  colorControl
-  colorLabel="Accent Brand Theme"
-  columns={1}
-  examples={[
     {
       title: "Statuses",
-      subheading: "The four states side by side.",
+      description: "The four states side by side.",
       propNotes: [
         {
           prop: "status",
@@ -276,7 +257,7 @@ export default function CreditsRing() {
     },
     {
       title: "Stage colours",
-      subheading: "Run it: neutral while starting, the brand colour from 10%, green at 100 — or red the moment it fails. The ring and the bar share one value, so they always agree.",
+      description: "Run it: neutral while starting, the brand colour from 10%, green at 100 — or red the moment it fails. The ring and the bar share one value, so they always agree.",
       propNotes: [
         {
           prop: "stages",
@@ -301,31 +282,37 @@ export default function CreditsRing() {
   ]}
 />
 
-## Features
-Explore the Progress bar's features, including smooth value interpolation, indeterminate animations, and accessibility labels.
+## About Shadcn Progress
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Counts up">
-    <p>Bars, segments and rings fill from zero on first paint and every readout counts up in step, on one shared easing. Respects <code>prefers-reduced-motion</code>; turn it off with <code>animate={false}</code>.</p>
-  </InfoCard>
-</div>
+**What it is.** A composable progress family (`Progress`, `ProgressField`, `MultiProgress`, `ProgressSegment`, `CircularProgress`) supporting linear bars, circular rings, multi-segment storage meters, threshold `stages`, and semantic `status` states (`active`, `success`, `warning`, `error`).
 
-## Best Practices & Guidelines
+**How it is built.** Animates from zero on mount and tweens updates with synchronized number count-ups, while respecting `prefers-reduced-motion` (or disabling via `animate={false}`).
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `Progress` or `CircularProgress` for uploads, storage meters, and task completion. For unknown-duration spinners, use <DocLink to="loader">Loader</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="progress">
+
+**When to use**
+
+- Determinate linear bars (`Progress`, `ProgressField`), rings (`CircularProgress`), and multi-segment tracks (`MultiProgress` + `ProgressSegment`)
+- Threshold-colored progress (`stages`) or semantic `status="active" | "success" | "warning" | "error"`
+
+**When not to use**
+
+- Unknown-duration spinners — use <DocLink to="loader">Loader</DocLink>
+- Multi-step form headers — use <DocLink to="stepper">Stepper</DocLink>
+
+**Agent notes**
+
+- Named exports from `@/components/custom/blocks/ProgressBlock`
+- Pass `children={(value, max) => ...}` on `CircularProgress` to animate custom center readouts alongside the arc
+- `color` defaults to `"primary"` (the theme `--primary`); named colors are `indigo`, `rose`, `emerald`, `amber`, `red` and `zinc`, and a custom color must be a hex string starting with `#`
+- `Progress`, `CircularProgress` and `ProgressSegment` render `role="progressbar"`; add `aria-label` yourself, since `ProgressField` does not link its label to the bar
+- `ProgressSegment` throws when rendered outside `MultiProgress`
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -397,9 +384,9 @@ Explore the Progress bar's features, including smooth value interpolation, indet
           <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
         </td>
         <td>
-          <code>"indigo"</code>
+          <code>"primary"</code>
         </td>
-        <td>Applies the active color theme to the progress indicator. Fully supports custom hex codes.</td>
+        <td>Applies the active color theme to the progress indicator. Accepts a named color or a custom hex code starting with <code>#</code>; the default and any unrecognised name follow the theme's <code>--primary</code>.</td>
       </tr>
       <tr>
         <td>
@@ -864,6 +851,34 @@ Explore the Progress bar's features, including smooth value interpolation, indet
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Pair `Progress` with <DocLink to="file-upload">File Upload</DocLink> queues and <DocLink to="card">Card</DocLink> storage/quota panels.
+- Use <DocLink to="loader">Loader</DocLink> when task duration is unknown.
+
+## How do stages and status work together?
+
+`stages` (`{ from, color }[]`) colors the fill by threshold: the last stage whose `from` percentage has been reached wins, and the base `color` applies before the first. A non-`"active"` `status` overrides every stage with emerald, amber or red, and `ProgressField` adds a matching glyph.
+
+## How do I give Progress a custom color?
+
+Set `color` to a named theme (`"indigo"`, `"rose"`, `"emerald"`, `"amber"`, `"red"` or `"zinc"`) or a hex string beginning with `#`. The default is `"primary"`, which follows the theme's `--primary` token. Any other string, such as an `rgb()` value, falls back to that default.
+
+## How do I show progress when the duration is unknown?
+
+Set `indeterminate` on `Progress`. A short bar slides along the track, `value` is ignored, `aria-valuenow` is dropped and `aria-busy` is set. Users with `prefers-reduced-motion` get a still, full-width bar. For a spinner instead of a bar, use <DocLink to="loader">Loader</DocLink>.
+
+## How do I build a multi-segment storage bar with MultiProgress?
+
+Nest `ProgressSegment` children inside `MultiProgress`, each with its own `value`, `color` and `label`. They all measure against the parent's `max`. A `gap` above `0` separates and rounds the segments. A segment rendered outside `MultiProgress` throws an error.
+
+## How do I replace the center text of CircularProgress?
+
+Pass `children`, either a node or a function `(value, max) => node` that receives the value as it counts up. This replaces the percentage, and `showValue` is then ignored. To keep the percentage but change its text, use `valueFormat`. `circleSize` sets the diameter in pixels.
+
+## Is Progress accessible and does it respect reduced motion?
+
+`Progress` renders `role="progressbar"` with `aria-valuemin`, `aria-valuemax` and `aria-valuenow`, plus an `aria-valuetext` such as `"45%, error"` when a status is set. Pass your own `aria-label`. Under `prefers-reduced-motion` the count-up tween is skipped and values snap to the target.
 
 <DocsJsonLd slug="progress" />
+<FaqJsonLd slug="progress" />

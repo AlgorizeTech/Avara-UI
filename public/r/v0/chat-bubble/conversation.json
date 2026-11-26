@@ -3,7 +3,7 @@
   "name": "chat-bubble-conversation",
   "type": "registry:block",
   "title": "Chat Bubble — Conversation",
-  "description": "The pieces assembled into a messenger thread. Set the side once on the `ChatBubble` root and the children read it from context.",
+  "description": "The \"Conversation\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

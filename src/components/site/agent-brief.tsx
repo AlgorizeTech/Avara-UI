@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
 import { Bot } from "lucide-react";
 
+import { AgentVariants } from "@/components/site/agent-variants";
 import { DocLink } from "@/components/site/doc-link";
+import { agentBlockForSlug } from "@/agent/variants/render";
 import { DEFAULT_FRAMEWORK, docsMarkdownHref } from "@/lib/framework";
 import { addArgsFor } from "@/lib/registry";
 
@@ -50,6 +52,7 @@ export function AgentBrief({
   children: ReactNode;
 }) {
   const markdown = docsMarkdownHref(DEFAULT_FRAMEWORK, slug);
+  const hasVariants = Boolean(agentBlockForSlug(slug));
 
   return (
     <div className="not-prose my-6 rounded-[20px] border border-foreground/[0.06] bg-foreground/[0.04] p-1.5">
@@ -75,6 +78,8 @@ export function AgentBrief({
         >
           {children}
         </div>
+
+        {hasVariants && <AgentVariants slug={slug} embedded />}
 
         <dl className="m-0 mt-4 divide-y divide-foreground/[0.06] border-t border-foreground/[0.06]">
           <Row label="Markdown">

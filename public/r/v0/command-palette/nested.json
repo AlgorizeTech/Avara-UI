@@ -3,7 +3,7 @@
   "name": "command-palette-nested",
   "type": "registry:block",
   "title": "Command Palette — Nested",
-  "description": "Contextual issue actions with drill-down sub-menus for Status, Assignee, Priority, and Project. Press Backspace or click ← to return.",
+  "description": "The \"Nested\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

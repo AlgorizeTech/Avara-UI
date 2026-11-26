@@ -3,7 +3,7 @@
   "name": "range-date-picker-dual-month-range-date-picker",
   "type": "registry:block",
   "title": "Range Date Picker — Dual Month Range Date Picker",
-  "description": "Side-by-side dual calendars (Left Month & Right Month) for continuous range selection.",
+  "description": "The \"Dual Month Range Date Picker\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -10,37 +10,20 @@ An ultra-responsive, high-performance 2D HTML Canvas component that converts tex
 
 Move your cursor or touch across the canvas to push particles away; they scatter organically and spring back smoothly to their original text positions when the pointer moves away.
 
-## For AI agents
+## Installation
 
-**Ask before you pick.** This page has 2 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+Add the component by URL — no setup needed:
 
-All 2 options as live previews: https://avaraui.com/view/particle-canvas
+```bash
+npx shadcn@latest add https://avaraui.com/r/particle-canvas.json
+```
 
-**When to use it.** A 2D canvas that turns text into thousands of interactive particles in your theme colour, in two looks: particles that scatter from the pointer, or a bottom-aligned wordmark banner with a glow.
+Or register the @avara-ui registry once per project and add it by name:
 
-**Gotchas:**
-
-- Both are looks of the one `particle-canvas` item: install it once and set `variant` from the index.
-- The text comes from the `content` prop in both looks.
-
-### The 2 variants
-
-1. **Text particle repel** (`repel`): The text is made of dots that scatter away from the pointer and spring back to their positions.
-   - Live: https://avaraui.com/view/particle-canvas/repel
-   - Best for: a hero or showcase where a headline word should react to the cursor or touch
-   - Avoid if: you want a quiet, static wordmark
-   - Traits: thousands of particles, pointer repulsion, touch support
-   - Install: `npx shadcn@latest add @avara-ui/particle-canvas`
-   - Set these props: `{"variant":"repel"}`
-   - Docs: https://avaraui.com/docs/nextjs/particle-canvas#text-particle-repel
-2. **Wordmark glow** (`wordmark-glow`): A compact bottom-aligned wordmark banner whose letters spring in on scroll, with a radial glow that follows the cursor.
-   - Live: https://avaraui.com/view/particle-canvas/wordmark-glow
-   - Best for: a large wordmark along the bottom of a page or footer area
-   - Avoid if: you want the text itself to break apart under the pointer
-   - Traits: bottom-aligned banner, scroll-triggered spring letters, cursor-following glow
-   - Install: `npx shadcn@latest add @avara-ui/particle-canvas`
-   - Set these props: `{"variant":"wordmark-glow"}`
-   - Docs: https://avaraui.com/docs/nextjs/particle-canvas#wordmark-glow-canvas
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/particle-canvas
+```
 
 ## Text Particle Repel
 
@@ -95,40 +78,62 @@ export default function WordmarkGlowDemo() {
 }
 ```
 
-## Installation
+## About Shadcn Particle Canvas
 
-Add the component by URL — no setup needed:
+**What it is.** **Shadcn Particle Canvas** (`ParticleCanvas`) is a 2D HTML Canvas text-to-particle component with cursor repulsion physics (`variant="repel"`) and a scroll-triggered spring wordmark banner (`variant="wordmark-glow"`).
 
-```bash
-npx shadcn@latest add https://avaraui.com/r/particle-canvas.json
-```
+**How it is built.** `ParticleCanvas` rasterizes `content` via an offscreen canvas, reads the theme's `--primary` CSS variable (so it follows light and dark mode), and automatically tunes `particleGap` and `particleSize` across Small, Medium, and Large viewports.
 
-Or register the @avara-ui registry once per project and add it by name:
+**When to use it.** Use it for interactive hero sections, agency landing footers, brand wordmark banners, and playful 404 or launch pages.
 
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/particle-canvas
-```
+## For AI agents
 
-## Features
+**When to use**
 
-Discover the key capabilities that make this component an excellent choice for modern interactive user interfaces.
+- Interactive hero sections, agency landing footers
+- Brand wordmark banners, playful 404 or launch pages
 
-Automatically resolves and matches the active navigation item background color (`bg-primary`) across Light and Dark mode.
+**When not to use**
 
-Cursor repulsion features staggered particle turbulence and spring-damped return physics for a fluid tactile feel.
+- A pointer-following effect: use [Cursor Animation](https://avaraui.com/docs/nextjs/cursor-animation)
+- Ordinary animated headline text: use [Animated Typography](https://avaraui.com/docs/nextjs/animated-typography)
 
-Automatically scales particle parameters across Small (&lt;768px), Medium (768px-1023px), and Large (&ge;1024px) viewports.
+**Agent notes**
 
-Built with an offscreen sampling engine and efficient 2D rendering loops for maximum performance.
+- `ParticleCanvas` accepts `content` (string), `variant` (`"repel" | "wordmark-glow"`), `particleSize`, `particleGap`, `speed`, and `className`.
+- Wrap `ParticleCanvas` in a sized container (for example `h-[650px]` or `h-[260px]`); the canvas fills 100% of its parent.
+- Particle size and gap are overridden below a 1024px container width; the colour follows the theme's `--primary` variable unless `color` is set.
+- `variant="wordmark-glow"` only reads `content`, `color`, `className` and `style`; `particleSize`, `particleGap`, `speed` and `interactive` apply to `repel` only.
 
-## Best Practices & Guidelines
+**Ask before you pick.** This page has 2 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
 
-Automatically adapts particle parameters based on screen size: Large (&gt;=1024px) uses `particleGap = 5px, particleSize = 2.5px`, MD (768px-1023px) uses `particleGap = 4px, particleSize = 2px`, and Small (&lt;768px) uses `particleGap = 3px, particleSize = 1.5px`.
+All 2 options as live previews: https://avaraui.com/view/particle-canvas
 
-### Container Height & Layout
+**When to use it.** A 2D canvas that turns text into thousands of interactive particles in your theme colour, in two looks: particles that scatter from the pointer, or a bottom-aligned wordmark banner with a glow.
 
-Wrap the component in a fixed or responsive height container (e.g. `h-[650px]` or `h-screen`). The canvas automatically resizes to fill 100% of its parent element.
+**Gotchas:**
+
+- Both are looks of the one `particle-canvas` item: install it once and set `variant` from the index.
+- The text comes from the `content` prop in both looks.
+
+### The 2 variants
+
+1. **Text particle repel** (`repel`): The text is made of dots that scatter away from the pointer and spring back to their positions.
+   - Live: https://avaraui.com/view/particle-canvas/repel
+   - Best for: a hero or showcase where a headline word should react to the cursor or touch
+   - Avoid if: you want a quiet, static wordmark
+   - Traits: thousands of particles, pointer repulsion, touch support
+   - Install: `npx shadcn@latest add @avara-ui/particle-canvas`
+   - Set these props: `{"variant":"repel"}`
+   - Docs: https://avaraui.com/docs/nextjs/particle-canvas#text-particle-repel
+2. **Wordmark glow** (`wordmark-glow`): A compact bottom-aligned wordmark banner whose letters spring in on scroll, with a radial glow that follows the cursor.
+   - Live: https://avaraui.com/view/particle-canvas/wordmark-glow
+   - Best for: a large wordmark along the bottom of a page or footer area
+   - Avoid if: you want the text itself to break apart under the pointer
+   - Traits: bottom-aligned banner, scroll-triggered spring letters, cursor-following glow
+   - Install: `npx shadcn@latest add @avara-ui/particle-canvas`
+   - Set these props: `{"variant":"wordmark-glow"}`
+   - Docs: https://avaraui.com/docs/nextjs/particle-canvas#wordmark-glow-canvas
 
 ## Props Reference
 
@@ -145,6 +150,34 @@ Wrap the component in a fixed or responsive height container (e.g. `h-[650px]` o
 | `fontSize` | `number` | `auto` | Font size (px) used to rasterize `content` before sampling. When omitted, it is computed from the canvas size and text length so the text fills the container. |
 | `fontFamily` | `string` | `"system-ui, -apple-system, sans-serif"` | CSS font-family used to render the text that particles are sampled from. The text is always drawn bold. |
 | `className` | `string` | `undefined` | Extra classes merged onto the wrapper `<div>` (defaults to `relative w-full h-full min-h-[600px]`). All other `HTMLAttributes<HTMLDivElement>` are spread onto the wrapper as well. |
+
+## Works with other components
+
+Pair `ParticleCanvas` with [Cursor Animation](https://avaraui.com/docs/nextjs/cursor-animation) for pointer effects over UI cards, [Animated Typography](https://avaraui.com/docs/nextjs/animated-typography) for kinetic headlines, and [Ribbon Drift](https://avaraui.com/docs/nextjs/ribbon-drift) for hero showcase backdrops.
+
+## How should I size the ParticleCanvas container?
+
+Give the parent an explicit height such as `h-[650px]`. The wrapper is `w-full h-full` with a `min-h-[600px]` default for `repel` (`min-h-[240px]` for `wordmark-glow`), so pass a smaller `min-h-[...]` through `className` for short banners. A `ResizeObserver` re-samples the particles when the container size changes.
+
+## Does ParticleCanvas follow light and dark mode?
+
+Yes. It reads the active theme's `--primary` CSS variable through `next-themes` and a `MutationObserver` on `class`, `style` and `data-theme`, then recolours the existing dots without resetting them. So it also follows the Themes page presets. Pass `color` to override that.
+
+## How do I change the ParticleCanvas particle color?
+
+Pass `color` with a preset name such as `"indigo"`, `"rose"` or `"emerald"`, or any CSS color string such as a hex value. Leaving it out, or passing `"primary"` or `"default"`, uses the theme's `--primary` color. In the `wordmark-glow` variant, `color` tints the cursor glow.
+
+## Why are my ParticleCanvas dots smaller or denser on mobile?
+
+`particleSize` and `particleGap` only apply when the container is 1024px wide or more. Under 768px the component uses a 1.5px dot and a gap of 3, and from 768px to 1023px a 2px dot and a gap of 4. The check uses the container width, not the viewport.
+
+## Do particleSize and particleGap work with the wordmark-glow variant?
+
+No. `variant="wordmark-glow"` renders a separate wordmark component that only reads `content`, `color`, `className` and `style`. It scales the text to the container width, between 16px and 340px, and its letters rise in one by one once scrolled into view. Reduced-motion users get them static.
+
+## How do I stop ParticleCanvas reacting to the pointer?
+
+Set `interactive={false}`. That disables the mouse and touch repulsion in the `repel` variant, so the dots stay on the text. The repel loop does not check `prefers-reduced-motion`, so turn `interactive` off, or skip the component, for users who need a calmer page.
 
 ---
 

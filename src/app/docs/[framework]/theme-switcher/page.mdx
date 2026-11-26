@@ -4,16 +4,11 @@ export const metadata = docsPageMetadata("theme-switcher");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Theme Switcher
 
-A premium, animated dark mode toggle for Next.js applications using `next-themes`, in three variants (Icon, Pill and Dropdown) that suit everything from compact navigation bars to settings menus. It handles React hydration safely, so there is no dark-mode flash on load.
-
-Switching runs the same circular reveal as the toggle in this site's header, using the View Transitions API. The CSS it needs ships inside the component, so an installed copy works without touching `globals.css`. Browsers without View Transitions, and users who prefer reduced motion, get an instant switch.
-
-Each switcher below is live and writes through `next-themes`, so flipping one changes the theme for the whole docs site.
-
-<AgentVariants slug="theme-switcher" />
+A hydration-safe dark mode switcher for `next-themes` in three variants (`icon`, `pill`, and `dropdown`) with a View Transitions circular reveal.
 
 export const usageIcon = `import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock";
 
@@ -42,14 +37,17 @@ export default function DropdownSwitcher() {
   return <ThemeSwitcher variant="dropdown" />;
 }`;
 
-<ExampleShowcase minHeight={170} headingLevel={2}
+<ExampleShowcase
+  minHeight={170}
+  headingLevel={2}
   name="theme-switcher"
   colorControl={false}
   columns={1}
+  installation={<Installation name="theme-switcher" usage="below" />}
   examples={[
     {
       title: "Icon",
-      subheading: "One button that flips between light and dark, with a spin micro-interaction on the icon and the circular reveal growing out of it.",
+      description: "One button that flips between light and dark, with a spin micro-interaction on the icon and the circular reveal growing out of it.",
       propNotes: [
         {
           prop: "variant",
@@ -62,45 +60,6 @@ export default function DropdownSwitcher() {
       usage: usageIcon,
       code: extractCode("src/components/custom/blocks/ThemeSwitcherBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="theme-switcher" />
-
-### Configure next-themes
-
-`ThemeSwitcher` reads and writes the theme through `next-themes`, so your app has to be wrapped in its provider once. `suppressHydrationWarning` on `<html>` is required — the theme class is applied before React hydrates.
-
-```tsx
-// app/layout.tsx
-import { ThemeProvider } from "next-themes";
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
-  );
-}
-```
-
-## Examples
-
-<ExampleShowcase minHeight={170}
-  name="theme-switcher"
-  colorControl={false}
-  columns={1}
-  examples={[
     {
       title: "Pill",
       propNotes: [
@@ -132,38 +91,33 @@ export default function RootLayout({
   ]}
 />
 
-## Features
+## About Shadcn Theme Switcher
 
-Explore the Theme Switcher's dark mode capabilities, featuring the circular reveal, hydration-safe rendering and smooth layout transitions.
+**What it is.** A dark-mode switcher (`ThemeSwitcher`) with `icon`, `pill`, and `dropdown` variants wired to `next-themes`.
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Circular Reveal">
-    <p>The new theme sweeps out from whichever control was clicked, via the View Transitions API. The `::view-transition` rules it needs ship inside the component, so nothing has to be added to your global stylesheet. Set <code>reveal={false}</code> for an instant switch.</p>
-  </InfoCard>
-  <InfoCard title="Self-contained">
-    <p>Every style the switcher relies on is in <code>ThemeSwitcherBlock.tsx</code>: Tailwind classes for the controls, and the reveal CSS injected once into <code>&lt;head&gt;</code>. Install it and it works; nothing to copy into <code>globals.css</code>.</p>
-  </InfoCard>
-  <InfoCard title="Hydration Safe">
-    <p>Safely checks if the component is mounted on the client to completely eliminate the infamous React hydration mismatch errors.</p>
-  </InfoCard>
-  <InfoCard title="No Animation Library">
-    <p>The sliding pill, the icon spin and the dropdown run on the browser's built-in Web Animations API, so they feel completely native and add no dependency.</p>
-  </InfoCard>
-  <InfoCard title="3 Layout Variants">
-    <p>Ships with a compact Icon toggle, a sliding Pill control, and a classic Dropdown menu to fit any UI design.</p>
-  </InfoCard>
-  <InfoCard title="System Sync">
-    <p>Automatically syncs with the user's OS-level dark mode preferences if the "system" theme is selected.</p>
-  </InfoCard>
-</div>
+**How it is built.** Injects its own `::view-transition` circular reveal CSS into `<head>` (no `globals.css` edits needed), uses the Web Animations API for micro-interactions, and waits for client mount to avoid SSR hydration mismatches. Falls back to an instant switch under `prefers-reduced-motion` or browsers without View Transitions.
 
-## Best Practices & Guidelines
+**When to use it.** Use `variant="icon"` in compact navbars, `variant="pill"` on settings pages, and `variant="dropdown"` when users need explicit `light`, `dark`, and `system` options.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="SSR Considerations">
-    <p>Since `next-themes` relies on `localStorage` which isn't available during Server-Side Rendering, always wrap the component's inner rendering logic in a `mounted` check to prevent hydration mismatch flashes.</p>
-  </InfoCard>
-</div>
+## For AI agents
+
+<AgentBrief name="theme-switcher">
+
+**When to use**
+
+- Light/dark/system theme controls in navbars (`variant="icon"`), settings pages (`variant="pill"`), or menus (`variant="dropdown"`)
+
+**When not to use**
+
+- Generic multi-option segmented controls unrelated to theme — use <DocLink to="toggle-group">Toggle Group</DocLink>
+
+**Agent notes**
+
+- Named export: `import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock"`
+- Requires `next-themes` `ThemeProvider` wrapping the root layout with `suppressHydrationWarning` on `<html>`
+- Only `variant="dropdown"` exposes the `"system"` option; pass `reveal={false}` to disable the circular View Transitions sweep
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -288,6 +242,30 @@ Explore the Theme Switcher's dark mode capabilities, featuring the circular reve
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Place `variant="icon"` inside <DocLink to="navbar">Navbar</DocLink> or <DocLink to="sidebar">Sidebar</DocLink> headers.
+- Pair `variant="pill"` with <DocLink to="card">Card</DocLink> appearance settings panels.
+
+## How do I add a dark mode toggle with next-themes?
+
+Render `ThemeSwitcher` inside a `next-themes` `ThemeProvider`, which the component expects. Choose `variant="icon"`, `"pill"` or `"dropdown"`. The registry installs `next-themes` and `lucide-react` with it, and the switcher is hydration-safe, so it avoids a mismatch on first paint.
+
+## Does ThemeSwitcher require globals.css changes for the circular reveal?
+
+No. It injects the `::view-transition` rules into `<head>` automatically, and falls back to an instant switch when View Transitions are unsupported or `prefers-reduced-motion` is active. `reveal` is `true` by default, so set `reveal={false}` to turn the circle off.
+
+## How do I allow users to pick the OS system theme?
+
+Use `variant="dropdown"`, which is the only variant that includes `"system"` alongside `"light"` and `"dark"`. Make sure `ThemeProvider` has `enableSystem` set, otherwise next-themes will not resolve the operating-system preference for you.
+
+## How do I change how the new theme is applied?
+
+Pass `applyTheme`, a function that receives the picked theme and the clicked element. It replaces the default behaviour, which runs the reveal and then changes the theme. `revealDuration` sets the circle animation length in milliseconds and defaults to `500`.
+
+## Which ThemeSwitcher variant should I use in a navbar or settings page?
+
+Use `variant="icon"` in a <DocLink to="navbar">Navbar</DocLink> or <DocLink to="sidebar">Sidebar</DocLink> header, `"pill"` for appearance settings in a <DocLink to="card">Card</DocLink>, and `"dropdown"` when the user needs the system option. `icon` is the default.
 
 <DocsJsonLd slug="theme-switcher" />
+<FaqJsonLd slug="theme-switcher" />

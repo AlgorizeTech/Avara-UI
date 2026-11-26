@@ -3,7 +3,7 @@
   "name": "folder-photos",
   "type": "registry:block",
   "title": "Folder — Photos",
-  "description": "Drag a photo sideways — or swipe it with a thumb — to page through; the arrows do the same.",
+  "description": "The \"Photos\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

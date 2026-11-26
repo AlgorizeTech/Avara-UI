@@ -3,7 +3,7 @@
   "name": "live-pulse-pill-live-pulse-pill",
   "type": "registry:block",
   "title": "Live Pulse Pill",
-  "description": "Interactive presence pill with pulsating soundwave icon, overlapping avatar stack, and centered session participant modal.",
+  "description": "The \"Live Pulse Pill\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

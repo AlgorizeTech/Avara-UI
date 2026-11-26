@@ -3,7 +3,7 @@
   "name": "vertical-tabs-vertical-soft",
   "type": "registry:block",
   "title": "Tabs — Vertical soft",
-  "description": "Tinted pills stacked down the side — the lightest sidebar there is.",
+  "description": "The \"Vertical soft\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -14,6 +14,21 @@ It features a **Smart Sizing Engine**. You can maintain semantic SEO value (like
 
 Every example remounts when it scrolls into view, so the animation plays. Reach for the reload button in a preview's header to replay it.
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/animated-typography.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/animated-typography
+```
+
 ## Typewriter
 
 Types each word, holds it, deletes it and moves on behind a blinking caret, as in the Hero's typing title. The prefix re-centres as the word changes, just like the hero.
@@ -35,21 +50,6 @@ export default function TypewriterShowcase() {
     </div>
   );
 }
-```
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/animated-typography.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/animated-typography
 ```
 
 ## Examples
@@ -356,16 +356,33 @@ export default function MatrixScrambleShowcase() {
 }
 ```
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+## About Shadcn Animated Typography
 
-From Matrix decryption to liquid underlines, plus every hero title effect — letter bounce, typewriter, word flip, blur swap, blur rise and color wipe.
+**What it is.** `AnimatedTypographyBlock` renders text with one of 14 `variant` animations: `matrix-scramble`, `color-reveal`, `wavy-float`, `3d-perspective-flip`, `elastic-spring`, `spotlight-reveal`, `split-stagger`, `underline-draw`, `letter-bounce`, `typewriter`, `word-flip`, `blur-swap`, `blur-rise` and `color-wipe`. `letter-bounce`, `typewriter`, `word-flip` and `blur-swap` cycle through a `words` list.
 
-Automatically renders an sr-only version for screen readers while displaying child visual spans.
+**How it is built.** It renders the real tag you choose with `as`, puts a plain-text copy in an `sr-only` span, and marks the animated copy `aria-hidden`. Motion comes from CSS keyframes and a few timers, with no animation library. `size` sets the visual size separately from the tag, and the base styles keep the text on one line.
 
-Supports semantic tags (h1-h6, p) with Tailwind size overrides and pixel/rem custom sizing.
+**When to use it.** Use it for hero headlines, rotating value propositions, callouts and section titles where the wording itself should move.
 
-GPU-optimized CSS keyframes and spring physics for smooth 60fps animations.
+## For AI agents
+
+**When to use**
+
+- Hero headlines, rotating value propositions
+- Interactive callouts, kinetic section titles
+
+**When not to use**
+
+- Lightweight CSS-only text reveals with no animation library: use [Text Animation](https://avaraui.com/docs/reactjs/text-animation)
+- Text set along a rotating circle: use [Circular Text](https://avaraui.com/docs/reactjs/circular-text)
+
+**Agent notes**
+
+- Named export `AnimatedTypographyBlock` from `@/components/custom/blocks/AnimatedTypographyBlock`. `as` defaults to `"p"` and `variant` to `"matrix-scramble"`.
+- `text` is what screen readers announce. For the rotating variants (`letter-bounce`, `typewriter`, `word-flip`, `blur-swap`) pass the words in `words` and set `text` to the first word.
+- `prefixPosition` is `"fixed"` or `"fluid"`. It defaults to `"fluid"` for `typewriter` and `"fixed"` for the others; use `"fixed"` when the text before the word must stay still.
+- `size` takes a Tailwind key such as `"3xl"` or a CSS length such as `"2rem"`. `color` takes `primary`, `indigo`, `rose`, `emerald`, `zinc` or a hex string.
+- `delay` is in milliseconds and `speed` multiplies the stagger and animation times. Set `play={false}` to hold the text at rest until it should start.
 
 ## Props Reference
 
@@ -383,6 +400,40 @@ GPU-optimized CSS keyframes and spring physics for smooth 60fps animations.
 | `AnimatedTypographyBlock` | `bare` | `boolean` | `false` | Drops the block's own weight, size, colour, alignment and padding, so `className` and the parent set the type — for composing it into a section heading. |
 | `AnimatedTypographyBlock` | `titlePrefix` / `titleSuffix` | `string` | — | Static text either side of the animated part, e.g. `titlePrefix="Build "` before a rotating word. |
 | `AnimatedTypographyBlock` | `align` | `"left" \| "center" \| "right" \| "justify"` | `"left"` | Controls the CSS text alignment of the underlying container. |
+| `AnimatedTypographyBlock` | `color` | `"primary" \| "indigo" \| "rose" \| "emerald" \| "zinc" \| "default" \| (hex string)` | `"primary"` | Text colour. Not applied when `bare` is set unless you pass it. |
+| `AnimatedTypographyBlock` | `size` | `string` | Per tag | A Tailwind size key such as `"3xl"` (scaled down on small screens) or a CSS length such as `"2rem"`, which is clamped from 10px up to that value. |
+| `AnimatedTypographyBlock` | `delay` | `number` | `0` | Base delay in milliseconds before the animation starts. |
+| `AnimatedTypographyBlock` | `speed` | `number` | `1` | Multiplier for the stagger and animation times. Higher is slower. |
+
+## Works with other components
+
+- [Text Animation](https://avaraui.com/docs/reactjs/text-animation) for scroll-reveal headlines driven by GSAP, when you want text to animate as it enters the viewport.
+- [Circular Text](https://avaraui.com/docs/reactjs/circular-text) for text set around a rotating ring, such as a badge.
+- [Hover Peek](https://avaraui.com/docs/reactjs/hover-peek) for interactive editorial statements, alongside a heading from `AnimatedTypographyBlock`.
+
+## Does AnimatedTypographyBlock break screen readers?
+
+No. It renders your text once in an `sr-only` span, including `titlePrefix` and `titleSuffix`, and wraps the animated copy in a span with `aria-hidden="true"`. Screen readers therefore hear the sentence, not individual letters. For rotating variants they hear `text`, so set it to the first word.
+
+## How do I keep the `titlePrefix` from shifting during typewriter animations?
+
+Pass `prefixPosition="fixed"`. The typewriter defaults to `"fluid"`, where the text before the word re-centres as letters are typed and deleted. With `"fixed"` the block reserves the width of the longest entry in `words`, so `titlePrefix` stays where it is for the whole cycle.
+
+## How do I rotate through several words with AnimatedTypographyBlock?
+
+Use `variant="typewriter"`, `"letter-bounce"`, `"word-flip"` or `"blur-swap"` and pass `words`, for example `words={["Interfaces", "Components"]}` with `titlePrefix="Build "`. Each word stays `interval` ms (2400 by default, 1800 for the typewriter), or pass `index` to choose the word yourself.
+
+## How do I change the size of AnimatedTypographyBlock without changing the heading tag?
+
+Pass `size` and keep `as="h1"`. A Tailwind key such as `"3xl"` maps to a responsive text class, and any other value, such as `"2rem"` or `"24px"`, becomes a clamped font size that shrinks on small screens. The tag, and so the heading outline, does not change.
+
+## How do I start an AnimatedTypographyBlock animation when it scrolls into view?
+
+Control `play` yourself. While `play` is `false` the text renders at rest, and the animation starts the moment it becomes `true`. Set it from an IntersectionObserver or your own in-view hook, since the block does not watch scrolling on its own.
+
+## Does AnimatedTypographyBlock respect reduced motion?
+
+Mostly. A `prefers-reduced-motion: reduce` rule cuts the CSS animations to near zero duration, and the typewriter types and deletes whole words at once. `matrix-scramble` runs on a timer, so the media rule does not cover it; pass `play={false}` for people who prefer less motion.
 
 ---
 

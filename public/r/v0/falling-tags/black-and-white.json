@@ -3,7 +3,7 @@
   "name": "falling-tags-black-and-white",
   "type": "registry:block",
   "title": "Falling Tags — Black and white",
-  "description": "High-contrast dual-tone black and white badges. Tags alternate between black background with white text and border, and white background with black text and border.",
+  "description": "The \"Black and white\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

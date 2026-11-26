@@ -3,15 +3,14 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("tech-stack");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Tech Stack
 
-The "Built with" line: a label, then the marks of the tools a product is made with, in two rows — an odd group staggers as three over four, so the smaller row sits between the marks below it. Put related tools in a group — the front end, the services, the tooling — and the strip shows one group at a time, every mark blurring out upwards and the next group blurring in, a beat after the one before it.
+A "Built with" strip of tool logos that cycles through groups with a blur transition.
 
 It is composed, not configured: a `TechStack` holds `TechStackGroup`s, and each group holds `TechStackTool`s, so your list of tools never has to take a particular shape. <DocLink to="component-wall">Component Wall</DocLink> takes one in its `stack` slot.
-
-<AgentVariants slug="tech-stack" />
 
 export const usageDefault = `import { TechStack, TechStackGroup, TechStackTool } from "@/components/custom/blocks/TechStackBlock";
 import {
@@ -93,10 +92,11 @@ export default function BuiltWith() {
   name="tech-stack"
   colorControl={false}
   columns={1}
+  installation={<Installation name="tech-stack" usage="below" />}
   examples={[
     {
       title: "Built with",
-      subheading: "Two groups taking turns: seven front-end tools, three over four, then four services. Wait a few seconds for the swap. Names sit beside the marks on wide screens.",
+      description: "Two groups taking turns: seven front-end tools, three over four, then four services. Wait a few seconds for the swap. Names sit beside the marks on wide screens.",
       propNotes: [
         {
           prop: "TechStackGroup",
@@ -120,23 +120,9 @@ export default function BuiltWith() {
       code: extractCode("src/components/custom/blocks/TechStackBlock.tsx"),
       minHeight: 200,
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="tech-stack" />
-
-## Examples
-
-<ExampleShowcase
-  name="tech-stack"
-  colorControl={false}
-  columns={1}
-  examples={[
     {
       title: "Compact",
-      subheading: "Marks only, the label centred between two hairlines — for a narrow column, like the centred Component Wall.",
+      description: "Marks only, the label centred between two hairlines — for a narrow column, like the centred Component Wall.",
       propNotes: [
         {
           prop: "variant",
@@ -154,7 +140,7 @@ export default function BuiltWith() {
     },
     {
       title: "One group",
-      subheading: "A single group holds still — a plain logo strip.",
+      description: "A single group holds still — a plain logo strip.",
       propNotes: [
         {
           prop: "TechStackGroup",
@@ -168,22 +154,35 @@ export default function BuiltWith() {
   ]}
 />
 
-## Features
+## About Shadcn Tech Stack
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Composed, not configured">
-    <p>Groups and tools are elements, so your data keeps whatever shape it has — map it straight into <code>TechStackTool</code>, or write the marks out by hand.</p>
-  </InfoCard>
-  <InfoCard title="A swap that never jumps">
-    <p>The leaving group is lifted out of the flow where it stood and plays its way out on top, so the new one takes its place at once. Each mark goes a beat after the last, the way a headline word blurs in.</p>
-  </InfoCard>
-  <InfoCard title="Idle off screen">
-    <p>The groups turn only while the strip is in view, so a footer strip costs nothing until someone scrolls to it. Under prefers-reduced-motion each swap is a cut.</p>
-  </InfoCard>
-  <InfoCard title="Your theme">
-    <p>The label, hairlines and names read theme tokens; pass a node as <code>label</code> to set it in your own type.</p>
-  </InfoCard>
-</div>
+**What it is.** **Shadcn Tech Stack** (`TechStack`, `TechStackGroup`, and `TechStackTool`) is a composable "Built with" logo strip that cycles between tool groups with a blur-out/blur-in stagger and supports `"labelled"` and `"compact"` layouts.
+
+**How it is built.** Groups only rotate while visible in the viewport (and use an instant cut under `prefers-reduced-motion`). Odd tool counts stagger into two rows, and a single `TechStackGroup` stays static with no timer.
+
+**When to use it.** Use it for landing page technology strips, footer credits, portfolio stack badges, and integration showcases.
+
+## For AI agents
+
+<AgentBrief name="tech-stack">
+
+**When to use**
+
+- Landing page technology strips, footer credits
+- Portfolio stack badges, integration showcases
+
+**When not to use**
+
+- Overlapping people avatars: use <DocLink to="avatar-stack">Avatar Stack</DocLink>
+- Links to social profiles: use <DocLink to="social-links">Social Links</DocLink>
+
+**Agent notes**
+
+- Compose `TechStack` with `TechStackGroup` children containing `TechStackTool` items (`name` and `icon` node).
+- Use `variant="labelled"` (default) for side-by-side labels on wide screens or `variant="compact"` for marks-only tooltips in narrow columns.
+- Set `interval` (default `3600`ms, or `0` to pause rotation) and omit extra groups for a static logo strip.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -261,6 +260,29 @@ A `<ul>`; takes `TechStackTool` children and any list attribute.
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+Combine `TechStack` with <DocLink to="avatar-stack">Avatar Stack</DocLink> for team credits, <DocLink to="social-links">Social Links</DocLink> for footer social bars, and <DocLink to="tooltip">Tooltip</DocLink> for custom icon hover details.
+
+## How do I build a "Built with" logo strip in React?
+
+Compose a `TechStack` that holds `TechStackGroup` elements, with a `TechStackTool` for each logo. Each tool takes a `name` and an `icon`, which can be an inline SVG or an `img`. Because it is composed rather than configured, your tool list can have any shape.
+
+## Does TechStack animate when it is off screen?
+
+No. Groups only rotate while the strip is visible on screen, so the interval timer does not run in the background. This keeps the cycle from wasting work for a footer or section the visitor has not scrolled to yet.
+
+## How do I display a static logo strip with no rotation?
+
+Set `interval` to `0` so the first group stays on screen. The default is `3600` milliseconds per group. A single group with all your tools also gives a static strip, because there is no second group to cycle to.
+
+## What is the difference between the labelled and compact variants?
+
+`labelled`, the default, puts the label on the left with tool names beside the marks from the `xl` breakpoint up. `compact` places the label between hairlines and shows marks only, with each `name` as a tooltip. Names are always available to screen readers.
+
+## How do I show several groups of tools?
+
+Add more `TechStackGroup` children, each with its own tools. The groups are shown one at a time, in order, using a blur-out and blur-in stagger. Set the `label` prop for the line above the marks, and `interval` for how long each group stays.
 
 <DocsJsonLd slug="tech-stack" />
+<FaqJsonLd slug="tech-stack" />

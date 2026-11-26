@@ -3,7 +3,7 @@
   "name": "table-of-contents-table-of-contents-left-side-navigation",
   "type": "registry:block",
   "title": "Table Of Contents — Table of Contents (Left Side Navigation)",
-  "description": "Sticky left-hand TOC navigation with automatic scroll-spy, progress indicator, and section filter.",
+  "description": "The \"Table of Contents (Left Side Navigation)\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "shiki",

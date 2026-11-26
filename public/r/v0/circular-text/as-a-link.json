@@ -3,7 +3,7 @@
   "name": "circular-text-as-a-link",
   "type": "registry:block",
   "title": "Circular Text — As a link",
-  "description": "Wrapped in an anchor, with the centre reacting to hover through a Tailwind group.",
+  "description": "The \"As a link\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

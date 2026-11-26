@@ -4,14 +4,11 @@ export const metadata = docsPageMetadata("split-stepper");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Split-Stack Stepper
 
-A high-impact, interactive split-screen layout animated with plain **CSS transitions** — no animation library. One side renders a narrative sequence of feature cards with glowing pill badges, while the opposite side maintains a sticky visual showcase container.
-
-Unlike basic tab replacements, this engine applies dynamic mathematical depth tweens via GreenSock to **stack previous visual cards on top of each other in a 3D deck format** as the user progresses through the narrative.
-
-`SplitStepper` orchestrates the responsive grid itself — you supply the narrative sequence and a JSX payload per card, and CSS transitions handle the stacking. Click any step in the scrolling column to watch the deck restack.
+A split-screen narrative stepper (`SplitStepper`) pairing clickable step cards on one side with a sticky 3D-stacked card deck on the other.
 
 export const splitSteps = `// Card bodies — these are the four screens the preview renders.
 const MockLandingView = () => (
@@ -215,10 +212,11 @@ export default function BrandedSplitStepper() {
 <ExampleShowcase minHeight={430} headingLevel={2}
   name="split-stepper"
   columns={1}
+  installation={<Installation name="split-stepper" usage="below" />}
   examples={[
     {
       title: "Split stepper",
-      subheading: "Text on the scrolling side, `cardContent` on the sticky deck.",
+      description: "Text on the scrolling side, `cardContent` on the sticky deck.",
       propNotes: [
         {
           lead: "Pass",
@@ -236,19 +234,6 @@ export default function BrandedSplitStepper() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/SplitStepperBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="split-stepper" />
-
-## Examples
-
-<ExampleShowcase minHeight={430}
-  name="split-stepper"
-  columns={1}
-  examples={[
     {
       title: "Sticky on the left",
       propNotes: [
@@ -296,6 +281,34 @@ export default function BrandedSplitStepper() {
     },
   ]}
 />
+
+## About Split-Stack Stepper
+
+**What it is.** `SplitStepper` pairs a narrative list of step cards with a sticky 3D-stacked visual deck (`cardContent`), configurable `stickySide` (`"left"` or `"right"`), `cardOffset`, `cardDepthScale`, and theme `color`.
+
+**How it is built.** Animated with plain CSS transitions (no animation-library dependency) so clicking any narrative step restacks the sticky visual deck smoothly.
+
+**When to use it.** Use `SplitStepper` for product walkthroughs, onboarding feature tours, and workflow explainers. For scroll-triggered accordion rows, use <DocLink to="split-scroll-stepper">Scroll Accordion Showcase</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="split-stepper">
+
+**When to use**
+
+- Split-screen product walkthroughs where clicking narrative steps restacks a sticky 3D card deck (`stickySide="left" | "right"`)
+
+**When not to use**
+
+- Scroll-activated accordion rows — use <DocLink to="split-scroll-stepper">Scroll Accordion Showcase</DocLink>
+- Linear form steppers — use <DocLink to="stepper">Stepper</DocLink>
+
+**Agent notes**
+
+- Named export: `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock"`
+- Tune `cardOffset` (px Y-shift) and `cardDepthScale` (scale step) to control how stacked cards peek behind the active card
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -571,6 +584,30 @@ export default function BrandedSplitStepper() {
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Render <DocLink to="card">Card</DocLink> or <DocLink to="chart">Chart</DocLink> mockups inside each step's `cardContent`.
+- Compare with <DocLink to="split-scroll-stepper">Scroll Accordion Showcase</DocLink> for scroll-driven expansion instead of click-driven restacking.
+
+## How do I build a split-screen stepper with a sticky card deck in React?
+
+Pass a `steps` array to `SplitStepper`. Each step needs `id`, `stepNumber`, `title`, `description` and `cardContent`. The step cards form a clickable list on one side, and each step's `cardContent` appears in a sticky 3D-stacked deck on the other.
+
+## How do I flip the sticky deck to the left side?
+
+Set `stickySide="left"`. The default is `"right"`, which keeps the card deck sticky on the right and lets the clickable step list flow on the left. On narrow screens the layout is a responsive grid, so check both widths after you change it.
+
+## How do I put my own UI inside the stacked cards?
+
+Give each step a `cardContent` node, such as a chart, terminal or app mockup, and use the optional per-step `color` Tailwind classes to style the card surface. It defaults to `"bg-zinc-900 text-white"`. The deck's stacking is handled for you.
+
+## How do I react when the user changes step?
+
+Pass `onStepChange`. It receives the new step index whenever the user clicks a different narrative step. It does not fire on scroll, because the stepper is click-driven. Use it to sync analytics or other UI, and see <DocLink to="split-scroll-stepper">Scroll Accordion Showcase</DocLink> for the scroll-driven version.
+
+## How do I adjust the depth of the stacked cards?
+
+Use `cardOffset` and `cardDepthScale`. `cardOffset` is the Y-axis shift in pixels for each background card and defaults to `16`. `cardDepthScale` defaults to `0.05`, so each card further back shrinks by an extra 5%. The motion is plain CSS transitions, with no animation library.
 
 <DocsJsonLd slug="split-stepper" />
+<FaqJsonLd slug="split-stepper" />

@@ -3,6 +3,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("timeline");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Timeline
@@ -12,8 +13,6 @@ A robust, multi-layout vertical timeline component for tracking complex events, 
 This upgraded `TimelineBlock` acts as a multi-tool for event visualization. It supports three distinct structural layouts (`left`, `center`, and `right`), embedded action buttons, CSS-grid powered expandable details, and intelligent line-coloring based on item completion statuses.
 
 Each item's `status` drives its own styling: `completed` fills the icon and solidifies the line above it, `current` pulses, and `upcoming` fades.
-
-<AgentVariants slug="timeline" />
 
 export const timelineEvents = `import { CheckCircle2, Download, MapPin, Package, Truck } from "lucide-react";
 
@@ -159,10 +158,11 @@ export default function StaticTimeline() {
   colorControl
   colorLabel="Status Accent Color"
   columns={1}
+  installation={<Installation name="timeline" usage="below" />}
   examples={[
     {
       title: "Timeline",
-      subheading: "Each item can carry an `icon`, a `status`, an inline `action` button and expandable `content`.",
+      description: "Each item can carry an `icon`, a `status`, an inline `action` button and expandable `content`.",
       propNotes: [
         {
           lead: "Pass",
@@ -177,10 +177,6 @@ export default function StaticTimeline() {
     },
   ]}
 />
-
-## Installation
-
-<Installation name="timeline" />
 
 ### Requires Tailwind CSS v4
 
@@ -266,6 +262,36 @@ The breakpoints are **container queries** (`@container/timeline`, `@container/tl
     },
   ]}
 />
+
+## About Shadcn Timeline
+
+**What it is.** **Shadcn Timeline** (`TimelineBlock`) is a multi-layout vertical timeline with status-driven node styling (`completed`, `current`, `upcoming`), inline action buttons, and expandable detail content.
+
+**How it is built.** `TimelineBlock` uses Tailwind v4 container queries (`@container/timeline`, `@container/tlcard`) so `"center"`, `"left"`, and `"right"` layouts adapt to the container column width rather than the browser viewport.
+
+**When to use it.** Use it for order tracking feeds, project milestones, company changelogs, and onboarding checklists.
+
+## For AI agents
+
+<AgentBrief name="timeline">
+
+**When to use**
+
+- Order tracking feeds, project milestones
+- Company changelogs, onboarding checklists
+
+**When not to use**
+
+- A scroll-driven, animated milestone story: use <DocLink to="animated-timeline">Animated Timeline</DocLink>
+- Stages arranged around a circle: use <DocLink to="radial-orbital-timeline">Radial Orbital Timeline</DocLink>
+
+**Agent notes**
+
+- `TimelineBlock` supports `layout` (`"left" | "center" | "right"`), `variant` (`"default" | "minimal" | "glass"`), `animate`, and `color`.
+- Each item in `items` uses `status` (`"completed" | "current" | "upcoming"`) to style the node, pulse state, and connecting rail.
+- Requires Tailwind CSS v4 container queries so `layout="center"` folds to single-column below 576px of container width.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -536,6 +562,29 @@ The breakpoints are **container queries** (`@container/timeline`, `@container/tl
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+Pair `TimelineBlock` with <DocLink to="animated-timeline">Animated Timeline</DocLink> for scroll-triggered sequences, <DocLink to="radial-orbital-timeline">Radial Orbital Timeline</DocLink> for circular roadmaps, and <DocLink to="conversation-timeline">Conversation Timeline</DocLink> for threaded activity logs.
+
+## How do I build a vertical timeline in React?
+
+Pass an `items` array to `TimelineBlock`. Each item needs an `id`, `title` and `date`, with optional `description`, `icon`, `status`, `content` and `action`. Choose the alignment with `layout`, which defaults to `"left"`, and the card style with `variant`.
+
+## Why does Timeline require Tailwind CSS v4?
+
+`TimelineBlock` relies on Tailwind CSS v4 container queries (`@container/timeline` and `@container/tlcard`) so the rail responds to the width of its parent column instead of the browser window. That keeps the timeline readable inside narrow cards, drawers and sidebars.
+
+## How do I mark events as completed, current or upcoming?
+
+Set `status` on each item. `completed` fills the vertical line, `current` adds a pulsing glow to the node, and `upcoming` styles the node as not yet reached. It defaults to `completed`, so set `current` and `upcoming` explicitly for order-tracking timelines.
+
+## Can I disable the staggered entrance animation?
+
+Yes. Pass `animate={false}` for timelines that are already visible above the fold or updated dynamically. By default `animate` is `true`, and the nodes run a staggered fade-and-slide entrance using the Web Animations API with no library.
+
+## How do I add expandable details or buttons to a timeline event?
+
+Give an item `content` and its whole header becomes a trigger that expands to reveal that node. Use `action` for buttons, links or badges placed under the header. A `layout="center"` timeline alternates entries on both sides of the line.
 
 <DocsJsonLd slug="timeline" />
+<FaqJsonLd slug="timeline" />

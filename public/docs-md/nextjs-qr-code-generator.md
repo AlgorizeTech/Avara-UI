@@ -1,24 +1,37 @@
 ---
 title: "Shadcn QR Code"
-description: "A premium, dual-purpose QR Code component suite built for Next.js applications. Free shadcn/ui QR Code component for React, Next.js and Tailwind CSS."
+description: "Shadcn QR Code. A dual-purpose QR code suite for React apps: render a customizable SVG QR code, or let users upload an image and read the text inside it."
 url: https://avaraui.com/docs/nextjs/qr-code-generator
 ---
 
 # Shadcn QR Code
 
-A premium, dual-purpose QR Code component suite built for Next.js applications.
-
-Whether you need to generate high-fidelity, customizable QR codes (with PNG/PDF download support) or allow users to upload and scan QR code images to extract embedded URLs, this suite has you covered.
+A dual-purpose QR code suite for React apps: render a customizable SVG QR code, or let users upload an image and read the text inside it.
 
 Everything below runs client-side — type a new value and the SVG regenerates instantly. The generator and the reader are separate components with separate install commands.
 
 ## QR generator
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/qr-code-generator.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/qr-code-generator
+```
+
 ### QR generator
 
 Type a value, pick an error-correction level, and export as PNG or PDF.
 
-- `value` is the data or URL encoded into the code — required, despite defaulting to an empty string.
+- `value` is the data or URL encoded into the code — required, with no default; an empty string shows a "No Value" placeholder instead of a code.
 
 ```tsx
 "use client";
@@ -109,21 +122,6 @@ export default function GeneratorExample() {
 }
 ```
 
-### Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/qr-code-generator.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/qr-code-generator
-```
-
 ### More examples
 
 ### Sizes & levels
@@ -169,6 +167,21 @@ export default function QrGallery() {
 
 A separate component with its own dependencies — decoding happens entirely in the browser.
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/qr-code-reader.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/qr-code-reader
+```
+
 ### QR reader
 
 - `onRead` on `QrCodeReader` receives the decoded payload — the decode happens in the browser, nothing is uploaded.
@@ -184,58 +197,80 @@ export default function ReaderExample() {
 }
 ```
 
-### Installation
+## About Shadcn QR Code
 
-Add the component by URL — no setup needed:
+**What it is.** **Shadcn QR Code** provides two independent client-side components: `QrCodeGenerator` for rendering a crisp SVG QR code, and `QrCodeReader` for scanning uploaded or drag-and-dropped QR images. PNG and PDF export is not part of the component: the preview above builds it with a canvas and `jspdf` in the demo.
 
-```bash
-npx shadcn@latest add https://avaraui.com/r/qr-code-reader.json
-```
+**How it is built.** Both components run in the browser without external APIs. `QrCodeGenerator` wraps `QRCodeSVG` from `qrcode.react` and takes `size`, `fgColor`, `bgColor`, `includeMargin` and an error-correction `level` (`L | M | Q | H`). `QrCodeReader` draws the image to a hidden canvas, decodes it with `jsqr` and calls `onRead`.
 
-Or register the @avara-ui registry once per project and add it by name:
+**When to use it.** Use it for payment checkout codes, event tickets, two-factor setup screens, and client-side QR image uploaders.
 
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/qr-code-reader
-```
+## For AI agents
 
-## Features
-Explore the QR Code Generator's customizable features, allowing for different colors, sizes, and embedded logos within the code.
+**When to use**
 
-Runs securely in the browser without relying on any external APIs.
+- Showing a link, ticket or pairing code as a scannable SVG QR code
+- Reading the text out of an uploaded or dropped QR image, entirely in the browser
 
-Generates crisp, scalable SVG QR codes that never lose visual quality.
+**When not to use**
 
-Easily tweak foreground/background colors, sizes, and error correction levels.
+- A plain file upload with no QR decoding: use [File Upload](https://avaraui.com/docs/nextjs/file-upload)
+- Copying a value to the clipboard: use [Copy Button](https://avaraui.com/docs/nextjs/copy-button)
 
-The reader supports both file selection and drag-and-drop for a premium UX.
+**Agent notes**
 
-## Best Practices & Guidelines
-
-Ensure a high contrast between the background and foreground colors. A light background (e.g., `#FFFFFF`) with a dark foreground (e.g., `#000000`) is recommended for optimal scannability by smartphone cameras.
-
-Use L (Low) for simple URLs to keep the QR code visually clean and sparse. Use H (High) if you plan to overlay a custom logo in the center, as it allows up to 30% of the code to be obscured without breaking.
-
-The reader automatically handles invalid or unreadable images. Consider adding UI feedback (e.g., a toast notification) if the `onRead` callback isn't triggered after a user uploads an invalid file.
-
-### Accessibility (a11y)
-
-The drag-and-drop area is keyboard accessible, but ensure any surrounding labels or descriptions clearly instruct the user to upload a valid QR code image.
+- Install `qr-code-generator` for `QrCodeGenerator` and `qr-code-reader` for `QrCodeReader`.
+- Pass `value` (required string), `size`, `fgColor`, `bgColor`, `includeMargin` and `level` (`"L" | "M" | "Q" | "H"`) to `QrCodeGenerator`. An empty `value` renders a dashed "No Value" box instead of a code.
+- With `level` other than `"L"`, the component appends a short suffix (`#m1`, `#q12345` or `#h` plus digits) to `value` before encoding, so a scanner reads back the value plus that suffix. Use `"L"` when the decoded text must match exactly.
+- There is no download or export prop. Serialise the rendered `svg` yourself if you need PNG or PDF.
+- Pass `onRead={(data) => ...}` to `QrCodeReader`. It reads still images only (no camera) and calls `onRead` once per successful decode. Dropped images use the `onRead` from the first render, so keep that handler stable or read live state through a ref.
 
 ## Props Reference
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `value` | `string` | `""` | The data or URL to encode inside the QR code (Required). |
+| `value` | `string` | Required | The data or URL to encode inside the QR code. An empty string renders a "No Value" placeholder. |
 | `size` | `number` | `128` | The width and height of the QR code in pixels. |
-| `bgColor` | `string` | `"#FFFFFF"` | Background color of the QR code (supports hex/rgba). |
-| `fgColor` | `string` | `"#000000"` | Foreground color (the dots/pattern) of the QR code. |
-| `level` | `"L" \| "M" \| "Q" \| "H"` | `"L"` | Error correction level (Low, Medium, Quartile, High). |
+| `bgColor` | `string` | `"#FFFFFF"` | Background colour of the QR code. Any CSS colour, including `"transparent"`. |
+| `fgColor` | `string` | `"#000000"` | Foreground colour (the dots/pattern). Any CSS colour, including `"currentColor"`. |
+| `level` | `"L" \| "M" \| "Q" \| "H"` | `"L"` | Error correction level (Low, Medium, Quartile, High). Levels other than `"L"` add a suffix to the encoded value. |
+| `includeMargin` | `boolean` | `false` | Adds the 4-module quiet zone around the pattern. |
+| `className` | `string` | `undefined` | Classes for the wrapping `div`. Other `div` attributes and a `ref` go to the same element. |
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `onRead` | `(data: string) => void` | `undefined` | Callback function triggered upon successfully reading a QR code from an image. |
 | `className` | `string` | `undefined` | Additional CSS classes applied to the outer wrapper of the reader component. |
+
+## Works with other components
+
+- Place `QrCodeGenerator` beside an [Invoice](https://avaraui.com/docs/nextjs/invoice) to give the bill a scannable payment link.
+- Add a [Copy Button](https://avaraui.com/docs/nextjs/copy-button) next to the generator to copy the string you encode.
+- Use [File Upload](https://avaraui.com/docs/nextjs/file-upload) when the upload is a plain document and no QR decoding is needed.
+
+## How do I export a `QrCodeGenerator` code as PNG or PDF?
+
+The component only renders SVG and has no export prop. The preview above serialises the rendered `svg`, draws it onto a canvas for PNG and passes that image to `jspdf` for PDF. `jspdf` is not installed with `qr-code-generator`, so add it yourself if you copy that approach.
+
+## Why does the decoded text end in `#m1` when I change `level`?
+
+For `"M"`, `"Q"` and `"H"` the component appends `#m1`, `#q12345` or `#h` plus 20 digits to `value` before encoding, which makes the pattern denser. A scanner reads that suffix back too. Keep the default `"L"` when the scanned text must equal `value` exactly.
+
+## What do the `L`, `M`, `Q` and `H` levels in `QrCodeGenerator` mean?
+
+They are the four QR error-correction levels (Low, Medium, Quartile, High), passed to `QRCodeSVG` as `level` with `"L"` as the default. Higher levels survive more smudging or cropping but produce a denser pattern, so raise `size` for `"Q"` and `"H"` to keep it scannable.
+
+## How do I colour `QrCodeGenerator` with my theme?
+
+Set `fgColor="currentColor"` and `bgColor="transparent"`, then give `className` a text colour such as `text-primary`. The classes land on the wrapping `div`, and the SVG inherits that colour. Keep strong contrast between foreground and background, or scanners fail.
+
+## Does `QrCodeReader` upload the image or use the camera?
+
+Neither. It accepts one still image by click or drag-and-drop (`accept="image/*"`), draws it to a hidden canvas scaled to at most 800 px, and decodes it in the browser with `jsqr`. Nothing is sent to a server, and the result goes to `onRead`.
+
+## What does `QrCodeGenerator` show when `value` is empty?
+
+A dashed bordered box reading "No Value", sized to `size` by `size` pixels, instead of a QR code. That makes it safe to bind `value` to an input that starts empty, such as the live generator in the preview above.
 
 ---
 

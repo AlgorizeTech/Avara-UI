@@ -3,7 +3,7 @@
   "name": "audio-player-compact-bar",
   "type": "registry:block",
   "title": "Audio Player — Compact bar",
-  "description": "The same player as one row — for a sidebar, an episode list, or a sticky footer.",
+  "description": "The \"Compact bar\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

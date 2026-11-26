@@ -3,7 +3,7 @@
   "name": "avatar-stack-spread-on-hover-expand-width",
   "type": "registry:block",
   "title": "Avatar Stack — Spread on hover (Expand width)",
-  "description": "Hovering the stack fans the faces out from the centre and lifts the hovered one, without zooming.",
+  "description": "The \"Spread on hover (Expand width)\" example from the Avara UI docs.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

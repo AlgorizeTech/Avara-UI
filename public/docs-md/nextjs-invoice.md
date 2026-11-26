@@ -8,47 +8,22 @@ url: https://avaraui.com/docs/nextjs/invoice
 
 A complete, fully functional, and editable Invoice dashboard component featuring 5 distinct design variants: Default, Asymmetric Split, Modern Geometric, Corporate Executive, and Neo-Brutalist.
 
-The component is fully encapsulated — hand it an `invoiceData` object and it owns the rest. Click **Edit** in the right sidebar of any preview to add items, change quantities and download the resulting JSON.
+The component is fully encapsulated — hand it an `invoiceData` object and it owns the rest. Click **Edit** in the sidebar or top toolbar of any preview to add items, change quantities and download the resulting JSON.
 
-## For AI agents
+## Installation
 
-**Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+Add the component by URL — no setup needed:
 
-All 3 options as live previews: https://avaraui.com/view/invoice
+```bash
+npx shadcn@latest add https://avaraui.com/r/invoice.json
+```
 
-**When to use it.** An editable invoice dashboard in three designs: a default dashboard, a corporate executive look and a neo-brutalist one. You hand it an `invoiceData` object and it owns the rest, including editing line items and downloading the JSON.
+Or register the @avara-ui registry once per project and add it by name:
 
-**Gotchas:**
-
-- All three are looks of the one `invoice` item: install it once and set `variant` from the index.
-- The dates, addresses, billing details, line items, totals and notes all come from the one `invoiceData` object.
-
-### The 3 variants
-
-1. **Default dashboard** (`default`): The standard invoice dashboard, with your accent colour on the primary buttons and focus rings.
-   - Live: https://avaraui.com/view/invoice/default
-   - Best for: a SaaS or billing area that should match a general dashboard
-   - Avoid if: you want a stricter business look or a bold, graphic one
-   - Traits: dashboard layout, default look, editable with an Edit sidebar
-   - Install: `npx shadcn@latest add @avara-ui/invoice`
-   - Set these props: `{"variant":"default"}`
-   - Docs: https://avaraui.com/docs/nextjs/invoice#default-dashboard-invoice
-2. **Corporate executive** (`corporate`): A formal, business-style invoice.
-   - Live: https://avaraui.com/view/invoice/corporate
-   - Best for: a B2B or finance product where the invoice should look formal
-   - Avoid if: your brand is playful or casual
-   - Traits: formal styling
-   - Install: `npx shadcn@latest add @avara-ui/invoice`
-   - Set these props: `{"variant":"corporate"}`
-   - Docs: https://avaraui.com/docs/nextjs/invoice#corporate-executive
-3. **Neo-brutalist** (`brutalist`): A bold neo-brutalist invoice.
-   - Live: https://avaraui.com/view/invoice/brutalist
-   - Best for: a brand with a loud, graphic, neo-brutalist identity
-   - Avoid if: you need a conservative or corporate look
-   - Traits: neo-brutalist styling
-   - Install: `npx shadcn@latest add @avara-ui/invoice`
-   - Set these props: `{"variant":"brutalist"}`
-   - Docs: https://avaraui.com/docs/nextjs/invoice#neo-brutalist
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/invoice
+```
 
 ## Default Dashboard Invoice
 
@@ -105,21 +80,6 @@ const invoiceData: InvoiceData = {
 export default function InvoicePage() {
   return <Invoice invoiceData={invoiceData} />;
 }
-```
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/invoice.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/invoice
 ```
 
 ## Variations
@@ -365,16 +325,71 @@ export default function BrutalistInvoice() {
 }
 ```
 
-## Features
-Explore the Invoice component's structured layout for displaying billing information, line items, and dynamic total calculations.
+## About Shadcn Invoice Dashboard
 
-Choose from Default, Asymmetric Split, Modern Geometric, Corporate Executive, and Neo-Brutalist layout variants.
+**What it is.** **Shadcn Invoice Dashboard** (`Invoice`) is a self-contained, editable invoice component with five layouts (`default`, `split`, `geometric`, `corporate` and `brutalist`). It renders the numbers you give it and does no billing maths of its own.
 
-Inline editing for item prices, descriptions, quantities, with instant recalculations and JSON export.
+**How it is built.** It is one default export that copies `invoiceData` into local state on mount. Edit mode swaps each field for an input and adds or removes line items, and the controls print through `window.print()` or download the data as JSON. Only `lucide-react` is installed as an npm dependency.
 
-Built-in browser print triggers that automatically hide control sidebars and format clean PDF pages.
+**When to use it.** Use it for SaaS billing portals, freelance invoicing tools and client statements where you already know the totals and want a presentable, printable sheet.
 
-Seamless support for custom color themes across primary buttons, focus rings, and badges.
+## For AI agents
+
+**When to use**
+
+- SaaS billing portals, freelance invoicing tools
+- Agency client statements, B2B finance dashboards
+
+**When not to use**
+
+- Raw tabular data with no billing totals: use [Table](https://avaraui.com/docs/nextjs/table)
+- A payment or ticket QR code: use [QR Code Generator](https://avaraui.com/docs/nextjs/qr-code-generator)
+
+**Agent notes**
+
+- `Invoice` is the default export of `@/components/custom/blocks/Invoice`; `InvoiceData` is a named type export. It takes `invoiceData`, `variant` (`"default" | "split" | "geometric" | "corporate" | "brutalist"`) and `color`.
+- `subtotal`, `tax`, `discount` and `grandTotal` are plain strings you supply. Editing a line item does not recalculate them.
+- `invoiceData` only seeds state on first render. Changing the prop later does not update the sheet, and there is no `onChange` callback; edits leave the component through the JSON download.
+- The `split` and `geometric` layouts show built-in sample text (such as a signatory name) when `signatory`, `terms` or `invoiceFrom` are missing, so fill those in.
+- `color` is `"primary"`, `"indigo"`, `"rose"`, `"emerald"`, `"zinc"` or a hex string such as `"#0ea5e9"`.
+
+**Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 3 options as live previews: https://avaraui.com/view/invoice
+
+**When to use it.** An editable invoice dashboard in three designs: a default dashboard, a corporate executive look and a neo-brutalist one. You hand it an `invoiceData` object and it owns the rest, including editing line items and downloading the JSON.
+
+**Gotchas:**
+
+- All three are looks of the one `invoice` item: install it once and set `variant` from the index.
+- The dates, addresses, billing details, line items, totals and notes all come from the one `invoiceData` object.
+
+### The 3 variants
+
+1. **Default dashboard** (`default`): The standard invoice dashboard, with your accent colour on the primary buttons and focus rings.
+   - Live: https://avaraui.com/view/invoice/default
+   - Best for: a SaaS or billing area that should match a general dashboard
+   - Avoid if: you want a stricter business look or a bold, graphic one
+   - Traits: dashboard layout, default look, editable with an Edit sidebar
+   - Install: `npx shadcn@latest add @avara-ui/invoice`
+   - Set these props: `{"variant":"default"}`
+   - Docs: https://avaraui.com/docs/nextjs/invoice#default-dashboard-invoice
+2. **Corporate executive** (`corporate`): A formal, business-style invoice.
+   - Live: https://avaraui.com/view/invoice/corporate
+   - Best for: a B2B or finance product where the invoice should look formal
+   - Avoid if: your brand is playful or casual
+   - Traits: formal styling
+   - Install: `npx shadcn@latest add @avara-ui/invoice`
+   - Set these props: `{"variant":"corporate"}`
+   - Docs: https://avaraui.com/docs/nextjs/invoice#corporate-executive
+3. **Neo-brutalist** (`brutalist`): A bold neo-brutalist invoice.
+   - Live: https://avaraui.com/view/invoice/brutalist
+   - Best for: a brand with a loud, graphic, neo-brutalist identity
+   - Avoid if: you need a conservative or corporate look
+   - Traits: neo-brutalist styling
+   - Install: `npx shadcn@latest add @avara-ui/invoice`
+   - Set these props: `{"variant":"brutalist"}`
+   - Docs: https://avaraui.com/docs/nextjs/invoice#neo-brutalist
 
 ## Props Reference
 
@@ -382,7 +397,37 @@ Seamless support for custom color themes across primary buttons, focus rings, an
 | --- | --- | --- | --- |
 | `invoiceData` | `InvoiceData` | Required | The core data object containing all fields (dates, addresses, billing details, array of items, totals, and notes). |
 | `variant` | `"default" \| "corporate" \| "brutalist" \| "geometric" \| "split"` | `"default"` | Applies overarching structural layouts, including borders, backdrop blurs, shadows, or geometric styling. |
-| `color` | `"primary" \| "indigo" \| "rose" \| "emerald" \| "zinc"` | `"primary"` | Applies global color themes to buttons, focus rings, and highlights. |
+| `color` | `"primary" \| "indigo" \| "rose" \| "emerald" \| "zinc" \| (string & {})` | `"primary"` | A preset name, or a hex string such as "#0ea5e9". Colors buttons, focus rings and accent text. Unknown names fall back to "primary". |
+
+## Works with other components
+
+- [Table](https://avaraui.com/docs/nextjs/table) lists past invoices, with each row opening an `Invoice` for that record.
+- [QR Code Generator](https://avaraui.com/docs/nextjs/qr-code-generator) makes a payment QR code to place beside the sheet.
+- [Dialog](https://avaraui.com/docs/nextjs/dialog) can host an `Invoice` as a preview before the customer downloads or prints it.
+
+## How do I switch the Invoice layout with the variant prop?
+
+Pass `variant` as `"default"`, `"split"`, `"geometric"`, `"corporate"` or `"brutalist"`; it defaults to `"default"`. The `invoiceData` type stays the same, but each layout reads different fields. For example, `split` shows `invoiceFrom` and `paymentMethod`, while `default` shows `billTo`.
+
+## Can I use my own brand colour on the Invoice?
+
+Yes. The `color` prop accepts `"primary"`, `"indigo"`, `"rose"`, `"emerald"` or `"zinc"`, or any hex string starting with `#`. A hex value sets CSS variables on the root and picks readable text for it. Any other string falls back to `"primary"`.
+
+## Does the Invoice calculate subtotal, tax and grand total?
+
+No. `subtotal`, `tax`, `discount` and `grandTotal` are strings that `Invoice` displays as given, and editing a line item does not update them. Calculate the totals before you pass `invoiceData`, or edit those fields by hand in edit mode.
+
+## How do I print an Invoice or save it as a PDF?
+
+Use the Print button in the toolbar or sidebar. It calls `window.print()`, so the browser print dialog opens and you can choose Save as PDF. The toolbar and sidebar carry `print:hidden`, so only the invoice sheet is printed.
+
+## How do I save edits made in the Invoice to my backend?
+
+`Invoice` has no `onChange` or `onSave` prop. It copies `invoiceData` into internal state on mount, and edits leave only through the JSON download, named `Invoice_<invoiceNumber>.json`. To post edits to an API, add a callback to the copied source file.
+
+## Does the Invoice component work in Vite as well as Next.js?
+
+Yes. `Invoice.tsx` has no `next/*` imports, so it runs in Vite and any other React app. It needs `lucide-react` for icons and the `cn` helper from `@/lib/utils`, and the `invoice-theme.ts` colour helper installs alongside it. The file is marked `"use client"`.
 
 ---
 

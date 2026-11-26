@@ -3,7 +3,7 @@
   "name": "animated-typography-wavy-float-sine-wave",
   "type": "registry:block",
   "title": "Animated Typography — Wavy Float Sine Wave",
-  "description": "Continuous sine-wave floating vertical movement across characters.",
+  "description": "The \"Wavy Float Sine Wave\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

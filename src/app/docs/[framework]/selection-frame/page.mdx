@@ -1,6 +1,7 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 export const metadata = docsPageMetadata("selection-frame", {
@@ -124,10 +125,11 @@ export default function FramedCard() {
   name="selection-frame"
   colorControl
   columns={1}
+  installation={<Installation name="selection-frame" usage="below" />}
   examples={[
     {
       title: "Selection Frame",
-      subheading: "Wrap any span or block — the frame measures it and fits.",
+      description: "Wrap any span or block — the frame measures it and fits.",
       propNotes: [
         {
           prop: "padding",
@@ -141,10 +143,6 @@ export default function FramedCard() {
     },
   ]}
 />
-
-## Installation
-
-<Installation name="selection-frame" />
 
 ## Examples
 
@@ -184,7 +182,7 @@ export default function FramedCard() {
     },
     {
       title: "Animated",
-      subheading: "Hit Reset on the preview to replay the handle pop-in.",
+      description: "Hit Reset on the preview to replay the handle pop-in.",
       propNotes: [
         {
           prop: "animated",
@@ -226,7 +224,7 @@ export default function FramedCard() {
   examples={[
     {
       title: "Block & radius",
-      subheading: "Drag the sliders — the frame re-measures and redraws live.",
+      description: "Drag the sliders — the frame re-measures and redraws live.",
       propNotes: [
         {
           lead: "Set",
@@ -247,35 +245,35 @@ export default function FramedCard() {
   ]}
 />
 
-## Features
-Discover the Selection Frame's capabilities for putting a design-tool spotlight on any element.
+## About Shadcn Selection Frame
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Measures live">
-    <p>A <code>ResizeObserver</code> tracks the child, so the frame re-fits when text reflows, fonts load or the content changes.</p>
-  </InfoCard>
-  <InfoCard title="Pixel-accurate">
-    <p>The stroke is centred on the frame edge and each handle is centred on the true corner point, so nothing sits a fraction of a pixel off.</p>
-  </InfoCard>
-  <InfoCard title="Respects reduced motion">
-    <p>Marching ants are an indefinite loop, so both the march and the handle spring are disabled when the visitor prefers reduced motion.</p>
-  </InfoCard>
-  <InfoCard title="Decorative only">
-    <p>The SVG and handles are <code>aria-hidden</code> and ignore pointer events — your content stays exactly as readable and clickable as before.</p>
-  </InfoCard>
-</div>
+**What it is.** **Shadcn Selection Frame** (`SelectionFrame`) draws a Figma-style selection bounding box with corner handles and a customizable SVG stroke around any inline span or block element.
 
-## Best Practices & Guidelines
+**How it is built.** `SelectionFrame` tracks its child with a `ResizeObserver` so the SVG stroke and corner handles stay pixel-accurate across font loads and resizes, marks decorative SVG layers `aria-hidden` with `pointer-events: none`, and disables marching ants under `prefers-reduced-motion`.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Give the frame room">
-    <p>The stroke and handles are drawn <em>outside</em> the child by <code>padding</code> pixels (plus half a handle). Leave that much space around the wrapper — an <code>overflow-hidden</code> parent will clip the corners.</p>
-  </InfoCard>
-  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Use marching ants sparingly</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">An endless animation pulls the eye. Reserve <code>animated</code> for the one element on screen you actually want people to look at.</p>
-  </div>
-</div>
+**When to use it.** Use it for design-tool callouts, highlighted hero phrases, interactive feature spotlights, and canvas editor demos.
+
+## For AI agents
+
+<AgentBrief name="selection-frame">
+
+**When to use**
+
+- Design-tool callouts, highlighted hero phrases
+- Interactive feature spotlights, canvas editor demos
+
+**When not to use**
+
+- Animated headline text: use <DocLink to="animated-typography">Animated Typography</DocLink>
+- Pointer-following effects: use <DocLink to="cursor-animation">Cursor Animation</DocLink>
+
+**Agent notes**
+
+- `SelectionFrame` wraps any inline or block child and supports `handles` (`"square" | "circle"`), `line` (`"solid" | "dashed" | "long"`), `dash`, `padding`, `radius`, `inline`, `animated`, and `color`.
+- Leave `padding` pixels of room around the wrapper and avoid `overflow-hidden` ancestors that could clip corner handles.
+- Decorative stroke and handles are `aria-hidden` and ignore pointer events.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -356,6 +354,29 @@ Discover the Selection Frame's capabilities for putting a design-tool spotlight 
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+Pair `SelectionFrame` with <DocLink to="animated-typography">Animated Typography</DocLink> for kinetic hero callouts, <DocLink to="cursor-animation">Cursor Animation</DocLink> for design-canvas pointer effects, and <DocLink to="verify-badge">Badge</DocLink> for annotated UI highlights.
+
+## How do I add a Figma-style selection box around text in React?
+
+Wrap the text or element in `SelectionFrame`. It draws a stroke with four corner handles around its child and keeps them fitted with a `ResizeObserver`, so the box follows the content when its size changes. By default it is `inline`, which suits spans inside a sentence.
+
+## Can I wrap block-level cards instead of inline text?
+
+Yes. Pass `inline={false}` so `SelectionFrame` behaves as a block container and takes its width from `className`. The default `inline` value is `true`, which is meant for text spans rather than cards or images.
+
+## Why are the corner handles clipped inside a card?
+
+The stroke and handles draw outside the child by `padding` pixels plus half a handle. If a parent has `overflow-hidden` they get cut off, so remove it on immediate parents or leave a little margin around `SelectionFrame`.
+
+## How do I change the handle shape, line style or colour?
+
+Use `handles` for `"square"` or `"circle"` and `line` for `"solid"`, `"dashed"` or `"long"`. Pass a `[dash, gap]` pair to `dash` for a custom pattern. `color` takes any CSS colour or theme variable and defaults to `var(--primary)`.
+
+## Can the frame animate, and does it respect reduced motion?
+
+Set `animated` to get marching-ants motion on `"dashed"` or `"long"` lines. The corner handles always animate in. All of that animation is disabled when the user has `prefers-reduced-motion` turned on.
 
 <DocsJsonLd slug="selection-frame" />
+<FaqJsonLd slug="selection-frame" />

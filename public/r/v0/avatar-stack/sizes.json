@@ -3,7 +3,7 @@
   "name": "avatar-stack-sizes",
   "type": "registry:block",
   "title": "Avatar Stack — Sizes",
-  "description": "sm, md and lg are 28, 36 and 44 pixels, each paired here with a different tooltip style.",
+  "description": "The \"Sizes\" example from the Avara UI docs.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

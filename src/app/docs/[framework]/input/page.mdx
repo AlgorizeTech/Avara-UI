@@ -4,16 +4,11 @@ export const metadata = docsPageMetadata("input");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Input
 
-A multi-purpose Input component with password toggles, autocomplete suggestions, and five layout variants.
-
-Pass `suggestions` and the field lists them the way a select menu would — typing narrows the list, and choosing one writes the text straight into the field. The drag-and-drop file mode lives on its own page: see <DocLink to="file-upload">File upload</DocLink>.
-
-Explore the different variations of the Input component — each example shows a live preview with the exact code to copy.
-
-<AgentVariants slug="input" />
+A multi-purpose Input component (`InputBlock`) with password toggles, a password-strength meter, autocomplete suggestions, and several field styles.
 
 export const usagePasswordStrength = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
 
@@ -141,16 +136,19 @@ export default function DestinationInput() {
   );
 }`;
 
-<ExampleShowcase minHeight={290} headingLevel={2}
+<ExampleShowcase
+  minHeight={260}
+  headingLevel={2}
   name="input"
   colorControl
   colorLabel="Active Color"
   columns={1}
+  installation={<Installation name="input" usage="below" />}
   examples={[
     {
       id: "password-strength",
       title: "Password Strength",
-      subheading: "Live password strength meter with four segmented bars, dynamic strength label (Weak, Fair, Good, Strong), and real-time criteria checklist.",
+      description: "Live password strength meter with four segmented bars, dynamic strength label (Weak, Fair, Good, Strong), and real-time criteria checklist.",
       propNotes: [
         {
           lead: "Use",
@@ -178,7 +176,7 @@ export default function DestinationInput() {
     },
     {
       title: "Input",
-      subheading: "A labelled text field with helper text and a leading icon.",
+      description: "A labelled text field with helper text and a leading icon.",
       propNotes: [
         {
           prop: "label",
@@ -196,21 +194,6 @@ export default function DestinationInput() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/InputBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="input" />
-
-## Examples
-
-<ExampleShowcase minHeight={290}
-  name="input"
-  colorControl
-  colorLabel="Active Color"
-  columns={1}
-  examples={[
     {
       title: "Filled",
       propNotes: [
@@ -255,7 +238,7 @@ export default function DestinationInput() {
     },
     {
       title: "Autocomplete",
-      subheading: "Suggestions appear like a select menu, but the field stays free text — pick one or keep typing.",
+      description: "Suggestions appear like a select menu, but the field stays free text — pick one or keep typing.",
       propNotes: [
         {
           lead: "Pass",
@@ -282,7 +265,7 @@ export default function DestinationInput() {
     {
       title: "Pill badge",
       id: "input-pill",
-      subheading: "Capsule-shaped fields featuring isolated left icon badges and smooth accent glow.",
+      description: "Capsule-shaped fields featuring isolated left icon badges and smooth accent glow.",
       propNotes: [
         {
           lead: "Use",
@@ -304,31 +287,39 @@ export default function DestinationInput() {
   ]}
 />
 
-## Features
-Learn about the Input component's versatile states, including disabled, error, and focused styles, along with icon support.
+## About Shadcn Input
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**What it is.** `InputBlock` is a styled text-field component supporting `default`, `filled`, `underlined`, `glow`, `pill` and `password-strength` variants, plus built-in password visibility toggles and keyboard-navigable autocomplete suggestions.
 
-## Best Practices & Guidelines
+**How it is built.** Extends native `React.InputHTMLAttributes<HTMLInputElement>` with Tailwind CSS styling and focus and error rings that follow `--primary` or `color`. Suggestions use the ARIA `combobox` and `listbox` roles, and the strength bar has `role="meter"`. It forwards its ref to the `input` and needs only `lucide-react`.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `InputBlock` for text, email, password, search, and autocomplete inputs. For drag-and-drop file selection, use <DocLink to="file-upload">File Upload</DocLink>; for verification codes, use <DocLink to="otp-input">OTP Input</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="input">
+
+**When to use**
+
+- Standard, filled, underlined, or capsule-pill text inputs with labels, icons, and validation errors
+- Password fields with built-in show/hide toggle (`type="password"`) or live strength meter (`variant="password-strength"`)
+- Free-text inputs with filterable `suggestions` autocomplete
+
+**When not to use**
+
+- Drag-and-drop file inputs — use <DocLink to="file-upload">File Upload</DocLink>
+- Multi-digit verification codes — use <DocLink to="otp-input">OTP Input</DocLink>
+- Fixed-option dropdowns — use <DocLink to="select">Select</DocLink>
+
+**Agent notes**
+
+- Named export: `import { InputBlock } from "@/components/custom/blocks/InputBlock"`
+- Pass `suggestions: string[]` + `onSuggestionSelect` for autocomplete; pass `floatingLabel` with `variant="password-strength"` to float the label onto the top border
+- `label` renders a `<label>` that is not linked to the input and `error` is not wired to `aria-invalid` or `aria-describedby`, so pass `aria-label` and `aria-invalid` to the input yourself where screen readers matter
+- The `password-strength` variant always renders a password field with its own toggle and a generate-password button, whatever `type` is
+- Install also copies `input-theme.ts` next to `InputBlock.tsx`
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -426,7 +417,7 @@ This component extends `React.InputHTMLAttributes<HTMLInputElement>`, meaning yo
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "filled" | "underlined" | "glow" | "pill"</code>
+          <code>"default" | "filled" | "underlined" | "glow" | "pill" | "password-strength"</code>
         </td>
         <td>
           <code>"default"</code>
@@ -441,14 +432,14 @@ This component extends `React.InputHTMLAttributes<HTMLInputElement>`, meaning yo
           <code>color</code>
         </td>
         <td>
-          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+          <code>"primary" | "lavender" | "indigo" | "rose" | "emerald" | "zinc" | string</code>
         </td>
         <td>
-          <code>"indigo"</code>
+          <code>"primary"</code>
         </td>
         <td>
           Applies the global color theme to the focus ring, glow shadow, and
-          drag-active states. Accepts hex codes.
+          drag-active states. The default follows your theme's <code>--primary</code>. Accepts hex codes.
         </td>
       </tr>
       <tr>
@@ -462,6 +453,20 @@ This component extends `React.InputHTMLAttributes<HTMLInputElement>`, meaning yo
           <code>undefined</code>
         </td>
         <td>Renders a bold, accessible label directly above the input.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>floatingLabel</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          Floats the label onto the top border when focused or filled. Used by the <code>password-strength</code> variant.
+        </td>
       </tr>
       <tr>
         <td>
@@ -488,6 +493,20 @@ This component extends `React.InputHTMLAttributes<HTMLInputElement>`, meaning yo
         <td>
           If provided, turns the input red, adds an alert icon, and replaces the
           helper text with the error message.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>onFilesChange</code>
+        </td>
+        <td>
+          <code>(files: File[]) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Called with the chosen files when <code>type="file"</code>.
         </td>
       </tr>
       <tr>
@@ -521,6 +540,36 @@ This component extends `React.InputHTMLAttributes<HTMLInputElement>`, meaning yo
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Compose `InputBlock` inside <DocLink to="form">Form</DocLink> or <DocLink to="auth-forms">Auth Forms</DocLink> with <DocLink to="button">Button</DocLink>.
+- Pair with <DocLink to="select">Select</DocLink> and <DocLink to="date-picker">Date Picker</DocLink> for matching `default` and `underlined` field styling.
+- Embed inside <DocLink to="dialog">Dialog</DocLink> for edit-profile and modal forms.
+- Use <DocLink to="otp-input">OTP Input</DocLink> instead for one-time codes, and <DocLink to="file-upload">File Upload</DocLink> for drag-and-drop files.
+
+## How do I enable the show/hide password toggle in InputBlock?
+
+Pass `type="password"` to `InputBlock`. The visibility toggle button is rendered automatically and no extra prop is needed. With `variant="password-strength"` the toggle is always present, and its button is labelled "Show password" or "Hide password" for screen readers.
+
+## How does InputBlock autocomplete work?
+
+Pass a string array to `suggestions`. Focusing the field opens the list, and typing filters it to entries that contain the typed text anywhere, ignoring case, with the match highlighted. Arrow keys move, Enter picks, and Escape or Tab closes. `onSuggestionSelect` fires alongside `onChange`.
+
+## How does the InputBlock password strength meter score a password?
+
+With `variant="password-strength"` the meter counts four rules: at least 12 characters, upper and lower case, a number, and a special character. The label runs Weak, Fair, Good, Strong. Passwords containing common patterns such as "password" or "1234" show "Commonly guessed" and stay at Weak. A sparkle button generates a 16-character password.
+
+## How do I show a validation error on InputBlock?
+
+Pass the message as `error`. The field turns red, an alert icon appears, and the message replaces `helperText`. Because `InputBlock` forwards its ref and spreads input props, `{...register("email")}` from react-hook-form works, with `error={errors.email?.message}`. Add `aria-invalid` yourself for assistive technology.
+
+## How do I change the InputBlock size and colour?
+
+`inputSize` accepts `sm`, `md` (default) or `lg` and scales height, padding, text and icons. `color` accepts `primary` (default, following your theme), `lavender`, `indigo`, `rose`, `emerald`, `zinc` or a hex string, and tints the focus ring, glow and autocomplete highlight.
+
+## Is InputBlock accessible to screen readers?
+
+Partly. The autocomplete list uses `combobox`, `listbox` and `option` roles with `aria-activedescendant`, and the strength bar is a labelled `meter`. The `label` element is not linked to the input and errors are not announced, so pass `aria-label` and `aria-invalid` to the input directly. It has no `next/*` imports.
 
 <DocsJsonLd slug="input" />
+<FaqJsonLd slug="input" />

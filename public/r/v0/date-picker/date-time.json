@@ -3,7 +3,7 @@
   "name": "date-picker-date-time",
   "type": "registry:block",
   "title": "Date Picker — Date & time",
-  "description": "Pick a day, then scroll the columns — Done closes the popover. The columns sit to the right of the calendar when the viewport has room, and under it otherwise.",
+  "description": "The \"Date & time\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

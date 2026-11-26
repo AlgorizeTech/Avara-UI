@@ -16,7 +16,7 @@
       "path": "app/page.tsx",
       "type": "registry:page",
       "target": "app/page.tsx",
-      "content": "\"use client\";\n\nimport { useState } from \"react\";\nimport { Pagination } from \"@/components/custom/blocks/PaginationBlock\";\n\nexport default function DropdownJump() {\n  const [currentPage, setCurrentPage] = useState(7);\n\n  // Every page is listed in a <select>; best when totalPages stays modest.\n  return (\n    <Pagination\n      currentPage={currentPage}\n      totalPages={24}\n      onPageChange={setCurrentPage}\n      siblingCount={1}\n      showPageJump\n      pageJumpVariant=\"select\"\n    />\n  );\n}"
+      "content": "\"use client\";\n\nimport { useState } from \"react\";\nimport { Pagination } from \"@/components/custom/blocks/PaginationBlock\";\n\nexport default function DropdownJump() {\n  const [currentPage, setCurrentPage] = useState(7);\n\n  // Every page is listed in a custom dropdown; best when totalPages stays modest.\n  return (\n    <Pagination\n      currentPage={currentPage}\n      totalPages={24}\n      onPageChange={setCurrentPage}\n      siblingCount={1}\n      showPageJump\n      pageJumpVariant=\"select\"\n    />\n  );\n}"
     },
     {
       "path": "components/custom/blocks/PaginationBlock.tsx",

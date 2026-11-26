@@ -3,7 +3,7 @@
   "name": "data-table-soft-soft-variant",
   "type": "registry:block",
   "title": "Shadcn Data Table — Soft variant",
-  "description": "Switch tabs, pick a role or plan, search, sort, select rows and page through 40 people. Suspend and delete work on a row or on the selection.",
+  "description": "The \"Soft variant\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

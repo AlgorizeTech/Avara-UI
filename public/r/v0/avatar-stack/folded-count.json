@@ -3,7 +3,7 @@
   "name": "avatar-stack-folded-count",
   "type": "registry:block",
   "title": "Avatar Stack — Folded count",
-  "description": "Six people, three shown; the rest fold into a clickable +3 disc.",
+  "description": "The \"Folded count\" example from the Avara UI docs.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

@@ -1,16 +1,27 @@
 ---
 title: "Shadcn Tooltip"
-description: "A context-aware popup that displays information when an element receives keyboard focus or a mouse hover. Free shadcn/ui component for React and Tailwind CSS."
+description: "Shadcn Tooltip. A portal-rendered hover/focus tooltip (`TooltipProvider`, `Tooltip`, `TooltipTrigger`, `TooltipContent`) with optional directional arrows."
 url: https://avaraui.com/docs/nextjs/tooltip
 ---
 
 # Shadcn Tooltip
 
-A context-aware popup that displays information when an element receives keyboard focus or a mouse hover.
+A portal-rendered hover/focus tooltip (`TooltipProvider`, `Tooltip`, `TooltipTrigger`, `TooltipContent`) with optional directional arrows, staggered icons, and expanding descriptions.
 
-Most lightweight tooltips suffer from a fatal flaw: they get clipped or hidden if they are placed inside a container with `overflow-hidden`. This `TooltipBlock` completely sidesteps that issue natively. It uses React's `createPortal` to render the tooltip bubble directly onto the `document.body` layer, calculating its position dynamically so it is mathematically impossible for it to get clipped by parent components.
+## Installation
 
-Hover or tab to each trigger to open its tooltip.
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/tooltip.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/tooltip
+```
 
 ## Without Arrow
 
@@ -116,24 +127,7 @@ export default function NoArrowTooltip() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/tooltip.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/tooltip
-```
-
-## Examples
-
-### With Arrow
+## With Arrow
 
 - Use `showArrow=true` on `TooltipContent` to anchor a directional pointer arrow.
 
@@ -244,7 +238,7 @@ export default function ArrowTooltip() {
 }
 ```
 
-### With Arrow & Animated
+## With Arrow & Animated
 
 - Use `animated=true` for a smooth pull-out emergence animation sliding gently out from the trigger.
 
@@ -359,7 +353,7 @@ export default function AnimatedTooltip() {
 }
 ```
 
-### With Staggered Content Animation
+## With Staggered Content Animation
 
 - Use `staggered=true` along with `animated` for a sequential entrance where the icon appears first, followed by the title, and then the description.
 
@@ -478,7 +472,7 @@ export default function StaggeredTooltip() {
 }
 ```
 
-### With Expanding Content
+## With Expanding Content
 
 - Use `expand=true` to open as a compact title badge first, then smoothly expand its height (for top/bottom) or width (for left/right) to unveil the description.
 
@@ -593,6 +587,29 @@ export default function ExpandTooltip() {
 }
 ```
 
+## About Shadcn Tooltip
+
+**What it is.** `TooltipProvider`, `Tooltip`, `TooltipTrigger`, and `TooltipContent` render hover/focus hints with optional `showArrow`, `animated` pull-out, `staggered` icon/title/description entrance, and `expand` reveal modes.
+
+**How it is built.** Portals into `document.body` via `createPortal` with dynamic positioning so `overflow-hidden` containers never clip the bubble.
+
+**When to use it.** Use `Tooltip` for non-interactive hover/focus labels and shortcut hints. When the popup needs clickable buttons, links, or forms inside it, use [Popover](https://avaraui.com/docs/reactjs/popover).
+
+## For AI agents
+
+**When to use**
+
+- Hover and keyboard-focus hints on icon buttons, nav items, and status badges (`showArrow`, `animated`, `staggered`, `expand`)
+
+**When not to use**
+
+- Interactive menus or forms inside the popup — use [Popover](https://avaraui.com/docs/reactjs/popover)
+
+**Agent notes**
+
+- Named exports: `TooltipProvider`, `Tooltip`, `TooltipTrigger`, `TooltipContent` from `@/components/custom/blocks/TooltipBlock`
+- Supports structured `icon`, `title`, and `des` props on `TooltipContent` alongside `side="top" | "bottom" | "left" | "right"`
+
 ## Props Reference
 
 | Component | Prop | Type | Default | Description |
@@ -613,6 +630,31 @@ export default function ExpandTooltip() {
 | `TooltipContent` | `des` | `React.ReactNode` | `undefined` | Shorthand alias for `description`. |
 | `TooltipArrow` | `className` | `string` | `undefined` | Standalone arrow sub-component that automatically reads side and align to anchor the bubble. |
 | All Components | `className` | `string` | `undefined` | Standard Tailwind overrides. Useful for overriding background colors or text sizing on the `TooltipContent`. |
+
+## Works with other components
+
+- Pair `Tooltip` with icon-only [Button](https://avaraui.com/docs/reactjs/button), [Toggle](https://avaraui.com/docs/reactjs/toggle), and [Kbd](https://avaraui.com/docs/reactjs/kbd) shortcuts.
+- Upgrade to [Popover](https://avaraui.com/docs/reactjs/popover) if users need to click inside the floating panel.
+
+## How do I add a tooltip to a button in React?
+
+Wrap the app area in `TooltipProvider`, then use `Tooltip` with a `TooltipTrigger` around your button and a `TooltipContent` for the text. The content renders through a portal, so parent `overflow` clipping does not cut it off. It opens on hover and on keyboard focus.
+
+## How do I enable the arrow and staggered entrance animations?
+
+Pass `showArrow` on `TooltipContent` for the directional pointer, `animated` for the pull-out slide, `staggered` for a sequential icon, title and description entrance, or `expand` to open as a compact title badge first. All four default to `false`.
+
+## How do I change where the tooltip appears?
+
+Set `side` on `TooltipContent` to `"top"`, `"bottom"`, `"left"` or `"right"`, and `align` to `"start"`, `"center"` or `"end"`. `sideOffset` is the gap in pixels from the trigger and defaults to `6`. The default side is `"top"`.
+
+## How do I delay how fast the tooltip opens?
+
+Set `delayDuration` on `Tooltip` in milliseconds. It defaults to `200`, which is how long the user must hover before it opens. Use a larger number for dense toolbars where accidental hovers should stay quiet. A smaller value opens it more eagerly.
+
+## Can I put an icon, title and description in a tooltip?
+
+Yes. `TooltipContent` accepts `icon`, `title` and `description`, with `des` as a shorthand alias for `description`. The icon sits in a badge on the left and the title is bold. Use [Popover](https://avaraui.com/docs/reactjs/popover) instead when users need to click inside the floating content.
 
 ---
 

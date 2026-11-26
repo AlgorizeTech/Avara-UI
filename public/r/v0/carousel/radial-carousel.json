@@ -3,7 +3,7 @@
   "name": "carousel-radial-carousel",
   "type": "registry:block",
   "title": "Carousel — Radial carousel",
-  "description": "`RadialCarousel` arranges cards on a 360-degree 3D wheel around a central hub, with drag momentum. The hub plays or pauses autoplay.",
+  "description": "The \"Radial carousel\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -28,6 +28,12 @@ jobs:
       - name: Lint
         run: npx next lint --max-warnings=9999
 
+      - name: Consumer type check (registry-shipped files)
+        run: npm run check:types
+
+      - name: Framework rules (no next/* in shipped code)
+        run: npm run check:frameworks
+
       - name: Regenerate and build registry
         run: npm run build:registry
 

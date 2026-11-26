@@ -3,7 +3,7 @@
   "name": "selection-frame-selection-frame",
   "type": "registry:block",
   "title": "Selection Frame",
-  "description": "Wrap any span or block — the frame measures it and fits.",
+  "description": "The \"Selection Frame\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

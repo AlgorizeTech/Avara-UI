@@ -4,14 +4,11 @@ export const metadata = docsPageMetadata("vertical-tabs");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Tabs
 
-A responsive tab navigation component. By default the rail runs across the top as a pill bar with the content pane below it, scrolling sideways when the tabs outgrow the width. `orientation="vertical"` turns the same rail into a sidebar menu beside the pane, stacking above it on narrow screens.
-
-Eight `variant` styles ship with it, from a filled pill bar to an underline rail, a segmented control and a stack of cards, and each works in both orientations and any `color`. The panel slides in from the side you moved toward, and arrow keys, `Home` and `End` move along the rail. It is exported as `VerticalTabs`, the original name, so existing installs keep working.
-
-<AgentVariants slug="vertical-tabs" />
+A responsive tab navigation component (`VerticalTabs`) supporting horizontal and `vertical` orientations across eight `variant` styles with animated sliding indicators and keyboard navigation.
 
 export const usageTabsData = `const tabs: TabItem[] = [
   {
@@ -104,10 +101,11 @@ export default function ${name}() {
   name="vertical-tabs"
   colorControl
   columns={1}
+  installation={<Installation name="vertical-tabs" usage="below" />}
   examples={[
     {
       title: "Horizontal tabs",
-      subheading:
+      description:
         "The default. The rail runs across the top and scrolls sideways when the tabs outgrow the width.",
       propNotes: [
         {
@@ -134,23 +132,9 @@ export default function ${name}() {
       }),
       code: extractCode("src/components/custom/blocks/VerticalTabs.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="vertical-tabs" />
-
-## Vertical layout
-
-<ExampleShowcase minHeight={360}
-  name="vertical-tabs"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Vertical tabs",
-      subheading:
+      description:
         "One prop moves the rail beside the pane. Nothing else about the API changes.",
       propNotes: [
         {
@@ -173,21 +157,9 @@ export default function ${name}() {
         note: "The rail becomes a sidebar; on narrow screens it stacks on top.",
       }),
     },
-  ]}
-/>
-
-## Horizontal styles
-
-Seven ways to dress the top rail. Every one takes the page `color`, so pick the shape here and the accent above.
-
-<ExampleShowcase minHeight={360}
-  name="vertical-tabs"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Underline",
-      subheading:
+      description:
         "The classic browser-tab set — nothing filled, just an accent bar riding a hairline track.",
       propNotes: [
         {
@@ -212,7 +184,7 @@ Seven ways to dress the top rail. Every one takes the page `color`, so pick the 
     },
     {
       title: "Segmented",
-      subheading:
+      description:
         "An iOS-style control: one recessed track, the active tab lifted onto its own surface.",
       propNotes: [
         {
@@ -238,7 +210,7 @@ Seven ways to dress the top rail. Every one takes the page `color`, so pick the 
     },
     {
       title: "Soft",
-      subheading:
+      description:
         "The quietest selection state: the accent tinted back to a wash, label kept in the accent.",
       propNotes: [
         {
@@ -263,7 +235,7 @@ Seven ways to dress the top rail. Every one takes the page `color`, so pick the 
     },
     {
       title: "Elevated",
-      subheading:
+      description:
         "Every tab is its own card. The active one takes the accent; the rest stay flat.",
       propNotes: [
         {
@@ -288,7 +260,7 @@ Seven ways to dress the top rail. Every one takes the page `color`, so pick the 
     },
     {
       title: "Minimal",
-      subheading: "No card chrome at all — just the rail and the pane.",
+      description: "No card chrome at all — just the rail and the pane.",
       propNotes: [
         {
           lead: "Set",
@@ -307,7 +279,7 @@ Seven ways to dress the top rail. Every one takes the page `color`, so pick the 
     },
     {
       title: "Bordered",
-      subheading:
+      description:
         "Rail and pane joined inside one outlined card, split by a single divider.",
       propNotes: [
         {
@@ -327,7 +299,7 @@ Seven ways to dress the top rail. Every one takes the page `color`, so pick the 
     },
     {
       title: "Glass",
-      subheading: "Frosted panels — needs a rich background to blur.",
+      description: "Frosted panels — needs a rich background to blur.",
       propNotes: [
         {
           lead: "Set",
@@ -344,21 +316,9 @@ Seven ways to dress the top rail. Every one takes the page `color`, so pick the 
       props: { variant: "glass", orientation: "horizontal" },
       usage: glassUsage({ name: "GlassTabs" }),
     },
-  ]}
-/>
-
-## Vertical styles
-
-The same seven styles with `orientation="vertical"`. The rail becomes a column, the divider and the travelling indicator move to the edge facing the pane, and the arrow keys switch from left/right to up/down.
-
-<ExampleShowcase minHeight={360}
-  name="vertical-tabs"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Vertical underline",
-      subheading:
+      description:
         "The bar rotates onto the leading edge and travels down the rail, with no track line to compete with it.",
       propNotes: [
         {
@@ -377,7 +337,7 @@ The same seven styles with `orientation="vertical"`. The rail becomes a column, 
     },
     {
       title: "Vertical soft",
-      subheading: "Tinted pills stacked down the side — the lightest sidebar there is.",
+      description: "Tinted pills stacked down the side — the lightest sidebar there is.",
       propNotes: [
         {
           lead: "Combine",
@@ -395,7 +355,7 @@ The same seven styles with `orientation="vertical"`. The rail becomes a column, 
     },
     {
       title: "Vertical elevated",
-      subheading: "A stack of cards, the active one filled and raised.",
+      description: "A stack of cards, the active one filled and raised.",
       propNotes: [
         {
           lead: "Combine",
@@ -413,7 +373,7 @@ The same seven styles with `orientation="vertical"`. The rail becomes a column, 
     },
     {
       title: "Vertical segmented",
-      subheading:
+      description:
         "The track turns on its side and the raised surface travels vertically; segments keep their full width rather than sharing it.",
       propNotes: [
         {
@@ -432,7 +392,7 @@ The same seven styles with `orientation="vertical"`. The rail becomes a column, 
     },
     {
       title: "Vertical bordered",
-      subheading: "One card around both halves, divided down the middle.",
+      description: "One card around both halves, divided down the middle.",
       propNotes: [
         {
           lead: "Combine",
@@ -450,7 +410,7 @@ The same seven styles with `orientation="vertical"`. The rail becomes a column, 
     },
     {
       title: "Vertical glass",
-      subheading: "Two frosted panels side by side.",
+      description: "Two frosted panels side by side.",
       propNotes: [
         {
           lead: "Combine",
@@ -468,6 +428,33 @@ The same seven styles with `orientation="vertical"`. The rail becomes a column, 
     },
   ]}
 />
+
+## About Shadcn Tabs
+
+**What it is.** `VerticalTabs` renders accessible horizontal or vertical tab rails with eight `variant` styles (`default`, `underline`, `segmented`, `bordered`, `minimal`, `glass`, `soft`, `elevated`), icons, and directional panel transitions.
+
+**How it is built.** Implements WAI-ARIA `tablist` / `tab` / `aria-controls` keyboard navigation (`ArrowLeft`/`ArrowRight` in horizontal, `ArrowUp`/`ArrowDown` in vertical, plus `Home`/`End`). Travelling indicators and directional panel slides respect `prefers-reduced-motion` by falling back to a plain fade.
+
+**When to use it.** Use `VerticalTabs` for settings pages, media panels, and tabbed dashboards. For compact segmented switches without associated panels, use <DocLink to="toggle-group">Toggle Group</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="vertical-tabs">
+
+**When to use**
+
+- Horizontal or vertical tabbed interfaces with 8 visual variants and directional content transitions
+
+**When not to use**
+
+- Compact segmented toggles without tab panels — use <DocLink to="toggle-group">Toggle Group</DocLink>
+
+**Agent notes**
+
+- Named exports: `VerticalTabs`, `type TabItem` from `@/components/custom/blocks/VerticalTabs`
+- Pass `tabs` as `{ id, label, icon, content }[]`; set `orientation="vertical"` for a left sidebar rail that stacks below `md`
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -592,14 +579,29 @@ The same seven styles with `orientation="vertical"`. The rail becomes a column, 
   </table>
 </div>
 
-## Keyboard and motion
+## Works with other components
 
-The rail is a real `tablist`: each tab is a `tab` that owns the panel through `aria-controls`, and only the selected tab is in the page's tab order. Reaching the rail with <kbd>Tab</kbd> lands on the selected tab; from there the arrow keys along the rail's own axis move the selection — left and right when the rail runs across the top, up and down when it runs down the side — and <kbd>Home</kbd> and <kbd>End</kbd> jump to its ends. <kbd>Tab</kbd> again moves into the panel.
+- Render <DocLink to="card">Card</DocLink>, <DocLink to="form">Form</DocLink>, or <DocLink to="data-table">Data Table</DocLink> views inside each tab's `content`.
 
-Focus is drawn in the current `color` rather than the browser default, so it belongs to the theme.
+## How do I build vertical tabs in React?
 
-Two things move, and both only in answer to something you did. The `underline` and `segmented` indicators are single elements that travel between tabs, and the panel enters from the side you moved toward — later tab, enters from the far edge; earlier tab, from the near one. Nothing animates on load, and under `prefers-reduced-motion` the travel is dropped for a plain fade.
+Pass a `tabs` array to `VerticalTabs`, where each item has an `id`, `label`, `content` and optional `icon`, and set `orientation="vertical"`. The default orientation is `"horizontal"`, a bar across the top that scrolls sideways when the tabs outgrow it.
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## How does keyboard navigation work in VerticalTabs?
+
+The rail is a real `tablist` where only the selected tab is in the page tab order. Arrow keys move along the active axis, left and right for horizontal and up and down for vertical, and `Home` and `End` jump to the first or last tab.
+
+## Which VerticalTabs variants are available?
+
+`variant` accepts `"default"`, `"glass"`, `"minimal"`, `"bordered"`, `"underline"`, `"segmented"`, `"soft"` and `"elevated"`, and it works independently of `orientation`. `color` sets the selected-tab accent and defaults to `"primary"`, which follows your theme.
+
+## How do I choose which tab is open first?
+
+Set `defaultActiveId` to the `id` of a tab. If you omit it, the first tab in `tabs` is open when the component mounts. Switching tabs animates the panel with a directional transition and moves the sliding indicator.
+
+## What can I put inside a tab panel?
+
+Anything you can render as a React node in `content`. Examples include a <DocLink to="card">Card</DocLink>, a <DocLink to="form">Form</DocLink> or a <DocLink to="data-table">Data Table</DocLink>. Use `className` to set layout and background on the outer wrapper.
 
 <DocsJsonLd slug="vertical-tabs" />
+<FaqJsonLd slug="vertical-tabs" />

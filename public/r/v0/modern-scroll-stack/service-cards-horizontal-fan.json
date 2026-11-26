@@ -3,7 +3,7 @@
   "name": "modern-scroll-stack-service-cards-horizontal-fan",
   "type": "registry:block",
   "title": "Modern Scroll Stack — Service cards (Horizontal Fan)",
-  "description": "Each card slides up flat from the bottom-center and glides into its horizontal fan slot with a smooth tilt.",
+  "description": "The \"Service cards (Horizontal Fan)\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

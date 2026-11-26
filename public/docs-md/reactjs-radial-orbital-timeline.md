@@ -10,6 +10,21 @@ A dynamic orbital visualization component that displays nodes in a circular patt
 
 The `RadialOrbitalTimeline` places event nodes along a circular orbit surrounding a glowing central nucleus. Clicking any node expands a detail card showing completion status, dates, descriptions, energy level progress meters, and interactive connected node links.
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/radial-orbital-timeline.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/radial-orbital-timeline
+```
+
 ## Dual Orbit Timeline (Default)
 
 Renders 2 concentric counter-rotating orbital lines for dense timeline items.
@@ -157,21 +172,6 @@ export default function ReusableTimelineExample() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/radial-orbital-timeline.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/radial-orbital-timeline
-```
-
 ## Single Orbit Variant
 
 ### Single Orbit Timeline
@@ -257,15 +257,69 @@ export default function SingleOrbitExample() {
 }
 ```
 
-## Props Reference: RadialOrbitalTimeline
+## About Shadcn Radial Orbital Timeline
+
+**What it is.** **Shadcn Radial Orbital Timeline** (`RadialOrbitalTimeline`) is an interactive circular orbit visualization that arranges milestone nodes around a glowing central nucleus.
+
+**How it is built.** A default export that spins its nodes with `requestAnimationFrame` and builds the detail card from the `Card` primitive. Clicking a node opens one card with status, date, description, an energy meter and chips for its `relatedIds`. `orbitCount` picks a single ring (`1`) or two counter-rotating rings (`2`).
+
+**When to use it.** Use it for system architecture overviews, product lifecycle wheels, AI workflow stages, and interactive roadmap explorers.
+
+## For AI agents
+
+**When to use**
+
+- System architecture overviews, product lifecycle wheels
+- AI workflow stages, interactive roadmap explorers
+
+**When not to use**
+
+- A linear list of milestones: use [Timeline](https://avaraui.com/docs/reactjs/timeline)
+- An agent hierarchy: use [Agent Graph](https://avaraui.com/docs/reactjs/agent-graph)
+
+**Agent notes**
+
+- Import the default export: `import RadialOrbitalTimeline, { type TimelineItem } from "@/components/custom/blocks/RadialOrbitalTimeline"`.
+- Props are `orbitCount` (`1 | 2`, default `2`), `outerOrbitItems`, `innerOrbitItems`, `timelineData` and `className`. With no data it renders built-in sample items.
+- With `orbitCount={1}` only `outerOrbitItems` (or else `timelineData`) is drawn and `innerOrbitItems` is ignored. With `2`, `outerOrbitItems` and `innerOrbitItems` win over `timelineData`.
+- Each `TimelineItem` needs `id` (a unique number), `title`, `date`, `content`, `icon` (a component such as a Lucide icon), `relatedIds` (`number[]`, may be empty), `status` (`"completed" | "in-progress" | "pending"`) and `energy` (0 to 100). `category`, `color` and `layer` are optional.
+- Clicking a node stops the rotation, turns that node to the top and opens its card. Clicking it again, or the empty background, resumes the rotation.
+
+## Props Reference
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `orbitCount` | `1 \| 2` | `2` | Controls whether the timeline renders `1` single orbital line or `2` concentric counter-rotating orbital lines. |
-| `outerOrbitItems` | `TimelineItem[]` | `undefined` | Dedicated array of timeline items placed on the 1st Outer Orbit Line (rotates CCW). |
-| `innerOrbitItems` | `TimelineItem[]` | `undefined` | Dedicated array of timeline items placed on the 2nd Inner Orbit Line (rotates CW). |
-| `timelineData` | `TimelineItem[]` | `DEFAULT_TIMELINE_DATA` | Combined array of items. Each item can take optional `layer: "outer" \| "inner"` or be auto-distributed across dual orbits. |
-| `className` | `string` | `undefined` | Additional Tailwind CSS class names for custom container styling. |
+| `outerOrbitItems` | `TimelineItem[]` | `undefined` | Items placed on the outer orbit, which rotates clockwise. With `orbitCount` `1` it is the only orbit drawn. |
+| `innerOrbitItems` | `TimelineItem[]` | `undefined` | Items placed on the inner orbit, which rotates counter-clockwise. Ignored when `orbitCount` is `1`. |
+| `timelineData` | `TimelineItem[]` | `DEFAULT_TIMELINE_DATA` | Fallback array used when no orbit-specific array is given. In dual mode, if any item sets `layer: "outer" \| "inner"` only those items are drawn, on that orbit; if none does, even indexes go outer and odd indexes inner. |
+| `className` | `string` | `undefined` | Classes merged onto the root container, which is `h-[650px] sm:h-[720px]` by default, so you can override its size. |
+
+## Works with other components
+
+- Use [Timeline](https://avaraui.com/docs/reactjs/timeline) or [Animated Timeline](https://avaraui.com/docs/reactjs/animated-timeline) when the milestones belong in a linear history instead of a ring.
+- Reach for [Agent Graph](https://avaraui.com/docs/reactjs/agent-graph) when you need a parent and child tree with drawn connectors rather than `relatedIds` chips.
+- The detail popover is built from [Card](https://avaraui.com/docs/reactjs/card), so installing the timeline pulls it in and your Card styling carries over.
+
+## How do I split items between the two orbits in `RadialOrbitalTimeline`?
+
+Pass `outerOrbitItems` and `innerOrbitItems` with `orbitCount={2}`. Alternatively pass one `timelineData` array and set `layer` on every item. If no item sets `layer`, the component alternates them: even indexes land on the outer ring and odd indexes on the inner one. If only some do, items without it are not drawn.
+
+## Which direction does each orbit rotate?
+
+The outer orbit turns clockwise and the inner orbit turns counter-clockwise, both at a steady 12 degrees per second. Opening a node stops the rotation and turns that node to the top. Collapsing it, or clicking the empty background, starts the rotation again.
+
+## What happens when I click a connected node chip?
+
+The chip calls the same toggle as clicking the node, so the current card closes and the related node opens and turns to the top. A `relatedIds` entry needs a matching `id` among the rendered items, or the chip renders empty. That includes inner items, which are not drawn when `orbitCount={1}`.
+
+## How do I change a node's colour or its glow size?
+
+Set `color` on a `TimelineItem` to a full class string such as `"bg-blue-500 text-white border-blue-400"`. Without it, the badge cycles through ten built-in colours. The node's glow grows with `energy`, and the same value fills the meter in the open card.
+
+## Can I use `RadialOrbitalTimeline` with a keyboard or reduced motion?
+
+Not fully. Nodes are clickable `div` elements with no `tabIndex`, role or key handler, so selection is pointer and touch only, and the rotation does not check `prefers-reduced-motion`. If either matters, add your own list of the same items beside the ring.
 
 ---
 

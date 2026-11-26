@@ -3,7 +3,7 @@
   "name": "modal-liquid-glass",
   "type": "registry:block",
   "title": "Modal — Liquid Glass",
-  "description": "Fluid glassmorphism featuring real SVG displacement mapping, multi-layer specular highlights, and fluid reflections.",
+  "description": "The \"Liquid Glass\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

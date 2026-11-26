@@ -3,7 +3,7 @@
   "name": "falling-tags-monochrome",
   "type": "registry:block",
   "title": "Falling Tags — Monochrome",
-  "description": "High-contrast editorial zinc and black/white palette tailored for modern minimalist dark and light themes.",
+  "description": "The \"Monochrome\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -3,7 +3,7 @@
   "name": "apple-select-apple-select",
   "type": "registry:block",
   "title": "Apple Select",
-  "description": "Pass the full `text` and the `[start, end]` character range to highlight.",
+  "description": "The \"Apple Select\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

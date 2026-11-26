@@ -3,7 +3,7 @@
   "name": "toast-stacked",
   "type": "registry:block",
   "title": "Toast — Stacked",
-  "description": "Fire a few in a row, then hover the pile to fan it out.",
+  "description": "The \"Stacked\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

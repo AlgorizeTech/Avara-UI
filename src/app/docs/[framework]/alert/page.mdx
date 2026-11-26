@@ -4,17 +4,17 @@ export const metadata = docsPageMetadata("alert");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Alert
 
-An inline alert for messages that stay in the layout. Six types say what it is about, and four variants set how it looks: `default`, `soft`, `glass` and `solid`.
+An inline alert banner for persistent status messages in six severity types and four surface variants (`default`, `soft`, `glass`, and `solid`).
 
-<AgentVariants slug="alert" />
-
-<ExampleShowcase minHeight={530} headingLevel={2}
+<ExampleShowcase minHeight={360} headingLevel={2}
   name="alert"
   columns={1}
   colorControl={false}
+  installation={<Installation name="alert" usage="below" />}
   examples={[
     {
       title: "Default",
@@ -29,18 +29,6 @@ An inline alert for messages that stay in the layout. Six types say what it is a
       usage: extractCode("src/preview/demos/alert-examples/default.tsx"),
       code: extractCode("src/components/custom/blocks/Alerts.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="alert" />
-
-<ExampleShowcase minHeight={530} headingLevel={2}
-  name="alert"
-  columns={1}
-  colorControl={false}
-  examples={[
     {
       title: "Soft",
       propNotes: [
@@ -81,31 +69,37 @@ An inline alert for messages that stay in the layout. Six types say what it is a
   ]}
 />
 
-## Features
-Learn about the Alert component's capabilities, including different severity levels, customizable icons, and dismissible actions.
+## About Shadcn Alert
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**What it is.** `Alert` is an inline banner with six `type` values (`neutral`, `info`, `success`, `warning`, `danger` and `loading`) and four `variant` surfaces (`default`, `soft`, `glass`, `solid`). It takes a `title`, a `message`, an optional `action` slot and a `dismissible` close button. `AlertAction` is the matching pill button.
 
-## Best Practices & Guidelines
+**How it is built.** The `type` picks a `lucide-react` icon and a colour, and the `variant` picks the surface. `danger` and `warning` render with `role="alert"`, the other types with `role="status"`, and `loading` adds `aria-busy` with a spinning icon. Dismissing fades the alert out over 200 ms and then calls `onDismiss`.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `Alert` for persistent in-page banners, form summaries and system notices that stay in the layout. For notifications that disappear on their own, use <DocLink to="toast">Toast</DocLink> or <DocLink to="sonner">Sonner</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="alert">
+
+**When to use**
+
+- Persistent inline callouts, validation summaries, and status banners inside page layouts or forms
+- Visual variants (`default`, `soft`, `glass`, `solid`) matched to light, dark, or image/gradient backdrops
+
+**When not to use**
+
+- Temporary floating notifications: use <DocLink to="sonner">Sonner</DocLink> or <DocLink to="toast">Toast</DocLink>
+- Blocking confirmations: use <DocLink to="dialog">Dialog</DocLink>
+
+**Agent notes**
+
+- Named exports `Alert` and `AlertAction` from `@/components/custom/blocks/Alerts`; there is no default export.
+- `type` is `"neutral" | "info" | "success" | "warning" | "danger" | "loading"`. There is no `error` or `destructive` type: use `danger`.
+- `variant="glass"` applies backdrop blur and white text, so it needs an image or gradient behind it.
+- Dismissal is internal: the alert hides itself after the fade, and `onDismiss` is only a notification, not a controlled `open` prop.
+- Put `AlertAction` in the `action` slot or inside `children`; it takes its colour from the alert's `type` and `variant`.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -232,10 +226,63 @@ Learn about the Alert component's capabilities, including different severity lev
         </td>
         <td>Extra content under the message, such as a list.</td>
       </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Classes for the alert root.</td>
+      </tr>
+      <tr>
+        <td><code>titleClassName</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Classes for the title.</td>
+      </tr>
+      <tr>
+        <td><code>messageClassName</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Classes for the message.</td>
+      </tr>
+      <tr>
+        <td><code>iconClassName</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Classes for the icon wrapper.</td>
+      </tr>
     </tbody>
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Pair `Alert` above <DocLink to="form">Form</DocLink> or <DocLink to="input">Input</DocLink> groups for server-side validation summaries.
+- Use <DocLink to="toast">Toast</DocLink> or <DocLink to="sonner">Sonner</DocLink> when feedback should appear temporarily and auto-dismiss.
+- Embed inside <DocLink to="dialog">Dialog</DocLink> to highlight destructive action warnings.
+
+## How do I show an error alert with the Alert component?
+
+Use `type="danger"`. Alert has no `error` or `destructive` type, so `danger` is the red one. It uses the theme's `destructive` colour on the default and soft variants, renders with `role="alert"` so screen readers announce it, and pairs with `AlertAction` for a retry button in the `action` slot.
+
+## When should I use variant="glass" vs variant="soft"?
+
+Use `variant="soft"` on plain light or dark backgrounds: it bleeds the type colour into a pale card from the left corners. Use `variant="glass"` over a photo, gradient or mesh background, where its `backdrop-blur-xl` frosting and white text show through. On a flat background glass loses its effect.
+
+## How do I make an Alert dismissible and react to it closing?
+
+Set `dismissible` to show a close button labelled "Dismiss alert". Clicking it fades the alert out over 200 ms and hides it. `onDismiss` then runs, so use it to drop the alert from your own state. Alert does not take an `open` prop to control visibility.
+
+## How do I add a button to an Alert?
+
+Pass `<AlertAction>` to the `action` prop for a button on the right, or place it inside `children` for one under the message. `AlertAction` reads the alert's `type` and `variant` for its colours, and `appearance="outline"` gives a quieter second button beside a filled one.
+
+## Does Alert announce itself to screen readers?
+
+Yes, with a role chosen from `type`. `danger` and `warning` use `role="alert"`, which interrupts, while `neutral`, `info`, `success` and `loading` use `role="status"`, which is polite. The `loading` type also sets `aria-busy`, and its spinner and entrance animation respect reduced motion.
+
+## What is the difference between Alert and Toast / Sonner?
+
+`Alert` stays inline in the document flow until the person or your state removes it. <DocLink to="toast">Toast</DocLink> and <DocLink to="sonner">Sonner</DocLink> render floating notifications in a viewport corner that disappear after a duration (`Toast` defaults to 5000 ms), so use `Alert` for anything that must stay readable.
 
 <DocsJsonLd slug="alert" />
+<FaqJsonLd slug="alert" />

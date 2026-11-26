@@ -3,7 +3,7 @@
   "name": "dialog-dialog",
   "type": "registry:block",
   "title": "Dialog",
-  "description": "Compose `DialogTrigger` and `DialogContent` inside a `Dialog` root.",
+  "description": "The \"Dialog\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

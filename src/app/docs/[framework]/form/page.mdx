@@ -4,14 +4,11 @@ export const metadata = docsPageMetadata("form");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Form
 
-A high-fidelity Form toolkit engineered for both simple landing pages and complex enterprise dashboards.
-
-This engine decouples layout from state. It provides a stunning visual wrapper with a **slim animated glowing border** that tracks focus, and a custom **glitching error text effect** that draws immediate attention to invalid fields.
-
-`FormWrapper` is unopinionated about state — it works with plain `useState` and with `react-hook-form`'s `handleSubmit` alike, because it never clones or intercepts child `ref`s.
+A state-agnostic form wrapper (`FormWrapper`, `FormField`, `FormSubmit`) with a spinning glow border and animated error text that works with plain `useState` or `react-hook-form` + `zod`.
 
 export const usageZod = `"use client";
 
@@ -95,10 +92,13 @@ export default function SubmittingForm() {
   );
 }`;
 
-<ExampleShowcase minHeight={360} headingLevel={2}
+<ExampleShowcase
+  minHeight={360}
+  headingLevel={2}
   name="form"
   colorControl
   columns={1}
+  installation={<Installation name="form" usage="below" />}
   examples={[
     {
       title: "React Hook Form + Zod",
@@ -114,26 +114,6 @@ export default function SubmittingForm() {
       usage: usageZod,
       code: extractCode("src/components/custom/blocks/FormBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="form" />
-
-### Optional — schema validation
-
-The form primitives are unopinionated about validation; the native example uses plain React state. Only add these if you want the schema-driven approach from the second example.
-
-<Cli command={`install react-hook-form zod @hookform/resolvers`} />
-
-## Examples
-
-<ExampleShowcase minHeight={360}
-  name="form"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Submitting",
       propNotes: [
@@ -150,31 +130,36 @@ The form primitives are unopinionated about validation; the native example uses 
   ]}
 />
 
-## Features
-Explore the Form component's validation integration, accessible error messages, and loading state management.
+## About Shadcn Form
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**What it is.** `FormWrapper`, `FormField` and `FormSubmit` provide a styled form container with a spinning glow border that brightens on hover, glitching error text, and a submit button that disables itself while `isSubmitting` is true.
 
-## Best Practices & Guidelines
+**How it is built.** `color` sets one CSS variable on the wrapper that tints the border and the submit button. The wrapper never clones or intercepts child `ref`s, so native HTML forms, controlled `useState`, and `react-hook-form` (`register()` + `zodResolver`) all work out of the box.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `FormWrapper` for single-step forms, settings panels, and schema-validated inputs. For multi-step flows, use <DocLink to="wizard">Wizard</DocLink> or <DocLink to="stepper">Stepper</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="form">
+
+**When to use**
+
+- Single-page forms with `react-hook-form` + `zod` or plain `useState`
+- Forms needing built-in `isSubmitting` loading lock on `FormSubmit`
+
+**When not to use**
+
+- Pre-built login/signup/onboarding screens — use <DocLink to="auth-forms">Auth Forms</DocLink>
+- Multi-step flows — use <DocLink to="wizard">Wizard</DocLink>
+
+**Agent notes**
+
+- Named exports from `@/components/custom/blocks/FormBlock`: `FormWrapper`, `FormField`, `FormError`, `FormSubmit`
+- `FormSubmit` is a `type="submit"` button, so pass `onSubmit` to `FormWrapper` (that renders the `<form>`) or it will not submit anything
+- `FormField` renders its `label` without `htmlFor`; give the input its own `aria-label` or `id` handling if screen readers need the name
+- Install optional schema packages (`npm install react-hook-form zod @hookform/resolvers`) only if using `zodResolver`
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -233,7 +218,7 @@ Explore the Form component's validation integration, accessible error messages, 
         <td>
           <code>"primary"</code>
         </td>
-        <td>Drives the animated border, focus ring and submit button. Accepts any hex string.</td>
+        <td>Drives the animated border and the submit button. Accepts a preset name or a hex string starting with <code>#</code>; any other string falls back to <code>primary</code>.</td>
       </tr>
       <tr>
         <td>
@@ -312,6 +297,21 @@ Explore the Form component's validation integration, accessible error messages, 
       </tr>
       <tr>
         <td>
+          <code>FormError</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"glitch" | "default"</code>
+        </td>
+        <td>
+          <code>"glitch"</code>
+        </td>
+        <td>Animated RGB-split text or the static red text.</td>
+      </tr>
+      <tr>
+        <td>
           <code>FormSubmit</code>
         </td>
         <td>
@@ -329,6 +329,32 @@ Explore the Form component's validation integration, accessible error messages, 
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Compose <DocLink to="input">Input</DocLink>, <DocLink to="select">Select</DocLink>, and <DocLink to="date-picker">Date Picker</DocLink> fields inside `FormWrapper`.
+- Pair `onSubmit` with <DocLink to="sonner">Sonner</DocLink> or <DocLink to="alert">Alert</DocLink> for server response feedback.
+- Use <DocLink to="auth-forms">Auth Forms</DocLink> when you want finished login and signup screens instead of assembling fields.
+- Split a long form into steps with <DocLink to="wizard">Wizard</DocLink> and keep a `FormWrapper` on each step.
+
+## Does FormWrapper require react-hook-form or Zod?
+
+No. `FormWrapper` is state-agnostic and works with plain `useState` or native form handlers. The `react-hook-form`, `zod` and `@hookform/resolvers` packages are only needed if you want schema validation, and the registry item itself has no npm dependencies.
+
+## How do I use FormWrapper with react-hook-form and Zod?
+
+Pass `handleSubmit(...)` as `onSubmit`, spread `register("name")` onto each input (the example uses `InputBlock`), and give each `FormField` `error={errors.name?.message}`. Set `isSubmitting` from `formState` on `FormSubmit`. `FormWrapper` never touches child refs, so `register()` keeps working with `zodResolver`.
+
+## How do I stop users from submitting a form twice?
+
+Pass `isSubmitting` to `FormSubmit`. While it is true the button is disabled and shows a spinner instead of its label. Wire it to `formState.isSubmitting` from react-hook-form, or to your own loading state. Without that prop the button stays enabled.
+
+## How do I change the FormWrapper border and button colour?
+
+Set `color` on `FormWrapper` to `primary` (the default, following your theme's `--primary`), `indigo`, `rose`, `emerald` or `zinc`, or pass a hex string such as `#0ea5e9`. One value tints the spinning border and the submit button, and the button text switches with it.
+
+## Can I turn off the glitch effect on FormField errors?
+
+Yes. Set `errorVariant="default"` on `FormField` for static red text, or use `variant="default"` on a standalone `FormError`. The glitch animation has no `prefers-reduced-motion` check, so choose the default variant for audiences who need less motion. The message text is the same in both. The message text is the same in both.
 
 <DocsJsonLd slug="form" />
+<FaqJsonLd slug="form" />

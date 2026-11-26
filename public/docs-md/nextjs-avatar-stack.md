@@ -1,14 +1,29 @@
 ---
 title: "Shadcn Avatar Stack"
-description: "An avatar stack: a row of overlapping faces — the \"people who…\" cue under a headline, beside a count, or next to a join button. Free shadcn/ui component."
+description: "A row of overlapping avatars that folds extra faces into a +N disc, with an optional trailing action. Free shadcn/ui component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/avatar-stack
 ---
 
 # Shadcn Avatar Stack
 
-An avatar stack: a row of overlapping faces — the "people who…" cue under a headline, beside a count, or next to a join button. It shows up to `max` faces, folds the rest into a "+N" disc, and takes an optional trailing `action` that shares the stack's size. On hover the faces fan apart a little, so the row answers the pointer without turning into a carousel.
+A row of overlapping avatars that folds extra faces into a +N disc, with an optional trailing action.
 
 Several sections used to hand-roll this row; [Fashion Hero](https://avaraui.com/docs/nextjs/hero#fashion-hero) uses this one.
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/avatar-stack.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/avatar-stack
+```
 
 ## Avatar Group (Shift on hover)
 
@@ -42,24 +57,7 @@ export default function AvatarGroupDemo() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/avatar-stack.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/avatar-stack
-```
-
-## Examples
-
-### Without tooltip
+## Without tooltip
 
 A clean row of overlapping faces that zoom on hover, with no tooltip.
 
@@ -90,7 +88,7 @@ export default function BasicAvatarStack() {
 }
 ```
 
-### With tooltip (Zoom on hover)
+## With tooltip (Zoom on hover)
 
 Hovering a face zooms it upward and shows its name in a tooltip.
 
@@ -121,7 +119,7 @@ export default function TooltipZoomAvatarStack() {
 }
 ```
 
-### With tooltip arrow (Zoom on hover)
+## With tooltip arrow (Zoom on hover)
 
 The same tooltip with a pointer arrow and a spring popup.
 
@@ -152,7 +150,7 @@ export default function TooltipArrowAvatarStack() {
 }
 ```
 
-### Spread on hover (Expand width)
+## Spread on hover (Expand width)
 
 Hovering the stack fans the faces out from the centre and lifts the hovered one, without zooming.
 
@@ -183,7 +181,7 @@ export default function SpreadOnHover() {
 }
 ```
 
-### Spread with tooltip
+## Spread with tooltip
 
 The spread fan-out with a floating name tooltip above the hovered face.
 
@@ -214,7 +212,7 @@ export default function SpreadWithTooltip() {
 }
 ```
 
-### Spread with tooltip arrow
+## Spread with tooltip arrow
 
 The spread fan-out with a pointer-arrow tooltip.
 
@@ -245,7 +243,7 @@ export default function SpreadWithTooltipArrow() {
 }
 ```
 
-### With an action
+## With an action
 
 Three faces with tooltips and a trailing + button.
 
@@ -275,7 +273,7 @@ export default function Community() {
 }
 ```
 
-### Folded count
+## Folded count
 
 Six people, three shown; the rest fold into a clickable +3 disc.
 
@@ -315,7 +313,7 @@ export default function JoinedThisMonth() {
 }
 ```
 
-### Sizes
+## Sizes
 
 sm, md and lg are 28, 36 and 44 pixels, each paired here with a different tooltip style.
 
@@ -350,17 +348,33 @@ export default function SizesDemo() {
 }
 ```
 
-## Best Practices & Guidelines
+## About Shadcn Avatar Stack
 
-Limit visible avatars to 3–5 items using the `max` prop. Folding excess avatars into a `+N` counter keeps your layout balanced, avoids horizontal overflow on mobile screens, and maintains clean visual hierarchy.
+**What it is.** `AvatarStack` shows a row of overlapping avatars from an `avatars` array, folds the extra ones into a `+N` disc, and can end with a `+` action button. `AvatarGroup` is the composable version, where you place `Avatar` children yourself.
 
-When enabling `spreadOnHover`, keep `spreadDistance` subtle (4–8px) and `transitionDuration` around 500ms. Pair with `translate="-30%"` to gently elevate the hovered avatar above its neighbors without jarring layout shifts.
+**How it is built.** `variant` picks the hover style: `shift` lifts a face with a spring, `spread` fans the row apart, and `default` and `zoom` scale the hovered face up. `type` controls the tooltip, and `ringClassName` sets the gap colour between faces. It uses Radix Avatar and the Tooltip item from this library.
 
-### Tooltip Accessibility & Text Alignment
+**When to use it.** Use it for collaborator rows, social proof under a hero headline, active viewer indicators and team assignment pills.
 
-Always provide accessible `alt` or `name` attributes for every avatar. When a `designation` or subtitle is provided, tooltips automatically align text to the left; otherwise, titles stay cleanly centered for single-line labels.
+## For AI agents
 
-Ensure `ringClassName` matches the surface the avatars rest upon (defaults to `ring-background`). A matching border ring creates clean visual separation between overlapping faces in both light and dark modes.
+**When to use**
+
+- Collaborator rows, social proof under hero headlines
+- Active viewer indicators, team assignment pills
+
+**When not to use**
+
+- A single person with name, role and details: use [Profile Card](https://avaraui.com/docs/nextjs/profile-card)
+- Showing relationships between people or agents: use [User Graph](https://avaraui.com/docs/nextjs/user-graph)
+
+**Agent notes**
+
+- Named exports `AvatarStack` (also the default export), `AvatarGroup`, `Avatar`, `AvatarGroupTooltip`, `AvatarImage` and `AvatarFallback` from `@/components/custom/blocks/AvatarStackBlock`.
+- `AvatarStack` takes `avatars` (`{ src, alt?, name?, designation?, role?, tooltip?, fallback? }[]`), `variant` (`"default" | "shift" | "zoom" | "spread"`), `type` (`"default" | "tooltip" | "tooltip-arrow"`), `size` (`"sm" | "md" | "lg" | "xl"`), `max`, `onMoreClick`, `action` and `ringClassName`.
+- `max` folds the rest into a `+N` disc; `onMoreClick(restCount, hiddenAvatars, event)` runs when it is clicked. Without `max`, every avatar shows.
+- Set `ringClassName` (default `ring-background`) to the surface behind the stack so the gaps match.
+- Give each avatar a unique `src`, because the stack uses it as the React key.
 
 ## Props Reference
 
@@ -386,13 +400,43 @@ Ensure `ringClassName` matches the surface the avatars rest upon (defaults to `r
 | `onMoreClick` | `(restCount: number, hiddenAvatars: StackAvatar[], event: MouseEvent) => void` | — | Click handler triggered when the folded `+N` counter disc is clicked. |
 | `ringClassName` | `string` | `"ring-background"` | Border/gap colour between overlapping faces. Defaults to theme background. |
 | `action` | `((event: MouseEvent) => void) \| &#123; onClick?: (event: MouseEvent) => void; label?: string &#125; \| boolean \| ReactNode` | — | Single prop for the trailing `+` action button: pass an `onClick` function `() => void`, `&#123; onClick, label &#125;`, `true`, or custom `ReactNode`. |
-| `spreadOnHover` | `boolean` | `true` | Whether faces smoothly fan apart slightly when the stack is hovered. |
+| `spreadOnHover` | `boolean` | `true` for `spread`, otherwise `false` | Whether faces smoothly fan apart slightly when the stack is hovered. |
 | `spreadDistance` | `number` | `6` | Number of pixels each subsequent avatar shifts to the right on hover when `spreadOnHover` is enabled. |
-| `translate` | `string \| number` | `"-30%"` | Vertical displacement of an avatar when hovered (e.g. `"-30%"`). |
+| `translate` | `string \| number` | `"-30%"` for `shift` and `spread`, otherwise none | Vertical displacement of an avatar when hovered (e.g. `"-30%"`). |
 | `transitionDuration` | `number` | `500` | Duration of the spread and hover transition in milliseconds for a smooth, gentle animation. |
-| `liftOnHover` | `boolean` | `true` | Whether the hovered face rises above neighbours and scales up slightly. |
+| `liftOnHover` | `boolean` | `true` except for `spread` | Whether the hovered face rises above neighbours and scales up slightly. |
 | `showTooltip` | `boolean` | `true` | Whether hover reveals the avatar's `alt` text in a tooltip. Set to `false` to disable tooltips. (Alias: `tooltip`). |
 | `showTooltipArrow` | `boolean` | `false` | Whether to render an anchored pointer arrow beneath the hover tooltip. |
+
+## Works with other components
+
+- [Tooltip](https://avaraui.com/docs/nextjs/tooltip) is the tooltip `AvatarStack` uses for its hover labels, so the two share one look.
+- [Profile Card](https://avaraui.com/docs/nextjs/profile-card) for the fuller person detail you show after a click on one face.
+- [User Graph](https://avaraui.com/docs/nextjs/user-graph) when the people need to be linked to agents or tools, not just listed.
+
+## How do I handle clicks on the `+N` overflow disc?
+
+Pass `onMoreClick`. It receives `(restCount, hiddenAvatars, event)`, where `hiddenAvatars` is the array of faces folded away, so you can open a modal, popover or team list. The disc only appears when `max` is lower than the number of avatars; without `onMoreClick` it does nothing.
+
+## How do I match the avatar border gap to a colored card?
+
+Set `ringClassName` to the surface behind the stack, for example `ring-card` or `ring-muted`. The default is `ring-background`. The same class colours the `+N` disc and the default action button, so on a tinted card all the gaps between faces stay consistent.
+
+## How do I add a trailing plus button to AvatarStack?
+
+Pass `action`. A function becomes the button's click handler, `{ onClick, label }` adds an accessible label (the default is "Join the community"), `true` renders the button with no handler, and a React element replaces the button entirely. The button is the same size as the avatars.
+
+## What is the difference between the shift, zoom and spread variants of AvatarStack?
+
+`shift` lifts the hovered face upward with a spring, using `AvatarGroup`. `spread` fans the whole row apart on hover and raises the hovered face. `default` and `zoom` scale the hovered face up by about 15% with no spread. `spread` and `shift` also default `translate` to `-30%`.
+
+## How do I show names and roles in AvatarStack tooltips?
+
+Add `name` to each item in `avatars`, plus `designation` or `role` for a second line. The tooltip falls back to `alt` or `tooltip` when there is no `name`. Turn tooltips off with `type="default"` or `showTooltip={false}`, and add an arrow with `type="tooltip-arrow"` (not in the `shift` variant).
+
+## What does AvatarStack depend on, and does it run in Vite?
+
+It runs in Vite and Next.js, with no `next/*` imports. The install adds `@radix-ui/react-avatar` and `lucide-react`, and pulls in the library's Tooltip and Avatar items plus a small `animate` helper that handles `prefers-reduced-motion` for the `shift` spring.
 
 ---
 

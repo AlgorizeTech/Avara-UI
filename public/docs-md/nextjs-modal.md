@@ -1,14 +1,27 @@
 ---
 title: "Shadcn Modal"
-description: "A versatile, accessible dialog component with built-in design variants. Free shadcn/ui Modal component for React, Next.js and Tailwind CSS."
+description: "Shadcn Modal. A controlled modal dialog (`Modal`) with pre-configured `standard`, `confirmation`, `form`, `fullscreen`, `glass`."
 url: https://avaraui.com/docs/nextjs/modal
 ---
 
 # Shadcn Modal
 
-A versatile, accessible dialog component with built-in design variants. Choose from pre-configured variants (`standard`, `confirmation`, `form`, `fullscreen`, `glass`, `liquid-glass`) to instantly get complete layout, responsive sizing, and interactive buttons—or use composable subcomponents for custom dialogs.
+A controlled modal dialog (`Modal`) with pre-configured `standard`, `confirmation`, `form`, `fullscreen`, `glass`, and `liquid-glass` presets plus composable subcomponents.
 
-`Modal` manages all dialog complexities—portals, focus traps, backdrop dismissal, Escape key handling, body scroll locking, and smooth enter/exit animations.
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/modal.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/modal
+```
 
 ## Standard
 
@@ -50,24 +63,7 @@ export default function UpdateModal() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/modal.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/modal
-```
-
-## Examples
-
-### Form
+## Form
 
 Header and footer actions with custom form inputs as children.
 
@@ -147,7 +143,7 @@ export default function InviteModal() {
 }
 ```
 
-### Confirmation
+## Confirmation
 
 Compact centered delete confirmation dialog with danger badge.
 
@@ -186,7 +182,7 @@ export default function ConfirmDeleteModal() {
 }
 ```
 
-### Fullscreen
+## Fullscreen
 
 Wide layout with pinned header and multi-action responsive footer.
 
@@ -245,7 +241,7 @@ export default function SettingsModal() {
 }
 ```
 
-### Glass
+## Glass
 
 Translucent frosted-glass treatment with backdrop blur.
 
@@ -285,7 +281,7 @@ export default function GlassModal() {
 }
 ```
 
-### Liquid Glass
+## Liquid Glass
 
 Fluid glassmorphism featuring real SVG displacement mapping, multi-layer specular highlights, and fluid reflections.
 
@@ -327,20 +323,32 @@ export default function LiquidGlassModal() {
 }
 ```
 
-## Features
-Discover the Modal's flexible overlay features, designed for important user prompts with accessible focus management and animations.
+## About Shadcn Modal
 
-Pre-styled variants (standard, confirmation, form, fullscreen, glass, liquid-glass) eliminate boilerplate styling.
+**What it is.** `Modal` is a preset-driven modal dialog supporting `standard`, `confirmation`, `form`, `fullscreen`, `glass`, and `liquid-glass` layouts, plus a `custom` mode, alongside `ModalHeader`, `ModalBody`, and `ModalFooter` subcomponents for custom compositions.
 
-Built with aria dialog roles, label connections, Escape dismissal, and body scroll locking.
+**How it is built.** It renders through a React portal with `role="dialog"` and `aria-modal="true"`, closes on `Escape`, the X button or a backdrop click, locks body scroll while open, and uses CSS enter and exit transitions. The open state is yours: `isOpen` and `onClose`. It does not trap or restore focus.
 
-Optimized sizing and wrapped action rows that adapt seamlessly across mobile, tablet, and desktop.
+**When to use it.** Use `Modal` when you want ready-made layout presets (`confirmation`, `form`, `fullscreen`, `liquid-glass`). For lower-level composable dialog primitives without preset chrome, use [Dialog](https://avaraui.com/docs/nextjs/dialog).
 
-Supports optional subcomponents (ModalHeader, ModalBody, ModalFooter) for fully custom layouts.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Pass `variant` with title, description, and button labels for fast implementation without manual styling. If you need complete layout freedom, use `ModalHeader`, `ModalBody`, and `ModalFooter` subcomponents directly.
+- Opinionated modal presets (`standard`, `confirmation`, `form`, `fullscreen`, `glass`, `liquid-glass`) with built-in header/footer action wiring
+- Custom modal compositions using `ModalHeader`, `ModalBody`, and `ModalFooter`
+
+**When not to use**
+
+- Bare composable dialog primitives: use [Dialog](https://avaraui.com/docs/nextjs/dialog)
+- Edge-anchored slide-over sheets: use [Drawer](https://avaraui.com/docs/nextjs/drawer)
+
+**Agent notes**
+
+- Named exports from `@/components/custom/blocks/ModalBlock`: `Modal`, `ModalHeader`, `ModalBody`, `ModalFooter`, plus the `ModalProps` and `ModalVariant` types. There is no trigger component; keep `isOpen` in your own state and call `setIsOpen(false)` from `onClose`.
+- Pass `variant` + `title` + `description` + action labels for zero-boilerplate modals. With no `variant` and none of `title`, `description`, `confirmText` or `cancelText`, the modal is `custom` and renders only your children, so compose `ModalHeader`/`ModalBody`/`ModalFooter` yourself.
+- `confirmText` and `cancelText` buttons close the modal by default; pass `onConfirm`, `onCancel` or `onDelete` to run your own handler, and close it in that handler.
+- A non-string `title` needs `ariaLabel` (or a `ModalHeader`) to give the dialog an accessible name.
 
 ## Props Reference
 
@@ -348,7 +356,7 @@ Pass `variant` with title, description, and button labels for fast implementatio
 | --- | --- | --- | --- | --- |
 | `Modal` | `isOpen` | `boolean` | required | The open state. Modal is fully controlled — it never holds this itself, so the same modal can be driven by a button, a route or the end of an async call. |
 | `Modal` | `onClose` | `() => void` | required | Called once the close transition has finished, whether it was started by the built-in X, the `Escape` key or a backdrop click. Set `isOpen` to `false` here. |
-| `Modal` | `variant` | `"standard" \| "confirmation" \| "form" \| "fullscreen" \| "glass" \| "liquid-glass" \| "custom"` | `"standard"` | Pre-configured design variant. Automatically styles the layout, sizing, header icon, and action buttons. |
+| `Modal` | `variant` | `"standard" \| "confirmation" \| "form" \| "fullscreen" \| "glass" \| "liquid-glass" \| "custom"` | Derived | Pre-configured design variant. When omitted it is `"standard"` if you pass `title`, `description`, `confirmText` or `cancelText`, and `"custom"` (children only) otherwise. |
 | `Modal` | `title` | `React.ReactNode` | `undefined` | Dialog headline or title. |
 | `Modal` | `description` | `React.ReactNode` | `undefined` | Body copy or subtitle text. |
 | `Modal` | `badge` | `React.ReactNode` | `undefined` | Status badge or version text displayed in the header. |
@@ -356,12 +364,43 @@ Pass `variant` with title, description, and button labels for fast implementatio
 | `Modal` | `confirmText` | `string` | `undefined` | Label for the primary confirmation button. |
 | `Modal` | `cancelText` | `string` | `undefined` | Label for the secondary cancel/dismiss button. |
 | `Modal` | `deleteText` | `string` | `undefined` | Label for destructive action button in fullscreen variant. |
-| `Modal` | `onConfirm` | `() => void` | `undefined` | Callback when the confirm button is clicked. Defaults to `onClose`. |
-| `Modal` | `onCancel` | `() => void` | `undefined` | Callback when the cancel button is clicked. Defaults to `onClose`. |
+| `Modal` | `onConfirm` | `() => void` | `undefined` | Callback when the confirm button is clicked. Defaults to closing the modal. |
+| `Modal` | `onCancel` | `() => void` | `undefined` | Callback when the cancel button is clicked. Defaults to closing the modal. |
 | `Modal` | `contentClassName` | `string` | `undefined` | Custom CSS classes for the modal panel. Merged with variant defaults. |
 | `Modal` | `overlayClassName` | `string` | `undefined` | Custom CSS classes for the backdrop overlay. |
 | `Modal` | `hideCloseButton` | `boolean` | `false` | Removes the top-right X button (automatically true for `confirmation` variant). |
+| `Modal` | `onDelete` | `() => void` | `undefined` | Callback when the delete button is clicked. Defaults to closing the modal. |
+| `Modal` | `primaryCloseButton` | `boolean` | `false` | Shows the X as a tinted primary chip instead of a bare icon. |
+| `Modal` | `closeButtonClassName` | `string` | `undefined` | Custom CSS classes for the X button. |
+| `Modal` | `ariaLabel` | `string` | `undefined` | Labels the dialog directly. Use it when the title is not a string or not inside `ModalHeader`. |
+| `ModalHeader` | `title` | `React.ReactNode` | `undefined` | Heading for the header. A string is wrapped in an `h2`. The header also supplies the dialog's accessible name. |
 | `ModalHeader / Body / Footer` | `children` | `React.ReactNode` | `undefined` | Optional subcomponents for building completely custom modal layouts. |
+
+## Works with other components
+
+- Pair `variant="form"` with [Input](https://avaraui.com/docs/nextjs/input) and [Select](https://avaraui.com/docs/nextjs/select) children.
+- Use [Dialog](https://avaraui.com/docs/nextjs/dialog) when you want unstyled/minimal composable primitives, or [Drawer](https://avaraui.com/docs/nextjs/drawer) for slide-in panels.
+- Use a destructive [Button](https://avaraui.com/docs/nextjs/button) or [Action Button](https://avaraui.com/docs/nextjs/action-buttons) to open a `confirmation` modal.
+
+## When should I use Modal vs Dialog?
+
+Use `Modal` when you want built-in layout presets (`confirmation`, `form`, `fullscreen`, `glass`, `liquid-glass`) with pre-wired header and footer buttons driven by props. Use [Dialog](https://avaraui.com/docs/nextjs/dialog) when you want raw composable primitives (`DialogHeader`, `DialogContent`, `DialogFooter`) and your own markup.
+
+## How do I open and close a Modal?
+
+`Modal` is fully controlled. Keep a boolean in state, pass it as `isOpen`, and set it to `false` inside `onClose`. `onClose` fires after a 300ms exit transition, whether the user pressed the X, hit `Escape` or clicked the backdrop. Open it from any event by setting the state to `true`.
+
+## How do I build a delete confirmation with Modal?
+
+Set `variant="confirmation"` with a `title` and `description`. It shows a red icon with Cancel and Delete buttons, which you can relabel with `cancelText` and `confirmText`. The X is hidden for this variant. Run the deletion in `onConfirm`, then set `isOpen` to `false`.
+
+## Does Modal trap focus or announce itself to screen readers?
+
+Partly. The panel has `role="dialog"` and `aria-modal="true"`, named by a string `title`, `ariaLabel` or `ModalHeader`. It closes on `Escape`. It does not trap focus or return it to the trigger, so Tab can reach the page behind it. Add that yourself if you need strict keyboard containment.
+
+## Does the liquid-glass Modal variant load an external image?
+
+Yes. The `liquid-glass` variant uses a Cloudinary photo as the background behind its SVG displacement filter. `Modal` also renders a hidden 1px copy of that image whenever it is mounted. For a self-hosted setup, replace the URLs in `ModalBlock.tsx` with your own image. Other variants do not use it visibly.
 
 ---
 

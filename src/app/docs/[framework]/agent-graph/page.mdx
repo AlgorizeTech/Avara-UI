@@ -3,11 +3,12 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("agent-graph");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Agent Graph
 
-A hierarchical multi-agent orchestration tree for visualizing AI agent workflows: shows a lead orchestrator branching into worker agents and compact sub-agents, complete with status pills, token usage bars, tool integrations, and handoff trails.
+A multi-agent orchestration tree: a lead agent, worker agents and sub-agents with status pills and token meters.
 
 On desktop viewports, worker agents fan out horizontally with rounded orthogonal connectors; on narrow/mobile screens, the entire tree collapses into an indented vertical hierarchy.
 
@@ -257,10 +258,11 @@ export default function EditorialAgentWorkflowGraph() {
   name="agent-graph"
   columns={1}
   colorControl={false}
+  installation={<Installation name="agent-graph" usage="below" />}
   examples={[
     {
       title: "Shaded Tree (Default)",
-      subheading: "Tree variant featuring layered bevel card borders with shaded background and tinted tool/handoff footers.",
+      description: "Tree variant featuring layered bevel card borders with shaded background and tinted tool/handoff footers.",
       propNotes: [
         {
           prop: "variant",
@@ -281,24 +283,10 @@ export default function EditorialAgentWorkflowGraph() {
       usage: usageAgentGraphShaded,
       code: extractCode("src/components/custom/blocks/AgentGraphBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="agent-graph" />
-
-## Examples
-
-<ExampleShowcase headingLevel={3}
-  name="agent-graph"
-  columns={1}
-  colorControl={false}
-  examples={[
     {
       id: "flat-no-shade",
       title: "Flat Tree (No Shade)",
-      subheading: "Pass `shade={false}` to the `tree` variant to remove the outer shaded backdrop and render clean single-surface cards.",
+      description: "Pass `shade={false}` to the `tree` variant to remove the outer shaded backdrop and render clean single-surface cards.",
       propNotes: [
         {
           prop: "variant",
@@ -318,7 +306,7 @@ export default function EditorialAgentWorkflowGraph() {
     {
       id: "editorial-crew",
       title: "Editorial (2-Column)",
-      subheading: "Two-column editorial workflow variant (`variant=\"editorial\"`) with shaded cards by default; pass `shade={false}` for a flat look.",
+      description: "Two-column editorial workflow variant (`variant=\"editorial\"`) with shaded cards by default; pass `shade={false}` for a flat look.",
       propNotes: [
         {
           prop: "variant",
@@ -338,23 +326,37 @@ export default function EditorialAgentWorkflowGraph() {
   ]}
 />
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern AI orchestration interfaces.
+## About Shadcn Agent Graph
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Dual Visual Styles (Shaded &amp; Flat)">
-    <p>Control card depth with the <code>shade</code> prop — true for tiered layered bezels, or false for flat minimalist cards.</p>
-  </InfoCard>
-  <InfoCard title="Responsive Tree Layout">
-    <p>Fans out horizontally into equal columns on desktop and collapses into an indented vertical tree on mobile.</p>
-  </InfoCard>
-  <InfoCard title="Live Status &amp; Token Budgets">
-    <p>Displays animated working spinners, completion checks, and automatic high-usage token warnings.</p>
-  </InfoCard>
-  <InfoCard title="Tool &amp; Handoff Footer">
-    <p>Highlights connected integrations and the latest agent-to-agent handoff summary directly below each worker card.</p>
-  </InfoCard>
-</div>
+**What it is.** `AgentGraph` draws a tree of AI agents: a root orchestrator, its worker agents and their sub-agents. Each card shows a status badge, the current message, a token meter, tool badges and a handoff line. Clicking a card opens a detail popover.
+
+**How it is built.** You pass one nested `AgentGraphNode` as `data`. From the `md` breakpoint up, the root's children become grid columns joined by rounded SVG connectors; below it the tree collapses into an indented vertical list. `shade` switches between layered cards and flat cards, and `liveAnimation` plays a scripted orchestration loop. It needs no npm packages beyond the `utils` registry item.
+
+**When to use it.** Use it for agent observability consoles, multi-agent workflow builders, crew execution logs and architecture diagrams that show who hands work to whom.
+
+## For AI agents
+
+<AgentBrief name="agent-graph">
+
+**When to use**
+
+- AI agent observability consoles, multi-agent workflow builders
+- Crew execution logs, product architecture diagrams
+
+**When not to use**
+
+- A generic node-and-edge diagram you lay out yourself: use <DocLink to="flowchart">Flowchart</DocLink>
+- Live service topology and data-flow telemetry: use <DocLink to="infrastructure-topology">Infrastructure Topology</DocLink>
+
+**Agent notes**
+
+- Pass one root `AgentGraphNode` as `data`. Required node fields are `id`, `name`, `status`, `message`, `tokensUsed`, `tokensMax` and `color`; `children` nests workers and sub-agents.
+- `variant` is `"tree"` or `"editorial"` and only picks which built-in simulation runs. `shade` (boolean) switches layered cards for flat ones. The column layout follows how many children the root has.
+- With `liveAnimation` on (the default), nodes whose `id` matches the sample ids (`lead`, `researcher`, `web-search`, `coder`, `linter`, `test-runner`, `reviewer`, `docs-writer`, `editor`, `writer`, `fact-checker`, `seo`) get their status, tokens and message overwritten by the simulation, even with `liveAnimation={false}`. Give your own nodes different ids.
+- The token bar turns orange at 80% of `tokensMax` and red at 95%.
+- The popover buttons (Message, Pause, Stop, Resume, Approve, Decline) change local display state only; there are no callback props.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -379,7 +381,7 @@ Discover the key capabilities that make this component an excellent choice for m
         <td><code>variant</code></td>
         <td><code>"tree" | "editorial"</code></td>
         <td><code>"tree"</code></td>
-        <td>Layout variant for the agent graph (3-column engineering tree or 2-column editorial workflow).</td>
+        <td>Picks which built-in live simulation runs (engineering tree or editorial crew). The column count comes from the number of root children.</td>
       </tr>
       <tr>
         <td><code>animateIn</code></td>
@@ -397,7 +399,13 @@ Discover the key capabilities that make this component an excellent choice for m
         <td><code>liveAnimation</code></td>
         <td><code>boolean</code></td>
         <td><code>true</code></td>
-        <td>Enables the live sequential orchestration handoff animation loop across the tree.</td>
+        <td>Plays the scripted handoff loop. It only drives nodes that use the sample ids, and stops when <code>false</code>.</td>
+      </tr>
+      <tr>
+        <td>Other props</td>
+        <td><code>HTMLAttributes&lt;HTMLDivElement&gt;</code></td>
+        <td><code>undefined</code></td>
+        <td>Passed to the root <code>div</code>, including <code>className</code>.</td>
       </tr>
     </tbody>
   </table>
@@ -436,9 +444,9 @@ Discover the key capabilities that make this component an excellent choice for m
       </tr>
       <tr>
         <td><code>status</code></td>
-        <td><code>"working" | "done" | "idle" | "needs-you"</code></td>
+        <td><code>"working" | "done" | "idle" | "needs-you" | "failed" | "paused"</code></td>
         <td><strong>Required</strong></td>
-        <td>Controls the status badge and message styling.</td>
+        <td>Controls the status badge and message styling. <code>failed</code> is in the type but renders as idle.</td>
       </tr>
       <tr>
         <td><code>message</code></td>
@@ -482,12 +490,75 @@ Discover the key capabilities that make this component an excellent choice for m
         <td><code>undefined</code></td>
         <td>Nested worker or sub-agent nodes.</td>
       </tr>
+      <tr>
+        <td><code>statusLabel</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Overrides the badge text (the tooltip for done and idle). Ignored for <code>needs-you</code>.</td>
+      </tr>
+      <tr>
+        <td><code>icon</code></td>
+        <td><code>ReactNode</code></td>
+        <td>Pixel matrix</td>
+        <td>Replaces the 3x3 pixel icon in the card header.</td>
+      </tr>
+      <tr>
+        <td><code>iconPattern</code></td>
+        <td><code>number[]</code></td>
+        <td>Built-in pattern</td>
+        <td>Nine opacities (0 to 1) for the pixel icon cells; values above 0.3 light a cell.</td>
+      </tr>
+      <tr>
+        <td><code>description</code></td>
+        <td><code>string</code></td>
+        <td><code>message</code></td>
+        <td>Longer text in the click popover.</td>
+      </tr>
+      <tr>
+        <td><code>time</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Run time shown in the popover.</td>
+      </tr>
+      <tr>
+        <td><code>cost</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Cost shown in the popover.</td>
+      </tr>
     </tbody>
   </table>
 </div>
 
-<AgentVariants slug="agent-graph" />
+## Works with other components
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+- <DocLink to="user-graph">User Graph</DocLink> links a user to agents and integrations, so it can sit above the orchestrator `AgentGraph` shows.
+- <DocLink to="flowchart">Flowchart</DocLink> suits fixed pipelines you lay out yourself, where `AgentGraph` follows a parent and child tree.
+- <DocLink to="ai-chat">AI Chat</DocLink> pairs with it when the person watching the agents also talks to them.
+
+## When does the AgentGraph token meter change colour?
+
+The meter compares `tokensUsed` with `tokensMax`. From 80% the bar turns orange and the count turns amber, and from 95% the bar turns red. These thresholds are fixed in the component source rather than props, so edit `isHighUsage` and `isExtremeUsage` in the file if you need others.
+
+## Why do my AgentGraph statuses keep changing by themselves?
+
+`liveAnimation` defaults to `true` and runs a scripted loop that rewrites status, tokens and message for nodes using the sample ids such as `lead`, `researcher` or `editor`. Use your own `id` values, and set `liveAnimation={false}` to stop the loop. Nodes with other ids always show your data.
+
+## What is the difference between the tree and editorial variants of AgentGraph?
+
+Very little in layout. `variant` only chooses which built-in simulation plays: `"tree"` runs the engineering crew script and `"editorial"` runs the launch-post script. The columns come from how many `children` the root has, and `shade` handles layered versus flat cards.
+
+## Do the AgentGraph popover buttons call my code?
+
+No. Message, Pause, Stop, Resume, Approve and Decline only update the graph's own display state, such as showing "Paused by you". `AgentGraph` has no callback props for them, so wire real controls by editing the component or placing your own buttons beside it.
+
+## Can I open an AgentGraph card with the keyboard?
+
+Yes. Each card is a focusable `role="button"` that opens its popover on Enter or Space, and Escape closes it. The popover is not a labelled dialog, and the component does not read `prefers-reduced-motion`, so set `liveAnimation={false}` and `animateIn={false}` for a calmer graph.
+
+## Does AgentGraph work in Vite or need extra packages?
+
+It works in any React app. The file is a client component with no `next/*` imports and no npm dependencies, only the `cn` helper from the `utils` registry item. The connectors are inline SVG and the motion is CSS keyframes, so nothing else is installed.
 
 <DocsJsonLd slug="agent-graph" />
+<FaqJsonLd slug="agent-graph" />

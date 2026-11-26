@@ -3,7 +3,7 @@
   "name": "video-player-jw-jw-player-default-skin",
   "type": "registry:block",
   "title": "Video Player (JW Player) — JW Player — default skin",
-  "description": "JW's own control bar, untouched, around a JW-hosted playlist.",
+  "description": "The \"JW Player — default skin\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -4,14 +4,11 @@ export const metadata = docsPageMetadata("range-date-picker");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Range Date Picker
 
-An interactive **Range Date Picker** component featuring single month, dual-month, and rate-priced calendar layouts for hotel or flight booking applications.
-
-<AgentVariants slug="range-date-picker" />
-
-## Variations
+An interactive `RangeDatePicker` with single-month, dual-month, rate-priced, and start/end time-rail variants for booking and scheduling flows.
 
 export const usageSingle = `import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
 import { useState } from "react";
@@ -134,33 +131,35 @@ export default function BookingWindow() {
 }`;
 
 <ExampleShowcase minHeight={350}
+  headingLevel={2}
   name="range-date-picker"
   columns={1}
+  installation={<Installation name="range-date-picker" usage="below" />}
   examples={[
     {
       title: "Single Month Range Date Picker",
-      subheading: "Compact single month view for date range selection.",
+      description: "Compact single month view for date range selection.",
       props: { variant: "single" },
       usage: usageSingle,
       code: extractCode("src/components/custom/range-date-picker.tsx"),
     },
     {
       title: "Single Month Priced Range Date Picker",
-      subheading: "Single calendar layout displaying dynamic rate prices ($100, $120) below date numbers.",
+      description: "Single calendar layout displaying dynamic rate prices ($100, $120) below date numbers.",
       props: { variant: "priced-single" },
       usage: usagePricedSingle,
       code: extractCode("src/components/custom/range-date-picker.tsx"),
     },
     {
       title: "Dual Month Range Date Picker",
-      subheading: "Side-by-side dual calendars (Left Month & Right Month) for continuous range selection.",
+      description: "Side-by-side dual calendars (Left Month & Right Month) for continuous range selection.",
       props: { variant: "dual" },
       usage: usageDual,
       code: extractCode("src/components/custom/range-date-picker.tsx"),
     },
     {
       title: "Dual Month Priced Range Date Picker",
-      subheading: "Side-by-side dual calendars displaying dynamic rate prices ($100, $120) below date numbers.",
+      description: "Side-by-side dual calendars displaying dynamic rate prices ($100, $120) below date numbers.",
       props: { variant: "priced-dual" },
       usage: usagePricedDual,
       code: extractCode("src/components/custom/range-date-picker.tsx"),
@@ -181,7 +180,7 @@ export default function BookingWindow() {
     },
     {
       title: "Range with times",
-      subheading: "Pick a start day and a time rail unfolds beside the calendar: Start first, then an End column once the end day is chosen.",
+      description: "Pick a start day and a time rail unfolds beside the calendar: Start first, then an End column once the end day is chosen.",
       propNotes: [
         {
           lead: "Set",
@@ -197,22 +196,48 @@ export default function BookingWindow() {
   ]}
 />
 
-## Installation
+## About Shadcn Range Date Picker
 
-<Installation name="range-date-picker" />
+**What it is.** `RangeDatePicker` handles start-to-end date range selection across `single`, `dual`, `priced-single`, and `priced-dual` layouts, with optional `disablePast` bounds, `getPrice` per-day rate labels, and `showTime` start/end time rails.
 
-## Features
+**How it is built.** Built with native `Date` math and theme-aware color schemes (`primary`, `indigo`, `rose`, `emerald`, `zinc`).
 
-Discover the interactive capabilities of the `RangeDatePicker` component:
+**When to use it.** Use `RangeDatePicker` for hotel/flight booking ranges, analytics date filters, and availability windows. For single dates, use <DocLink to="date-picker">Date Picker</DocLink>.
+
+**Features.**
 
 - **Single & Dual Priced Calendars (`variant="priced-single" | "priced-dual"`)**: Renders dynamic rate prices (`$100`, `$120`) directly below each date number for hotel room or flight booking workflows in both single and dual month views.
-- **Dual Calendar Layout (`variant="dual"`)**: Displays two side-by-side calendars (Month N on Left, Month N+1 on Right). Select start date from the left calendar and end date on the right calendar.
+- **Dual Calendar Layout (`variant="dual"`)**: Displays two calendars side by side (Month N and Month N+1), stacked on narrow screens. Both belong to one range, so the start and end can fall in either month.
 - **Single Calendar Layout (`variant="single"`)**: Compact single-month view ideal for smaller screens or compact forms.
-- **Custom Price Formatter (`getPrice`)**: Accepts custom callback functions to supply date-specific rates from API or static pricing rules.
+- **Custom Price Formatter (`getPrice`)**: Accepts a callback that returns a string, number or `null` for each date, so rates can come from an API or static pricing rules.
 - **Range Selection Engine**: Click any start date and end date to highlight the span with smooth background effects.
-- **Dynamic Color Themes**: Built-in support for `"primary"`, `"indigo"`, `"rose"`, `"emerald"`, and `"zinc"` color schemes.
+- **Color Themes**: Built-in `"primary"`, `"indigo"`, `"rose"`, `"emerald"`, and `"zinc"` color schemes.
 
-## Props Reference: RangeDatePicker
+## For AI agents
+
+<AgentBrief name="range-date-picker">
+
+**When to use**
+
+- Date-span selection (`{ from, to }`) in single or dual-month calendars
+- Priced booking calendars (`variant="priced-single" | "priced-dual"`, `getPrice`) or ranges with start/end times (`showTime`)
+
+**When not to use**
+
+- Single date selection — use <DocLink to="date-picker">Date Picker</DocLink>
+- Day-and-time appointment slots — use <DocLink to="booking-card">Booking Card</DocLink>
+
+**Agent notes**
+
+- Named exports: `RangeDatePicker`, `type DateRange` from `@/components/custom/range-date-picker`
+- Controlled use takes `value` and `onChange` with a `DateRange` (`{ from, to }`, each a `Date` or `null`). `onChange` fires on every click, so the first click of a new range gives `to: null`.
+- Prices show when `showPrices` is set, the variant is `priced-single` or `priced-dual`, or `getPrice` is passed. Without `getPrice` the placeholders are `$100` on weekdays and `$120` on weekends, so always pass your own.
+- Pass `disablePast` to block past dates from starting or ending a range; `disabled` greys out the whole card.
+- `showTime` adds Start and End time columns built from the `time-picker` registry dependency.
+
+</AgentBrief>
+
+## Props Reference
 
 <div className="overflow-x-auto">
   <table>
@@ -313,6 +338,35 @@ Discover the interactive capabilities of the `RangeDatePicker` component:
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Pair `RangeDatePicker` with <DocLink to="data-table">Data Table</DocLink> or <DocLink to="chart">Chart</DocLink> for analytics date-range filtering.
+- Combine priced variants with <DocLink to="booking-card">Booking Card</DocLink> or <DocLink to="action-buttons">Action Button</DocLink> (`PaymentButton`).
+- Use <DocLink to="date-picker">Date Picker</DocLink> instead when the user picks only one day.
+
+## How do I show nightly prices under each calendar day in RangeDatePicker?
+
+Use `variant="priced-single"` or `"priced-dual"` and pass `getPrice={(date) => ...}`, returning a string, a number or `null` for that day. Without `getPrice` the picker shows placeholder rates, $100 on weekdays and $120 on weekends, so always supply your own.
+
+## How do I read the selected range from RangeDatePicker?
+
+Pass `value` and `onChange`. `onChange` receives a `DateRange`, `{ from, to }` with each a `Date` or `null`, and fires on every click, so the first click of a range arrives with `to: null`. Uncontrolled, `defaultFrom` and `defaultTo` start it at seven days ago and today.
+
+## How do I stop RangeDatePicker from selecting past dates?
+
+Set `disablePast`, or bound the calendar with `minDate` and `maxDate`, both inclusive. Disabled days are struck through and cannot be clicked. When `disablePast` and `minDate` are both set, the later bound wins. With `showTime`, times already passed today are disabled too.
+
+## How do I add start and end times to RangeDatePicker?
+
+Set `showTime`. The card opens with the calendar alone, and picking a start day unfolds Start and End time columns beside it, or under it on a narrow card. Use `timeFormat="24h"` and `minuteStep` to adjust them. On a same-day range the end can never precede the start.
+
+## Which colors does RangeDatePicker support?
+
+`color` accepts `"primary"`, `"indigo"`, `"rose"`, `"emerald"` and `"zinc"`. `"primary"` follows your theme tokens, so a Themes preset restyles it, while the others use fixed Tailwind palette colors that stay the same across themes. Any other string falls back to `"primary"`, so a typo never breaks the card.
+
+## Does RangeDatePicker work in Vite and respect reduced motion?
+
+Yes to both. The file imports nothing from `next/*`, and it needs only `lucide-react` plus the `time-picker` item the installer adds. The time rail's unfold animation switches off when the user prefers reduced motion. Day cells are plain buttons, so Tab reaches them and disabled days are skipped.
 
 <DocsJsonLd slug="range-date-picker" />
+<FaqJsonLd slug="range-date-picker" />

@@ -3,7 +3,7 @@
   "name": "animated-typography-spotlight-focus-reveal",
   "type": "registry:block",
   "title": "Animated Typography — Spotlight Focus Reveal",
-  "description": "Localized spotlight beam effect revealing text out of heavy blur.",
+  "description": "The \"Spotlight Focus Reveal\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

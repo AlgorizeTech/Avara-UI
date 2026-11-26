@@ -3,7 +3,7 @@
   "name": "particle-canvas-text-particle-repel",
   "type": "registry:block",
   "title": "Particle Canvas — Text Particle Repel",
-  "description": "Your text rasterised into thousands of dots that scatter away from the pointer and spring back.",
+  "description": "The \"Text Particle Repel\" example from the Avara UI docs.",
   "dependencies": [
     "next-themes",
     "tw-animate-css"

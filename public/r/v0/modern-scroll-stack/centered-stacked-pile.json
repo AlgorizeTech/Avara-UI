@@ -3,7 +3,7 @@
   "name": "modern-scroll-stack-centered-stacked-pile",
   "type": "registry:block",
   "title": "Modern Scroll Stack — Centered Stacked Pile",
-  "description": "Cards rise straight up the center and stack directly on top of one another with alternating angled tilts so every card's edges peek out behind the deck.",
+  "description": "The \"Centered Stacked Pile\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

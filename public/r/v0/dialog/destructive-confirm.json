@@ -3,7 +3,7 @@
   "name": "dialog-destructive-confirm",
   "type": "registry:block",
   "title": "Dialog — Destructive confirm",
-  "description": "A confirmation shape: coloured title, clear consequence, two footer actions.",
+  "description": "The \"Destructive confirm\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

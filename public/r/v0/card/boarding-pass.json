@@ -3,7 +3,7 @@
   "name": "card-boarding-pass",
   "type": "registry:block",
   "title": "Card — Boarding pass",
-  "description": "One card, two panels, a dashed perforation between them — the holes are circles filled with the page colour.",
+  "description": "The \"Boarding pass\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

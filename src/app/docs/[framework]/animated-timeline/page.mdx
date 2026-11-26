@@ -3,6 +3,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("animated-timeline");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Animated Timeline
@@ -11,8 +12,6 @@ A highly dynamic, scroll-aware timeline engine featuring Intersection Observers 
 
 Unlike standard static timelines, this `AnimatedTimelineBlock` uses native browser APIs (`IntersectionObserver`) to orchestrate complex animations only when the user scrolls the elements into view. As the user scrolls down your page, the vertical tracking line dynamically extends, the nodes glow, and the cards flip, blur, or slide into position.
 
-
-<AgentVariants slug="animated-timeline" />
 Every preview scrolls internally — **scroll down inside a preview** and watch the tracking line extend as each node crosses the observer threshold.
 
 export const timelineEvents = `import {
@@ -121,10 +120,11 @@ export default function RightTimeline() {
 <ExampleShowcase headingLevel={2}
   name="timeline-cable"
   columns={1}
+  installation={<Installation name="timeline-cable" showSetupPath={false} usage="below" />}
   examples={[
     {
       title: "Cable timeline",
-      subheading: "Cards on a centre playhead. Drag sideways or scroll the wheel over it to bring the next one forward.",
+      description: "Cards on a centre playhead. Drag sideways or scroll the wheel over it to bring the next one forward.",
       propNotes: [
         {
           prop: "events",
@@ -142,19 +142,16 @@ export default function RightTimeline() {
   ]}
 />
 
-### Install the cable timeline
-
-<Installation name="timeline-cable" showSetupPath={false} />
-
 <ExampleShowcase headingLevel={2}
   name="timeline-path"
   colorControl
   colorLabel="Accent Color"
   columns={1}
+  installation={<Installation name="timeline-path" showSetupPath={false} usage="below" />}
   examples={[
     {
       title: "Path timeline",
-      subheading: "A winding line that draws itself from stop to stop, with a glowing head and cards that light up on arrival.",
+      description: "A winding line that draws itself from stop to stop, with a glowing head and cards that light up on arrival.",
       minHeight: 410,
       usage: extractCode("src/preview/demos/timeline-path-demo.tsx"),
       code: extractCode("src/components/custom/blocks/TimelinePathBlock.tsx"),
@@ -162,19 +159,16 @@ export default function RightTimeline() {
   ]}
 />
 
-### Install the path timeline
-
-<Installation name="timeline-path" showSetupPath={false} />
-
 <ExampleShowcase headingLevel={2}
   name="timeline-dial"
   colorControl
   colorLabel="Accent Color"
   columns={1}
+  installation={<Installation name="timeline-dial" showSetupPath={false} usage="below" />}
   examples={[
     {
       title: "Dial timeline",
-      subheading: "Entries ride an arc beside a ruler of ticks. Click one, use the arrows, the mouse wheel or arrow keys, or drag up and down.",
+      description: "Entries ride an arc beside a ruler of ticks. Click one, use the arrows, the mouse wheel or arrow keys, or drag up and down.",
       minHeight: 410,
       usage: extractCode("src/preview/demos/timeline-dial-demo.tsx"),
       code: extractCode("src/components/custom/blocks/TimelineDialBlock.tsx"),
@@ -182,19 +176,16 @@ export default function RightTimeline() {
   ]}
 />
 
-### Install the dial timeline
-
-<Installation name="timeline-dial" showSetupPath={false} />
-
 <ExampleShowcase headingLevel={2}
   name="timeline-ruler"
   colorControl
   colorLabel="Accent Color"
   columns={1}
+  installation={<Installation name="timeline-ruler" showSetupPath={false} usage="below" />}
   examples={[
     {
       title: "Ruler timeline",
-      subheading: "Labels slide past a wavy rail and the one at the bulge is detailed beside it. Click a label, press the round button, or use the wheel, arrow keys or a drag.",
+      description: "Labels slide past a wavy rail and the one at the bulge is detailed beside it. Click a label, press the round button, or use the wheel, arrow keys or a drag.",
       propNotes: [
         {
           lead: "Each entry's",
@@ -209,19 +200,16 @@ export default function RightTimeline() {
   ]}
 />
 
-### Install the ruler timeline
-
-<Installation name="timeline-ruler" showSetupPath={false} />
-
 <ExampleShowcase headingLevel={2}
   name="timeline-steps"
   colorControl
   colorLabel="Accent Color"
   columns={1}
+  installation={<Installation name="timeline-steps" showSetupPath={false} usage="below" />}
   examples={[
     {
       title: "Steps timeline",
-      subheading: "Numbered nodes on a rail that fills as you scroll the box. Click a node to bring that step into focus.",
+      description: "Numbered nodes on a rail that fills as you scroll the box. Click a node to bring that step into focus.",
       minHeight: 410,
       usage: extractCode("src/preview/demos/timeline-steps-demo.tsx"),
       code: extractCode("src/components/custom/blocks/TimelineStepsBlock.tsx"),
@@ -229,15 +217,12 @@ export default function RightTimeline() {
   ]}
 />
 
-### Install the steps timeline
-
-<Installation name="timeline-steps" showSetupPath={false} />
-
 <ExampleShowcase minHeight={400} headingLevel={2}
   name="animated-timeline"
   colorControl
   colorLabel="Active Focus Color"
   columns={1}
+  installation={<Installation name="animated-timeline" usage="below" />}
   examples={[
     {
       title: "Animated timeline",
@@ -265,10 +250,6 @@ export default function RightTimeline() {
     },
   ]}
 />
-
-### Install the animated timeline
-
-<Installation name="animated-timeline" />
 
 ### Layouts
 
@@ -315,31 +296,37 @@ export default function RightTimeline() {
 Layouts switch at **container queries** (`@container/timeline`), so they follow the width of the column a timeline sits in, not the window. Container queries are built into Tailwind v4; on v3 the timelines stay in their narrow layout.
 
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+## About Shadcn Animated Timeline
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Fluid Animations">
-    <p>Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
-  </InfoCard>
-  <InfoCard title="Highly Customizable">
-    <p>Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
-  </InfoCard>
-  <InfoCard title="Responsive Design">
-    <p>Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
-  </InfoCard>
-</div>
+**What it is.** Six timeline blocks, each its own registry install: `AnimatedTimelineBlock` (cards that reveal on scroll), `TimelineStepsBlock` (numbered rail), `TimelinePathBlock` (winding SVG path), `TimelineDialBlock` (wheel), `TimelineRulerBlock` (wavy date ruler) and `TimelineCableBlock` (cards on a centre playhead).
 
-## Best Practices & Guidelines
+**How it is built.** `AnimatedTimelineBlock` gives each node an `IntersectionObserver` (`threshold` 0.1) that toggles its entrance, with `sm:` breakpoints for the layout. Steps and Path follow the scroll of the nearest scrolling ancestor. Dial, Ruler and Cable step through entries with the wheel, drag and arrow keys. Steps, Path, Dial and Ruler use `@container/timeline` container queries.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Give the timeline room to breathe — the entrance only reads as an entrance when a node crosses the observer threshold mid-scroll, so avoid placing the whole list above the fold. On narrow columns prefer <code>layout="left"</code>; the centered rail needs roughly 640px to avoid cramped cards.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use it for product histories, release roadmaps, storytelling landing pages and milestone showcases where position in the timeline should be felt, not just read.
+
+## For AI agents
+
+<AgentBrief name="animated-timeline">
+
+**When to use**
+
+- Interactive product histories, release roadmaps
+- Storytelling landing pages, scroll-driven milestone showcases
+
+**When not to use**
+
+- A plain status-driven vertical feed: use <DocLink to="timeline">Timeline</DocLink>
+- Stages arranged around a circle: use <DocLink to="radial-orbital-timeline">Radial Orbital Timeline</DocLink>
+
+**Agent notes**
+
+- Install only the block you need: `animated-timeline`, `timeline-steps`, `timeline-path`, `timeline-dial`, `timeline-ruler` or `timeline-cable`. Each is a named export of its own file, such as `AnimatedTimelineBlock` from `@/components/custom/blocks/AnimatedTimelineBlock`.
+- `AnimatedTimelineBlock` takes `items`, `layout` (`"left" | "right" | "center"`, default `"left"`), `animation` (`"fade-up" | "slide-in" | "zoom-in" | "flip-up" | "blur-in"`, default `"fade-up"`) and `color`.
+- Steps, Path, Dial and Ruler take `items`, `color`, `animate`, `defaultIndex` and `onIndexChange`. `TimelineCableBlock` takes `events` with `value` / `onValueChange` instead.
+- Give `AnimatedTimelineBlock` vertical scroll room so nodes reveal one by one, and use `layout="left"` in narrow columns because its breakpoints follow the viewport.
+- Dial and Ruler need `lucide-react`; none of the blocks import `next/*`.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -363,7 +350,7 @@ Discover the key capabilities that make this component an excellent choice for m
       <tr>
         <td><code>layout</code></td>
         <td><code>"left" | "right" | "center"</code></td>
-        <td><code>"center"</code></td>
+        <td><code>"left"</code></td>
         <td>Where the rail sits and whether cards alternate sides.</td>
       </tr>
       <tr>
@@ -374,7 +361,7 @@ Discover the key capabilities that make this component an excellent choice for m
       </tr>
       <tr>
         <td><code>color</code></td>
-        <td><code>"primary" | "indigo" | "rose" | "emerald" | "blue" | "zinc" | (hex string)</code></td>
+        <td><code>"primary" | "indigo" | "rose" | "emerald" | "blue" | "violet" | "zinc" | (hex string)</code></td>
         <td><code>"primary"</code></td>
         <td>Accent applied to the active node, its glow and the extended rail.</td>
       </tr>
@@ -662,6 +649,35 @@ Discover the key capabilities that make this component an excellent choice for m
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- <DocLink to="timeline">Timeline</DocLink> for static, status-driven rails when nothing needs to animate on scroll.
+- <DocLink to="scroll-stack">Scroll Stack</DocLink> for stacked cards that pin as the page scrolls, if the timeline sits in a longer scroll story.
+- <DocLink to="radial-orbital-timeline">Radial Orbital Timeline</DocLink> for stages arranged around a circle instead of down a rail.
+
+## Which AnimatedTimeline block should I install?
+
+Pick by interaction. `animated-timeline` reveals cards as they scroll in, `timeline-steps` fills a numbered rail, `timeline-path` draws a winding line, `timeline-dial` turns a wheel, `timeline-ruler` slides a date ruler and `timeline-cable` drags cards past a centre playhead. Each installs separately.
+
+## Why should I avoid placing all AnimatedTimeline items above the fold?
+
+Each node's `IntersectionObserver` (`threshold` 0.1, bottom margin of 40px) reveals its card when it enters the viewport. If every item is already visible on load, they all animate at once and the staggered scroll reveal is lost. The observer also reverses, so scrolling back up plays the entrance again.
+
+## Which layout of AnimatedTimelineBlock works best in narrow columns?
+
+Use `layout="left"`, which is also the default, or `"right"`. The `"center"` layout alternates cards on each side of the rail from the `sm` breakpoint up, and that breakpoint follows the viewport, not the column. A centred timeline inside a narrow sidebar on a wide screen will therefore stay cramped.
+
+## How do I know which entry is in focus in a timeline block?
+
+For Steps, Path, Dial and Ruler, pass `onIndexChange` to receive the focused index and `defaultIndex` to choose where it starts. `TimelineCableBlock` works with event ids instead: use `value` or `defaultValue` and `onValueChange(id)`. The index callbacks do not fire on mount, only when focus changes.
+
+## Can I move through the timelines with the keyboard?
+
+Mostly. `TimelineDialBlock` and `TimelineRulerBlock` are focusable groups that step with the arrow keys, `Home` and `End`, plus wheel and drag. In `TimelineCableBlock` the arrow keys, `Home` and `End` move between cards. `TimelineStepsBlock` nodes are buttons, and `AnimatedTimelineBlock` has no keyboard controls.
+
+## Do the timeline blocks need Tailwind v4 or extra packages?
+
+Steps, Path, Dial and Ruler use `@container/timeline` container-query classes, which are built into Tailwind v4. `AnimatedTimelineBlock` uses ordinary `sm:` breakpoints. Dial and Ruler import `lucide-react`; the others add no npm packages, and none use `next/*`, so they run in Vite too.
 
 <DocsJsonLd slug="animated-timeline" />
+<FaqJsonLd slug="animated-timeline" />

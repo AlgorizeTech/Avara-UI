@@ -1,6 +1,7 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 export const metadata = docsPageMetadata("qr-code-generator", {
@@ -21,9 +22,7 @@ export const metadata = docsPageMetadata("qr-code-generator", {
 
 # Shadcn QR Code
 
-A premium, dual-purpose QR Code component suite built for Next.js applications.
-
-Whether you need to generate high-fidelity, customizable QR codes (with PNG/PDF download support) or allow users to upload and scan QR code images to extract embedded URLs, this suite has you covered.
+A dual-purpose QR code suite for React apps: render a customizable SVG QR code, or let users upload an image and read the text inside it.
 
 Everything below runs client-side — type a new value and the SVG regenerates instantly. The generator and the reader are separate components with separate install commands.
 
@@ -162,15 +161,16 @@ export default function ReaderExample() {
   colorProp="themeColor"
   colorLabel="Color Variant"
   columns={1}
+  installation={<Installation name="qr-code-generator" usage="below" />}
   examples={[
     {
       title: "QR generator",
-      subheading: "Type a value, pick an error-correction level, and export as PNG or PDF.",
+      description: "Type a value, pick an error-correction level, and export as PNG or PDF.",
       propNotes: [
         {
           prop: "value",
           effect:
-            "is the data or URL encoded into the code — required, despite defaulting to an empty string.",
+            "is the data or URL encoded into the code — required, with no default; an empty string shows a \"No Value\" placeholder instead of a code.",
         },
       ],
       props: { activeTab: "generator" },
@@ -179,10 +179,6 @@ export default function ReaderExample() {
     },
   ]}
 />
-
-### Installation
-
-<Installation name="qr-code-generator" />
 
 ### More examples
 
@@ -229,6 +225,7 @@ A separate component with its own dependencies — decoding happens entirely in 
   colorProp="themeColor"
   colorLabel="Color Variant"
   columns={1}
+  installation={<Installation name="qr-code-reader" showSetupPath={false} usage="below" />}
   examples={[
     {
       title: "QR reader",
@@ -246,53 +243,37 @@ A separate component with its own dependencies — decoding happens entirely in 
   ]}
 />
 
-### Installation
+## About Shadcn QR Code
 
-<Installation name="qr-code-reader" showSetupPath={false} />
+**What it is.** **Shadcn QR Code** provides two independent client-side components: `QrCodeGenerator` for rendering a crisp SVG QR code, and `QrCodeReader` for scanning uploaded or drag-and-dropped QR images. PNG and PDF export is not part of the component: the preview above builds it with a canvas and `jspdf` in the demo.
 
-## Features
-Explore the QR Code Generator's customizable features, allowing for different colors, sizes, and embedded logos within the code.
+**How it is built.** Both components run in the browser without external APIs. `QrCodeGenerator` wraps `QRCodeSVG` from `qrcode.react` and takes `size`, `fgColor`, `bgColor`, `includeMargin` and an error-correction `level` (`L | M | Q | H`). `QrCodeReader` draws the image to a hidden canvas, decodes it with `jsqr` and calls `onRead`.
 
+**When to use it.** Use it for payment checkout codes, event tickets, two-factor setup screens, and client-side QR image uploaders.
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Fully Client-side">
-    <p>Runs securely in the browser without relying on any external APIs.</p>
-  </InfoCard>
-  <InfoCard title="High-Fidelity Output">
-    <p>Generates crisp, scalable SVG QR codes that never lose visual quality.</p>
-  </InfoCard>
-  <InfoCard title="Highly Customizable">
-    <p>Easily tweak foreground/background colors, sizes, and error correction levels.</p>
-  </InfoCard>
-  <InfoCard title="Drag-and-Drop Scan">
-    <p>The reader supports both file selection and drag-and-drop for a premium UX.</p>
-  </InfoCard>
-</div>
+## For AI agents
 
-## Best Practices & Guidelines
+<AgentBrief name="qr-code-generator">
 
-<div id="generator-docs-best-practices">
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Color Contrast">
-    <p>Ensure a high contrast between the background and foreground colors. A light background (e.g., <code>#FFFFFF</code>) with a dark foreground (e.g., <code>#000000</code>) is recommended for optimal scannability by smartphone cameras.</p>
-  </InfoCard>
-  <InfoCard title="Error Correction Level">
-    <p>Use <strong>L (Low)</strong> for simple URLs to keep the QR code visually clean and sparse. Use <strong>H (High)</strong> if you plan to overlay a custom logo in the center, as it allows up to 30% of the code to be obscured without breaking.</p>
-  </InfoCard>
-</div>
-</div>
+**When to use**
 
-<div id="reader-docs-best-practices">
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Error Handling">
-    <p>The reader automatically handles invalid or unreadable images. Consider adding UI feedback (e.g., a toast notification) if the <code>onRead</code> callback isn't triggered after a user uploads an invalid file.</p>
-  </InfoCard>
-  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Accessibility (a11y)</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">The drag-and-drop area is keyboard accessible, but ensure any surrounding labels or descriptions clearly instruct the user to upload a valid QR code image.</p>
-  </div>
-</div>
-</div>
+- Showing a link, ticket or pairing code as a scannable SVG QR code
+- Reading the text out of an uploaded or dropped QR image, entirely in the browser
+
+**When not to use**
+
+- A plain file upload with no QR decoding: use <DocLink to="file-upload">File Upload</DocLink>
+- Copying a value to the clipboard: use <DocLink to="copy-button">Copy Button</DocLink>
+
+**Agent notes**
+
+- Install `qr-code-generator` for `QrCodeGenerator` and `qr-code-reader` for `QrCodeReader`.
+- Pass `value` (required string), `size`, `fgColor`, `bgColor`, `includeMargin` and `level` (`"L" | "M" | "Q" | "H"`) to `QrCodeGenerator`. An empty `value` renders a dashed "No Value" box instead of a code.
+- With `level` other than `"L"`, the component appends a short suffix (`#m1`, `#q12345` or `#h` plus digits) to `value` before encoding, so a scanner reads back the value plus that suffix. Use `"L"` when the decoded text must match exactly.
+- There is no download or export prop. Serialise the rendered `svg` yourself if you need PNG or PDF.
+- Pass `onRead={(data) => ...}` to `QrCodeReader`. It reads still images only (no camera) and calls `onRead` once per successful decode. Dropped images use the `onRead` from the first render, so keep that handler stable or read live state through a ref.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -312,8 +293,8 @@ Explore the QR Code Generator's customizable features, allowing for different co
       <tr>
         <td><code>value</code></td>
         <td><code>string</code></td>
-        <td><code>""</code></td>
-        <td>The data or URL to encode inside the QR code (Required).</td>
+        <td>Required</td>
+        <td>The data or URL to encode inside the QR code. An empty string renders a "No Value" placeholder.</td>
       </tr>
       <tr>
         <td><code>size</code></td>
@@ -325,19 +306,31 @@ Explore the QR Code Generator's customizable features, allowing for different co
         <td><code>bgColor</code></td>
         <td><code>string</code></td>
         <td><code>"#FFFFFF"</code></td>
-        <td>Background color of the QR code (supports hex/rgba).</td>
+        <td>Background colour of the QR code. Any CSS colour, including <code>"transparent"</code>.</td>
       </tr>
       <tr>
         <td><code>fgColor</code></td>
         <td><code>string</code></td>
         <td><code>"#000000"</code></td>
-        <td>Foreground color (the dots/pattern) of the QR code.</td>
+        <td>Foreground colour (the dots/pattern). Any CSS colour, including <code>"currentColor"</code>.</td>
       </tr>
       <tr>
         <td><code>level</code></td>
         <td><code>"L" | "M" | "Q" | "H"</code></td>
         <td><code>"L"</code></td>
-        <td>Error correction level (Low, Medium, Quartile, High).</td>
+        <td>Error correction level (Low, Medium, Quartile, High). Levels other than <code>"L"</code> add a suffix to the encoded value.</td>
+      </tr>
+      <tr>
+        <td><code>includeMargin</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Adds the 4-module quiet zone around the pattern.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Classes for the wrapping <code>div</code>. Other <code>div</code> attributes and a <code>ref</code> go to the same element.</td>
       </tr>
     </tbody>
   </table>
@@ -376,6 +369,35 @@ Explore the QR Code Generator's customizable features, allowing for different co
 
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Place `QrCodeGenerator` beside an <DocLink to="invoice">Invoice</DocLink> to give the bill a scannable payment link.
+- Add a <DocLink to="copy-button">Copy Button</DocLink> next to the generator to copy the string you encode.
+- Use <DocLink to="file-upload">File Upload</DocLink> when the upload is a plain document and no QR decoding is needed.
+
+## How do I export a `QrCodeGenerator` code as PNG or PDF?
+
+The component only renders SVG and has no export prop. The preview above serialises the rendered `svg`, draws it onto a canvas for PNG and passes that image to `jspdf` for PDF. `jspdf` is not installed with `qr-code-generator`, so add it yourself if you copy that approach.
+
+## Why does the decoded text end in `#m1` when I change `level`?
+
+For `"M"`, `"Q"` and `"H"` the component appends `#m1`, `#q12345` or `#h` plus 20 digits to `value` before encoding, which makes the pattern denser. A scanner reads that suffix back too. Keep the default `"L"` when the scanned text must equal `value` exactly.
+
+## What do the `L`, `M`, `Q` and `H` levels in `QrCodeGenerator` mean?
+
+They are the four QR error-correction levels (Low, Medium, Quartile, High), passed to `QRCodeSVG` as `level` with `"L"` as the default. Higher levels survive more smudging or cropping but produce a denser pattern, so raise `size` for `"Q"` and `"H"` to keep it scannable.
+
+## How do I colour `QrCodeGenerator` with my theme?
+
+Set `fgColor="currentColor"` and `bgColor="transparent"`, then give `className` a text colour such as `text-primary`. The classes land on the wrapping `div`, and the SVG inherits that colour. Keep strong contrast between foreground and background, or scanners fail.
+
+## Does `QrCodeReader` upload the image or use the camera?
+
+Neither. It accepts one still image by click or drag-and-drop (`accept="image/*"`), draws it to a hidden canvas scaled to at most 800 px, and decodes it in the browser with `jsqr`. Nothing is sent to a server, and the result goes to `onRead`.
+
+## What does `QrCodeGenerator` show when `value` is empty?
+
+A dashed bordered box reading "No Value", sized to `size` by `size` pixels, instead of a QR code. That makes it safe to bind `value` to an input that starts empty, such as the live generator in the preview above.
 
 <DocsJsonLd slug="qr-code-generator" />
+<FaqJsonLd slug="qr-code-generator" />

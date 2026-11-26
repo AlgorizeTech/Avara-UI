@@ -3,7 +3,7 @@
   "name": "flowchart-flowchart",
   "type": "registry:block",
   "title": "Flowchart",
-  "description": "`FlowCanvas` holds the SVG routes; `FlowNode`s are positioned over it.",
+  "description": "The \"Flowchart\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -3,7 +3,7 @@
   "name": "breadcrumb-flow-flow-breadcrumb",
   "type": "registry:block",
   "title": "Breadcrumb Flow — Flow breadcrumb",
-  "description": "Composed from parts. Items fade in and out as the route changes and the rest slide into place; past `maxItems` the middle collapses behind an ellipsis.",
+  "description": "The \"Flow breadcrumb\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

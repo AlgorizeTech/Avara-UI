@@ -3,7 +3,7 @@
   "name": "resizable-resizable-layout",
   "type": "registry:block",
   "title": "Resizable — Resizable layout",
-  "description": "Groups nest, so a full IDE layout is a few lines.",
+  "description": "The \"Resizable layout\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

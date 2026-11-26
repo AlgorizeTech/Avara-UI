@@ -3,7 +3,7 @@
   "name": "agent-graph-editorial-crew",
   "type": "registry:block",
   "title": "Agent Graph — Editorial (2-Column)",
-  "description": "Two-column editorial workflow variant (`variant=\"editorial\"`) with shaded cards by default; pass `shade={false}` for a flat look.",
+  "description": "The \"Editorial (2-Column)\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

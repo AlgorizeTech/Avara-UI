@@ -3,7 +3,7 @@
   "name": "scroll-accordion-scroll-accordion-showcase",
   "type": "registry:block",
   "title": "Scroll Accordion Showcase",
-  "description": "One row per item; the sticky card follows whichever row is active.",
+  "description": "The \"Scroll accordion showcase\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

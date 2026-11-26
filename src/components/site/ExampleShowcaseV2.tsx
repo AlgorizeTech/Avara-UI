@@ -5,6 +5,10 @@ import { ExampleShowcase } from "@/components/site/Sandbox";
 import { PreviewFrameContext, type PreviewFrameConfig } from "@/components/site/preview-frame-context";
 import { SandboxInlineFrame } from "@/components/site/SandboxInlineFrame";
 import { sandboxRegistry } from "@/preview/registry";
+import { cn } from "@/lib/utils";
+
+/** Fixed neutral light/dark grey stage so theme presets cannot repaint previews. */
+export const NEUTRAL_PREVIEW_STAGE = "[--preview-stage:#fafafa] dark:[--preview-stage:#202023]";
 
 /** Module-level so the context value is stable across renders. */
 const INLINE_PREVIEWS: PreviewFrameConfig = { Frame: SandboxInlineFrame, eager: true };
@@ -32,7 +36,7 @@ export function ExampleShowcaseV2(props: ComponentProps<typeof ExampleShowcase>)
 
   return (
     <PreviewFrameContext.Provider value={INLINE_PREVIEWS}>
-      <ExampleShowcase {...props} />
+      <ExampleShowcase {...props} className={cn(NEUTRAL_PREVIEW_STAGE, props.className)} />
     </PreviewFrameContext.Provider>
   );
 }

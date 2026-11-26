@@ -3,12 +3,12 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("falling-tags");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
-import { Installation } from "@/components/site/installation";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Falling Tags
 
-A physics-based interactive tags playground inspired by the viral **Falling Tags** Framer component by Guo. When the section scrolls into view, tags fade in floating gently near the top, hover weightlessly for a moment, then lose their footing, drop, tumble, collide realistically, and pile up naturally at the bottom.
+A physics playground where tags drop, tumble and pile up as the section scrolls into view. Inspired by Guo's Falling Tags for Framer.
 
 Visitors can grab any tag with a mouse or finger, drag it around, and fling it across the container with authentic velocity and angular momentum. Built with pure TypeScript and mathematical 2D rigid-body collision dynamics — zero external physics dependencies needed. Tags automatically follow your project's global theme radius (`--radius`).
 
@@ -147,10 +147,11 @@ export default function BlackAndWhiteTags() {
   name="falling-tags"
   columns={1}
   minHeight={0}
+  installation={<Installation name="falling-tags" usage="below" />}
   examples={[
     {
       title: "Interactive physics arena",
-      subheading:
+      description:
         "Watch the tags float into view, drop and tumble into a natural pile. Click and throw any tag with your mouse or finger.",
       propNotes: [
         {
@@ -188,23 +189,9 @@ export default function BlackAndWhiteTags() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/FallingTagsBlock.tsx"),
     },
-  ]}
-/>
-
-### Installation
-
-<Installation name="falling-tags" />
-
-## Examples
-
-<ExampleShowcase
-  name="falling-tags"
-  columns={1}
-  minHeight={0}
-  examples={[
     {
       title: "Colorful",
-      subheading:
+      description:
         "Vibrant multi-color playful palette across rich indigo, emerald, rose, and amber tones.",
       propNotes: [
         {
@@ -223,7 +210,7 @@ export default function BlackAndWhiteTags() {
     },
     {
       title: "Glass",
-      subheading:
+      description:
         "Translucent frosted glass badges with backdrop-blur and luminous specular borders over a scenic backdrop. Moving blur is GPU-heavy on phones.",
       propNotes: [
         {
@@ -243,7 +230,7 @@ export default function BlackAndWhiteTags() {
     },
     {
       title: "Neon",
-      subheading:
+      description:
         "High-energy glowing cyberpunk badges with vibrant borders and neon glow shadows.",
       propNotes: [
         {
@@ -262,7 +249,7 @@ export default function BlackAndWhiteTags() {
     },
     {
       title: "Pastel",
-      subheading:
+      description:
         "Soft soothing aesthetic pastel badges designed for serene minimal layouts and creative portfolios.",
       propNotes: [
         {
@@ -282,7 +269,7 @@ export default function BlackAndWhiteTags() {
     },
     {
       title: "Monochrome",
-      subheading:
+      description:
         "High-contrast editorial zinc and black/white palette tailored for modern minimalist dark and light themes.",
       propNotes: [
         {
@@ -302,7 +289,7 @@ export default function BlackAndWhiteTags() {
     },
     {
       title: "Black and white",
-      subheading:
+      description:
         "High-contrast dual-tone black and white badges. Tags alternate between black background with white text and border, and white background with black text and border.",
       propNotes: [
         {
@@ -323,22 +310,37 @@ export default function BlackAndWhiteTags() {
   ]}
 />
 
-## Features
+## About Shadcn Falling Tags
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Float-to-Drop Sequence">
-    <p>When scrolled into view, tags appear in the upper arena with a gentle floating levitation wave before gravity triggers the drop.</p>
-  </InfoCard>
-  <InfoCard title="Real 2D Rigid-Body Physics">
-    <p>Oriented-box (rotated rectangle) collision solver with realistic mass, angular inertia, restitution bounce, and sliding friction.</p>
-  </InfoCard>
-  <InfoCard title="Interactive Grab & Throw">
-    <p>Grab tags with your mouse or finger, toss them in any direction, and watch them rebound off walls and scatter other tags with momentum.</p>
-  </InfoCard>
-  <InfoCard title="No Physics Library">
-    <p>Built with native React and a requestAnimationFrame loop. The only npm dependency is lucide-react.</p>
-  </InfoCard>
-</div>
+**What it is.** **Shadcn Falling Tags** (`FallingTags`) is an interactive 2D rigid-body physics arena where skill or category badges float into view, drop under gravity, collide, and can be grabbed and thrown by pointer or touch.
+
+**How it is built.** A pure TypeScript oriented-box collision solver runs in a `requestAnimationFrame` loop, with no Matter.js or other physics engine. The only npm dependency is `lucide-react`. Tags inherit your global `--radius` token, support 7 palettes, and read `prefers-reduced-motion`. It is the default export of `FallingTagsBlock`.
+
+**When to use it.** Use it for portfolio skill sections, product capability tags, interactive about pages, and playful feature showcases.
+
+## For AI agents
+
+<AgentBrief name="falling-tags">
+
+**When to use**
+
+- Portfolio skill sections, product capability tags
+- Interactive about pages, playful feature showcases
+
+**When not to use**
+
+- A static strip of tool logos: use <DocLink to="tech-stack">Tech Stack</DocLink>
+- Decorative particles with no collision physics: use <DocLink to="particle-canvas">Particle Canvas</DocLink>
+
+**Agent notes**
+
+- `FallingTags` accepts `tags`, `palette` (`"default" | "colorful" | "glass" | "pastel" | "monochrome" | "neon" | "black-and-white"`), `gravity`, `bounce`, `hoverDuration`, `interactive`, and `height`.
+- Uses a pure TypeScript 2D rigid-body solver with zero external physics dependencies.
+- `interactive` is `true` by default, so visitors can grab and fling badges; pass `interactive={false}` to disable it.
+- `tags` takes strings or `{ id, label, icon?, color?, bg?, border?, text?, className? }` objects. Defaults: `height` `520`, `gravity` `0.55`, `bounce` `0.48`, `friction` `0.985`.
+- `showControls` adds Drop Again, Scatter and Zero-G Float buttons; `autoStartOnView` (default `true`) starts the drop when the arena scrolls into view.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -363,7 +365,7 @@ export default function BlackAndWhiteTags() {
         <td><code>palette</code></td>
         <td><code>"default" | "colorful" | "glass" | "pastel" | "monochrome" | "neon" | "black-and-white"</code></td>
         <td><code>"default"</code></td>
-        <td>Preset color distribution applied across the tags.</td>
+        <td>Preset color distribution applied across the tags. <code>"black-white"</code> is accepted as an alias of <code>"black-and-white"</code>.</td>
       </tr>
       <tr>
         <td><code>gravity</code></td>
@@ -392,7 +394,7 @@ export default function BlackAndWhiteTags() {
       <tr>
         <td><code>height</code></td>
         <td><code>number | string</code></td>
-        <td><code>500</code></td>
+        <td><code>520</code></td>
         <td>Height of the physics playground viewport.</td>
       </tr>
       <tr>
@@ -425,10 +427,43 @@ export default function BlackAndWhiteTags() {
         <td><code>true</code></td>
         <td>Triggers entrance drop when component scrolls into viewport.</td>
       </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Classes for the arena container. Other div attributes are spread onto it too.</td>
+      </tr>
     </tbody>
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+Combine `FallingTags` with <DocLink to="tech-stack">Tech Stack</DocLink> for structured logo strips, <DocLink to="particle-canvas">Particle Canvas</DocLink> for interactive text physics, and <DocLink to="verify-badge">Badge</DocLink> for static status pills.
+
+## Does FallingTags require Matter.js or another physics engine?
+
+No. Collision detection, gravity, bounce and angular momentum are implemented in TypeScript inside the component and stepped with `requestAnimationFrame`. The registry item's only npm dependency is `lucide-react`, so you install no physics library and the file has no `next/*` imports.
+
+## Can visitors grab and throw the tags?
+
+Yes, and `interactive` defaults to `true`. Pressing a tag with a mouse or finger picks it up, and releasing it flings it with the velocity of your pointer. Each tag sets `touch-action: none`. Pass `interactive={false}` to turn dragging off and let the pile settle on its own.
+
+## How do I use my own tags, with icons or custom colours?
+
+Pass `tags` as an array of strings, or of `FallingTagItem` objects with `id` and `label` plus optional `icon`, `bg`, `text`, `border` and `className`. The `bg`, `text` and `border` values are Tailwind classes that replace the `palette` styling for that one tag.
+
+## How do I control when the tags drop and replay the animation?
+
+Tags float for `hoverDuration` seconds (default `1.4`) before gravity takes over. With `autoStartOnView` on, the drop begins once a quarter of the arena is visible, and only the first time. Add `showControls` for Drop Again, Scatter and Zero-G Float buttons that replay or shake the pile.
+
+## How do I make FallingTags heavier or bouncier?
+
+Tune `gravity` (default `0.55`), `bounce` (default `0.48`, from 0 for no rebound to 1 for very lively) and `friction` (default `0.985`, the damping applied to velocity). Raise `gravity` and lower `bounce` for tags that thud and settle quickly. `height` sets how far they fall.
+
+## Does FallingTags respect prefers-reduced-motion?
+
+Partly. The animation loop checks `prefers-reduced-motion` every frame and, when it is set, skips the physics for every tag you are not dragging, so the pile stops simulating. A dragged tag still follows the pointer. Tags are not collision-resolved in that mode, so test the layout with the setting on.
 
 <DocsJsonLd slug="falling-tags" />
+<FaqJsonLd slug="falling-tags" />

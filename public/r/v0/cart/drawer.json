@@ -3,7 +3,7 @@
   "name": "cart-drawer",
   "type": "registry:block",
   "title": "Cart — Drawer",
-  "description": "Wait a beat and the bag nudges itself; click it to play the press and the slide-in.",
+  "description": "The \"Drawer\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

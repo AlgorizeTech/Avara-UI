@@ -3,6 +3,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("chat-bubble");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Chat Bubble
@@ -209,10 +210,11 @@ export default function TypingIndicator() {
   colorControl
   colorLabel="Sender Brand Color"
   columns={1}
+  installation={<Installation name="chat-bubble" usage="below" />}
   examples={[
     {
       title: "Conversation",
-      subheading: "The pieces assembled into a messenger thread. Set the side once on the `ChatBubble` root and the children read it from context.",
+      description: "The pieces assembled into a messenger thread. Set the side once on the `ChatBubble` root and the children read it from context.",
       propNotes: [
         {
           lead: "Use",
@@ -230,22 +232,8 @@ export default function TypingIndicator() {
       usage: usageConversation,
       code: extractCode("src/components/custom/blocks/ChatBubbleBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="chat-bubble" />
-
-## Examples
-
-<ExampleShowcase minHeight={240}
-  name="chat-bubble"
-  colorControl
-  colorLabel="Sender Brand Color"
-  columns={1}
-  examples={[
     {
+      minHeight: 240,
       title: "Message grouping",
       propNotes: [
         {
@@ -259,6 +247,7 @@ export default function TypingIndicator() {
       usage: usageGrouping,
     },
     {
+      minHeight: 240,
       title: "Timestamps & read receipts",
       propNotes: [
         {
@@ -277,8 +266,9 @@ export default function TypingIndicator() {
       usage: usageReceipts,
     },
     {
+      minHeight: 240,
       title: "Typing indicator",
-      subheading: "`ChatTypingIndicator` takes no props of its own. It draws its own pill and loops until you unmount it.",
+      description: "`ChatTypingIndicator` takes no props of its own. It draws its own pill and loops until you unmount it.",
       propNotes: [
         {
           prop: "variant",
@@ -292,35 +282,37 @@ export default function TypingIndicator() {
   ]}
 />
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+## About Shadcn Chat Bubble
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Fluid Animations">
-    <p>Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
-  </InfoCard>
-  <InfoCard title="Highly Customizable">
-    <p>Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
-  </InfoCard>
-  <InfoCard title="Responsive Design">
-    <p>Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
-  </InfoCard>
-</div>
+**What it is.** **Shadcn Chat Bubble** is a compound messaging primitive set (`ChatBubble`, `ChatAvatar`, `ChatMessage`, `ChatTimestamp`, and `ChatTypingIndicator`) with context-driven alignment, message grouping, and read receipts.
 
-## Best Practices & Guidelines
+**How it is built.** `ChatBubble` publishes `variant` (`"sent" | "received"`) and `layout` (`"default" | "group-top" | "group-middle" | "group-bottom"`) via React Context, and the parts read them. The pop-in and typing-dot animations are CSS keyframes that play only when `prefers-reduced-motion: no-preference`. It installs only `lucide-react`, with no animation library and no `next/*` imports.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Animation Performance">
-    <p>Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
-  </InfoCard>
-  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">State Management</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
-  </div>
-</div>
+**When to use it.** Use it to assemble custom chat threads, live support widgets, comment feeds, and AI assistant message lists.
+
+## For AI agents
+
+<AgentBrief name="chat-bubble">
+
+**When to use**
+
+- Assemble custom chat threads, live support widgets
+- Comment feeds, AI assistant message lists
+
+**When not to use**
+
+- A complete two-pane messenger with contact search: use <DocLink to="chat">Chat</DocLink>
+- An LLM assistant with a tool picker and model selector: use <DocLink to="ai-chat">AI Chat</DocLink>
+
+**Agent notes**
+
+- Render one `ChatBubble` per message. Set `variant="sent" | "received"` and optional `layout` (`"group-top" | "group-middle" | "group-bottom"`) on it; the child primitives read them from Context and throw if used outside a `ChatBubble`.
+- Put `ChatAvatar` and `ChatMessage` as siblings inside the `ChatBubble`, and put `ChatTimestamp` inside the `ChatMessage`, as the example does.
+- Always pass `fallback` initials on `ChatAvatar` for loading and error fallback states. In `group-top` and `group-middle` the avatar is hidden but still takes up space, so the rows stay aligned.
+- `ChatMessage` `color` only applies to sent messages. Received messages always use the muted surface.
+- Use `ChatTimestamp` with `status="sent" | "delivered" | "read"` on sent messages, and mount `ChatTypingIndicator` inside its own `ChatBubble` while awaiting replies.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -412,7 +404,7 @@ Discover the key capabilities that make this component an excellent choice for m
           <code>color</code>
         </td>
         <td>
-          <code>"primary" | "default" | "blue" | "indigo" | "rose" | "emerald"</code>
+          <code>"primary" | "default" | "blue" | "indigo" | "rose" | "emerald" | "lavender" | string</code>
         </td>
         <td>
           <code>"primary"</code>
@@ -421,8 +413,9 @@ Discover the key capabilities that make this component an excellent choice for m
           Sets the background color of the bubble. Only applies when the parent{" "}
           <code>variant</code> is set to <code>"sent"</code>.{" "}
           <code>"primary"</code> and <code>"default"</code> both follow your
-          theme tokens, and any unlisted value falls back to them — this is a
-          fixed set, not an arbitrary hex.
+          theme tokens. A string starting with <code>#</code> is used as the
+          background with white text; any other unlisted name falls back to
+          the theme.
         </td>
       </tr>
       <tr>
@@ -483,6 +476,30 @@ Discover the key capabilities that make this component an excellent choice for m
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Combine `ChatBubble` with <DocLink to="chat">Chat</DocLink> for a full two-pane messenger, <DocLink to="voice-note">Voice Note</DocLink> for inline audio messages, and <DocLink to="conversation-timeline">Conversation Timeline</DocLink> for threaded support logs.
+- Show who is in the conversation with an <DocLink to="avatar-stack">Avatar Stack</DocLink> in your thread header.
+
+## How do I group consecutive messages from the same sender?
+
+Give each message its own `ChatBubble` and set `layout="group-top"` on the first, `"group-middle"` on the ones between, and `"group-bottom"` on the last. The inner corners tighten to a small radius, and the avatar stays hidden until the last bubble so the run reads as one block.
+
+## How do I show a typing indicator with ChatTypingIndicator?
+
+Render `<ChatTypingIndicator />` inside its own `ChatBubble` while you wait for a reply, and unmount it when the message arrives. It takes no props beyond standard `div` attributes. It reads `variant` from the parent, so `"received"` gives a muted pill on the left and `"sent"` a primary one on the right.
+
+## How do I change the colour of sent messages in ChatMessage?
+
+Set `color` on `ChatMessage` inside a `ChatBubble variant="sent"`. Choose `"primary"` (the default, which follows your theme), `"blue"`, `"indigo"`, `"rose"`, `"emerald"` or `"lavender"`, or pass a hex string such as `"#7c3aed"`. Received messages ignore `color` and always use the muted surface.
+
+## Why does ChatMessage throw "must be used within a ChatBubble root"?
+
+`ChatAvatar`, `ChatMessage`, `ChatTimestamp` and `ChatTypingIndicator` read `variant` and `layout` from a React context that only `ChatBubble` provides, so rendering one on its own throws that error. Wrap each message in a `ChatBubble`, which also sets whether the row aligns left or right.
+
+## What happens when a ChatAvatar image fails to load?
+
+`ChatAvatar` shows the required `fallback` text, such as initials, in a round muted tile whenever `src` is missing or the image errors. It also checks on mount for an image that failed before hydration, so server-rendered pages still fall back. Changing `src` gives the new image a fresh attempt.
 
 <DocsJsonLd slug="chat-bubble" />
+<FaqJsonLd slug="chat-bubble" />

@@ -3,7 +3,7 @@
   "name": "vertical-tabs-soft",
   "type": "registry:block",
   "title": "Tabs — Soft",
-  "description": "The quietest selection state: the accent tinted back to a wash, label kept in the accent.",
+  "description": "The \"Soft\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

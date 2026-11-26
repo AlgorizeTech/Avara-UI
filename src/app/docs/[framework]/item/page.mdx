@@ -4,16 +4,11 @@ export const metadata = docsPageMetadata("item");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Item
 
-A versatile layout component for displaying structured content featuring media, titles, descriptions, and actions.
-
-Instead of writing complex Flexbox or Grid classes every time you need to build a notification row, a settings item, a user listing, or a simple feature card, `ItemBlock` handles all the responsive alignments and spacing automatically. It dynamically transforms between horizontal rows and vertical cards based on the `variant` prop.
-
-`title` is the only required prop — `media`, `description` and `actions` are slots you fill as needed.
-
-<AgentVariants slug="item" />
+A structured content row and card layout (`ItemBlock`) with `title`, optional `media`, `description` and `actions` slots in four variants: `default`, `compact`, `bordered` and `card`.
 
 export const usageDefault = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
 import { Settings } from "lucide-react";
@@ -58,10 +53,11 @@ export default function FeatureCard() {
   );
 }`;
 
-<ExampleShowcase minHeight={290} headingLevel={2}
+<ExampleShowcase minHeight={260} headingLevel={2}
   name="item"
   colorControl={false}
   columns={1}
+  installation={<Installation name="item" usage="below" />}
   examples={[
     {
       title: "Item",
@@ -77,20 +73,6 @@ export default function FeatureCard() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ItemBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="item" />
-
-## Examples
-
-<ExampleShowcase minHeight={290}
-  name="item"
-  colorControl={false}
-  columns={1}
-  examples={[
     {
       title: "Card",
       propNotes: [
@@ -108,31 +90,34 @@ export default function FeatureCard() {
   ]}
 />
 
-## Features
-Discover the Item component's structural layout features, designed for lists, dropdowns, and menus with proper spacing.
+## About Shadcn Item
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**What it is.** `ItemBlock` is a slot-based row and card primitive (`title`, `description`, `media`, `actions`). Four `variant` values cover it: `default` and `compact` are borderless rows, `bordered` is a row inside a bordered card, and `card` stacks the slots vertically.
 
-## Best Practices & Guidelines
+**How it is built.** It is one function component that renders a `div`, or a `button` when you pass `onClick`. The slots lay out with flexbox and use theme tokens (`bg-card`, `text-muted-foreground`, `border-border`), so it needs no extra dependency beyond the `cn` helper.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `ItemBlock` for settings rows, notification feeds, user listings and simple feature cards. For multi-section cards with headers and footers, use <DocLink to="card">Card</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="item">
+
+**When to use**
+
+- Horizontal list or settings rows (`default`, `compact`, `bordered`) and vertical feature cards (`card`) with `media`, `title`, `description` and `actions` slots
+
+**When not to use**
+
+- Full multi-slot cards with headers, footers, or ecommerce badges: use <DocLink to="card">Card</DocLink>
+
+**Agent notes**
+
+- Named export: `import { ItemBlock } from "@/components/custom/blocks/ItemBlock"`. The `ItemVariant` and `ItemBlockProps` types are exported too.
+- `title` is the only required prop; `media`, `description` and `actions` are optional slots. Other HTML attributes are passed to the root element.
+- Passing `onClick` turns the root into a `<button type="button">`. Do not put buttons or links in `actions` of a clickable item, because that nests interactive elements.
+- `title` is truncated to one line except in the `card` variant, so pass short titles for rows.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -236,6 +221,30 @@ Discover the Item component's structural layout features, designed for lists, dr
 </div>
 
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Stack `ItemBlock` rows inside <DocLink to="scroll-area">Scroll Area</DocLink> or <DocLink to="card">Card</DocLink> settings panels.
+- Place <DocLink to="button">Button</DocLink>, <DocLink to="toggle">Toggle</DocLink>, or <DocLink to="copy-button">Copy Button</DocLink> inside the `actions` slot.
+
+## How does variant="card" change ItemBlock's layout?
+
+`variant="card"` stacks `media`, the text and `actions` vertically inside a rounded, bordered card. The `actions` row spans the full width, sits at the bottom with a top border, and the title wraps instead of truncating. The description is clamped to three lines, so the card drops into a grid.
+
+## What is the difference between the default, compact and bordered variants?
+
+All three are horizontal rows. `default` has `p-4` padding and no border, `compact` uses tighter `p-2.5` padding with smaller text and a one-line description, and `bordered` adds a border, `bg-card` background and shadow. Pick `compact` for dense lists and `bordered` for stand-alone rows.
+
+## How do I make an ItemBlock clickable?
+
+Pass an `onClick` handler. `ItemBlock` then renders a `<button type="button">` instead of a `div`, adds hover styling and a `focus-visible` ring, and the `card` variant lifts slightly on hover. Without `onClick` the root stays a plain `div`, so it adds no tab stop.
+
+## Can I put a button inside the actions slot of a clickable ItemBlock?
+
+Avoid it. With `onClick` set, the whole item is a `<button>`, so a `Button` in `actions` nests one button in another, which is invalid HTML. The `actions` wrapper does stop click propagation, but for rows with controls, leave `onClick` off and attach handlers to the controls.
+
+## Does ItemBlock truncate long titles and descriptions?
+
+Yes, except in `card`. The title uses `truncate` and stays on one line, while the `compact` description is clamped to one line. In the `card` variant the title wraps and the description clamps at three lines. Slot content is yours, so size media to fit.
 
 <DocsJsonLd slug="item" />
+<FaqJsonLd slug="item" />

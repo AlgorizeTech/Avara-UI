@@ -3,7 +3,7 @@
   "name": "hover-peek-hover-peek-section",
   "type": "registry:block",
   "title": "Hover Peek — Hover Peek Section",
-  "description": "Editorial statement typography with interactive word hovers that progressively pile an 8-card nature deck with alternating physical tilts.",
+  "description": "The \"Hover Peek Section\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

@@ -4,16 +4,11 @@ export const metadata = docsPageMetadata("toast");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Toast
 
-A robust, highly-animated notification system. Popups and alerts are essential for user feedback, but most libraries are heavy, difficult to style, or lack smooth animations.
-
-This headless-style Toast component handles its own global state via Context, uses the browser's built-in Web Animations API for elastic entrance/exit animations (no animation library), automatically handles stacking, and integrates flawlessly with your dynamic theme engine.
-
-Click the trigger buttons in each preview to fire a toast. Toasts auto-dismiss after 5 seconds — hover to pause the timer, or click the `X` to dismiss it manually. Turn on `stack` to pile them up like a notification centre instead of listing them.
-
-<AgentVariants slug="toast" />
+A context-driven toast notification system using the Web Animations API for elastic entrance/exit motion, pause-on-hover timers, and stackable `default`, `glow`, `glass`, and `minimal` variants.
 
 export const usageDefault = `"use client";
 
@@ -384,14 +379,17 @@ export default function MinimalToasts() {
   );
 }`;
 
-<ExampleShowcase minHeight={360} headingLevel={2}
+<ExampleShowcase
+  minHeight={360}
+  headingLevel={2}
   name="toast"
   colorControl={false}
   columns={1}
+  installation={<Installation name="toast" usage="below" />}
   examples={[
     {
       title: "Toast",
-      subheading: "Wrap the app in `ToastProvider`, then call `toast()` from the `useToast` hook.",
+      description: "Wrap the app in `ToastProvider`, then call `toast()` from the `useToast` hook.",
       propNotes: [
         {
           prop: "position",
@@ -403,24 +401,6 @@ export default function MinimalToasts() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ToastBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="toast" />
-
-### Wrap your app
-
-`ToastProvider` owns the queue, so it has to sit above anything that calls `useToast` — usually `app/layout.tsx`. The global `variant` and `position` are set there, and the first example's **Usage** tab shows the whole wiring.
-
-## Examples
-
-<ExampleShowcase minHeight={360}
-  name="toast"
-  colorControl={false}
-  columns={1}
-  examples={[
     {
       title: "Types",
       propNotes: [
@@ -488,7 +468,7 @@ export default function MinimalToasts() {
     },
     {
       title: "Stacked",
-      subheading: "Fire a few in a row, then hover the pile to fan it out.",
+      description: "Fire a few in a row, then hover the pile to fan it out.",
       propNotes: [
         {
           lead: "Set",
@@ -517,31 +497,34 @@ export default function MinimalToasts() {
   ]}
 />
 
-## Features
-Discover the Toast component's notification features, including auto-dismissal, action buttons, and accessible screen reader announcements.
+## About Shadcn Toast
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**What it is.** A context-powered notification system (`ToastProvider` + `useToast`) supporting `success`, `error`, `warning`, `info`, and `default` types, action buttons, persistent durations, and four visual variants (`default`, `glow`, `glass`, `minimal`) with optional `stack` piling.
 
-## Best Practices & Guidelines
+**How it is built.** Uses React Context for the toast queue and the browser's built-in Web Animations API for spring-like entrance and exit transitions with zero external animation dependencies. Hovering pauses auto-dismiss timers.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `Toast` when you want provider-scoped visual variants (`glow`, `glass`, `minimal`) or custom action buttons. For a zero-provider `toast()` import that can be called outside React components, use <DocLink to="sonner">Sonner</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="toast">
+
+**When to use**
+
+- App-wide notifications styled with `default`, `glow`, `glass`, or `minimal` variants
+- Stacked notification piles (`stack` on `ToastProvider`) with hover-to-expand and timer pause
+
+**When not to use**
+
+- Calling `toast()` outside React components without a provider — use <DocLink to="sonner">Sonner</DocLink>
+- Persistent inline page messages — use <DocLink to="alert">Alert</DocLink>
+
+**Agent notes**
+
+- Wrap the root layout in `<ToastProvider>` from `@/components/custom/blocks/ToastBlock` and call `const { toast } = useToast()` inside client components
+- `position` and `variant` are set globally on `ToastProvider`; pass `duration: 0` for a persistent toast
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -694,6 +677,31 @@ When calling the `toast()` function from the `useToast` hook, you can pass the f
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Trigger toasts after async <DocLink to="action-buttons">Action Button</DocLink> or <DocLink to="form">Form</DocLink> submissions.
+- Pair with <DocLink to="dialog">Dialog</DocLink> to confirm background saves or deletions once the modal closes.
+- Use <DocLink to="sonner">Sonner</DocLink> if you prefer a standalone `toast()` import without wrapping your layout in `ToastProvider`.
+
+## How do I show a toast notification in React?
+
+Mount `ToastProvider` once near your app root, then call `useToast()` in any client component and run `toast({ title, description, type })`. `type` can be `"success"`, `"error"`, `"warning"`, `"info"` or `"default"`, and it selects the icon.
+
+## Why do I need ToastProvider?
+
+It manages the active toast queue and the global `position`, `variant` and `stack` behaviour. Mount it once near your app root, such as `app/layout.tsx`, so any client component can call `useToast()`. `position` defaults to `"bottom-right"`.
+
+## How do I make a toast stay open until dismissed?
+
+Pass `duration: 0` in the `toast({ ... })` options. The default is `5000` milliseconds. Hovering over any auto-dismissing toast also pauses its timer, so a user reading the message is not interrupted halfway.
+
+## How do I add an action button such as Undo to a toast?
+
+Pass `action: { label, onClick }` in the `toast({ ... })` options. A bold button appears at the bottom of the toast, and clicking it runs your handler and dismisses the toast. Combine it with `duration: 0` if the user must act before it goes away.
+
+## How do I stack toasts and change their style?
+
+Set `stack` on `ToastProvider` to pile toasts with the newest in front and older ones peeking out behind; hovering fans the pile into a list. `variant` accepts `"default"`, `"glow"`, `"glass"` and `"minimal"`. Compare <DocLink to="sonner">Sonner</DocLink> for another toast option.
 
 <DocsJsonLd slug="toast" />
+<FaqJsonLd slug="toast" />

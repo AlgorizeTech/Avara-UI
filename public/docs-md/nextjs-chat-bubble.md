@@ -14,6 +14,21 @@ Building a polished chat interface requires handling complex edge cases: **messa
 
 These are compound components: `ChatBubble` is the root and publishes `variant` and `layout` through context, so `ChatAvatar`, `ChatMessage` and `ChatTimestamp` style themselves without being told twice.
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/chat-bubble.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/chat-bubble
+```
+
 ## Conversation
 
 The pieces assembled into a messenger thread. Set the side once on the `ChatBubble` root and the children read it from context.
@@ -95,24 +110,7 @@ export default function ChatInterface() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/chat-bubble.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/chat-bubble
-```
-
-## Examples
-
-### Message grouping
+## Message grouping
 
 - Use `layout="group-top"` on the first bubble of a run tightens its bottom inner corner and hides the avatar. `"group-middle"` tightens both, and `"group-bottom"` closes the run and brings the avatar back.
 
@@ -164,7 +162,7 @@ export default function GroupedMessages() {
 }
 ```
 
-### Timestamps & read receipts
+## Timestamps & read receipts
 
 - Pass `time="10:25 AM"` is a plain string you format yourself, so `Just now` works in the same slot.
 - `status="read"` adds ticks after the time: `"sent"` one grey, `"delivered"` two grey, `"read"` two blue. Leave it off for the time alone.
@@ -220,7 +218,7 @@ export default function ReadReceipts() {
 }
 ```
 
-### Typing indicator
+## Typing indicator
 
 `ChatTypingIndicator` takes no props of its own. It draws its own pill and loops until you unmount it.
 
@@ -250,24 +248,33 @@ export default function TypingIndicator() {
 }
 ```
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+## About Shadcn Chat Bubble
 
-Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
+**What it is.** **Shadcn Chat Bubble** is a compound messaging primitive set (`ChatBubble`, `ChatAvatar`, `ChatMessage`, `ChatTimestamp`, and `ChatTypingIndicator`) with context-driven alignment, message grouping, and read receipts.
 
-Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
+**How it is built.** `ChatBubble` publishes `variant` (`"sent" | "received"`) and `layout` (`"default" | "group-top" | "group-middle" | "group-bottom"`) via React Context, and the parts read them. The pop-in and typing-dot animations are CSS keyframes that play only when `prefers-reduced-motion: no-preference`. It installs only `lucide-react`, with no animation library and no `next/*` imports.
 
-Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
+**When to use it.** Use it to assemble custom chat threads, live support widgets, comment feeds, and AI assistant message lists.
 
-Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.
+- Assemble custom chat threads, live support widgets
+- Comment feeds, AI assistant message lists
 
-### State Management
+**When not to use**
 
-When triggering animations via state changes, ensure you wrap state updates in `startTransition` or use lightweight stores to prevent React rendering bottlenecks during the animation tick.
+- A complete two-pane messenger with contact search: use [Chat](https://avaraui.com/docs/nextjs/chat)
+- An LLM assistant with a tool picker and model selector: use [AI Chat](https://avaraui.com/docs/nextjs/ai-chat)
+
+**Agent notes**
+
+- Render one `ChatBubble` per message. Set `variant="sent" | "received"` and optional `layout` (`"group-top" | "group-middle" | "group-bottom"`) on it; the child primitives read them from Context and throw if used outside a `ChatBubble`.
+- Put `ChatAvatar` and `ChatMessage` as siblings inside the `ChatBubble`, and put `ChatTimestamp` inside the `ChatMessage`, as the example does.
+- Always pass `fallback` initials on `ChatAvatar` for loading and error fallback states. In `group-top` and `group-middle` the avatar is hidden but still takes up space, so the rows stay aligned.
+- `ChatMessage` `color` only applies to sent messages. Received messages always use the muted surface.
+- Use `ChatTimestamp` with `status="sent" | "delivered" | "read"` on sent messages, and mount `ChatTypingIndicator` inside its own `ChatBubble` while awaiting replies.
 
 ## Props Reference
 
@@ -277,10 +284,35 @@ When triggering animations via state changes, ensure you wrap state updates in `
 | `ChatBubble` | `layout` | `"default" \| "group-top" \| "group-middle" \| "group-bottom"` | `"default"` | Controls the dynamic border-radius logic to seamlessly connect stacked messages from the same sender. |
 | `ChatAvatar` | `src` | `string` | `undefined` | Optional image URL for the user's avatar. |
 | `ChatAvatar` | `fallback` | `string` | Required | The text initials to display if the image is missing or fails to load. |
-| `ChatMessage` | `color` | `"primary" \| "default" \| "blue" \| "indigo" \| "rose" \| "emerald"` | `"primary"` | Sets the background color of the bubble. Only applies when the parent `variant` is set to `"sent"`. `"primary"` and `"default"` both follow your theme tokens, and any unlisted value falls back to them — this is a fixed set, not an arbitrary hex. |
+| `ChatMessage` | `color` | `"primary" \| "default" \| "blue" \| "indigo" \| "rose" \| "emerald" \| "lavender" \| string` | `"primary"` | Sets the background color of the bubble. Only applies when the parent `variant` is set to `"sent"`. `"primary"` and `"default"` both follow your theme tokens. A string starting with `#` is used as the background with white text; any other unlisted name falls back to the theme. |
 | `ChatTimestamp` | `time` | `string` | Required | The timestamp string rendered below the text (e.g., "10:24 AM"). |
 | `ChatTimestamp` | `status` | `"sent" \| "delivered" \| "read"` | `undefined` | Renders Lucide checkmarks to indicate read receipts. Only visible if the parent `variant` is `"sent"`. |
 | `All Components` | `className` | `string` | `undefined` | Accepts custom Tailwind CSS classes to override default styling. All components also accept standard HTML `<div>` attributes. |
+
+## Works with other components
+
+- Combine `ChatBubble` with [Chat](https://avaraui.com/docs/nextjs/chat) for a full two-pane messenger, [Voice Note](https://avaraui.com/docs/nextjs/voice-note) for inline audio messages, and [Conversation Timeline](https://avaraui.com/docs/nextjs/conversation-timeline) for threaded support logs.
+- Show who is in the conversation with an [Avatar Stack](https://avaraui.com/docs/nextjs/avatar-stack) in your thread header.
+
+## How do I group consecutive messages from the same sender?
+
+Give each message its own `ChatBubble` and set `layout="group-top"` on the first, `"group-middle"` on the ones between, and `"group-bottom"` on the last. The inner corners tighten to a small radius, and the avatar stays hidden until the last bubble so the run reads as one block.
+
+## How do I show a typing indicator with ChatTypingIndicator?
+
+Render `<ChatTypingIndicator />` inside its own `ChatBubble` while you wait for a reply, and unmount it when the message arrives. It takes no props beyond standard `div` attributes. It reads `variant` from the parent, so `"received"` gives a muted pill on the left and `"sent"` a primary one on the right.
+
+## How do I change the colour of sent messages in ChatMessage?
+
+Set `color` on `ChatMessage` inside a `ChatBubble variant="sent"`. Choose `"primary"` (the default, which follows your theme), `"blue"`, `"indigo"`, `"rose"`, `"emerald"` or `"lavender"`, or pass a hex string such as `"#7c3aed"`. Received messages ignore `color` and always use the muted surface.
+
+## Why does ChatMessage throw "must be used within a ChatBubble root"?
+
+`ChatAvatar`, `ChatMessage`, `ChatTimestamp` and `ChatTypingIndicator` read `variant` and `layout` from a React context that only `ChatBubble` provides, so rendering one on its own throws that error. Wrap each message in a `ChatBubble`, which also sets whether the row aligns left or right.
+
+## What happens when a ChatAvatar image fails to load?
+
+`ChatAvatar` shows the required `fallback` text, such as initials, in a round muted tile whenever `src` is missing or the image errors. It also checks on mount for an image that failed before hydration, so server-rendered pages still fall back. Changing `src` gives the new image a fresh attempt.
 
 ---
 

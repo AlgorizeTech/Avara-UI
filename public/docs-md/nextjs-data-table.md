@@ -1,12 +1,12 @@
 ---
 title: "Shadcn Data Table"
-description: "A powerful, fully-featured data table component built on top of Table primitives. Free shadcn/ui Data Table component for React, Next.js and Tailwind CSS."
+description: "Shadcn Data Table. A stateful data table built on Table primitives with built-in global search, click-to-sort column headers, filter tabs, pagination."
 url: https://avaraui.com/docs/nextjs/data-table
 ---
 
 # Shadcn Data Table
 
-A powerful, fully-featured data table component built on top of [Table](./table) primitives. It provides built-in state management for **Global Searching, Multi-Column Sorting, Pagination, Row Selection, and Batch Actions** — giving you complete control over your table layout without forcing any data transformation.
+A stateful data table built on [Table](./table) primitives with built-in global search, click-to-sort column headers, filter tabs, pagination, and batch row selection.
 
 ### Searchable DataTable
 
@@ -204,9 +204,29 @@ export default function UserTable() {
 }
 ```
 
-## Installation
+## About Shadcn Data Table
 
-Add the component by URL — no setup needed:
+**What it is.** `DataTable` wraps `Table` primitives in a React context provider with opt-in controls for global search, `DataTableTabs`, `DataTableFilter`, typed column sorting (one active column at a time), pagination, and batch row selection.
+
+**How it is built.** Resolves `id`, `_id`, `uuid` or `key` automatically via `getRowId` (tracking selection by ID across sorts and pages), supports dot-path and accessor `sortBy` keys, and exposes full state via `useDataTable`.
+
+**When to use it.** Use `DataTable` for client-side datasets, where every row is held in memory, that need search, filtering, sorting, and batch actions without column-config boilerplate. For server-driven tables, use [Table](https://avaraui.com/docs/nextjs/table).
+
+## For AI agents
+
+**When to use**
+
+- Admin tables needing client-side search, status tabs, dropdown filters, sorting, pagination, and multi-row batch actions
+- Datasets with nested objects where `sortBy="customer.email"` or accessor functions avoid reshaping data
+
+**When not to use**
+
+- Server-paginated/sorted datasets or simple read-only tables — use [Table](https://avaraui.com/docs/nextjs/table)
+- Spreadsheet editing with keyboard cell navigation — use [Data Grid](https://avaraui.com/docs/nextjs/data-grid)
+
+**Agent notes**
+
+- Installs via the `table` registry item (`Add the component by URL — no setup needed:
 
 ```bash
 npx shadcn@latest add https://avaraui.com/r/table.json
@@ -217,42 +237,18 @@ Or register the @avara-ui registry once per project and add it by name:
 ```bash
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/table
-```
-
-## Soft variant
-
-`variant="soft"` is the admin-dashboard look: a rounded panel on a hairline ring, a tinted header band, pill controls and calm round row actions, every tint mixed from the table colour. Everything below lives inside the panel — status tabs with live counts, select filters, search, a reset, the page's actions, sortable columns with a pinned actions column, a rows-per-page picker, pagination and a floating bar for the selected rows. The first example on this page is a soft table — its Usage tab is the preview's exact source.
-
-`DataTableTabs`, `DataTableFilter` and `DataTableReset` filter and clear; `TableAction` is the toolbar button (primary, secondary, ghost); `TableRowAction` is a round icon button that needs a `label`; `TableBadge` is a status pill (`tone`) or, without its dot, a tag; `TablePerson` draws an avatar with a name and a second line; `DataTableBatchAction` goes inside the batch bar. They work in every variant and take the soft look inside a soft table.
-
-Give `DataTableEmpty` an `icon`, `title`, `description` and `action`, and read `search`, `isFiltered` and `resetAll` from `useDataTable` (in `table-core`) to say whether nothing matched or nothing exists yet — the example's `NoUsers` does exactly that.
-
-## Features
-
-getRowId resolves id, _id or uuid out of the box, dot paths reach into nested objects, and accessor functions cover anything computed.
-
-Search, page size, pagination and selection are separate components. Leave one out and the feature is simply not there — no boolean flags to manage.
-
-Numbers compare numerically by default rather than lexically, and sortType lets you force string, number or date comparison.
-
-useDataTable exposes the whole state — rows, search, sort, paging, selection — so you can build your own toolbar or pager on the same provider.
-
-## Best Practices & Guidelines
-
-Selection is tracked by id, not by index, so it survives sorting and paging. If your rows have no natural key, derive one before passing the array in — an array index will unselect the wrong row as soon as the order changes.
-
-### Client-side by design
-
-Search, sort and paging all run over the array you pass in. For server-driven datasets, use the plain Table primitives and drive the query yourself — or keep DataTable for the current page only and supply your own footer.
-
-A string sortBy doubles as its own identity. When you pass an accessor function, add sortId so the active-sort indicator stays stable across re-renders.
+````)
+- Selection tracks row IDs (`getRowId`), not array indices; give computed `sortBy` functions a `sortId`
+- Search, filters, sorting and pagination all run client-side over the `data` prop, and only one column is sorted at a time
+- `DataTableExport` exports the selected rows, or every filtered row when none are selected; `formats` accepts `"csv"`, `"xlsx"` and `"json"`
+- `variant="soft"` enables the admin-dashboard look with `DataTableTabs`, `DataTableFilter`, `sticky` actions, and `DataTableBatchAction`
 
 ## Props Reference
 
 | Component | Prop | Type | Default | Description |
 | --- | --- | --- | --- | --- |
 | `DataTable` | `data` | `T[]` | Required | Your rows, in whatever shape they arrive. |
-| `DataTable` | `getRowId` | `(row: T) => string \| number` | `id → _id → uuid` | How a row is identified for selection and expansion. |
+| `DataTable` | `getRowId` | `(row: T) => string \| number` | `id → _id → uuid → key` | How a row is identified for selection and expansion. |
 | `DataTable` | `getSearchText` | `(row: T) => string` | all values | Override what the search box matches against. |
 | `DataTable` | `initialSort` | `{ id, direction?, type? }` | `undefined` | Sort applied on first render. |
 | `DataTable` | `pageSize` | `number` | 2nd option | Starting page size. |
@@ -262,12 +258,15 @@ A string sortBy doubles as its own identity. When you pass an accessor function,
 | `DataTable` | `color` | `"primary" \| "indigo" \| "rose" \| "emerald" \| "zinc" \| string` | `"primary"` | Accent theme color for active selection, soft borders, hover highlights, and active elements. Accepts preset names or custom hex codes. |
 | `DataTable` | `size` | `"sm" \| "md" \| "lg"` | `"md"` | Density padding and text sizing for table cells and toolbars. |
 | `DataTableHead` | `sortBy` | `string \| ((row: T) => unknown)` | — | A dot path such as `"profile.name"`, or an accessor function. Its presence makes the header sortable. |
-| `DataTableHead` | `sortId` | `string` | the path | Required only when `sortBy` is a function. |
+| `DataTableHead` | `sortId` | `string` | the path | Recommended when `sortBy` is a function: gives the column an id that `initialSort` can target. Without it, a generated id is used. |
 | `DataTableHead` | `sortType` | `"auto" \| "string" \| "number" \| "date"` | `"auto"` | `auto` compares numbers numerically and everything else as text. |
 | `DataTableHead` | `align` | `"left" \| "center" \| "right"` | `"left"` | Text alignment. |
 | `DataTableBatchBar` | `children` | `((args: { selectedRows: T[]; selectedIds: (string \| number)[]; clearSelection: () => void }) => ReactNode) \| ReactNode` | — | Render function or nodes for the floating batch actions bar. |
 | `DataTableBatchBar` | `floating` | `boolean` | `true` | Floats over the bottom center of the table when true; set `false` for inline rendering. |
-| `DataTableSearch` | `placeholder` | `string` | `"Search…"` | Placeholder text for the search input box. |
+| `DataTableSearch` | `placeholder` | `string` | `"Search…"` | Placeholder text for the search input box. It is also the input's accessible name. |
+| `DataTableExport` | `filename` | `string` | `"export"` | File name without the extension. |
+| `DataTableExport` | `formats` | `("csv" \| "xlsx" \| "json")[]` | `["csv", "xlsx"]` | Menu entries offered. The `xlsx` entry downloads an Excel XML file named `.xls`. |
+| `DataTableExport` | `formatData` | `(rows: T[]) => Record<string, unknown>[]` | — | Shape the rows before export. Without it, raw row objects are exported with nested values as JSON strings. Selected rows are exported when any are selected, otherwise every filtered row. |
 | `DataTableSelectAll` | `className` | `string` | — | Header checkbox to select or deselect all rows on the current page. |
 | `DataTableSelect` | `className` | `string` | — | Row checkbox to select or deselect the specific row. |
 | `DataTableSelect` | `label` | `string` | `"Select row"` | Accessible name of the row checkbox, e.g. `Select Priya Nair`. |
@@ -295,6 +294,36 @@ A string sortBy doubles as its own identity. When you pass an accessor function,
 | `TablePerson` | `description` | `ReactNode` | — | A muted second line, e.g. an email. |
 | `TablePerson` | `src` | `string` | — | A photo. If it fails to load, the initials show. |
 | `TablePerson` | `imageComponent` | `ElementType` | `"img"` | Renders the photo — pass `next/image` in a Next.js app. |
+
+## Works with other components
+
+- Uses the same primitives as [Table](https://avaraui.com/docs/nextjs/table) (`TableHead`, `TableRow`, `TableCell`, `TableBadge`, `TablePerson`).
+- Pair batch delete actions with [Dialog](https://avaraui.com/docs/nextjs/dialog) confirmation and [Sonner](https://avaraui.com/docs/nextjs/sonner) feedback.
+- Use [Data Grid](https://avaraui.com/docs/nextjs/data-grid) if you need inline editable cells.
+
+## How does DataTable track row selection across sorting and pagination?
+
+`DataTable` stores selected row IDs from `getRowId` (default `id`, `_id`, `uuid` or `key`), not array positions, so selected rows stay checked when you sort, search or change pages. The header checkbox only toggles the current page, and `onSelectionChange` receives the full selected row objects.
+
+## Why does a function sortBy need a sortId?
+
+A string `sortBy` such as `"profile.name"` doubles as the column's id. A function has no name, so `sortId` gives the column an id of your choosing, one `initialSort` can target. Without it, the head falls back to a generated id that works for clicking but cannot be referenced.
+
+## What does the DataTable search box match?
+
+By default it does a case-insensitive substring match against every value in the row, including nested objects and arrays, and typing returns you to page 1. Pass `getSearchText` to limit it, for example to `row.name + row.email`. The search runs before filters, sorting and pagination, all client-side.
+
+## How do I export only the selected or filtered rows?
+
+Add `DataTableExport`. It exports the selected rows when any are checked, otherwise every row that passes the search and filters, across all pages. `formats` accepts `"csv"`, `"xlsx"` and `"json"`, `filename` sets the name, and `formatData` reshapes rows first. The `xlsx` option writes an Excel XML `.xls` file.
+
+## How do I add status tabs and dropdown filters to DataTable?
+
+Place `DataTableTabs` with `by="status"` and a `tabs` array, and `DataTableFilter` with `by`, `options` and `placeholder`. Each filters one field by exact match, and an array field matches any entry. Tab counts follow the search and the other filters, and `DataTableReset` clears everything.
+
+## Does DataTable support server-side pagination and sorting?
+
+No. `DataTable` searches, filters, sorts and paginates the `data` array in memory, and only one column is sorted at a time. For server-driven results, build the table from the plain [Table](https://avaraui.com/docs/nextjs/table) primitives and pass in each page of rows yourself.
 
 ---
 

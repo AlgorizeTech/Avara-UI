@@ -3,7 +3,7 @@
   "name": "draggable-card-list-modern-ambient-tint-card-list",
   "type": "registry:block",
   "title": "Draggable Card List — Modern Ambient Tint Card List",
-  "description": "Reorderable cards with subtle ambient gradient tones, glowing left accent bar, separated footer, floating grip handles, and dynamic hover border color shift.",
+  "description": "The \"Modern Ambient Tint Card List\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

@@ -3,6 +3,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("audio-player");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Audio Player
@@ -10,8 +11,6 @@ import { extractCode } from "@/lib/code";
 An audio player with artwork, transport, scrubber and volume — in a hero card, a compact bar, or wrapped around the browser's native controls. Built on a plain `<audio>` element with no player library.
 
 `AudioPlayer` is a separate component with the same visual language. It wraps a plain `<audio>` element and mirrors that element's events, so the UI stays correct when a media key, the OS, or the native controls change playback.
-
-<AgentVariants slug="audio-player" />
 
 export const usageAudioHero = `import { AudioPlayer } from "@/components/custom/blocks/AudioPlayerBlock";
 
@@ -62,10 +61,11 @@ export default function NativeAudioHero() {
   name="audio-player"
   columns={1}
   minHeight={120}
+  installation={<Installation name="audio-player" showSetupPath={false} usage="below" />}
   examples={[
     {
       title: "Audio hero",
-      subheading:
+      description:
         "Artwork, transport, scrubber and volume in a full hero card. Built on a plain `<audio>` element.",
       propNotes: [
         {
@@ -87,7 +87,7 @@ export default function NativeAudioHero() {
     },
     {
       title: "Compact bar",
-      subheading:
+      description:
         "The same player as one row — for a sidebar, an episode list, or a sticky footer.",
       propNotes: [
         {
@@ -102,7 +102,7 @@ export default function NativeAudioHero() {
     },
     {
       title: "Native controls",
-      subheading:
+      description:
         "The browser's own audio controls under the artwork — nothing custom to keep in sync.",
       propNotes: [
         {
@@ -118,11 +118,7 @@ export default function NativeAudioHero() {
   ]}
 />
 
-## Installation
-
-<Installation name="audio-player" showSetupPath={false} />
-
-## Plyr audio
+## Audio via Plyr
 
 The <DocLink to="video-player">Plyr player</DocLink> from the Video Player page also has an audio layout: set `mediaType="audio"` and the card drops its video frame and sizes to the control bar. Use it when you want Plyr's control bar for both media types across a site.
 
@@ -144,10 +140,11 @@ export default function PlyrAudioHero() {
 <ExampleShowcase
   name="video-player-plyr"
   columns={1}
+  installation={<Installation name="video-player-plyr" showSetupPath={false} usage="below" />}
   examples={[
     {
       title: "Plyr — Audio",
-      subheading: "The same component in its audio layout, with no video frame.",
+      description: "The same component in its audio layout, with no video frame.",
       propNotes: [
         {
           prop: "mediaType",
@@ -163,26 +160,36 @@ export default function PlyrAudioHero() {
   ]}
 />
 
-### Install the Plyr player
+## About Shadcn Audio Player
 
-<Installation name="video-player-plyr" showSetupPath={false} />
+**What it is.** `AudioPlayer` plays one audio file through a plain `<audio>` element in three layouts: `"hero"` (artwork card with custom transport), `"bar"` (a compact single row) and `"native"` (the browser's own `<audio controls>` under the artwork). It needs no player library, only `lucide-react` icons.
 
-## Features
+**How it is built.** The `<audio>` element is the source of truth. The component listens to its `play`, `pause`, `timeupdate`, `volumechange` and `ended` events, so media keys, the OS and the native controls keep the UI correct. The accent comes from `--theme-color`, falling back to `--primary`. `PlyrPlayer` with `mediaType="audio"` is the alternative.
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Three Layouts">
-    <p>A hero card with artwork and glow, a compact bar for lists and footers, or the browser's own controls inside the same shell — one prop.</p>
-  </InfoCard>
-  <InfoCard title="No Player Library">
-    <p>Everything sits on a native <code>&lt;audio&gt;</code> element, so the only weight added is the icons.</p>
-  </InfoCard>
-  <InfoCard title="Mirrors the Element">
-    <p>Playback state follows the element's own events, so a media key, the OS, or the native controls changing playback never leaves the UI out of sync.</p>
-  </InfoCard>
-  <InfoCard title="Themed Accent">
-    <p>The play button and progress fill read <code>--theme-color</code>, falling back to your <code>--primary</code>, so the player matches the rest of the page.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use it for podcast episodes, music previews, voiceover tracks and sticky footer audio bars.
+
+## For AI agents
+
+<AgentBrief name="audio-player">
+
+**When to use**
+
+- Podcast episodes, music previews
+- Voiceover tracks, sticky footer audio bars
+
+**When not to use**
+
+- Capturing a recording from the user: use <DocLink to="voice-note">Voice Note</DocLink>
+- Video playback: use <DocLink to="video-player">Video Player</DocLink>
+
+**Agent notes**
+
+- Named export `AudioPlayer` from `@/components/custom/blocks/AudioPlayerBlock`. Key props are `audioUrl`, `audioType`, `artworkUrl`, `variant` (`"hero" | "bar" | "native"`), `skipSeconds` (default `10`, `0` hides both skip buttons) and `enableGlow`.
+- It plays a single `<source>`, so there is no playlist. Change `audioUrl` to switch tracks and use `onEnded` to advance your own queue.
+- `onPlay` and `onPause` fire only from the player's own Play and Pause button. On `variant="native"` and for media keys, only `onEnded` fires, so use native `<audio>` events if you need every change.
+- For a Plyr control bar across audio and video, install `video-player-plyr` and pass `mediaType="audio"` instead.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -257,13 +264,38 @@ export default function PlyrAudioHero() {
         <td><code>onPlay</code> / <code>onPause</code> / <code>onEnded</code></td>
         <td><code>() =&gt; void</code></td>
         <td><code>undefined</code></td>
-        <td>Playback callbacks for analytics.</td>
+        <td>Playback callbacks. <code>onPlay</code> and <code>onPause</code> fire from the player's own Play and Pause button; <code>onEnded</code> fires when the track ends.</td>
       </tr>
     </tbody>
   </table>
 </div>
 
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- <DocLink to="voice-note">Voice Note</DocLink> for hold-to-record audio capture, where `AudioPlayer` only plays files.
+- <DocLink to="video-player">Video Player</DocLink> for video heroes, and for the Plyr player that also has an audio layout.
+- <DocLink to="drawer">Drawer</DocLink> to tuck a player into a slide-in panel, for example the `"bar"` variant in a bottom drawer.
+
+## Does AudioPlayer stay in sync with keyboard media keys?
+
+Yes. `AudioPlayer` treats the `<audio>` element as the source of truth and listens to its `play`, `pause`, `timeupdate`, `volumechange` and `ended` events. Hardware media keys, OS playback controls and the native controls therefore update the buttons, scrubber and volume without extra code.
+
+## How do I hide the skip forward/backward buttons?
+
+Pass `skipSeconds={0}`. Both the rewind and forward buttons are removed from the custom transport. Any positive number keeps them and sets how far each jumps, so `skipSeconds={15}` gives 15-second jumps. The default is `10`, and `variant="native"` has no skip buttons at all.
+
+## Which AudioPlayer variant should I use: hero, bar or native?
+
+Use `hero` for a featured track with artwork, `bar` for a one-row player in a sidebar, episode list or sticky footer, and `native` when you want the browser's own `<audio controls>` with nothing custom to keep in sync. The `bar` volume slider hides below the `sm` breakpoint.
+
+## Why does autoPlay not start my AudioPlayer?
+
+Browsers block unmuted autoplay until the visitor has interacted with the page. `autoPlay` is passed straight to the `<audio>` element, so treat it as a hint. If the browser refuses, the play button simply stays in its paused state, and the visitor can start playback with it.
+
+## When do onPlay, onPause and onEnded fire in AudioPlayer?
+
+`onPlay` and `onPause` run when the visitor uses the player's own Play and Pause button, not for media keys or the native controls. `onEnded` fires from the audio element's `ended` event on every variant. For complete analytics, attach listeners to the `<audio>` element yourself.
 
 <DocsJsonLd slug="audio-player" />
+<FaqJsonLd slug="audio-player" />
