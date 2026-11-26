@@ -2,7 +2,7 @@ import { Alert, AlertAction } from "@/components/custom/blocks/Alerts";
 
 export default function SolidAlerts() {
   return (
-    <div className="mx-auto w-full max-w-2xl p-4 md:p-8">
+    <div className="mx-auto w-full max-w-3xl p-4 md:p-8">
       <div className="flex flex-col gap-3">
         <Alert
           variant="solid"
@@ -14,7 +14,7 @@ export default function SolidAlerts() {
           variant="solid"
           type="info"
           title="Update available"
-          message="A new version of the application is available. Please refresh to get the latest features and bug fixes."
+          message="A new version is available. Refresh to get the latest features and fixes."
           action={<AlertAction>Refresh</AlertAction>}
         />
         <Alert
@@ -27,7 +27,7 @@ export default function SolidAlerts() {
           variant="solid"
           type="warning"
           title="Payment method expires soon"
-          message="Your Visa ending in 4242 expires on March 28. Update billing to avoid interrupting your Pro subscription."
+          message="Your Visa ending in 4242 expires on March 28. Update billing to keep Pro active."
           action={<AlertAction>Update billing</AlertAction>}
           dismissible
         />

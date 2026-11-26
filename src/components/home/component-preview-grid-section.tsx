@@ -2,7 +2,9 @@
 
 import { cn } from "@/lib/utils";
 import { ArrowRight, LayoutGrid } from "lucide-react";
+import type { CSSProperties } from "react";
 import Link from "@/components/site/intent-link";
+import { InView } from "@/components/home/in-view";
 import { SECTION_INNER, SECTION_EYEBROW, SECTION_H2, SECTION_SUB, BTN_CLAY } from "@/components/home/shared";
 import { CatalogPreview } from "@/components/site/CatalogPreview";
 import { CATALOG_PREVIEWS, type CatalogPreviewSpec } from "@/components/site/catalog-previews";
@@ -57,7 +59,7 @@ export function ComponentPreviewGridSection() {
 	return (
 		<section className="py-12 md:py-16 bg-foreground/[0.02]">
 			<div className={SECTION_INNER}>
-				<div className="text-center mb-10">
+				<InView className="reveal text-center mb-10">
 					<span className={SECTION_EYEBROW}>
 						<LayoutGrid className="size-3.5" />
 						Component Preview Catalog
@@ -67,16 +69,20 @@ export function ComponentPreviewGridSection() {
 						Live previews of real components. Open any card for the interactive
 						demo, installation guide, and full source code.
 					</p>
-				</div>
+				</InView>
 
 				{/* Bottom gradient fade over the last row, with the "all components" button. */}
 				<div className="relative">
 					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 py-2">
-						{featuredComponents.map((item) => {
+						{featuredComponents.map((item, i) => {
 							const live = item.live ?? CATALOG_PREVIEWS[item.slug];
 							return (
-								<div
+								<InView
 									key={item.slug}
+									threshold={0.1}
+									className="reveal"
+									style={{ "--reveal-i": i % 3 } as CSSProperties}>
+								<div
 									className="group/card relative flex h-full flex-col overflow-hidden rounded-2xl border border-foreground/[0.08] bg-foreground/[0.03] transition-colors duration-300 hover:bg-foreground/[0.06] focus-within:ring-2 focus-within:ring-primary/50">
 									{/* 2:1 panel: the card keeps one proportion whatever it shows. */}
 									<div className="relative m-2 mb-0 aspect-[2/1] overflow-hidden rounded-lg bg-background">
@@ -109,6 +115,7 @@ export function ComponentPreviewGridSection() {
 										</span>
 									</div>
 								</div>
+								</InView>
 							);
 						})}
 					</div>

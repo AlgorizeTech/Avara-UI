@@ -66,13 +66,11 @@ export const CATEGORIES = [
 export const NAME_OVERRIDES: Record<string, string> = {
   // Filename → item name
   "ThreeDCarouselBlock.tsx": "carousel-3d",
-  "UtilityBlocks.tsx": "utility",
   "Alerts.tsx": "alert",
   "CustomCodeBlock.tsx": "custom-code-block",
   "Ai-chat.tsx": "ai-chat",
   "AiChatWorkspace.tsx": "ai-chat-workspace",
   "Fleet-map.tsx": "fleet-map",
-  "Pricing-plan.tsx": "pricing-plan",
   "Support-dashboard.tsx": "support-dashboard",
   "DesignComponentsFolder.tsx": "design-components-folder",
   "DesignFolderBox.tsx": "design-folder-box",
@@ -199,11 +197,6 @@ export const META: Record<string, ItemMeta> = {
       "An interconnected Brand Pillars call-to-action component featuring interactive service cards, a synchronized scorecard with animated progress meters, and a highlight popover bar.",
     categories: ["marketing", "layout"],
     docs: "Named exports: CTASection, CtaSection, and the PillarItem type. Accepts variant ('brand-pillars' | 'minimal' | 'split'), pillars array, custom heading, statement, summary metrics, and active accent color.",
-  },
-  globe: {
-    description:
-      "An interactive 3D WebGL globe visualization with location markers, arc curves, and rotation controls. Use it for global presence and location showcases.",
-    categories: ["data-display", "marketing"],
   },
   "homepage-hero": {
     description:
@@ -450,29 +443,11 @@ export const META: Record<string, ItemMeta> = {
     categories: ["authentication", "forms"],
     docs: "Default export: RegisterForm. Also exports RegisterBlock, getThemeStyles (from register-form-theme.ts, which installs alongside) and the RegisterFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal | scenic | liquid-glass | ribbon-drift. `onSubmit` receives the validated fields; without it the form simulates a round trip. `loginHref` points at the matching `login-form` page, and `minPasswordLength` sets the client-side minimum. Validation is client-side presentation only — enforce it again on your server.",
   },
-  "signup-form": {
-    description:
-      "A standalone registration form with inline field validation and animated error states. Use it where sign-up is its own page rather than a tab beside sign-in.",
-    categories: ["authentication", "forms"],
-    docs: "Named export: SignupForm. Uses Motion for field-level error transitions. Validation is client-side presentation only — enforce it again on your server.",
-  },
   "verify-badge": {
     description:
       "A small verified checkmark badge with an optional draw-in animation. Use it beside names and handles to mark a confirmed account.",
     categories: ["data-display"],
     docs: "Named export: VerifyBadge. Sizes are sm | md | lg | xl, `color` takes any CSS colour, and `animate` plays the check-draw on mount.",
-  },
-  settings: {
-    description:
-      "Pre-built settings panels for notification and security preferences, laid out as toggle rows. Use them as a starting point for an account settings page.",
-    categories: ["forms", "layout"],
-    docs: "Named exports: NotificationsBlock, SecurityBlock. These are self-contained example panels with their own local state and hardcoded labels — copy and adapt rather than configuring through props. Depends on `ui-base` for ComponentCard and ToggleSwitch.",
-  },
-  payment: {
-    description:
-      "A card payment form with number, expiry month/year selects and a simulated submit state. Use it as the checkout step in a commerce flow.",
-    categories: ["commerce", "forms"],
-    docs: "Named export: PaymentBlock. A self-contained example with hardcoded month and year options and a mocked submit — adapt it rather than configuring through props. Depends on `select` and `ui-base`. No payment provider is wired in; never handle raw card numbers without a PCI-compliant processor such as Stripe Elements.",
   },
 
   // ---- Phase 4B: navigation & structure ----
@@ -899,18 +874,6 @@ export const META: Record<string, ItemMeta> = {
     categories: ["code", "data-display"],
     docs: "Named exports: ApiPlaygroundBlock, getThemeStyles (from api-playground-theme.ts, which installs alongside), and the types ApiPlaygroundRequest, ApiMockHandler, ApiResponse. Methods GET | POST | PUT | PATCH | DELETE are colour-coded. Ships a mock response by default — pass a `mockHandler`, or wire it to a real fetch. Depends on `select`. Sending real requests from the browser is subject to CORS.",
   },
-  compute: {
-    description:
-      "A compute-resource panel showing instance sizing and usage as a settings-style card. Use it as a starting point for an infrastructure or plan-usage screen.",
-    categories: ["data-display", "layout"],
-    docs: "Named export: ComputeBlock. A self-contained example with hardcoded values and local state — copy and adapt rather than configuring through props. Depends on `ui-base` for ComponentCard.",
-  },
-  utility: {
-    description:
-      "Two small dashboard panels — a team member list and a command search box — built on the shared card shell. Use them as filler panels while assembling a dashboard layout.",
-    categories: ["layout", "utilities"],
-    docs: "Named exports: TeamMembersBlock, CommandSearchBlock. Self-contained examples with hardcoded content — copy and adapt rather than configuring through props. Depends on `ui-base`.",
-  },
   "mobile-mockup": {
     description:
       "Device frames for iPhone (5 through 17 Pro Max), Samsung and Pixel that wrap a screenshot, video or live children. Use them to present an app on a marketing page.",
@@ -1096,24 +1059,6 @@ export const META: Record<string, ItemMeta> = {
     categories: ["commerce", "marketing"],
     docs: "Named exports: PricingCards, PricingBuilder, PricingTable, PricingSlider, PricingTypographic, PricingPlans. The largest pricing item — variants include cards, builder, table, slider, typographic, and interactive service checklist. The tiered cards popular plan features subtle 3D tilt from tilted-card.",
   },
-  "pricing-plan": {
-    description:
-      "Three pricing layouts in one item — basic cards, a feature table and a usage slider that recalculates price. Use the slider variant for consumption-based products.",
-    categories: ["commerce", "marketing"],
-    docs: "Named exports: BasicPricingPlan, TablePricingPlan, SliderPricingPlan. The heaviest dependency graph in the registry: pulls `ui-badge`, `ui-button`, `ui-card` and `ui-slider`. Note `ui-card` installs to components/ui/card.tsx and will overwrite an existing shadcn card — review before adding to an established project.",
-  },
-  "pricing-section": {
-    description:
-      "A compact pricing section with monthly and annual toggle. Use it when pricing is one part of a longer landing page rather than its own page.",
-    categories: ["commerce", "marketing"],
-    docs: "Named export: PricingSection. Self-contained with hardcoded plans — copy and adapt. Uses next/link, so it needs edits outside Next.js. Installs standalone with no registry dependencies.",
-  },
-  "pricing-section-v4": {
-    description:
-      "A refreshed pricing section with a cleaner card treatment and no animation dependency. Use it as the lighter alternative to the GSAP-based pricing sections.",
-    categories: ["commerce", "marketing"],
-    docs: "Named export: PricingSectionV4. Self-contained with hardcoded plans — copy and adapt. Uses next/link, so it needs edits outside Next.js. No GSAP, so it is the lightest of the pricing items.",
-  },
   "floating-contact-button": {
     description:
       "A floating support bubble that expands into a chat panel, with state persisted to localStorage. Use it for live chat and contact widgets on marketing sites.",
@@ -1138,30 +1083,24 @@ export const META: Record<string, ItemMeta> = {
     categories: ["media", "marketing"],
     docs: "Named export: MemoriesCard. `items` take { id, title, location, date, image, description?, tag? }; `onCardChange` reports the active index. Drag or click to advance the stack.",
   },
-  "support-container": {
-    description:
-      "A support ticket list with filters, detail view and empty state, configured through one content object. Use it to drop a help-desk view into an existing layout.",
-    categories: ["communication", "layout"],
-    docs: "Named export: SupportContainer. Configured via a single nested prop object covering header, filters, tickets, emptyState and detailView — all copy is passed in, so it localises without edits. Installs standalone with no registry dependencies.",
-  },
   "support-dashboard": {
     description:
       "A full help-desk dashboard with tickets, SLA tracking, contact details and chat or table layouts. Use it as the agent-facing side of a support product.",
     categories: ["communication", "data-display"],
     docs: "Named exports: SupportDashboard, plus Ticket, TicketContact, TicketSLA, TicketMessage and SupportData types. `layout` switches between chat and table views over the same ticket data. Depends on `select`. The most feature-complete block in the registry — expect to replace its demo data wholesale.",
   },
-  "support-page": {
-    description:
-      "A customer-facing support page with ticket list, reply composer and details sidebar. Use it as the end-user counterpart to the agent dashboard.",
-    categories: ["communication"],
-    docs: "Named export: SupportPage. Configured through one nested content object covering header, filters, tickets, replySection and detailsSection. Depends on `select`. For the agent-side view with SLA tracking, use `support-dashboard`.",
-  },
   // ---- Phase 4F: motion, scroll & domain-specific ----
   "animated-list": {
     description:
-      "A container component for rendering lists with animated item insertions, reorders, or removals. Ideal for dynamic notifications or feeds.",
-    categories: ["media", "scroll"],
-    docs: "Renders animated lists with smooth insertion and deletion transitions.",
+      "A list whose items rise and blur in one after another, then fade in, fade out and glide as items are added, removed or filtered. Use it for feeds, bills and any list that changes.",
+    categories: ["data-display", "scroll"],
+    docs: "Named exports: AnimatedList, AnimatedListItem. AnimatedList renders a ul (`as` for ol or div) and owns only the motion; AnimatedListItem renders an li (`as=\"div\"` inside a div list) and takes any content. Give every item a stable `key`: it decides what counts as added, removed or moved. Titles, filters and totals live outside the list. `staggerDelay` and `duration` tune the entrance. Avoid transform utilities on the item itself, since the motion owns its transform. GSAP build; honours prefers-reduced-motion.",
+  },
+  "animated-number": {
+    description:
+      "A number that counts up when it scrolls into view, then counts from where it is to each new value. Use it for totals, balances and statistics that change.",
+    categories: ["data-display", "typography"],
+    docs: "Named export: AnimatedNumber. `value` is the target; `format` turns the running number into text (a currency string, say) and defaults to toLocaleString; `duration` is in seconds. Screen readers get the final value, not the count. GSAP build; honours prefers-reduced-motion. For a stat card with a label, use `counter`.",
   },
   "animated-typography": {
     description:
@@ -1380,15 +1319,9 @@ export const META: Record<string, ItemMeta> = {
     categories: ["utilities"],
     docs: "Derived from shadcn/ui (MIT, Copyright (c) 2023 shadcn).",
   },
-  "ui-base": {
-    description:
-      "Shared layout scaffolding (ComponentCard, ToggleSwitch) used by the settings, payment, compute and utility blocks.",
-    categories: ["utilities"],
-    docs: "Named exports: ComponentCard, ToggleSwitch. Pulled in automatically as a dependency — rarely installed directly.",
-  },
   "ui-card": {
     description:
-      "The card surface primitive that the pricing-plan block composes.",
+      "The card surface primitive that other blocks compose.",
     categories: ["utilities"],
     docs: "NOTE: installs to components/ui/card.tsx and will overwrite a shadcn `card` already present. Review before installing into an existing project.",
   },

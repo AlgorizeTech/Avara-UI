@@ -160,6 +160,7 @@ const COMPONENT_META: Record<
 	"squircle-carousel": { countText: "Masked Tile Slider", illustrationType: "squircle-carousel" },
 	"table-of-contents": { countText: "Scroll-Spy Nav", illustrationType: "table-of-contents" },
 	"animated-list": { countText: "Staggered Entrance", illustrationType: "animated-list" },
+	"animated-number": { countText: "Count-up", illustrationType: "counter" },
 	"chat-bubble": { countText: "Spring Motion Feed", illustrationType: "chat-bubble" },
 	"design-components-folder": { countText: "Animated File Deck", illustrationType: "design-components-folder" },
 	"cursor-animation": { countText: "10 Fluid Variants", illustrationType: "cursor-animation" },

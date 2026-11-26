@@ -1,15 +1,19 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from "motion/react";
 import { ArrowRightIcon } from "@/components/ui/arrow-right-icon";
 import { ChartNoAxesColumnIcon } from "@/components/ui/chart-no-axes-column-icon";
+import { CheckIcon } from "@/components/ui/check-icon";
 import { ChevronRightIcon } from "@/components/ui/chevron-right-icon";
 import { CoinsIcon } from "@/components/ui/coins-icon";
 import { CompassIcon } from "@/components/ui/compass-icon";
 import { CopyCheckIcon } from "@/components/ui/copy-check-icon";
 import { GlobeIcon } from "@/components/ui/globe-icon";
+import { FacebookIcon } from "@/components/ui/facebook-icon";
+import { GmailIcon } from "@/components/ui/gmail-icon";
 import { HeartIcon } from "@/components/ui/heart-icon";
+import { InstagramIcon } from "@/components/ui/instagram-icon";
 import { MailIcon } from "@/components/ui/mail-icon";
 import { MegaphoneIcon } from "@/components/ui/megaphone-icon";
 import { MousePointerClickIcon } from "@/components/ui/mouse-pointer-click-icon";
@@ -17,7 +21,9 @@ import { RadarIcon, type RadarIconHandle } from "@/components/ui/radar-icon";
 import { RadioIcon } from "@/components/ui/radio-icon";
 import { StarIcon } from "@/components/ui/star-icon";
 import { TargetIcon } from "@/components/ui/target-icon";
+import { TikTokIcon } from "@/components/ui/tiktok-icon";
 import { TrophyIcon } from "@/components/ui/trophy-icon";
+import { TwitterIcon } from "@/components/ui/twitter-icon";
 import { WalletIcon } from "@/components/ui/wallet-icon";
 import {
   ArrowRight,
@@ -35,7 +41,81 @@ import {
   X,
 } from "lucide-react";
 import { TemplatePage, type TemplatePreviewTab } from "@/components/site/TemplatePage";
+import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
 import { cn } from "@/lib/utils";
+
+const LIKE_BURST_PARTICLES = [
+  { x: 0, y: -18 },
+  { x: 16, y: -9 },
+  { x: 16, y: 9 },
+  { x: 0, y: 18 },
+  { x: -16, y: 9 },
+  { x: -16, y: -9 },
+];
+
+function FlipCounter({
+  value,
+  prefersReducedMotion,
+  className,
+}: {
+  value: string;
+  prefersReducedMotion: boolean | null;
+  className?: string;
+}) {
+  const chars = value.split("");
+
+  return (
+    <span className={cn("inline-flex items-center tabular-nums", className)}>
+      {chars.map((char, idx) => {
+        const keyFromRight = chars.length - 1 - idx;
+        if (!/\d/.test(char)) {
+          return (
+            <span key={`sep-${keyFromRight}`} className="inline-block">
+              {char}
+            </span>
+          );
+        }
+
+        return (
+          <span
+            key={`pos-${keyFromRight}`}
+            className="relative inline-flex overflow-hidden leading-[1.15]"
+            style={{ perspective: "220px" }}
+          >
+            <span aria-hidden="true" className="invisible select-none">
+              {char}
+            </span>
+            <AnimatePresence initial={false}>
+              <motion.span
+                key={char}
+                initial={
+                  prefersReducedMotion
+                    ? false
+                    : { y: "100%", opacity: 0, rotateX: -55 }
+                }
+                animate={{ y: "0%", opacity: 1, rotateX: 0 }}
+                exit={
+                  prefersReducedMotion
+                    ? undefined
+                    : { y: "-100%", opacity: 0, rotateX: 55 }
+                }
+                transition={
+                  prefersReducedMotion
+                    ? { duration: 0 }
+                    : { duration: 0.75, ease: [0.22, 1, 0.36, 1] }
+                }
+                style={{ transformOrigin: "center center" }}
+                className="absolute inset-0 flex items-center justify-center will-change-transform"
+              >
+                {char}
+              </motion.span>
+            </AnimatePresence>
+          </span>
+        );
+      })}
+    </span>
+  );
+}
 
 type AnimatedIconComponent = React.ForwardRefExoticComponent<
   {
@@ -52,7 +132,7 @@ function LoopingAnimatedIcon({
   size = 20,
   duration = 2.2,
   delay = 0,
-  color = "#f45d5d",
+  color = "var(--primary)",
   prefersReducedMotion,
   className,
 }: {
@@ -155,10 +235,10 @@ function VeloceRadarIconBadge({
   return (
     <div
       className={cn(
-        "flex size-10 items-center justify-center rounded-xl border",
+        "flex size-10 items-center justify-center rounded-xl",
         isDark
-          ? "bg-[#151821] border-white/10 shadow-lg"
-          : "bg-white border-black/[0.04] shadow-[0_4px_14px_rgb(0_0_0/0.05)]",
+          ? "bg-[#151821] shadow-lg"
+          : "bg-white shadow-[0_4px_14px_rgb(0_0_0/0.05)]",
       )}
     >
       <IconComponent
@@ -166,7 +246,7 @@ function VeloceRadarIconBadge({
         size={20}
         duration={2.4}
         isAnimated={!prefersReducedMotion}
-        color="#f45d5d"
+        color="var(--primary)"
       />
     </div>
   );
@@ -184,13 +264,24 @@ function VeloceHeroPreview({
   const [hoveredBar, setHoveredBar] = useState<number | null>(null);
   const [selectedFeature, setSelectedFeature] = useState(0);
   const [incomePeriod, setIncomePeriod] = useState<"monthly" | "yearly">("monthly");
-  const [selectedMgmtOption, setSelectedMgmtOption] = useState(1);
+  const [mgmtStep, setMgmtStep] = useState(0);
+  const selectedMgmtOption = ([0, 1, 2, 1] as const)[mgmtStep % 4];
   const [openFaqIndices, setOpenFaqIndices] = useState<number[]>([1, 3]);
   const [hoveredSegBar, setHoveredSegBar] = useState<number | null>(null);
   const [hoveredAvgBar, setHoveredAvgBar] = useState<number | null>(null);
   const [hoveredSalesBar, setHoveredSalesBar] = useState<number | null>(null);
   const [hoveredPlanningCard, setHoveredPlanningCard] = useState<number | null>(null);
   const prefersReducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    const intervalId = setInterval(() => {
+      setMgmtStep((prev) => (prev + 1) % 4);
+    }, 1600);
+
+    return () => clearInterval(intervalId);
+  }, [prefersReducedMotion]);
   const contentGridRef = useRef<HTMLDivElement>(null);
   const donutCardRef = useRef<HTMLDivElement>(null);
   const salesCardRef = useRef<HTMLDivElement>(null);
@@ -219,6 +310,7 @@ function VeloceHeroPreview({
     salesMidY: number;
     startX: number;
     startY: number;
+    bottomY: number;
     targetX: number;
     targetY: number;
   } | null>(null);
@@ -228,14 +320,6 @@ function VeloceHeroPreview({
     const interval = setInterval(() => {
       setSelectedFeature((prev) => (prev + 1) % 4);
     }, 2200);
-    return () => clearInterval(interval);
-  }, [prefersReducedMotion]);
-
-  useEffect(() => {
-    if (prefersReducedMotion) return;
-    const interval = setInterval(() => {
-      setSelectedMgmtOption((prev) => (prev + 1) % 3);
-    }, 1800);
     return () => clearInterval(interval);
   }, [prefersReducedMotion]);
 
@@ -259,6 +343,7 @@ function VeloceHeroPreview({
         salesMidY: salesRect.top - gridRect.top + salesRect.height * 0.5,
         startX: salesRect.left - gridRect.left + salesRect.width * 0.5,
         startY: salesRect.bottom - gridRect.top,
+        bottomY: gridRect.height - 56,
         targetX: btnRect.left - gridRect.left,
         targetY: btnRect.top - gridRect.top + btnRect.height / 2,
       });
@@ -303,33 +388,23 @@ function VeloceHeroPreview({
     if (planningVisualRef.current) observer.observe(planningVisualRef.current);
     return () => observer.disconnect();
   }, []);
-  const [customerCount, setCustomerCount] = useState(() =>
-    prefersReducedMotion ? 15823 : 0,
-  );
+  const [customerCount, setCustomerCount] = useState(15823);
+  const [likePulse, setLikePulse] = useState(0);
+
+  const triggerLike = () => {
+    setCustomerCount((prev) => prev + 1);
+    setLikePulse((prev) => prev + 1);
+  };
 
   useEffect(() => {
-    if (prefersReducedMotion) {
-      setCustomerCount(15823);
-      return;
-    }
+    if (prefersReducedMotion) return;
 
-    const target = 15823;
-    const duration = 1800;
-    let rafId = 0;
-    const start = performance.now();
+    const intervalId = setInterval(() => {
+      setCustomerCount((prev) => prev + 1);
+      setLikePulse((prev) => prev + 1);
+    }, 3600);
 
-    const step = (now: number) => {
-      const elapsed = now - start;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setCustomerCount(Math.round(eased * target));
-      if (progress < 1) {
-        rafId = requestAnimationFrame(step);
-      }
-    };
-
-    rafId = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(rafId);
+    return () => clearInterval(intervalId);
   }, [prefersReducedMotion]);
 
   const formattedCustomerCount = customerCount
@@ -337,18 +412,24 @@ function VeloceHeroPreview({
     .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
   const cardSurface = isDark
-    ? "bg-white/[0.04] border border-white/[0.08]"
-    : "bg-[#f5f5f7] border border-black/[0.04]";
+    ? "bg-[#141720]"
+    : "bg-[#F8F8F8]";
 
   const floatingSurface = isDark
-    ? "bg-[#151821]/95 border border-white/10 shadow-lg"
-    : "bg-white/95 border border-black/[0.05] shadow-[0_8px_24px_rgb(0_0_0/0.06)]";
+    ? "bg-[#151821] shadow-lg"
+    : "bg-white shadow-[0_8px_24px_rgb(0_0_0/0.04)]";
+
+  const floatingCardSurface = isDark
+    ? "bg-[#151821] shadow-lg"
+    : "bg-[#F8F8F8] shadow-[0_8px_24px_rgb(0_0_0/0.04)]";
 
   return (
     <div
       className={cn(
         "@container relative overflow-hidden w-full min-h-[540px] px-4 py-5 @sm:px-6 @lg:px-10 @lg:py-7 font-sans",
-        isDark ? "bg-[#0b0d12] text-zinc-100" : "bg-white text-zinc-900",
+        isDark
+          ? "bg-[#0b0d12] text-zinc-100"
+          : "bg-white text-zinc-900 [&_h1]:text-[#242427] [&_h2]:text-[#242427] [&_h3]:text-[#242427] [&_h4]:text-[#242427] [&_h5]:text-[#242427]",
       )}
     >
       {/* 1. Navbar Section */}
@@ -359,10 +440,10 @@ function VeloceHeroPreview({
           aria-label="Open navigation sidebar"
           onClick={() => setMobileMenuOpen(true)}
           className={cn(
-            "@md:hidden flex size-8 items-center justify-center rounded-lg border cursor-pointer transition-colors",
+            "@md:hidden flex size-8 items-center justify-center rounded-lg cursor-pointer transition-colors",
             isDark
-              ? "border-white/10 bg-white/[0.06] text-zinc-200 hover:bg-white/10"
-              : "border-zinc-200/80 bg-zinc-100/80 text-zinc-700 hover:bg-zinc-200/70",
+              ? "bg-white/[0.06] text-zinc-200 hover:bg-white/10"
+              : "bg-[#F8F8F8] text-zinc-700 hover:bg-zinc-200/70",
           )}
         >
           <Menu className="size-4" />
@@ -370,7 +451,7 @@ function VeloceHeroPreview({
 
         {/* Brand (Centered on mobile, Left on desktop) */}
         <div className="flex items-center gap-2 h-8 @md:static absolute left-1/2 -translate-x-1/2 @md:translate-x-0">
-          <span className="flex size-6 items-center justify-center rounded-md bg-[#f45d5d] text-white shrink-0">
+          <span className="flex size-6 items-center justify-center rounded-md bg-primary text-primary-foreground shrink-0">
             <svg viewBox="0 0 24 24" className="size-4 fill-current" aria-hidden>
               <path d="M4.5 5.5L12 19.5L19.5 5.5H15.8L12 12.8L8.2 5.5H4.5Z" />
             </svg>
@@ -392,7 +473,7 @@ function VeloceHeroPreview({
           }
           className="hidden @md:flex items-center gap-6 h-8 text-[12px] leading-none"
         >
-          {["Home", "About", "Service", "Blog", "Contact"].map((item, i) => (
+          {["Home", "Platform", "Solutions", "Insights", "Contact"].map((item, i) => (
             <span
               key={item}
               className={cn(
@@ -418,10 +499,10 @@ function VeloceHeroPreview({
           aria-label={`Switch to ${isDark ? "light" : "dark"} theme`}
           title={`Switch to ${isDark ? "light" : "dark"} theme`}
           className={cn(
-            "flex size-8 items-center justify-center rounded-lg border shrink-0 cursor-pointer transition-colors",
+            "flex size-8 items-center justify-center rounded-lg shrink-0 cursor-pointer transition-colors",
             isDark
-              ? "border-white/10 bg-white/[0.06] text-zinc-200 hover:bg-white/10"
-              : "border-zinc-200/80 bg-zinc-100/80 text-zinc-700 hover:bg-zinc-200/70",
+              ? "bg-white/[0.06] text-zinc-200 hover:bg-white/10"
+              : "bg-[#F8F8F8] text-zinc-700 hover:bg-zinc-200/70",
           )}
         >
           {isDark ? <Moon className="size-4" /> : <Sun className="size-4" />}
@@ -460,7 +541,7 @@ function VeloceHeroPreview({
               <div>
                 <div className="flex items-center justify-between pb-4 border-b border-current/10">
                   <div className="flex items-center gap-2">
-                    <span className="flex size-6 items-center justify-center rounded-md bg-[#f45d5d] text-white">
+                    <span className="flex size-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
                       <svg viewBox="0 0 24 24" className="size-4 fill-current" aria-hidden>
                         <path d="M4.5 5.5L12 19.5L19.5 5.5H15.8L12 12.8L8.2 5.5H4.5Z" />
                       </svg>
@@ -483,7 +564,7 @@ function VeloceHeroPreview({
                 </div>
 
                 <nav className="mt-4 flex flex-col gap-1">
-                  {["Home", "About", "Service", "Blog", "Contact"].map((item, i) => (
+                  {["Home", "Platform", "Solutions", "Insights", "Contact"].map((item, i) => (
                     <button
                       key={item}
                       type="button"
@@ -501,7 +582,7 @@ function VeloceHeroPreview({
                     >
                       <span>{item}</span>
                       {i === 0 && (
-                        <span className="size-1.5 rounded-full bg-[#f45d5d]" />
+                        <span className="size-1.5 rounded-full bg-primary" />
                       )}
                     </button>
                   ))}
@@ -520,10 +601,10 @@ function VeloceHeroPreview({
                 >
                   <span className="relative h-4 overflow-hidden flex flex-col">
                     <span className="transition-transform duration-300 group-hover:-translate-y-full">
-                      Get Started
+                      Start Free
                     </span>
                     <span className="transition-transform duration-300 group-hover:-translate-y-full">
-                      Get Started
+                      Start Free
                     </span>
                   </span>
                   <span
@@ -543,10 +624,10 @@ function VeloceHeroPreview({
       </AnimatePresence>
 
       {/* 2. Hero Section */}
-      <section className="mx-auto max-w-[560px] @4xl:max-w-5xl pt-9 @sm:pt-12">
+      <section className="mx-auto max-w-[560px] @4xl:max-w-5xl pt-14 @sm:pt-20">
         {/* Headline */}
         <div className="text-center">
-          <h3 className="flex flex-col items-center text-[26px] @sm:text-[38px] @lg:text-[46px] font-semibold tracking-tight leading-[1.12] uppercase">
+          <h3 className="flex flex-col items-center text-[30px] @sm:text-[46px] @lg:text-[62px] font-semibold tracking-tight leading-[1.12] uppercase">
             <motion.span
               initial={prefersReducedMotion ? false : { opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
@@ -557,32 +638,53 @@ function VeloceHeroPreview({
               }
               className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1"
             >
-              <span>ONE</span>
+              <span>NEW</span>
               <span className="inline-flex items-center -space-x-1.5 align-middle mx-0.5">
-                <span className="flex size-7 @sm:size-9 @lg:size-10 items-center justify-center rounded-full bg-amber-100 text-amber-600 ring-2 ring-white dark:ring-[#0b0d12]">
+                <span
+                  className={cn(
+                    "flex size-9 @sm:size-11 @lg:size-12 items-center justify-center rounded-full ring-2",
+                    isDark
+                      ? "bg-[#1A1D27] ring-[#0b0d12]"
+                      : "bg-[#F8F8F8] ring-white",
+                  )}
+                >
                   <LoopingAnimatedIcon
                     icon={ChartNoAxesColumnIcon}
-                    size={16}
+                    size={21}
                     duration={2.0}
                     delay={0}
                     color="#d97706"
                     prefersReducedMotion={prefersReducedMotion}
                   />
                 </span>
-                <span className="flex size-7 @sm:size-9 @lg:size-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 ring-2 ring-white dark:ring-[#0b0d12]">
+                <span
+                  className={cn(
+                    "flex size-9 @sm:size-11 @lg:size-12 items-center justify-center rounded-full ring-2",
+                    isDark
+                      ? "bg-[#1A1D27] ring-[#0b0d12]"
+                      : "bg-[#F8F8F8] ring-white",
+                  )}
+                >
                   <LoopingAnimatedIcon
                     icon={GlobeIcon}
-                    size={16}
+                    size={21}
                     duration={2.0}
                     delay={0.25}
                     color="#059669"
                     prefersReducedMotion={prefersReducedMotion}
                   />
                 </span>
-                <span className="flex size-7 @sm:size-9 @lg:size-10 items-center justify-center rounded-full bg-blue-100 text-blue-600 ring-2 ring-white dark:ring-[#0b0d12]">
+                <span
+                  className={cn(
+                    "flex size-9 @sm:size-11 @lg:size-12 items-center justify-center rounded-full ring-2",
+                    isDark
+                      ? "bg-[#1A1D27] ring-[#0b0d12]"
+                      : "bg-[#F8F8F8] ring-white",
+                  )}
+                >
                   <LoopingAnimatedIcon
                     icon={MousePointerClickIcon}
-                    size={16}
+                    size={21}
                     duration={2.0}
                     delay={0.5}
                     color="#2563eb"
@@ -590,7 +692,7 @@ function VeloceHeroPreview({
                   />
                 </span>
               </span>
-              <span>CLICK</span>
+              <span>PACE</span>
             </motion.span>
 
             <motion.span
@@ -603,7 +705,7 @@ function VeloceHeroPreview({
               }
               className="w-full"
             >
-              MAXIMIZING IMPACT
+              SCALING FASTER
             </motion.span>
           </h3>
 
@@ -616,12 +718,12 @@ function VeloceHeroPreview({
                 : { duration: 0.75, delay: 0.36, ease: [0.16, 1, 0.3, 1] }
             }
             className={cn(
-              "mt-3.5 mx-auto max-w-md text-[11.5px] @sm:text-[12.5px] leading-relaxed",
-              isDark ? "text-zinc-400" : "text-zinc-500",
+              "mt-7 mx-auto max-w-[490px] text-[11px] @sm:text-[11.5px] font-normal leading-relaxed",
+              isDark ? "text-zinc-500" : "text-[#ACACAC]",
             )}
           >
-            Unlock a world of possibilities for your brand. Our streamlined approach ensures that
-            you can maximize your online presence, engagement, and conversions effortlessly.
+            Accelerate every stage of your brand's growth. Our unified workspace helps you
+            elevate visibility, deepen engagement, and turn traffic into lasting revenue.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -633,13 +735,13 @@ function VeloceHeroPreview({
                 ? { duration: 0 }
                 : { duration: 0.75, delay: 0.5, ease: [0.16, 1, 0.3, 1] }
             }
-            className="mt-5 flex flex-wrap items-center justify-center gap-2.5"
+            className="mt-9 flex flex-wrap items-center justify-center gap-2.5"
           >
-            {/* Get Started: Vertical text ticker + rounded arrow exit/enter swap */}
+            {/* Start Free: Vertical text ticker + rounded arrow exit/enter swap */}
             <button
               type="button"
               className={cn(
-                "group relative inline-flex items-center gap-2.5 rounded-full pl-4 pr-2 py-1.5 text-[11.5px] font-medium cursor-pointer transition-all duration-300 active:scale-95",
+                "group relative inline-flex h-9 items-center gap-2.5 rounded-full pl-4 pr-2 text-[11.5px] font-medium cursor-pointer transition-all duration-300 active:scale-95",
                 isDark
                   ? "bg-white text-zinc-900 hover:shadow-[0_8px_24px_rgba(255,255,255,0.16)]"
                   : "bg-zinc-900 text-white hover:shadow-[0_8px_24px_rgba(0,0,0,0.18)]",
@@ -647,10 +749,10 @@ function VeloceHeroPreview({
             >
               <span className="relative h-[16px] overflow-hidden flex flex-col leading-[16px]">
                 <span className="transition-transform duration-300 ease-out group-hover:-translate-y-full">
-                  Get Started
+                  Start Free
                 </span>
                 <span className="transition-transform duration-300 ease-out group-hover:-translate-y-full">
-                  Get Started
+                  Start Free
                 </span>
               </span>
               <span
@@ -664,32 +766,35 @@ function VeloceHeroPreview({
               </span>
             </button>
 
-            {/* Learn More (Hero): Spinning conic-gradient border + soft coral glow */}
+            {/* Explore More (Hero): #F45D5D coral-tinted idle pill; animated #F45D5D underline + circle scale & arrow spin-swap on hover */}
             <button
               type="button"
-              className="group relative inline-flex items-center justify-center overflow-hidden rounded-full p-[1.5px] cursor-pointer transition-shadow duration-300 hover:shadow-[0_0_20px_rgba(244,93,93,0.28)] active:scale-95"
+              className={cn(
+                "group relative inline-flex h-9 items-center gap-2.5 overflow-hidden rounded-full border pl-4 pr-2 text-[11.5px] font-medium cursor-pointer transition-colors duration-300 active:scale-95",
+                isDark
+                  ? "border-primary/50 bg-primary/15 text-primary hover:border-primary hover:bg-primary/20"
+                  : "border-primary/45 bg-primary/[0.08] text-primary hover:border-primary hover:bg-primary/[0.14]",
+              )}
             >
-              <span
-                aria-hidden
-                className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_55%,#f45d5d_85%,transparent_100%)] opacity-0 group-hover:opacity-100 group-hover:animate-[spin_2.2s_linear_infinite] transition-opacity duration-300"
-              />
-              <span
-                className={cn(
-                  "relative z-10 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-[11.5px] font-medium transition-colors duration-300",
-                  isDark
-                    ? "border-white/15 bg-[#0b0d12] text-white group-hover:border-transparent"
-                    : "border-zinc-200 bg-white text-zinc-800 group-hover:border-transparent",
-                )}
-              >
-                <span>Learn More</span>
-                <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-[#f45d5d]" />
+              <span className="relative z-10 inline-flex flex-col items-start">
+                <span className="transition-transform duration-300 group-hover:translate-x-0.5">
+                  Explore More
+                </span>
+                <span
+                  aria-hidden
+                  className="h-[1.5px] w-0 rounded-full bg-primary transition-all duration-300 ease-out group-hover:w-full"
+                />
+              </span>
+              <span className="relative z-10 flex size-6 items-center justify-center rounded-full overflow-hidden bg-primary text-primary-foreground transition-transform duration-300 ease-out group-hover:scale-110">
+                <ArrowRight className="size-3 -rotate-45 transition-all duration-300 ease-out group-hover:rotate-0 group-hover:translate-x-5 group-hover:opacity-0" />
+                <ArrowRight className="absolute size-3 -translate-x-5 rotate-0 opacity-0 transition-all duration-300 ease-out group-hover:translate-x-0 group-hover:-rotate-45 group-hover:opacity-100" />
               </span>
             </button>
           </motion.div>
         </div>
 
         {/* Bottom 3-Column Bento Grid */}
-        <div className="mt-8 grid grid-cols-1 @4xl:grid-cols-12 gap-3.5 items-stretch">
+        <div className="mt-16 grid grid-cols-1 @4xl:grid-cols-[minmax(0,3.25fr)_minmax(0,4.75fr)_minmax(0,4fr)] gap-3.5 items-stretch">
           {/* Left Card: Mastering the Art of Digital Marketing */}
           <motion.div
             initial={prefersReducedMotion ? false : { opacity: 0, x: -24 }}
@@ -700,13 +805,15 @@ function VeloceHeroPreview({
                 : { duration: 0.85, delay: 0.4, ease: [0.16, 1, 0.3, 1] }
             }
             className={cn(
-              "@4xl:col-span-3 rounded-2xl p-5 flex flex-col justify-between min-h-[300px]",
+              "rounded-2xl p-5 flex flex-col justify-between min-h-[300px]",
               cardSurface,
             )}
           >
             <div>
-              <h4 className="text-[14px] font-semibold leading-snug">
-                Mastering the Art of Digital Marketing
+              <h4 className="text-[13.5px] font-semibold leading-snug">
+                Scaling the Craft
+                <br />
+                of Modern Growth
               </h4>
             </div>
 
@@ -772,7 +879,7 @@ function VeloceHeroPreview({
                 }
                 className={cn(
                   "pointer-events-none absolute size-28 rounded-full border",
-                  isDark ? "border-rose-400/20" : "border-rose-300/50",
+                  isDark ? "border-primary/20" : "border-primary/35",
                 )}
               />
 
@@ -794,14 +901,14 @@ function VeloceHeroPreview({
                       ease: "easeOut",
                       times: [0, 0.2, 0.65, 1],
                     }}
-                    className="pointer-events-none absolute size-32 rounded-full bg-[radial-gradient(circle,rgba(244,93,93,0.22)_0%,rgba(244,93,93,0.08)_45%,transparent_72%)] blur-[2px]"
+                    className="pointer-events-none absolute size-32 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--primary)_22%,transparent)_0%,color-mix(in_oklab,var(--primary)_8%,transparent)_45%,transparent_72%)] blur-[2px]"
                   />
                 ))}
 
               {/* Soft radial glow */}
               <div
                 aria-hidden
-                className="pointer-events-none absolute size-24 rounded-full bg-[#f45d5d]/12 blur-xl"
+                className="pointer-events-none absolute size-24 rounded-full bg-primary/12 blur-xl"
               />
 
               {/* Floating megaphone image */}
@@ -826,25 +933,50 @@ function VeloceHeroPreview({
               <p
                 className={cn(
                   "text-[10.5px] leading-relaxed",
-                  isDark ? "text-zinc-400" : "text-zinc-500",
+                  isDark ? "text-zinc-500" : "text-[#ACACAC]",
                 )}
               >
-                Program that goes beyond the basics, offering you a deep dive into the art and
-                science of digital marketing.
+                Playbooks built beyond surface-level tactics, giving your team a clear edge
+                in modern growth strategy.
               </p>
-              {/* Learn More (Bento): Radial center-out ripple + -45deg diagonal arrow tilt */}
+              {/* Explore More (Bento): Segmented split-pill with right-to-left #f45d5d sweep, text roll, divider-to-dot morph & diagonal arrow launch */}
               <button
                 type="button"
                 className={cn(
-                  "group relative overflow-hidden mt-3.5 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[11px] font-medium cursor-pointer transition-all duration-300 hover:-translate-y-0.5 active:scale-95",
-                  "after:absolute after:left-1/2 after:top-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:size-0 after:rounded-full after:bg-[#f45d5d] after:transition-all after:duration-500 hover:after:size-44",
+                  "group relative mt-3.5 inline-flex h-9 items-center gap-3 overflow-hidden rounded-full pl-4 pr-3.5 text-[11.5px] font-medium cursor-pointer transition-colors duration-300 active:scale-95",
                   isDark
-                    ? "bg-white text-zinc-900 hover:text-white hover:shadow-[0_6px_18px_rgba(244,93,93,0.3)]"
-                    : "bg-zinc-900 text-white hover:shadow-[0_6px_18px_rgba(244,93,93,0.3)]",
+                    ? "bg-white text-zinc-950 hover:text-white"
+                    : "bg-zinc-950 text-white",
                 )}
               >
-                <span className="relative z-10">Learn More</span>
-                <ArrowRight className="relative z-10 size-3 transition-transform duration-300 group-hover:-rotate-45 group-hover:translate-x-0.5" />
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 origin-right scale-x-0 rounded-full bg-primary transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100"
+                />
+                <span className="relative z-10 h-[16px] overflow-hidden flex flex-col leading-[16px]">
+                  <span className="transition-transform duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-full">
+                    Explore More
+                  </span>
+                  <span className="transition-transform duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-full">
+                    Explore More
+                  </span>
+                </span>
+                <span
+                  aria-hidden
+                  className="relative z-10 flex h-4 w-px items-center justify-center"
+                >
+                  <span
+                    className={cn(
+                      "absolute h-4 w-px rounded-full opacity-100 transition-all duration-300 delay-100 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:h-0 group-hover:opacity-0 group-hover:duration-200 group-hover:delay-0",
+                      isDark ? "bg-zinc-950/30" : "bg-white/40",
+                    )}
+                  />
+                  <span className="h-0 w-px rounded-full bg-white opacity-0 transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:h-4 group-hover:opacity-100 group-hover:duration-400 group-hover:delay-150" />
+                </span>
+                <span className="relative z-10 flex size-4 items-center justify-center overflow-hidden">
+                  <ArrowRight className="size-3.5 transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-4 group-hover:-translate-y-4 group-hover:opacity-0" />
+                  <ArrowRight className="absolute size-3.5 -rotate-45 -translate-x-4 translate-y-4 opacity-0 transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100" />
+                </span>
               </button>
             </div>
           </motion.div>
@@ -859,15 +991,15 @@ function VeloceHeroPreview({
                 : { duration: 0.85, delay: 0.45, ease: [0.16, 1, 0.3, 1] }
             }
             className={cn(
-              "@4xl:col-span-5 relative rounded-2xl overflow-hidden min-h-[340px] @sm:min-h-[400px] @4xl:min-h-[320px] flex items-end justify-center",
+              "relative rounded-2xl overflow-hidden min-h-[400px] @sm:min-h-[420px] @4xl:min-h-[420px] flex items-end justify-center",
               cardSurface,
             )}
           >
             {/* Studio Portrait */}
             <img
-              src="/images/templates/veloce-person.jpg"
+              src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1795613111/veloce-person-removebg-preview-1795613109297.png"
               alt="Digital marketer peeking over a book"
-              className="absolute inset-0 h-full w-full object-cover object-top"
+              className="absolute bottom-0 left-1/2 -translate-x-1/2 z-[5] h-[86%] w-auto max-w-none object-contain object-bottom"
             />
 
             {/* Top-left Pill: Let's Growth! */}
@@ -894,10 +1026,10 @@ function VeloceHeroPreview({
                 color={isDark ? "#d4d4d8" : "#52525b"}
                 prefersReducedMotion={prefersReducedMotion}
               />
-              <span>Let&apos;s Growth!</span>
+              <span>Scale Smarter!</span>
             </motion.div>
 
-            {/* Top-right Mini Chart Card: Segmentation */}
+            {/* Top-right Mini Chart Card: Audience Reach */}
             <motion.div
               initial={
                 prefersReducedMotion ? false : { opacity: 0, x: 16, y: -10 }
@@ -909,27 +1041,79 @@ function VeloceHeroPreview({
                   : { duration: 0.7, delay: 0.78, ease: [0.16, 1, 0.3, 1] }
               }
               className={cn(
-                "hidden @sm:flex absolute right-3.5 top-3.5 z-10 flex-col rounded-xl p-2.5 w-32",
+                "flex absolute right-2.5 @sm:right-3.5 top-2.5 @sm:top-3.5 z-[2] flex-col rounded-2xl p-2.5 @sm:p-3 w-36 @sm:w-44",
                 floatingSurface,
               )}
             >
-              <div className="flex items-center gap-1 text-[9.5px] font-medium text-zinc-500 dark:text-zinc-400">
-                <span className="size-2 rounded-xs bg-rose-400" />
-                <span>Segmentation</span>
+              <div className="flex items-start gap-2 pr-6 @sm:pr-8">
+                <span
+                  className={cn(
+                    "flex size-6 shrink-0 items-center justify-center rounded-full",
+                    isDark ? "bg-primary/15" : "bg-primary/10",
+                  )}
+                >
+                  <BarChart2 className="size-3 text-primary" />
+                </span>
+                <div className="min-w-0">
+                  <span
+                    className={cn(
+                      "block text-[10px] font-medium leading-tight",
+                      isDark ? "text-zinc-100" : "text-zinc-900",
+                    )}
+                  >
+                    Audience Reach
+                  </span>
+                  <div className="mt-1 flex items-center gap-1.5">
+                    <span className="inline-flex items-center gap-1">
+                      <span className="size-1.5 rounded-full bg-primary/80" />
+                      <span
+                        className={cn(
+                          "h-1 w-4 rounded-full",
+                          isDark ? "bg-white/15" : "bg-zinc-200",
+                        )}
+                      />
+                    </span>
+                    <span className="inline-flex items-center gap-1">
+                      <span
+                        className={cn(
+                          "size-1.5 rounded-full",
+                          isDark ? "bg-primary/25" : "bg-primary/20",
+                        )}
+                      />
+                      <span
+                        className={cn(
+                          "h-1 w-4 rounded-full",
+                          isDark ? "bg-white/15" : "bg-zinc-200",
+                        )}
+                      />
+                    </span>
+                  </div>
+                </div>
               </div>
+
               <div
                 onMouseLeave={() => setHoveredBar(null)}
-                className="mt-2 flex items-end justify-between gap-1 h-10"
+                className="relative mt-2 flex items-end justify-between gap-1.5 h-20"
               >
-                {[38, 52, 46, 72, 65, 92].map((h, idx) => {
+                {[
+                  { h: 24, cls: "bg-primary/15" },
+                  { h: 40, cls: "bg-primary/25" },
+                  { h: 56, cls: "bg-primary/35" },
+                  { h: 74, cls: "bg-primary/50" },
+                  { h: 96, cls: "bg-primary/70" },
+                ].map((bar, idx) => {
                   const isDimmed = hoveredBar !== null && hoveredBar !== idx;
                   const isHovered = hoveredBar === idx;
                   return (
                     <motion.div
                       key={idx}
                       onMouseEnter={() => setHoveredBar(idx)}
-                      initial={prefersReducedMotion ? { height: `${h}%` } : { height: "0%" }}
-                      animate={{ height: `${h}%` }}
+                      initial={
+                        prefersReducedMotion
+                          ? { height: `${bar.h}%` }
+                          : { height: "0%" }
+                      }
+                      animate={{ height: `${bar.h}%` }}
                       transition={
                         prefersReducedMotion
                           ? { duration: 0 }
@@ -940,22 +1124,68 @@ function VeloceHeroPreview({
                             }
                       }
                       className={cn(
-                        "w-2.5 rounded-t-sm cursor-pointer transition-colors duration-150",
+                        "flex-1 rounded-md cursor-pointer transition-colors duration-150",
                         isDimmed
                           ? isDark
                             ? "bg-white/15"
-                            : "bg-zinc-300"
+                            : "bg-zinc-200"
                           : isHovered
-                            ? "bg-rose-500"
-                            : "bg-rose-400/85",
+                            ? "bg-primary"
+                            : bar.cls,
                       )}
                     />
                   );
                 })}
+
+                {/* Curved red trendline overlay */}
+                <svg
+                  viewBox="0 0 150 72"
+                  fill="none"
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 h-full w-full overflow-visible"
+                >
+                  <defs>
+                    <filter
+                      id="segmentation-curve-shadow"
+                      x="-20%"
+                      y="-20%"
+                      width="140%"
+                      height="160%"
+                    >
+                      <feDropShadow
+                        dx="0"
+                        dy="4"
+                        stdDeviation="2.5"
+                        floodColor="var(--primary)"
+                        floodOpacity="0.28"
+                      />
+                    </filter>
+                  </defs>
+                  <motion.path
+                    d="M 42 52 C 62 34, 88 46, 108 38 C 122 33, 130 24, 136 16"
+                    stroke="var(--primary)"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    filter="url(#segmentation-curve-shadow)"
+                    initial={
+                      prefersReducedMotion
+                        ? { pathLength: 1 }
+                        : { pathLength: 0 }
+                    }
+                    animate={{ pathLength: 1 }}
+                    transition={
+                      prefersReducedMotion
+                        ? { duration: 0 }
+                        : { duration: 0.9, delay: 1.15, ease: [0.16, 1, 0.3, 1] }
+                    }
+                  />
+                  <circle cx="42" cy="52" r="2" fill="var(--primary)" />
+                  <circle cx="136" cy="16" r="3.6" fill="var(--primary)" />
+                </svg>
               </div>
             </motion.div>
 
-            {/* Bottom-left Card: Google Ads */}
+            {/* Bottom-left Card: Ad Campaigns */}
             <motion.div
               initial={
                 prefersReducedMotion ? false : { opacity: 0, x: -14, y: 12 }
@@ -967,42 +1197,76 @@ function VeloceHeroPreview({
                   : { duration: 0.7, delay: 0.84, ease: [0.16, 1, 0.3, 1] }
               }
               className={cn(
-                "absolute left-3.5 bottom-3.5 z-10 rounded-xl p-3 w-40 @sm:w-44",
+                "absolute left-3.5 bottom-24 @sm:bottom-36 z-10 rounded-2xl p-3 w-36 @sm:w-40",
                 floatingSurface,
               )}
             >
-              <div className="flex items-center justify-between gap-2">
-                <span className="flex size-5 items-center justify-center rounded-full bg-zinc-100 dark:bg-white/10 text-[11px] font-bold text-blue-600">
-                  G
+              <div className="flex items-start justify-between gap-2">
+                <span
+                  className={cn(
+                    "flex size-7 items-center justify-center rounded-lg",
+                    isDark ? "bg-white/10" : "bg-zinc-100/90",
+                  )}
+                >
+                  <svg viewBox="0 0 24 24" className="size-4" aria-hidden>
+                    <path
+                      fill="#4285F4"
+                      d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                    />
+                    <path
+                      fill="#34A853"
+                      d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                    />
+                    <path
+                      fill="#FBBC05"
+                      d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                    />
+                    <path
+                      fill="#EA4335"
+                      d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                    />
+                  </svg>
                 </span>
-                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-1.5 py-0.5 text-[9px] font-semibold text-emerald-600 dark:text-emerald-400">
-                  <LoopingAnimatedIcon
-                    icon={CopyCheckIcon}
-                    size={10}
-                    duration={1.2}
-                    delay={0.3}
-                    color={isDark ? "#34d399" : "#059669"}
-                    prefersReducedMotion={prefersReducedMotion}
-                  />
-                  Verified
+                <span
+                  className={cn(
+                    "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-medium",
+                    isDark
+                      ? "bg-white/10 text-zinc-200"
+                      : "bg-zinc-100/90 text-zinc-700",
+                  )}
+                >
+                  <span className="flex size-3.5 items-center justify-center rounded-full bg-green-500 text-white">
+                    <LoopingAnimatedIcon
+                      icon={CheckIcon}
+                      size={9}
+                      duration={1.8}
+                      delay={0.35}
+                      color="#ffffff"
+                      prefersReducedMotion={prefersReducedMotion}
+                    />
+                  </span>
+                  Active!
                 </span>
               </div>
-              <p className="mt-2 text-[13px] font-semibold leading-tight">Google Ads</p>
-              <div className="mt-1 flex items-center gap-1 text-[9.5px] text-zinc-500 dark:text-zinc-400">
-                <span className="font-semibold text-zinc-900 dark:text-white">4.9</span>
-                <LoopingAnimatedIcon
-                  icon={StarIcon}
-                  size={11}
-                  duration={2.0}
-                  delay={0.4}
-                  color="#fbbf24"
-                  prefersReducedMotion={prefersReducedMotion}
-                />
-                <span>(10 Stars Reviews)</span>
-              </div>
+              <p className="mt-5 text-[15px] font-medium leading-tight tracking-tight">
+                Ad Campaigns
+              </p>
+              <p className="mt-1 text-[10px] leading-none">
+                <span
+                  className={cn(
+                    "font-semibold",
+                    isDark ? "text-white" : "text-zinc-900",
+                  )}
+                >
+                  4.9
+                </span>
+                <span className={isDark ? "text-zinc-500" : "text-[#ACACAC]"}>
+                  /5 Client Rating
+                </span>
+              </p>
             </motion.div>
 
-            {/* Bottom-right Pill: 2,924 Views */}
+            {/* Bottom-right Pill: 4,820 Visits */}
             <motion.div
               initial={
                 prefersReducedMotion ? false : { opacity: 0, x: 14, y: 12 }
@@ -1014,30 +1278,43 @@ function VeloceHeroPreview({
                   : { duration: 0.7, delay: 0.92, ease: [0.16, 1, 0.3, 1] }
               }
               className={cn(
-                "absolute right-3.5 bottom-3.5 z-10 flex items-center gap-2 rounded-full px-2.5 py-1.5",
+                "absolute right-5 @sm:right-8 bottom-6 @sm:bottom-8 z-10 flex items-center gap-2.5 rounded-full p-1.5 pr-4",
                 floatingSurface,
               )}
             >
-              <span className="flex size-6 items-center justify-center rounded-full bg-rose-400 text-white">
+              <span className="flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
                 <LoopingAnimatedIcon
                   icon={ArrowRightIcon}
-                  size={12}
+                  size={14}
                   duration={1.8}
                   delay={0.5}
                   color="#ffffff"
                   prefersReducedMotion={prefersReducedMotion}
                 />
               </span>
-              <div className="pr-1">
-                <p className="text-[10.5px] font-semibold leading-none">2,924 Views</p>
-                <div className="mt-1 h-1 w-10 rounded-full bg-zinc-200 dark:bg-white/15" />
+              <div>
+                <p className="text-[11px] font-medium leading-none">4,820 Visits</p>
+                <div className="mt-1.5 flex items-center gap-1">
+                  <div
+                    className={cn(
+                      "h-1.5 w-10 rounded-full",
+                      isDark ? "bg-white/15" : "bg-zinc-200",
+                    )}
+                  />
+                  <div
+                    className={cn(
+                      "h-1.5 w-4 rounded-full",
+                      isDark ? "bg-white/15" : "bg-zinc-200",
+                    )}
+                  />
+                </div>
               </div>
             </motion.div>
           </motion.div>
 
           {/* Right Column: 2 Stacked Cards */}
-          <div className="@4xl:col-span-4 flex flex-col gap-3.5">
-            {/* Top Card: Satisfied Customers */}
+          <div className="flex flex-col gap-3.5">
+            {/* Top Card: Happy Clients */}
             <motion.div
               initial={prefersReducedMotion ? false : { opacity: 0, x: 24 }}
               animate={{ opacity: 1, x: 0 }}
@@ -1048,62 +1325,135 @@ function VeloceHeroPreview({
               }
               className={cn("rounded-2xl p-5 flex-1 flex flex-col justify-between", cardSurface)}
             >
-              <h4 className="text-[13.5px] font-semibold">Satisfied Customers</h4>
+              <h4 className="text-[13.5px] font-semibold">Happy Clients</h4>
 
               <div className="my-3 flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2.5">
-                  <span
+                  <motion.button
+                    type="button"
+                    onClick={triggerLike}
+                    aria-label="Like"
+                    whileTap={prefersReducedMotion ? undefined : { scale: 0.9 }}
                     className={cn(
-                      "flex size-8 items-center justify-center rounded-full shrink-0",
-                      isDark ? "bg-white/10" : "bg-zinc-200/80",
+                      "relative flex size-8 items-center justify-center rounded-full shrink-0 cursor-pointer transition-colors",
+                      isDark
+                        ? "bg-white/10 hover:bg-white/15"
+                        : "bg-[#EFEFEF] hover:bg-[#E7E7E7]",
                     )}
                   >
-                    <LoopingAnimatedIcon
-                      icon={HeartIcon}
-                      size={16}
-                      duration={2.0}
-                      delay={0.2}
-                      color="#f43f5e"
-                      prefersReducedMotion={prefersReducedMotion}
-                    />
-                  </span>
-                  <span className="text-2xl font-semibold tracking-tight tabular-nums">
-                    {formattedCustomerCount}
-                  </span>
+                    {likePulse > 0 && !prefersReducedMotion && (
+                      <>
+                        <motion.span
+                          key={`ring-${likePulse}`}
+                          initial={{ scale: 0.7, opacity: 0.7 }}
+                          animate={{ scale: 1.65, opacity: 0 }}
+                          transition={{ duration: 0.95, ease: [0.16, 1, 0.3, 1] }}
+                          className="pointer-events-none absolute inset-0 rounded-full border border-primary/60"
+                        />
+                        {LIKE_BURST_PARTICLES.map((particle, idx) => (
+                          <motion.span
+                            key={`dot-${likePulse}-${idx}`}
+                            initial={{ x: 0, y: 0, scale: 0.5, opacity: 0.95 }}
+                            animate={{
+                              x: particle.x,
+                              y: particle.y,
+                              scale: 0,
+                              opacity: 0,
+                            }}
+                            transition={{
+                              duration: 0.9,
+                              ease: [0.16, 1, 0.3, 1],
+                            }}
+                            className="pointer-events-none absolute size-1 rounded-full bg-primary"
+                          />
+                        ))}
+                      </>
+                    )}
+                    <motion.svg
+                      key={`heart-${likePulse}`}
+                      xmlns="http://www.w3.org/2000/svg"
+                      width={16}
+                      height={16}
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="var(--primary)"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      initial={false}
+                      animate={
+                        likePulse > 0 && !prefersReducedMotion
+                          ? {
+                              scale: [1, 0.78, 1.32, 0.94, 1.06, 1],
+                              rotate: [0, -10, 8, -3, 0],
+                            }
+                          : { scale: 1, rotate: 0 }
+                      }
+                      transition={{
+                        duration: 0.95,
+                        ease: [0.22, 1, 0.36, 1],
+                      }}
+                      className="relative z-10"
+                    >
+                      <motion.path
+                        d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"
+                        fill="var(--primary)"
+                        initial={{ fillOpacity: 0 }}
+                        animate={
+                          likePulse > 0 && !prefersReducedMotion
+                            ? { fillOpacity: [0, 1, 1, 0.85, 0] }
+                            : { fillOpacity: 0 }
+                        }
+                        transition={{
+                          duration: 1.2,
+                          times: [0, 0.18, 0.55, 0.8, 1],
+                          ease: "easeOut",
+                        }}
+                      />
+                    </motion.svg>
+                  </motion.button>
+                  <FlipCounter
+                    value={formattedCustomerCount}
+                    prefersReducedMotion={prefersReducedMotion}
+                    className="text-2xl font-semibold tracking-tight"
+                  />
                 </div>
 
-                <div className="flex -space-x-2">
-                  {[
-                    "bg-amber-200 text-amber-900",
-                    "bg-sky-200 text-sky-900",
-                    "bg-emerald-200 text-emerald-900",
-                  ].map((tone, i) => (
-                    <span
-                      key={i}
-                      className={cn(
-                        "flex size-6 items-center justify-center rounded-full text-[10px] font-semibold ring-2",
-                        tone,
-                        isDark ? "ring-[#151821]" : "ring-[#f5f5f7]",
-                      )}
-                    >
-                      {["A", "M", "K"][i]}
-                    </span>
-                  ))}
-                </div>
+                <AvatarStack
+                  avatars={[
+                    {
+                      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg",
+                      alt: "Ana",
+                    },
+                    {
+                      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg",
+                      alt: "Tom",
+                    },
+                    {
+                      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg",
+                      alt: "Mara",
+                    },
+                  ]}
+                  variant="zoom"
+                  type="tooltip-arrow"
+                  size="sm"
+                  className="m-0 p-0"
+                  ringClassName={isDark ? "ring-[#151821]" : "ring-[#F8F8F8]"}
+                />
               </div>
 
               <p
                 className={cn(
                   "text-[10.5px] leading-relaxed",
-                  isDark ? "text-zinc-400" : "text-zinc-500",
+                  isDark ? "text-zinc-500" : "text-[#ACACAC]",
                 )}
               >
-                Our tailored solutions have left a lasting impact on brands seeking to thrive in the
-                digital age.
+                Our focused growth systems have helped ambitious teams stand out and convert
+                in crowded markets.
               </p>
             </motion.div>
 
-            {/* Bottom Card: Potential in the B2B Startup Realm */}
+            {/* Bottom Card: Built for High-Growth Teams */}
             <motion.div
               initial={prefersReducedMotion ? false : { opacity: 0, x: 24 }}
               animate={{ opacity: 1, x: 0 }}
@@ -1116,54 +1466,70 @@ function VeloceHeroPreview({
             >
               <div>
                 <h4 className="text-[13.5px] font-semibold">
-                  Potential in the B2B Startup Realm
+                  Built for High-Growth Teams
                 </h4>
                 <p
                   className={cn(
                     "mt-1.5 text-[10.5px] leading-relaxed",
-                    isDark ? "text-zinc-400" : "text-zinc-500",
+                    isDark ? "text-zinc-500" : "text-[#ACACAC]",
                   )}
                 >
-                  Commitment to excellence, agility, and forward-thinking positions us as the
-                  catalyst for your business growth
+                  Speed, clarity, and smart automation come together to power every launch
+                  your team ships
                 </p>
               </div>
 
               <div
                 className={cn(
-                  "mt-4 flex items-center justify-between gap-2 rounded-xl border-l-2 border-l-rose-500 px-3 py-2.5",
+                  "mt-4 flex cursor-pointer items-center justify-between gap-2 rounded-xl px-3 py-2.5",
                   isDark ? "bg-white/[0.06]" : "bg-white shadow-xs",
                 )}
               >
-                <div className="min-w-0">
-                  <p className="text-[11px] font-semibold truncate">Contract with Startup</p>
-                  <p
-                    className={cn(
-                      "text-[9.5px] truncate",
-                      isDark ? "text-zinc-400" : "text-zinc-500",
-                    )}
-                  >
-                    28 Startup Member
-                  </p>
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <span
+                    aria-hidden
+                    className="w-[3px] h-7 rounded-full bg-primary shrink-0"
+                  />
+                  <div className="min-w-0">
+                    <p className="text-[11px] font-semibold truncate">
+                      Team Workspace
+                    </p>
+                    <p
+                      className={cn(
+                        "text-[9.5px] truncate",
+                        isDark ? "text-zinc-500" : "text-[#ACACAC]",
+                      )}
+                    >
+                      32 Active Members
+                    </p>
+                  </div>
                 </div>
 
                 <div className="flex items-center gap-1 shrink-0">
-                  <div className="flex -space-x-1.5">
+                  <div className="flex -space-x-2">
                     {[
-                      { ch: "N", cls: "bg-amber-400 text-white" },
-                      { ch: "A", cls: "bg-orange-400 text-white" },
-                      { ch: "R", cls: "bg-violet-400 text-white" },
-                    ].map((badge) => (
-                      <span
-                        key={badge.ch}
+                      {
+                        src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg",
+                        alt: "Leo Silva",
+                      },
+                      {
+                        src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790082180/pexels-photo-1520760-1790082180553.jpg",
+                        alt: "June Carter",
+                      },
+                      {
+                        src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145141/pexels-photo-6311475-1790145143489.jpg",
+                        alt: "Sam Wilson",
+                      },
+                    ].map((avatar, i) => (
+                      <img
+                        key={i}
+                        src={avatar.src}
+                        alt={avatar.alt}
                         className={cn(
-                          "flex size-5 items-center justify-center rounded-full text-[9px] font-bold ring-1",
-                          badge.cls,
+                          "size-7 rounded-full object-cover ring-2",
                           isDark ? "ring-[#151821]" : "ring-white",
                         )}
-                      >
-                        {badge.ch}
-                      </span>
+                      />
                     ))}
                   </div>
                   <LoopingAnimatedIcon
@@ -1184,10 +1550,15 @@ function VeloceHeroPreview({
       {/* 3. Trusted Companies Infinite Marquee Section */}
       <section className="mx-auto max-w-[560px] @4xl:max-w-5xl pt-14 pb-6">
         <div className="text-center">
-          <h3 className="text-xl @sm:text-2xl font-semibold tracking-tight">
+          <h3
+            className={cn(
+              "text-xl @sm:text-2xl font-semibold tracking-tight",
+              isDark ? "text-zinc-100" : "text-[#242427]",
+            )}
+          >
             Trusted by{" "}
             <span className="relative inline-block pb-1.5">
-              <span>Growing</span>
+              <span>Leading</span>
               <svg
                 viewBox="0 0 120 12"
                 fill="none"
@@ -1209,7 +1580,7 @@ function VeloceHeroPreview({
                   stroke="currentColor"
                   strokeWidth="3"
                   strokeLinecap="round"
-                  className="text-[#f45d5d]"
+                  className="text-primary"
                   initial={
                     prefersReducedMotion
                       ? { pathLength: 1, opacity: 1 }
@@ -1241,8 +1612,8 @@ function VeloceHeroPreview({
           </h3>
           <p
             className={cn(
-              "mt-2 text-[11px] @sm:text-[12px]",
-              isDark ? "text-zinc-400" : "text-zinc-500",
+              "mt-2 text-[11px] @sm:text-[12px] font-normal",
+              isDark ? "text-zinc-500" : "text-[#ACACAC]",
             )}
           >
             Powering high-performing marketing workflows for modern product teams.
@@ -1329,7 +1700,7 @@ function VeloceHeroPreview({
         </div>
       </section>
 
-      {/* 4. Content Creation and Marketing Section */}
+      {/* 4. Creative Strategy & Campaigns Section */}
       <section className="mx-auto max-w-[560px] @4xl:max-w-5xl pt-16 pb-10">
         <div
           ref={contentGridRef}
@@ -1341,7 +1712,7 @@ function VeloceHeroPreview({
               aria-hidden
               className="hidden @4xl:block pointer-events-none absolute inset-0 h-full w-full z-0 overflow-visible"
             >
-              {/* Top-left dashed arc: 80% card top-center -> Average Increase Sales left-center */}
+              {/* Top-left dashed arc: 80% card top-center -> Average Revenue Lift left-center */}
               <path
                 fill="none"
                 stroke="currentColor"
@@ -1361,7 +1732,7 @@ function VeloceHeroPreview({
                 className={isDark ? "fill-white" : "fill-zinc-900"}
               />
 
-              {/* Right dashed connector: Average Increase Sales bottom-center -> Active Checklist Item */}
+              {/* Right dashed connector: Average Revenue Lift bottom-center -> Active Checklist Item */}
               <motion.path
                 fill="none"
                 stroke="currentColor"
@@ -1372,9 +1743,30 @@ function VeloceHeroPreview({
                 animate={{
                   d: (() => {
                     const { startX, startY, targetX, targetY } = connectorCoords;
-                    const r = Math.min(14, Math.abs(targetY - startY) / 2);
+                    const r = Math.min(16, Math.abs(targetY - startY) / 2);
                     const dir = targetY >= startY ? 1 : -1;
                     return `M ${startX} ${startY} L ${startX} ${targetY - dir * r} Q ${startX} ${targetY} ${startX + r} ${targetY} L ${targetX} ${targetY}`;
+                  })(),
+                }}
+                transition={
+                  prefersReducedMotion
+                    ? { duration: 0 }
+                    : { duration: 0.75, ease: [0.16, 1, 0.3, 1] }
+                }
+              />
+              {/* Bottom-up dashed branch curving into the same junction dot */}
+              <motion.path
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.25"
+                strokeDasharray="4 4"
+                className={isDark ? "text-white/20" : "text-zinc-300"}
+                initial={false}
+                animate={{
+                  d: (() => {
+                    const { startX, bottomY, targetY } = connectorCoords;
+                    const r = Math.min(16, Math.abs(bottomY - targetY) / 2);
+                    return `M ${startX} ${bottomY} L ${startX} ${targetY + r} Q ${startX} ${targetY} ${startX + r} ${targetY}`;
                   })(),
                 }}
                 transition={
@@ -1401,7 +1793,7 @@ function VeloceHeroPreview({
           )}
 
           {/* Left Column: Portrait + Floating Metrics Cards */}
-          <div className="@4xl:col-span-6 relative mx-auto w-full max-w-[440px] flex flex-col @4xl:block">
+          <div className="@4xl:col-span-7 relative mx-auto w-full max-w-[500px] flex flex-col @4xl:block">
             <div className="relative w-full min-h-[340px] @sm:min-h-[380px] @4xl:min-h-[420px] flex items-center justify-center">
 
               {/* Center Portrait with Soft Bottom Fade */}
@@ -1414,7 +1806,7 @@ function VeloceHeroPreview({
                     ? { duration: 0 }
                     : { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
                 }
-                className="relative z-0 w-56 @sm:w-64 h-80 @sm:h-96 overflow-hidden flex items-end justify-center"
+                className="relative z-[5] w-56 @sm:w-64 h-80 @sm:h-96 overflow-hidden flex items-end justify-center"
               >
                 <img
                   src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1795523190/veloce-marketer-removebg-preview-1795523189501.png"
@@ -1436,36 +1828,36 @@ function VeloceHeroPreview({
                 }
                 className={cn(
                   "absolute left-0 @sm:left-2 bottom-6 @sm:bottom-8 z-10 w-36 @sm:w-40 rounded-2xl p-4 text-center",
-                  floatingSurface,
+                  floatingCardSurface,
                 )}
               >
                 <div className="relative mx-auto size-16 flex items-center justify-center">
-                  <svg viewBox="0 0 64 64" className="size-16 -rotate-90" aria-hidden>
+                  <svg viewBox="0 0 64 64" className="size-16 rotate-[72deg]" aria-hidden>
                     <circle
                       cx="32"
                       cy="32"
-                      r="25"
+                      r="24.5"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="6"
-                      className={isDark ? "text-white/10" : "text-rose-100"}
+                      strokeWidth="9"
+                      className={isDark ? "text-white/10" : "text-primary/15"}
                     />
                     <motion.circle
                       cx="32"
                       cy="32"
-                      r="25"
+                      r="24.5"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="6"
+                      strokeWidth="9"
                       strokeLinecap="round"
-                      className="text-rose-500"
-                      strokeDasharray={2 * Math.PI * 25}
+                      className="text-primary"
+                      strokeDasharray={2 * Math.PI * 24.5}
                       initial={
                         prefersReducedMotion
-                          ? { strokeDashoffset: 2 * Math.PI * 25 * 0.2 }
-                          : { strokeDashoffset: 2 * Math.PI * 25 }
+                          ? { strokeDashoffset: 2 * Math.PI * 24.5 * 0.2 }
+                          : { strokeDashoffset: 2 * Math.PI * 24.5 }
                       }
-                      whileInView={{ strokeDashoffset: 2 * Math.PI * 25 * 0.2 }}
+                      whileInView={{ strokeDashoffset: 2 * Math.PI * 24.5 * 0.2 }}
                       viewport={{ once: true, amount: 0.3 }}
                       transition={
                         prefersReducedMotion
@@ -1474,25 +1866,25 @@ function VeloceHeroPreview({
                       }
                     />
                   </svg>
-                  <span className="absolute text-[13px] font-semibold text-rose-500">
+                  <span className="absolute text-[13px] font-semibold text-primary">
                     80%
                   </span>
                 </div>
 
                 <p className="mt-2.5 text-lg font-bold tracking-tight leading-none">
-                  17K+
+                  24K+
                 </p>
                 <p
                   className={cn(
                     "mt-1 text-[9px] leading-snug",
-                    isDark ? "text-zinc-400" : "text-zinc-500",
+                    isDark ? "text-zinc-500" : "text-[#ACACAC]",
                   )}
                 >
-                  1,000K+ Contributions in the last year!
+                  1,200K+ Interactions in the past year!
                 </p>
               </motion.div>
 
-              {/* Bottom-right Card: Advertising Platform */}
+              {/* Bottom-right Card: Channel Integrations */}
               <motion.div
                 initial={prefersReducedMotion ? false : { opacity: 0, x: 18, y: 12 }}
                 whileInView={{ opacity: 1, x: 0, y: 0 }}
@@ -1504,48 +1896,108 @@ function VeloceHeroPreview({
                 }
                 className={cn(
                   "absolute right-0 @sm:right-4 bottom-3 @sm:bottom-6 z-10 rounded-2xl px-3.5 py-2.5",
-                  floatingSurface,
+                  floatingCardSurface,
                 )}
               >
                 <p className="text-[9.5px] font-semibold text-center">
-                  Advertising Platform
+                  Channel Integrations
                 </p>
                 <div className="mt-2 flex items-center gap-1.5">
-                  {/* Facebook */}
-                  <span className="flex size-6 items-center justify-center rounded-md bg-[#1877F2] text-white text-[12px] font-bold">
-                    f
-                  </span>
-                  {/* Instagram */}
-                  <span className="flex size-6 items-center justify-center rounded-md bg-gradient-to-tr from-[#F58529] via-[#DD2A7B] to-[#8134AF] text-white">
-                    <svg viewBox="0 0 24 24" className="size-3.5 stroke-current fill-none" strokeWidth="2" aria-hidden>
-                      <rect x="3" y="3" width="18" height="18" rx="5" />
-                      <circle cx="12" cy="12" r="4" />
-                      <circle cx="17.5" cy="6.5" r="1" className="fill-current stroke-none" />
-                    </svg>
-                  </span>
-                  {/* Twitter */}
-                  <span className="flex size-6 items-center justify-center rounded-md bg-[#1DA1F2] text-white">
-                    <svg viewBox="0 0 24 24" className="size-3.5 fill-current" aria-hidden>
-                      <path d="M22 5.9a8.2 8.2 0 0 1-2.36.65 4.12 4.12 0 0 0 1.8-2.27 8.2 8.2 0 0 1-2.6 1 4.1 4.1 0 0 0-7 3.74A11.64 11.64 0 0 1 3.4 4.7a4.1 4.1 0 0 0 1.27 5.47 4.07 4.07 0 0 1-1.86-.51v.05a4.1 4.1 0 0 0 3.29 4.02 4.1 4.1 0 0 1-1.85.07 4.1 4.1 0 0 0 3.83 2.85A8.23 8.23 0 0 1 2 18.4a11.62 11.62 0 0 0 6.29 1.84c7.55 0 11.68-6.25 11.68-11.67 0-.18 0-.35-.01-.53A8.34 8.34 0 0 0 22 5.9Z" />
-                    </svg>
-                  </span>
-                  {/* TikTok */}
-                  <span className="flex size-6 items-center justify-center rounded-md bg-zinc-950 text-white">
-                    <svg viewBox="0 0 24 24" className="size-3.5 fill-current" aria-hidden>
-                      <path d="M16.6 5.82s.51.5 0 0A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.33 2.76 5.7 5.69 5.7 3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3s-1.88.09-3.24-1.48Z" />
-                    </svg>
-                  </span>
-                  {/* Gmail */}
-                  <span className="flex size-6 items-center justify-center rounded-md bg-white border border-zinc-200 text-[#EA4335]">
-                    <svg viewBox="0 0 24 24" className="size-3.5 fill-current" aria-hidden>
-                      <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z" />
-                    </svg>
-                  </span>
+                  {[
+                    {
+                      name: "Facebook",
+                      cls: "bg-[#0866FF] text-white",
+                      content: (
+                        <LoopingAnimatedIcon
+                          icon={FacebookIcon}
+                          size={14}
+                          duration={2.0}
+                          delay={0}
+                          color="#ffffff"
+                          prefersReducedMotion={prefersReducedMotion}
+                        />
+                      ),
+                    },
+                    {
+                      name: "Instagram",
+                      cls: "bg-gradient-to-tr from-[#F58529] via-[#DD2A7B] to-[#8134AF] text-white",
+                      content: (
+                        <LoopingAnimatedIcon
+                          icon={InstagramIcon}
+                          size={14}
+                          duration={2.0}
+                          delay={0.15}
+                          color="#ffffff"
+                          prefersReducedMotion={prefersReducedMotion}
+                        />
+                      ),
+                    },
+                    {
+                      name: "X",
+                      cls: "bg-black text-white",
+                      content: (
+                        <LoopingAnimatedIcon
+                          icon={TwitterIcon}
+                          size={13}
+                          duration={2.0}
+                          delay={0.3}
+                          color="#ffffff"
+                          prefersReducedMotion={prefersReducedMotion}
+                        />
+                      ),
+                    },
+                    {
+                      name: "TikTok",
+                      cls: "bg-black text-white",
+                      content: (
+                        <LoopingAnimatedIcon
+                          icon={TikTokIcon}
+                          size={14}
+                          duration={2.0}
+                          delay={0.45}
+                          color="#ffffff"
+                          prefersReducedMotion={prefersReducedMotion}
+                        />
+                      ),
+                    },
+                    {
+                      name: "Gmail",
+                      cls: "bg-white shadow-[0_1px_4px_rgba(0,0,0,0.08)]",
+                      content: (
+                        <LoopingAnimatedIcon
+                          icon={GmailIcon}
+                          size={14}
+                          duration={2.0}
+                          delay={0.6}
+                          prefersReducedMotion={prefersReducedMotion}
+                        />
+                      ),
+                    },
+                  ].map((platform) => (
+                    <span
+                      key={platform.name}
+                      aria-label={platform.name}
+                      className={cn(
+                        "group relative flex size-6 items-center justify-center rounded-md overflow-hidden cursor-pointer transition-transform duration-200 hover:-translate-y-0.5 active:scale-95",
+                        platform.cls,
+                      )}
+                    >
+                      <span className="flex items-center justify-center transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-6 group-hover:opacity-0">
+                        {platform.content}
+                      </span>
+                      <span
+                        aria-hidden
+                        className="absolute inset-0 flex items-center justify-center translate-y-6 opacity-0 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-y-0 group-hover:opacity-100"
+                      >
+                        {platform.content}
+                      </span>
+                    </span>
+                  ))}
                 </div>
               </motion.div>
             </div>
 
-            {/* Top-right Card: Average Increase Sales (Stacked on top on mobile & tablet <= 768px, floating top-right on desktop @4xl+) */}
+            {/* Top-right Card: Average Revenue Lift */}
             <motion.div
               ref={salesCardRef}
               initial={prefersReducedMotion ? false : { opacity: 0, x: 18, y: -12 }}
@@ -1557,30 +2009,47 @@ function VeloceHeroPreview({
                   : { duration: 0.75, delay: 0.25, ease: [0.16, 1, 0.3, 1] }
               }
               className={cn(
-                "order-first @4xl:order-none w-full @sm:max-w-[340px] @md:max-w-[360px] mx-auto mb-4 @4xl:mb-0 @4xl:mx-0 @4xl:absolute @4xl:right-2 @4xl:top-4 z-10 @4xl:w-44 rounded-2xl p-3.5",
-                floatingSurface,
+                "absolute right-1 @sm:right-2 top-3 @sm:top-4 z-[2] w-36 @sm:w-44 rounded-2xl p-2.5 @sm:p-3.5",
+                floatingCardSurface,
               )}
             >
               <p className="text-[9.5px] font-semibold text-center">
-                Average Increase Sales
+                Average Revenue Lift
               </p>
 
               <div className="mt-2.5 flex items-end gap-1.5 h-20">
-                <div className="flex flex-col justify-between h-full text-[8px] font-medium text-zinc-400 pr-0.5">
+                <div
+                  className={cn(
+                    "flex flex-col justify-between h-full text-[8px] font-medium pr-0.5",
+                    isDark ? "text-zinc-300" : "text-zinc-700",
+                  )}
+                >
                   <span>30</span>
                   <span>20</span>
                   <span>10</span>
                 </div>
                 <div
-                  className="relative flex-1 flex items-end justify-between gap-1.5 @4xl:gap-1 h-full border-b border-current/10 pb-0.5"
+                  className="relative flex-1 flex items-end justify-between gap-1.5 @4xl:gap-1 h-full"
                   onMouseLeave={() => setHoveredSalesBar(null)}
                 >
+                  {/* Horizontal dashed gridlines aligned with 30 / 20 / 10 */}
+                  {["top-[6px]", "top-1/2", "bottom-[6px]"].map((pos) => (
+                    <span
+                      key={pos}
+                      aria-hidden
+                      className={cn(
+                        "pointer-events-none absolute inset-x-0 border-t border-dashed",
+                        pos,
+                        isDark ? "border-white/10" : "border-zinc-200/90",
+                      )}
+                    />
+                  ))}
                   {[
-                    { h: 68, cls: isDark ? "bg-rose-500/25" : "bg-rose-100" },
-                    { h: 52, cls: isDark ? "bg-rose-500/40" : "bg-rose-200" },
-                    { h: 42, cls: isDark ? "bg-rose-500/55" : "bg-rose-200/90" },
-                    { h: 94, cls: isDark ? "bg-rose-500/85" : "bg-rose-300" },
-                    { h: 74, cls: isDark ? "bg-rose-500" : "bg-rose-400/85" },
+                    { h: 68, cls: isDark ? "bg-primary/18" : "bg-primary/12" },
+                    { h: 52, cls: isDark ? "bg-primary/30" : "bg-primary/22" },
+                    { h: 42, cls: isDark ? "bg-primary/45" : "bg-primary/35" },
+                    { h: 94, cls: isDark ? "bg-primary/70" : "bg-primary/50" },
+                    { h: 74, cls: isDark ? "bg-primary/90" : "bg-primary/65" },
                   ].map((bar, idx) => {
                     const isHovered = hoveredSalesBar === idx;
                     const isAnyHovered = hoveredSalesBar !== null;
@@ -1605,10 +2074,10 @@ function VeloceHeroPreview({
                               }
                         }
                         className={cn(
-                          "flex-1 @4xl:flex-none @4xl:w-4 rounded-t-sm cursor-pointer transition-colors duration-200",
+                          "relative z-10 flex-1 @4xl:flex-none @4xl:w-4 rounded-[5px] cursor-pointer transition-colors duration-200",
                           isAnyHovered
                             ? isHovered
-                              ? "bg-[#f45d5d]"
+                              ? "bg-primary"
                               : isDark
                                 ? "bg-white/10"
                                 : "bg-zinc-200/80"
@@ -1623,7 +2092,7 @@ function VeloceHeroPreview({
           </div>
 
           {/* Right Column: Heading + Subtitle + 4 Interactive Pill Cards */}
-          <div className="@4xl:col-span-6">
+          <div className="@4xl:col-span-5">
             <motion.div
               initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1635,27 +2104,27 @@ function VeloceHeroPreview({
               }
             >
               <h3 className="text-2xl @sm:text-[34px] font-semibold tracking-tight leading-[1.16]">
-                Content Creation
+                Creative Strategy
                 <br />
-                and Marketing
+                & Campaigns
               </h3>
               <p
                 className={cn(
                   "mt-3 max-w-md text-[11.5px] @sm:text-[12.5px] leading-relaxed",
-                  isDark ? "text-zinc-400" : "text-zinc-500",
+                  isDark ? "text-zinc-500" : "text-[#ACACAC]",
                 )}
               >
-                Strategic thinkers collaborates to craft compelling narratives that not only
-                captivate your audience but also drive meaningful engagement.
+                Strategists and creators working together to build high-converting stories
+                that resonate with your audience and drive measurable growth.
               </p>
             </motion.div>
 
             <div className="mt-6 space-y-2.5">
               {[
-                "Crafting Compelling Narratives",
-                "Strategic Content Marketing",
-                "Building Authority and Trust",
-                "Measurable Results",
+                "High-Converting Brand Stories",
+                "Full-Funnel Campaign Strategy",
+                "Consistent Audience Trust",
+                "Real-Time Performance Tracking",
               ].map((item, idx) => {
                 const isSelected = selectedFeature === idx;
                 return (
@@ -1679,27 +2148,23 @@ function VeloceHeroPreview({
                           }
                     }
                     className={cn(
-                      "flex w-full items-center gap-3 rounded-full border px-4 py-3 text-left text-[12.5px] @sm:text-[13px] transition-all cursor-pointer",
-                      isSelected
-                        ? isDark
-                          ? "border-white/15 bg-white/[0.06] font-medium text-white shadow-sm"
-                          : "border-zinc-200 bg-white font-medium text-zinc-900 shadow-[0_6px_20px_rgb(0_0_0/0.04)]"
-                        : isDark
-                          ? "border-white/[0.08] bg-white/[0.02] text-zinc-300 hover:bg-white/[0.04]"
-                          : "border-zinc-100 bg-white text-zinc-700 hover:border-zinc-200",
+                      "flex w-full items-center gap-3 rounded-full px-4 py-3 text-left text-[12.5px] @sm:text-[13px] transition-all cursor-pointer",
+                      isDark
+                        ? "bg-white/[0.04] text-zinc-300 hover:bg-white/[0.07]"
+                        : "bg-white text-zinc-700 shadow-[0_2px_10px_rgb(0_0_0/0.03)] hover:bg-zinc-50",
                     )}
                   >
                     <span
                       className={cn(
                         "flex size-5 shrink-0 items-center justify-center rounded-full transition-colors",
                         isSelected
-                          ? "bg-rose-500 text-white"
+                          ? "bg-primary text-primary-foreground ring-4 ring-primary/15"
                           : isDark
                             ? "border border-white/15 bg-white/5"
                             : "border border-zinc-200 bg-zinc-50",
                       )}
                     >
-                      {isSelected && <Check className="size-3 stroke-[2.5]" />}
+                      {isSelected && <Check className="size-3 stroke-[2.5] text-white" />}
                     </span>
                     <span>{item}</span>
                   </motion.button>
@@ -1710,7 +2175,7 @@ function VeloceHeroPreview({
         </div>
       </section>
 
-      {/* 5. Business Planning and Development Section */}
+      {/* 5. Strategic Planning & Execution Section */}
       <section className="mx-auto max-w-[560px] @4xl:max-w-5xl pt-16 pb-12">
         <div className="grid grid-cols-1 @4xl:grid-cols-12 gap-10 @4xl:gap-8 items-center">
           {/* Left Column: Heading + Subtitle + 2x2 Feature Cards */}
@@ -1726,43 +2191,43 @@ function VeloceHeroPreview({
               }
             >
               <h3 className="text-2xl @sm:text-[34px] font-semibold tracking-tight leading-[1.16]">
-                Business Planning
+                Strategic Planning
                 <br />
-                and Development
+                & Execution
               </h3>
               <p
                 className={cn(
                   "mt-3 max-w-md text-[11.5px] @sm:text-[12.5px] leading-relaxed",
-                  isDark ? "text-zinc-400" : "text-zinc-500",
+                  isDark ? "text-zinc-500" : "text-[#ACACAC]",
                 )}
               >
-                At <span className="font-medium text-[#f45d5d]">Codile</span>, we offer
-                comprehensive solutions designed to guide your business through every stage
-                of its journey.
+                At <span className="font-medium text-primary">Veloce</span>, we deliver
+                structured frameworks built to guide your product and revenue team
+                through every milestone.
               </p>
             </motion.div>
 
             <div className="mt-7 grid grid-cols-1 @sm:grid-cols-2 gap-3.5">
               {[
                 {
-                  title: "Roadmapping",
+                  title: "Growth Roadmaps",
                   description:
-                    "Our strategic roadmaps provide a roadmap for success, outlining the steps needed to reach your objectives.",
+                    "Clear quarterly milestones that align your team and map out the exact steps to hit every target.",
                 },
                 {
-                  title: "Financial Modeling",
+                  title: "Revenue Forecasting",
                   description:
-                    "Forecasts to evaluating investment opportunities, we provide insights that empower informed decision-making.",
+                    "From runway models to expansion scenarios, get the financial clarity needed for confident decisions.",
                 },
                 {
-                  title: "Diversification",
+                  title: "Market Expansion",
                   description:
-                    "Our team explores opportunities for market expansion and diversification, helping you reach new audiences.",
+                    "Identify untapped segments and launch targeted plays that bring high-intent buyers to your brand.",
                 },
                 {
-                  title: "Operational Efficiency",
+                  title: "Workflow Automation",
                   description:
-                    "We assess your current processes and identify areas for improvement to enhance efficiency and reduce costs.",
+                    "Streamline repetitive handoffs and eliminate bottlenecks so your team ships faster with lower overhead.",
                 },
               ].map((card, idx) => {
                 const isCardHovered = hoveredPlanningCard === idx;
@@ -1786,8 +2251,8 @@ function VeloceHeroPreview({
                     className={cn(
                       "relative overflow-hidden rounded-2xl p-4 @sm:p-[18px] transition-all duration-300 hover:-translate-y-0.5 cursor-pointer",
                       isDark
-                        ? "bg-white/[0.04] border border-white/[0.08] hover:bg-rose-500/[0.10] hover:border-rose-500/25"
-                        : "bg-[#f6f6f8] border border-black/[0.03] hover:bg-rose-50/85 hover:border-rose-200/70 hover:shadow-[0_8px_24px_rgb(244_93_93/0.08)]",
+                        ? "bg-white/[0.04] hover:bg-primary/[0.10]"
+                        : "bg-[#F8F8F8] hover:bg-primary/[0.06] hover:shadow-[0_8px_24px_color-mix(in_oklab,var(--primary)_10%,transparent)]",
                     )}
                   >
                     {/* Rising background dots on hover */}
@@ -1825,7 +2290,7 @@ function VeloceHeroPreview({
                             }}
                             className={cn(
                               "absolute rounded-full",
-                              isDark ? "bg-rose-400/80" : "bg-[#f45d5d]/75",
+                              isDark ? "bg-primary/80" : "bg-primary/75",
                               dot.size,
                             )}
                           />
@@ -1835,13 +2300,18 @@ function VeloceHeroPreview({
 
                     <div className="relative z-10">
                       <div className="flex items-center gap-2.5">
-                        <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-[#f45d5d] text-white">
+                        <span
+                          className={cn(
+                            "flex size-5 shrink-0 items-center justify-center rounded-full bg-primary",
+                            isDark ? "text-[#0b0d12]" : "text-white",
+                          )}
+                        >
                           <LoopingAnimatedIcon
                             icon={CopyCheckIcon}
                             size={12}
                             duration={1}
                             delay={idx * 0.2}
-                            color="#ffffff"
+                            color={isDark ? "#0b0d12" : "#ffffff"}
                             prefersReducedMotion={prefersReducedMotion}
                           />
                         </span>
@@ -1852,7 +2322,7 @@ function VeloceHeroPreview({
                       <p
                         className={cn(
                           "mt-2.5 text-[10.5px] @sm:text-[11px] leading-[1.55]",
-                          isDark ? "text-zinc-400" : "text-zinc-500",
+                          isDark ? "text-zinc-500" : "text-[#ACACAC]",
                         )}
                       >
                         {card.description}
@@ -1946,18 +2416,6 @@ function VeloceHeroPreview({
                     />
                   </>
                 )}
-
-                {/* Right-edge dashed line extending from B2B Income card */}
-                <line
-                  x1={planningConnectors.incomeRightX}
-                  y1={planningConnectors.incomeMidY}
-                  x2={planningConnectors.containerWidth + 36}
-                  y2={planningConnectors.incomeMidY}
-                  stroke="currentColor"
-                  strokeWidth="1.25"
-                  strokeDasharray="4 4"
-                  className={isDark ? "text-white/20" : "text-zinc-300"}
-                />
               </svg>
             )}
 
@@ -1976,7 +2434,7 @@ function VeloceHeroPreview({
               <img
                 src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1795523190/veloce-marketer-removebg-preview-1795523189501.png"
                 alt="Business planning consultant"
-                className="h-full w-full object-contain object-bottom [mask-image:linear-gradient(to_bottom,black_76%,transparent_100%)]"
+                className="h-full w-full object-contain object-bottom [mask-image:linear-gradient(to_bottom,black_62%,transparent_98%)]"
               />
             </motion.div>
 
@@ -1994,10 +2452,10 @@ function VeloceHeroPreview({
                     : { duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }
                 }
                 className={cn(
-                  "flex size-12 @sm:size-13 items-center justify-center rounded-2xl border shadow-[0_8px_24px_rgb(0_0_0/0.04)]",
+                  "flex size-12 @sm:size-13 items-center justify-center rounded-2xl shadow-[0_8px_24px_rgb(0_0_0/0.04)]",
                   isDark
-                    ? "bg-rose-500/10 border-rose-500/20 text-rose-400"
-                    : "bg-[#fff5f5] border-rose-100/80 text-[#f45d5d]",
+                    ? "bg-[color-mix(in_oklab,var(--primary)_16%,#151821)] text-primary"
+                    : "bg-[color-mix(in_oklab,var(--primary)_10%,white)] text-primary",
                 )}
               >
                 <LoopingAnimatedIcon
@@ -2005,7 +2463,7 @@ function VeloceHeroPreview({
                   size={20}
                   duration={2.2}
                   delay={0.15}
-                  color="#f45d5d"
+                  color="var(--primary)"
                   prefersReducedMotion={prefersReducedMotion}
                 />
               </motion.div>
@@ -2021,10 +2479,10 @@ function VeloceHeroPreview({
                     : { duration: 0.7, delay: 0.25, ease: [0.16, 1, 0.3, 1] }
                 }
                 className={cn(
-                  "flex size-12 @sm:size-13 items-center justify-center rounded-2xl border shadow-[0_8px_24px_rgb(0_0_0/0.04)]",
+                  "flex size-12 @sm:size-13 items-center justify-center rounded-2xl shadow-[0_8px_24px_rgb(0_0_0/0.04)]",
                   isDark
-                    ? "bg-rose-500/10 border-rose-500/20 text-rose-400"
-                    : "bg-[#fff5f5] border-rose-100/80 text-[#f45d5d]",
+                    ? "bg-[color-mix(in_oklab,var(--primary)_16%,#151821)] text-primary"
+                    : "bg-[color-mix(in_oklab,var(--primary)_10%,white)] text-primary",
                 )}
               >
                 <LoopingAnimatedIcon
@@ -2032,13 +2490,13 @@ function VeloceHeroPreview({
                   size={20}
                   duration={2.2}
                   delay={0.4}
-                  color="#f45d5d"
+                  color="var(--primary)"
                   prefersReducedMotion={prefersReducedMotion}
                 />
               </motion.div>
             </div>
 
-            {/* Top-Right Floating Card: Verified! */}
+            {/* Top-Right Floating Card: Active! */}
             <motion.div
               ref={verifiedCardRef}
               initial={prefersReducedMotion ? false : { opacity: 0, y: -10 }}
@@ -2050,8 +2508,8 @@ function VeloceHeroPreview({
                   : { duration: 0.75, delay: 0.2, ease: [0.16, 1, 0.3, 1] }
               }
               className={cn(
-                "absolute -right-1 @sm:right-0 @md:right-4 top-14 @sm:top-10 @md:top-2 z-10 w-28 @sm:w-32 @md:w-36 rounded-2xl px-2.5 py-2.5 @sm:px-3 @sm:py-3.5 text-center",
-                floatingSurface,
+                "absolute right-0 @sm:right-2 @md:right-4 top-4 @sm:top-2 @md:top-0 z-10 w-28 @sm:w-32 @md:w-36 rounded-2xl px-2.5 py-2.5 @sm:px-3 @sm:py-3.5 text-center",
+                floatingCardSurface,
               )}
             >
               <div className="mx-auto flex size-9 items-center justify-center rounded-full bg-[#1ed700] text-white ring-4 ring-[#1ed700]/15">
@@ -2065,19 +2523,19 @@ function VeloceHeroPreview({
                 />
               </div>
               <p className="mt-2.5 text-[11.5px] @sm:text-[12px] font-semibold leading-tight">
-                Verified!
+                Active!
               </p>
               <p
                 className={cn(
                   "mt-0.5 text-[8.5px] @sm:text-[9px]",
-                  isDark ? "text-zinc-400" : "text-zinc-500",
+                  isDark ? "text-zinc-500" : "text-[#ACACAC]",
                 )}
               >
-                <span className="font-semibold text-[#1ed700]">100%</span> Client Satisfied
+                <span className="font-semibold text-[#1ed700]">100%</span> Team Satisfaction
               </p>
             </motion.div>
 
-            {/* Bottom Floating Card: B2B Income 2023 Area Chart */}
+            {/* Bottom Floating Card: Annual Revenue 2025 Area Chart */}
             <motion.div
               ref={incomeCardRef}
               initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
@@ -2089,32 +2547,59 @@ function VeloceHeroPreview({
                   : { duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }
               }
               className={cn(
-                "relative z-10 -mt-20 @sm:-mt-24 w-[82%] @sm:w-[84%] max-w-[370px] self-end rounded-2xl p-3.5 @sm:p-4",
-                floatingSurface,
+                "relative z-10 -mt-24 @sm:-mt-28 w-[76%] @sm:w-[78%] max-w-[330px] self-end rounded-2xl p-2.5 @sm:p-3",
+                floatingCardSurface,
               )}
             >
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <span
                     className={cn(
-                      "flex size-6 items-center justify-center rounded-lg",
+                      "flex size-6 items-center justify-center rounded-full shrink-0",
                       isDark
-                        ? "bg-rose-500/15 text-rose-400"
-                        : "bg-rose-50 text-[#f45d5d]",
+                        ? "bg-primary/15 text-primary"
+                        : "bg-primary/10 text-primary",
                     )}
                   >
                     <LoopingAnimatedIcon
                       icon={ChartNoAxesColumnIcon}
-                      size={14}
+                      size={13}
                       duration={2.0}
                       delay={0.25}
-                      color="#f45d5d"
+                      color="var(--primary)"
                       prefersReducedMotion={prefersReducedMotion}
                     />
                   </span>
-                  <span className="text-[10.5px] @sm:text-[11.5px] font-semibold tracking-tight">
-                    B2B Income 2023
-                  </span>
+                  <div className="min-w-0">
+                    <span className="block text-[10.5px] @sm:text-[11.5px] font-semibold tracking-tight leading-tight">
+                      Annual Revenue 2025
+                    </span>
+                    <div className="mt-1 flex items-center gap-1.5">
+                      <span className="inline-flex items-center gap-1">
+                        <span className="size-1 rounded-full bg-primary/80" />
+                        <span
+                          className={cn(
+                            "h-0.5 w-10 rounded-full",
+                            isDark ? "bg-white/15" : "bg-zinc-200",
+                          )}
+                        />
+                      </span>
+                      <span className="inline-flex items-center gap-1">
+                        <span
+                          className={cn(
+                            "size-1 rounded-full",
+                            isDark ? "bg-primary/25" : "bg-primary/20",
+                          )}
+                        />
+                        <span
+                          className={cn(
+                            "h-0.5 w-4 rounded-full",
+                            isDark ? "bg-white/15" : "bg-zinc-200",
+                          )}
+                        />
+                      </span>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Monthly / Yearly Toggle */}
@@ -2132,9 +2617,9 @@ function VeloceHeroPreview({
                         type="button"
                         onClick={() => setIncomePeriod(period)}
                         className={cn(
-                          "rounded-full px-2.5 py-0.5 text-[8.5px] @sm:text-[9px] font-medium capitalize transition-all cursor-pointer",
+                          "rounded-full px-2.5 py-0.5 text-[8.5px] @sm:text-[9px] font-medium capitalize transition-[background-color] duration-150 cursor-pointer",
                           active
-                            ? "bg-[#f45d5d] text-white shadow-xs"
+                            ? "bg-primary text-primary-foreground shadow-xs"
                             : isDark
                               ? "text-zinc-400 hover:text-zinc-200"
                               : "text-zinc-500 hover:text-zinc-800",
@@ -2148,21 +2633,21 @@ function VeloceHeroPreview({
               </div>
 
               {/* Area Chart */}
-              <div className="mt-3 h-24 @sm:h-28 w-full">
+              <div className="mt-1.5 h-12 @sm:h-14 w-full">
                 <svg
                   viewBox="0 0 320 90"
                   preserveAspectRatio="none"
                   className="h-full w-full overflow-visible"
-                  aria-label="B2B Income 2023 chart"
+                  aria-label="Annual Revenue 2025 chart"
                 >
                   <defs>
                     <linearGradient id="veloce-b2b-area" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#f45d5d" stopOpacity="0.42" />
-                      <stop offset="100%" stopColor="#f45d5d" stopOpacity="0.02" />
+                      <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.42" />
+                      <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.02" />
                     </linearGradient>
                   </defs>
 
-                  {/* Subtle horizontal grid lines */}
+                  {/* Subtle dashed horizontal grid lines */}
                   {[22, 46, 70].map((y) => (
                     <line
                       key={y}
@@ -2172,7 +2657,8 @@ function VeloceHeroPreview({
                       y2={y}
                       stroke="currentColor"
                       strokeWidth="0.75"
-                      className={isDark ? "text-white/[0.07]" : "text-zinc-100"}
+                      strokeDasharray="3 3"
+                      className={isDark ? "text-white/10" : "text-zinc-200"}
                     />
                   ))}
 
@@ -2196,7 +2682,7 @@ function VeloceHeroPreview({
                   {/* Line Stroke */}
                   <motion.path
                     fill="none"
-                    stroke="#f45d5d"
+                    stroke="var(--primary)"
                     strokeWidth="1.4"
                     strokeLinejoin="round"
                     strokeLinecap="round"
@@ -2219,7 +2705,7 @@ function VeloceHeroPreview({
               {/* X-Axis Months */}
               <div
                 className={cn(
-                  "mt-1.5 flex items-center justify-between text-[7px] @sm:text-[8px] font-medium",
+                  "mt-1 flex items-center justify-between text-[7px] @sm:text-[7.5px] font-medium",
                   isDark ? "text-zinc-500" : "text-zinc-400",
                 )}
               >
@@ -2245,7 +2731,7 @@ function VeloceHeroPreview({
         </div>
       </section>
 
-      {/* 6. Crafting Solutions Tailored to You Section */}
+      {/* 6. Modular Systems Built for Scale Section */}
       <section className="mx-auto max-w-[560px] @4xl:max-w-5xl pt-16 pb-14">
         {/* Centered Header */}
         <motion.div
@@ -2260,19 +2746,19 @@ function VeloceHeroPreview({
           className="text-center"
         >
           <h3 className="text-2xl @sm:text-[34px] font-semibold tracking-tight leading-[1.16]">
-            Crafting Solutions
+            Modular Systems
             <br />
-            Tailored to You
+            Built for Scale
           </h3>
           <p
             className={cn(
               "mx-auto mt-3 max-w-md text-[11.5px] @sm:text-[12.5px] leading-relaxed",
-              isDark ? "text-zinc-400" : "text-zinc-500",
+              isDark ? "text-zinc-500" : "text-[#ACACAC]",
             )}
           >
-            At <span className="font-medium text-[#f45d5d]">Codile</span>, we take pride
-            in offering a diverse range of solutions meticulously crafted to meet your
-            unique needs.
+            At <span className="font-medium text-primary">Veloce</span>, we craft
+            flexible workflows tailored to how modern product and growth teams
+            actually operate.
           </p>
         </motion.div>
 
@@ -2280,7 +2766,7 @@ function VeloceHeroPreview({
         <div className="mt-10 grid grid-cols-1 @4xl:grid-cols-2 gap-4 @sm:gap-5 items-stretch">
           {/* LEFT COLUMN */}
           <div className="flex flex-col gap-4 @sm:gap-5">
-            {/* Card 1: Subscription */}
+            {/* Card 1: Flexible Plans */}
             <motion.div
               initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -2292,9 +2778,7 @@ function VeloceHeroPreview({
               }
               className={cn(
                 "rounded-3xl p-5 @sm:p-6 overflow-hidden",
-                isDark
-                  ? "bg-white/[0.04] border border-white/[0.08]"
-                  : "bg-[#f6f6f8] border border-black/[0.03]",
+                isDark ? "bg-white/[0.04]" : "bg-[#F8F8F8]",
               )}
             >
               {/* Brand Icon Badge */}
@@ -2306,40 +2790,39 @@ function VeloceHeroPreview({
               />
 
               <h4 className="mt-4 text-[17px] @sm:text-[19px] font-semibold tracking-tight">
-                Subscription
+                Flexible Plans
               </h4>
               <p
                 className={cn(
                   "mt-2 text-[11px] @sm:text-[11.5px] leading-relaxed",
-                  isDark ? "text-zinc-400" : "text-zinc-500",
+                  isDark ? "text-zinc-500" : "text-[#ACACAC]",
                 )}
               >
-                Time is valuable, and your needs are unique. That&apos;s why we&apos;ve
-                curated a subscription offering designed to enhance your experience and
-                simplify your life.
+                Every team moves at a different pace. Choose modular plans designed to
+                adapt cleanly as your goals evolve.
               </p>
 
               {/* 4 Stacked Pill Rows */}
               <div className="mt-5 space-y-2.5">
                 {[
                   {
-                    title: "Tailored Convenience",
-                    subtitle: "Customize your subscription",
-                    bar: "bg-[#f45d5d]",
+                    title: "Custom Workflows",
+                    subtitle: "Tailor modules to your team",
+                    bar: "bg-primary",
                   },
                   {
-                    title: "Cost Savings and Value",
-                    subtitle: "Savings and added value with our subscription plans",
+                    title: "Predictable Pricing",
+                    subtitle: "Transparent value with zero hidden fees",
                     bar: "bg-amber-400",
                   },
                   {
-                    title: "Priority Access",
-                    subtitle: "Subscribers are our priority, gain early access",
+                    title: "Early Feature Access",
+                    subtitle: "Test new releases before public rollout",
                     bar: "bg-emerald-500",
                   },
                   {
-                    title: "Seamless Experience",
-                    subtitle: "Benefits without the administrative burdens.",
+                    title: "Zero Admin Friction",
+                    subtitle: "Manage seats and billing in one click",
                     bar: "bg-blue-500",
                   },
                 ].map((item, idx) => (
@@ -2364,8 +2847,8 @@ function VeloceHeroPreview({
                     className={cn(
                       "group relative flex items-center justify-between gap-3 rounded-xl px-3.5 py-2.5 transition-shadow duration-200 cursor-pointer",
                       isDark
-                        ? "bg-white/[0.05] border border-white/[0.08] hover:bg-white/[0.08]"
-                        : "bg-white border border-black/[0.04] shadow-[0_2px_10px_rgb(0_0_0/0.025)] hover:shadow-[0_6px_18px_rgb(0_0_0/0.05)]",
+                        ? "bg-white/[0.05] hover:bg-white/[0.08]"
+                        : "bg-white shadow-[0_2px_10px_rgb(0_0_0/0.025)] hover:shadow-[0_6px_18px_rgb(0_0_0/0.05)]",
                     )}
                     style={{ zIndex: 4 - idx }}
                   >
@@ -2378,7 +2861,7 @@ function VeloceHeroPreview({
                         <p
                           className={cn(
                             "text-[9.5px] @sm:text-[10px] truncate",
-                            isDark ? "text-zinc-400" : "text-zinc-500",
+                            isDark ? "text-zinc-500" : "text-[#ACACAC]",
                           )}
                         >
                           {item.subtitle}
@@ -2391,7 +2874,7 @@ function VeloceHeroPreview({
               </div>
             </motion.div>
 
-            {/* Card 3: Tracking & Record */}
+            {/* Card 3: Live Analytics */}
             <motion.div
               initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -2402,10 +2885,8 @@ function VeloceHeroPreview({
                   : { duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }
               }
               className={cn(
-                "relative flex-1 flex flex-col justify-between rounded-3xl p-5 @sm:p-6 pb-0 @sm:pb-0 overflow-hidden min-h-[260px]",
-                isDark
-                  ? "bg-white/[0.04] border border-white/[0.08]"
-                  : "bg-[#f6f6f8] border border-black/[0.03]",
+                "relative flex-1 flex flex-col rounded-3xl p-5 @sm:p-6 pb-0 @sm:pb-0 overflow-hidden min-h-[260px]",
+                isDark ? "bg-white/[0.04]" : "bg-[#F8F8F8]",
               )}
             >
               <div>
@@ -2418,36 +2899,38 @@ function VeloceHeroPreview({
                 />
 
                 <h4 className="mt-4 text-[17px] @sm:text-[19px] font-semibold tracking-tight">
-                  Tracking & Record
+                  Live Analytics
                 </h4>
                 <p
                   className={cn(
                     "mt-2 text-[11px] @sm:text-[11.5px] leading-relaxed",
-                    isDark ? "text-zinc-400" : "text-zinc-500",
+                    isDark ? "text-zinc-500" : "text-[#ACACAC]",
                   )}
                 >
-                  pivotal role that precision in tracking and record management plays in
-                  enhancing operational efficiency, ensuring compliance, and driving
-                  informed decision-making.
+                  Real-time event tracking and clean audit trails give your team full
+                  visibility, faster reporting, and sharper decisions across every
+                  channel.
                 </p>
               </div>
 
               {/* Bottom Tilted Mini-Cards Collage */}
-              <div className="relative mt-6 h-32 @sm:h-36 -mx-2 flex items-end justify-between gap-2 select-none">
+              <div className="relative mt-2 pt-2 -mx-6 flex items-end justify-center gap-2.5 select-none">
                 {/* Soft bottom fade */}
                 <div
                   aria-hidden
                   className={cn(
-                    "pointer-events-none absolute inset-x-0 bottom-0 z-20 h-8 bg-gradient-to-t to-transparent",
-                    isDark ? "from-[#0b0d12]/80" : "from-[#f6f6f8]",
+                    "pointer-events-none absolute inset-x-0 bottom-0 z-20 h-14 bg-gradient-to-t to-transparent",
+                    isDark
+                      ? "from-[#141720] via-[#141720]/70"
+                      : "from-[#F8F8F8] via-[#F8F8F8]/70",
                   )}
                 />
 
-                {/* 1. Left tilted 80% Donut Card */}
+                {/* 1. Left 80% Donut Card */}
                 <div
                   className={cn(
-                    "-ml-4 mb-1 w-24 @sm:w-28 shrink-0 -rotate-6 rounded-2xl p-3 text-center",
-                    floatingSurface,
+                    "-ml-8 @sm:-ml-6 translate-y-5 w-24 @sm:w-28 shrink-0 rounded-2xl p-3 pb-6 text-center",
+                    isDark ? "bg-[#151821]" : "bg-white",
                   )}
                 >
                   <div className="relative mx-auto size-12 flex items-center justify-center">
@@ -2459,14 +2942,14 @@ function VeloceHeroPreview({
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="5"
-                        className={isDark ? "text-white/10" : "text-rose-100"}
+                        className={isDark ? "text-white/10" : "text-primary/15"}
                       />
                       <motion.circle
                         cx="24"
                         cy="24"
                         r="19"
                         fill="none"
-                        stroke="#f45d5d"
+                        stroke="var(--primary)"
                         strokeWidth="5"
                         strokeLinecap="round"
                         strokeDasharray={2 * Math.PI * 19}
@@ -2484,30 +2967,52 @@ function VeloceHeroPreview({
                         }
                       />
                     </svg>
-                    <span className="absolute text-[10px] font-semibold text-[#f45d5d]">
+                    <span className="absolute text-[10px] font-semibold text-primary">
                       80%
                     </span>
                   </div>
                 </div>
 
-                {/* 2. Center-left tilted Segmentation Card */}
+                {/* 2. Center-left tilted Audience Reach Card */}
                 <div
                   className={cn(
-                    "z-10 -mb-2 w-32 @sm:w-36 shrink-0 rotate-3 rounded-2xl p-3",
-                    floatingSurface,
+                    "z-10 translate-y-1 w-32 @sm:w-36 shrink-0 rotate-3 rounded-2xl p-3 pb-4",
+                    isDark ? "bg-[#151821]" : "bg-white",
                   )}
                 >
-                  <div className="flex items-center gap-1.5">
-                    <span className="size-2 rounded-full bg-[#f45d5d]" />
-                    <span className="text-[9px] font-semibold tracking-tight">
-                      Segmentation
-                    </span>
+                  <div className="flex items-start gap-1.5">
+                    <span className="mt-0.5 size-2.5 shrink-0 rounded-full bg-primary" />
+                    <div>
+                      <span className="block text-[9px] font-semibold leading-tight tracking-tight">
+                        Audience Reach
+                      </span>
+                      <div className="mt-1 flex items-center gap-1.5">
+                        <span className="inline-flex items-center gap-0.5">
+                          <span className="size-1 rounded-full bg-primary" />
+                          <span
+                            className={cn(
+                              "h-0.5 w-3.5 rounded-full",
+                              isDark ? "bg-white/15" : "bg-zinc-200",
+                            )}
+                          />
+                        </span>
+                        <span className="inline-flex items-center gap-0.5">
+                          <span className="size-1 rounded-full bg-primary/35" />
+                          <span
+                            className={cn(
+                              "h-0.5 w-3.5 rounded-full",
+                              isDark ? "bg-white/15" : "bg-zinc-200",
+                            )}
+                          />
+                        </span>
+                      </div>
+                    </div>
                   </div>
                   <div
-                    className="mt-2.5 flex items-end justify-between gap-1.5 h-14"
+                    className="relative mt-2 flex items-end justify-between gap-1.5 h-16"
                     onMouseLeave={() => setHoveredSegBar(null)}
                   >
-                    {[38, 52, 74, 48, 86, 65].map((h, i) => {
+                    {[28, 42, 58, 76, 95].map((h, i) => {
                       const isHovered = hoveredSegBar === i;
                       const isAnyHovered = hoveredSegBar !== null;
                       return (
@@ -2531,59 +3036,115 @@ function VeloceHeroPreview({
                                 }
                           }
                           className={cn(
-                            "flex-1 rounded-t-sm cursor-pointer transition-colors duration-200",
+                            "flex-1 rounded-[4px] cursor-pointer transition-colors duration-200",
                             isAnyHovered
                               ? isHovered
-                                ? "bg-[#f45d5d]"
+                                ? "bg-primary"
                                 : isDark
                                   ? "bg-white/10"
                                   : "bg-zinc-200/80"
-                              : i >= 4
-                                ? "bg-[#f45d5d]/80"
-                                : isDark
-                                  ? "bg-rose-500/30"
-                                  : "bg-rose-200/80",
+                              : i === 4
+                                ? "bg-primary/80"
+                                : i === 3
+                                  ? "bg-primary/55"
+                                  : isDark
+                                    ? "bg-primary/25"
+                                    : "bg-primary/25",
                           )}
                         />
                       );
                     })}
+                    {/* Curved coral trendline overlay */}
+                    <svg
+                      viewBox="0 0 120 60"
+                      fill="none"
+                      aria-hidden
+                      className="pointer-events-none absolute inset-0 h-full w-full overflow-visible"
+                    >
+                      <path
+                        d="M 10 46 Q 48 44, 72 30 T 108 12"
+                        stroke="var(--primary)"
+                        strokeWidth="1.35"
+                        strokeLinecap="round"
+                      />
+                      <circle cx="108" cy="12" r="2.2" fill="var(--primary)" />
+                    </svg>
                   </div>
                 </div>
 
-                {/* 3. Center-right Google Ads Card */}
+                {/* 3. Center-right Ad Campaigns Card */}
                 <div
                   className={cn(
-                    "mb-1 w-28 @sm:w-32 shrink-0 rounded-2xl p-2.5",
-                    floatingSurface,
+                    "translate-y-4 w-28 @sm:w-32 shrink-0 rounded-2xl p-2.5 pb-6",
+                    isDark ? "bg-[#151821]" : "bg-white",
                   )}
                 >
                   <div className="flex items-center justify-between gap-1">
-                    <span className="flex size-5 items-center justify-center rounded-md bg-zinc-100 dark:bg-white/10 text-[10px] font-bold">
-                      <span className="text-[#4285F4]">G</span>
+                    <span
+                      className={cn(
+                        "flex size-5 items-center justify-center rounded-md",
+                        isDark ? "bg-white/10" : "bg-zinc-100/90",
+                      )}
+                    >
+                      <svg viewBox="0 0 24 24" className="size-3.5" aria-hidden>
+                        <path
+                          fill="#4285F4"
+                          d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                        />
+                        <path
+                          fill="#34A853"
+                          d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                        />
+                        <path
+                          fill="#FBBC05"
+                          d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                        />
+                        <path
+                          fill="#EA4335"
+                          d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                        />
+                      </svg>
                     </span>
-                    <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-500/10 px-1.5 py-0.5 text-[7px] font-semibold text-emerald-500">
-                      <Check className="size-2 stroke-[3]" />
-                      Verified
+                    <span
+                      className={cn(
+                        "inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[7px] font-medium",
+                        isDark
+                          ? "bg-white/10 text-zinc-200"
+                          : "bg-zinc-100/90 text-zinc-700",
+                      )}
+                    >
+                      <span className="flex size-2.5 items-center justify-center rounded-full bg-green-500 text-white">
+                        <Check className="size-1.5 stroke-[3]" />
+                      </span>
+                      Active!
                     </span>
                   </div>
-                  <p className="mt-3 text-[10px] @sm:text-[11px] font-semibold tracking-tight truncate">
-                    Google Ads
+                  <p className="mt-4 text-[12px] @sm:text-[13px] font-medium tracking-tight truncate">
+                    Ad Campaigns
                   </p>
-                  <div className="mt-1.5 h-1.5 w-3/4 rounded-full bg-zinc-200/80 dark:bg-white/10" />
                 </div>
 
                 {/* 4. Far-right peek Average Increase Card */}
                 <div
                   className={cn(
-                    "-mr-6 mb-2 hidden @sm:block w-24 shrink-0 rounded-2xl p-2.5",
-                    floatingSurface,
+                    "-mr-6 translate-y-6 hidden @sm:block w-24 shrink-0 rounded-2xl p-2.5 pb-5",
+                    isDark ? "bg-[#151821]" : "bg-white",
                   )}
                 >
                   <p className="text-[8px] font-semibold truncate">Average Incre...</p>
-                  <div
-                    className="mt-2 flex items-end gap-1 h-10"
-                    onMouseLeave={() => setHoveredAvgBar(null)}
-                  >
+                  <div className="mt-2 flex items-end gap-1 h-10">
+                    <span
+                      className={cn(
+                        "self-start text-[6.5px] font-medium",
+                        isDark ? "text-zinc-400" : "text-zinc-600",
+                      )}
+                    >
+                      30
+                    </span>
+                    <div
+                      className="flex flex-1 items-end gap-1 h-full"
+                      onMouseLeave={() => setHoveredAvgBar(null)}
+                    >
                     {[40, 70, 55].map((h, i) => {
                       const isHovered = hoveredAvgBar === i;
                       const isAnyHovered = hoveredAvgBar !== null;
@@ -2611,15 +3172,16 @@ function VeloceHeroPreview({
                             "flex-1 rounded-t-xs cursor-pointer transition-colors duration-200",
                             isAnyHovered
                               ? isHovered
-                                ? "bg-[#f45d5d]"
+                                ? "bg-primary"
                                 : isDark
                                   ? "bg-white/10"
                                   : "bg-zinc-200/80"
-                              : "bg-rose-300/80",
+                              : "bg-primary/40",
                           )}
                         />
                       );
                     })}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -2628,7 +3190,7 @@ function VeloceHeroPreview({
 
           {/* RIGHT COLUMN */}
           <div className="flex flex-col gap-4 @sm:gap-5">
-            {/* Card 2: Advertising */}
+            {/* Card 2: Smart Outreach */}
             <motion.div
               initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -2640,9 +3202,7 @@ function VeloceHeroPreview({
               }
               className={cn(
                 "rounded-3xl p-5 @sm:p-6 overflow-hidden",
-                isDark
-                  ? "bg-white/[0.04] border border-white/[0.08]"
-                  : "bg-[#f6f6f8] border border-black/[0.03]",
+                isDark ? "bg-white/[0.04]" : "bg-[#F8F8F8]",
               )}
             >
               {/* Brand Icon Badge */}
@@ -2654,19 +3214,17 @@ function VeloceHeroPreview({
               />
 
               <h4 className="mt-4 text-[17px] @sm:text-[19px] font-semibold tracking-tight">
-                Advertising
+                Smart Outreach
               </h4>
               <p
                 className={cn(
                   "mt-2 text-[11px] @sm:text-[11.5px] leading-relaxed",
-                  isDark ? "text-zinc-400" : "text-zinc-500",
+                  isDark ? "text-zinc-500" : "text-[#ACACAC]",
                 )}
               >
-                captivates and resonates with your audience through our cutting-edge
-                advertising solutions at{" "}
-                <span className="font-medium text-[#f45d5d]">Codile</span>. In a world
-                flooded with information, it&apos;s not just about being seen; it&apos;s
-                about being remembered.
+                Capture attention and stay top-of-mind with precision campaigns powered by{" "}
+                <span className="font-medium text-primary">Veloce</span>. Standing out
+                isn&apos;t just about impressions—it&apos;s about lasting recall.
               </p>
 
               {/* 5 Square Icon Tiles */}
@@ -2713,27 +3271,27 @@ function VeloceHeroPreview({
                     className={cn(
                       "aspect-square rounded-2xl flex items-center justify-center transition-transform hover:-translate-y-0.5",
                       isDark
-                        ? "bg-white/[0.05] border border-white/[0.08]"
-                        : "bg-white border border-black/[0.04] shadow-[0_4px_14px_rgb(0_0_0/0.03)]",
+                        ? "bg-white/[0.05]"
+                        : "bg-white shadow-[0_4px_14px_rgb(0_0_0/0.03)]",
                     )}
                   >
                     <div className="relative flex items-center justify-center">
                       <LoopingAnimatedIcon
                         icon={tile.icon}
-                        size={22}
+                        size={28}
                         duration={2.2}
                         delay={tile.delay}
-                        color="rgba(244, 93, 93, 0.72)"
+                        color="color-mix(in oklab, var(--primary) 72%, transparent)"
                         prefersReducedMotion={prefersReducedMotion}
                       />
                       <span
                         className={cn(
-                          "absolute flex size-2.5 items-center justify-center bg-[#f45d5d] text-white text-[6.5px] font-bold",
+                          "absolute flex size-3 items-center justify-center bg-primary text-primary-foreground text-[7.5px] font-bold",
                           tile.badgePos,
                         )}
                       >
                         {tile.badge === "check" ? (
-                          <Check className="size-1.5 stroke-[3]" />
+                          <Check className="size-2 stroke-[3]" />
                         ) : (
                           tile.badge
                         )}
@@ -2744,7 +3302,7 @@ function VeloceHeroPreview({
               </div>
             </motion.div>
 
-            {/* Card 4: Efficient Management */}
+            {/* Card 4: Team Operations */}
             <motion.div
               initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -2755,10 +3313,8 @@ function VeloceHeroPreview({
                   : { duration: 0.7, delay: 0.16, ease: [0.16, 1, 0.3, 1] }
               }
               className={cn(
-                "relative flex-1 flex flex-col justify-between rounded-3xl p-5 @sm:p-6 pb-0 @sm:pb-0 overflow-hidden",
-                isDark
-                  ? "bg-white/[0.04] border border-white/[0.08]"
-                  : "bg-[#f6f6f8] border border-black/[0.03]",
+                "relative flex-1 flex flex-col rounded-3xl p-5 @sm:p-6 pb-0 @sm:pb-0 overflow-hidden",
+                isDark ? "bg-white/[0.04]" : "bg-[#F8F8F8]",
               )}
             >
               <div>
@@ -2771,138 +3327,125 @@ function VeloceHeroPreview({
                 />
 
                 <h4 className="mt-4 text-[17px] @sm:text-[19px] font-semibold tracking-tight">
-                  Efficient Management
+                  Team Operations
                 </h4>
                 <p
                   className={cn(
                     "mt-2 text-[11px] @sm:text-[11.5px] leading-relaxed",
-                    isDark ? "text-zinc-400" : "text-zinc-500",
+                    isDark ? "text-zinc-500" : "text-[#ACACAC]",
                   )}
                 >
-                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-                  accusantium doloremque laudantium.
+                  Keep projects, owners, and deadlines aligned in one shared workspace
+                  built for calm, focused execution.
                 </p>
               </div>
 
               {/* Bottom Inner Mockup + Floating Popovers */}
-              <div className="relative mt-6 pt-3">
+              <div className="relative mt-auto pt-8">
                 {/* Main Inner List Card */}
                 <div
                   className={cn(
-                    "mx-auto w-[92%] rounded-t-2xl border border-b-0 p-4 pb-6",
-                    isDark
-                      ? "bg-[#12151d] border-white/10"
-                      : "bg-white border-black/[0.05] shadow-[0_6px_24px_rgb(0_0_0/0.04)]",
+                    "mx-auto w-[92%] rounded-t-2xl p-4 pb-12",
+                    isDark ? "bg-[#12151d]" : "bg-white",
                   )}
                 >
                   {/* Item 1 */}
-                  <div className="pb-3 border-b border-current/5">
+                  <div className="pb-3.5 border-b border-current/5">
                     <div className="flex items-center gap-2">
-                      <span className="flex size-4 items-center justify-center rounded-md bg-rose-500/10 text-[#f45d5d]">
+                      <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
                         <LoopingAnimatedIcon
                           icon={ChartNoAxesColumnIcon}
                           size={11}
                           duration={2.0}
                           delay={0.1}
-                          color="#f45d5d"
+                          color="var(--primary)"
                           prefersReducedMotion={prefersReducedMotion}
                         />
                       </span>
-                      <span className="text-[11px] font-semibold tracking-tight">
-                        Planning & Goals
+                      <span className="text-[11.5px] @sm:text-[12px] font-semibold tracking-tight">
+                        Milestones & OKRs
                       </span>
                     </div>
                     <p
                       className={cn(
-                        "mt-1 text-[8.5px] leading-relaxed max-w-[75%]",
-                        isDark ? "text-zinc-400" : "text-zinc-500",
+                        "mt-1 pl-7 text-[8.5px] leading-relaxed max-w-[78%]",
+                        isDark ? "text-zinc-500" : "text-[#ACACAC]",
                       )}
                     >
-                      pivotal role that meticulous planning and well-defined goals
-                      steering organizations toward sustainable success.
+                      Align every sprint with measurable outcomes that keep your entire
+                      organization moving forward.
                     </p>
                   </div>
 
                   {/* Item 2 */}
-                  <div className="py-3 border-b border-current/5">
+                  <div className="py-3.5 border-b border-current/5">
                     <div className="flex items-center gap-2">
-                      <span className="flex size-4 items-center justify-center rounded-md bg-rose-500/10 text-[#f45d5d]">
-                        <svg viewBox="0 0 16 16" className="size-2.5 fill-current" aria-hidden>
-                          <circle cx="8" cy="8" r="6" fillOpacity="0.25" />
-                          <circle cx="8" cy="8" r="3" />
-                        </svg>
+                      <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                        <LoopingAnimatedIcon
+                          icon={CopyCheckIcon}
+                          size={11}
+                          duration={1.8}
+                          delay={0.3}
+                          color="var(--primary)"
+                          prefersReducedMotion={prefersReducedMotion}
+                        />
                       </span>
-                      <span className="text-[11px] font-semibold tracking-tight">
-                        Resource Allocation and Optimization
+                      <span className="text-[11.5px] @sm:text-[12px] font-semibold tracking-tight">
+                        Smart Resource Allocation
                       </span>
                     </div>
                     <p
                       className={cn(
-                        "mt-1 text-[8.5px] leading-relaxed pl-6",
-                        isDark ? "text-zinc-400" : "text-zinc-500",
+                        "mt-1 pl-7 text-[8.5px] leading-relaxed",
+                        isDark ? "text-zinc-500" : "text-[#ACACAC]",
                       )}
                     >
-                      including personnel, time, and finances, achieve organizational
-                      goals.
+                      Balance team capacity, budgets, and timelines to deliver key
+                      initiatives on schedule.
                     </p>
                   </div>
 
                   {/* Item 3 (faded) */}
-                  <div className="pt-3 opacity-55">
-                    <p className="text-[10.5px] font-semibold tracking-tight pl-6">
-                      ...p and Empowerment
+                  <div className="pt-3.5 opacity-60">
+                    <p className="pl-7 text-[10.5px] font-semibold tracking-tight">
+                      Async Team Alignment
                     </p>
                     <p
                       className={cn(
-                        "mt-1 text-[8px] leading-relaxed pl-6",
+                        "mt-1 pl-7 text-[8px] leading-relaxed",
                         isDark ? "text-zinc-500" : "text-zinc-400",
                       )}
                     >
-                      nization culture by promoting open communication.
+                      Keep everyone informed with clear updates and shared context.
                     </p>
                   </div>
                 </div>
 
                 {/* Top-Right Overlapping Radio Popover */}
-                <div
-                  className={cn(
-                    "absolute right-0 top-0 z-10 w-36 @sm:w-40 rounded-xl p-1.5 space-y-1",
-                    floatingSurface,
-                  )}
-                >
-                  {[0, 1, 2].map((idx) => {
-                    const selected = selectedMgmtOption === idx;
-                    return (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={() => setSelectedMgmtOption(idx)}
-                        className={cn(
-                          "relative z-10 flex w-full items-center justify-between gap-1.5 rounded-lg px-2 py-1 text-left transition-colors cursor-pointer",
-                          !selected && "hover:bg-black/[0.03] dark:hover:bg-white/[0.04]",
-                        )}
-                      >
-                        {selected && (
-                          <motion.span
-                            layoutId="veloce-mgmt-active-bg"
-                            transition={
-                              prefersReducedMotion
-                                ? { duration: 0 }
-                                : { type: "spring", stiffness: 360, damping: 32 }
-                            }
-                            className={cn(
-                              "absolute inset-0 -z-10 rounded-lg",
-                              isDark ? "bg-rose-500/15" : "bg-rose-50/90",
-                            )}
-                          />
-                        )}
-                        <div className="flex items-center gap-1.5 min-w-0">
+                <LayoutGroup id={`veloce-mgmt-popover-${theme}`}>
+                  <div
+                    className={cn(
+                      "absolute right-0 top-2 z-10 w-40 @sm:w-44 overflow-hidden rounded-xl p-1.5 space-y-1.5",
+                      floatingSurface,
+                    )}
+                  >
+                    {[0, 1, 2].map((idx) => {
+                      const selected = selectedMgmtOption === idx;
+                      return (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => setMgmtStep(idx)}
+                          className="relative flex w-full items-center gap-1.5 text-left cursor-pointer"
+                        >
                           <span
                             className={cn(
                               "relative flex size-2.5 shrink-0 items-center justify-center rounded-full border transition-colors",
                               selected
-                                ? "border-[#f45d5d]"
-                                : "border-zinc-300 dark:border-zinc-600",
+                                ? "border-primary"
+                                : isDark
+                                  ? "border-zinc-600"
+                                  : "border-zinc-300",
                             )}
                           >
                             {selected && (
@@ -2913,51 +3456,84 @@ function VeloceHeroPreview({
                                     ? { duration: 0 }
                                     : { type: "spring", stiffness: 400, damping: 30 }
                                 }
-                                className="absolute inset-0 flex items-center justify-center rounded-full bg-[#f45d5d]"
+                                className="absolute inset-0 flex items-center justify-center rounded-full bg-primary text-primary-foreground"
                               >
-                                <span className="size-1 rounded-full bg-white" />
+                                <Check className="size-1.5 stroke-[3]" />
                               </motion.span>
                             )}
                           </span>
-                          <div className="min-w-0">
-                            <p className="text-[7px] font-semibold truncate">
-                              Tailored Convenience
-                            </p>
-                            <p className="text-[5.5px] text-zinc-400 truncate">
-                              Customize your subscription
-                            </p>
+
+                          <div
+                            className={cn(
+                              "relative z-10 flex flex-1 items-center justify-between gap-1.5 rounded-md px-1.5 py-1 min-w-0 transition-colors",
+                              !selected &&
+                                (isDark
+                                  ? "bg-white/[0.04] hover:bg-white/[0.07]"
+                                  : "bg-[#F8F8F8] hover:bg-zinc-100"),
+                            )}
+                          >
+                            {selected && (
+                              <motion.span
+                                layoutId="veloce-mgmt-active-bg"
+                                transition={
+                                  prefersReducedMotion
+                                    ? { duration: 0 }
+                                    : { type: "spring", stiffness: 360, damping: 32 }
+                                }
+                                className={cn(
+                                  "absolute inset-0 -z-10 rounded-md",
+                                  isDark ? "bg-primary/15" : "bg-primary/10",
+                                )}
+                              />
+                            )}
+                            <div className="flex items-center gap-1.5 min-w-0">
+                              <span
+                                aria-hidden
+                                className="w-[2px] h-4 rounded-full bg-primary shrink-0"
+                              />
+                              <div className="min-w-0">
+                                <p className="text-[7px] font-semibold truncate">
+                                  Custom Workflows
+                                </p>
+                                <p className="text-[5.5px] text-zinc-400 truncate">
+                                  Tailor modules to your team
+                                </p>
+                              </div>
+                            </div>
+                            <ChevronRight className="size-2.5 shrink-0 text-zinc-400" />
                           </div>
-                        </div>
-                        <ChevronRight className="size-2.5 shrink-0 text-zinc-400" />
-                      </button>
-                    );
-                  })}
-                </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </LayoutGroup>
 
                 {/* Bottom-Left Overlapping Create Form Popover */}
                 <div
                   className={cn(
-                    "absolute left-0 bottom-2 z-10 w-40 @sm:w-44 rounded-xl p-2.5",
-                    floatingSurface,
+                    "absolute left-0 bottom-0 z-10 w-44 @sm:w-48 rounded-t-xl p-3 pb-5",
+                    isDark
+                      ? "bg-[#151821] shadow-[8px_0_18px_-6px_rgba(0,0,0,0.45)]"
+                      : "bg-white shadow-[8px_0_18px_-6px_rgba(0,0,0,0.08)]",
                   )}
                 >
                   <div className="flex items-center gap-1.5">
-                    <span className="flex size-3.5 items-center justify-center rounded-sm bg-rose-500/10 text-[#f45d5d]">
+                    <span className="flex size-4 items-center justify-center rounded-full bg-primary/10 text-primary">
                       <LoopingAnimatedIcon
                         icon={ChartNoAxesColumnIcon}
                         size={9}
                         duration={2.0}
                         delay={0.35}
-                        color="#f45d5d"
+                        color="var(--primary)"
                         prefersReducedMotion={prefersReducedMotion}
                       />
                     </span>
                     <span className="text-[8px] font-semibold tracking-tight">
-                      Create Planning & Goals!
+                      New Milestone & Goal!
                     </span>
                   </div>
                   <p className="mt-1 text-[5.5px] text-zinc-400 leading-snug">
-                    Share your plans and objectives in a clear and concise manner.
+                    Outline your target outcomes and key deliverables clearly.
                   </p>
                   <div
                     className={cn(
@@ -2967,7 +3543,7 @@ function VeloceHeroPreview({
                         : "border-zinc-200/80 bg-zinc-50/70",
                     )}
                   >
-                    Title here
+                    Project title
                   </div>
                   <p className="mt-1.5 text-[6px] font-medium">Description</p>
                   <div
@@ -2978,9 +3554,20 @@ function VeloceHeroPreview({
                         : "border-zinc-200/80 bg-zinc-50/70",
                     )}
                   >
-                    Write a description of your project...
+                    Describe your milestone goals...
                   </div>
                 </div>
+
+                {/* Soft bottom fade */}
+                <div
+                  aria-hidden
+                  className={cn(
+                    "pointer-events-none absolute inset-x-0 bottom-0 z-20 h-14 bg-gradient-to-t to-transparent",
+                    isDark
+                      ? "from-[#141720] via-[#141720]/70"
+                      : "from-[#F8F8F8] via-[#F8F8F8]/70",
+                  )}
+                />
               </div>
             </motion.div>
           </div>
@@ -3001,17 +3588,17 @@ function VeloceHeroPreview({
           className="text-center"
         >
           <h3 className="text-2xl @sm:text-[32px] font-semibold tracking-tight leading-[1.18]">
-            Achievements That Define Our Success!
+            Milestones That Define Our Journey!
           </h3>
           <p
             className={cn(
               "mx-auto mt-2.5 max-w-lg text-[11px] @sm:text-[12px] leading-relaxed",
-              isDark ? "text-zinc-400" : "text-zinc-500",
+              isDark ? "text-zinc-500" : "text-[#ACACAC]",
             )}
           >
-            Step into a world of accolades and achievements that underscore our
-            commitment to excellence at{" "}
-            <span className="font-medium text-[#f45d5d]">Codile.</span>
+            Explore the industry recognitions and product milestones that reflect our
+            commitment to craft at{" "}
+            <span className="font-medium text-primary">Veloce.</span>
           </p>
         </motion.div>
 
@@ -3019,33 +3606,33 @@ function VeloceHeroPreview({
           {[
             {
               year: "2019",
-              line1: "Excellence in",
-              line2: "Innovation Award",
+              line1: "Breakthrough",
+              line2: "Product Design",
             },
             {
               year: "2020",
-              line1: "Pinnacle of Performance",
-              line2: "Recognition",
+              line1: "Top SaaS",
+              line2: "Performance Award",
             },
             {
               year: "2021",
-              line1: "Visionary Leadership",
-              line2: "Accolade",
+              line1: "Best Growth",
+              line2: "Platform Honor",
             },
             {
               year: "2022",
-              line1: "Outstanding Customer",
-              line2: "Experience Distinction",
+              line1: "Customer Choice",
+              line2: "Excellence Award",
             },
             {
               year: "2023",
-              line1: "Masters of Team",
-              line2: "Collaboration Honor",
+              line1: "Team Workflow",
+              line2: "Innovation Prize",
             },
             {
               year: "2025",
-              line1: "Global Digital",
-              line2: "Excellence Award",
+              line1: "Global Cloud",
+              line2: "Leader Recognition",
             },
           ].map((award, idx) => (
             <motion.div
@@ -3115,7 +3702,7 @@ function VeloceHeroPreview({
               <p
                 className={cn(
                   "mt-2 text-[10px] @sm:text-[10.5px] font-medium leading-[1.38]",
-                  isDark ? "text-zinc-400" : "text-zinc-600",
+                  isDark ? "text-zinc-500" : "text-[#ACACAC]",
                 )}
               >
                 {award.line1}
@@ -3127,7 +3714,7 @@ function VeloceHeroPreview({
         </div>
       </section>
 
-      {/* 8. Frequently Ask Questions Section + Bottom CTA */}
+      {/* 8. Frequently Asked Questions Section + Bottom CTA */}
       <section className="mx-auto max-w-[560px] @4xl:max-w-5xl pt-16 pb-14">
         <motion.div
           initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
@@ -3143,7 +3730,7 @@ function VeloceHeroPreview({
           <h3 className="text-2xl @sm:text-[34px] font-semibold tracking-tight leading-[1.16]">
             Frequently
             <br />
-            Ask Questions
+            Asked Questions
           </h3>
         </motion.div>
 
@@ -3153,32 +3740,31 @@ function VeloceHeroPreview({
             "mx-auto mt-10 max-w-2xl divide-y border-b",
             isDark
               ? "divide-white/10 border-white/10"
-              : "divide-zinc-200/80 border-zinc-200/80",
+              : "divide-[#F8F8F8] border-[#F8F8F8]",
           )}
         >
           {[
             {
-              question: "What Services Does Codile Offer?",
+              question: "What Can We Build With Veloce?",
               answer: (
                 <>
-                  Codile offers business planning, financial modeling, content
-                  creation, strategic marketing, and operational efficiency solutions
-                  tailored to help your business scale.
+                  Veloce brings campaign analytics, revenue forecasting, workflow
+                  automation, and team planning together in one unified platform.
                 </>
               ),
             },
             {
-              question: "How Can I Contact Customer Support?",
+              question: "How Do I Reach the Support Team?",
               answer: (
                 <>
-                  Our customer support team is available{" "}
+                  Our support specialists are online{" "}
                   <span
                     className={cn(
                       "font-medium",
                       isDark ? "text-zinc-200" : "text-zinc-800",
                     )}
                   >
-                    9AM-5PM GMT+7
+                    Mon-Fri, 9AM-6PM UTC
                   </span>
                   . You can reach us by{" "}
                   <span
@@ -3187,7 +3773,7 @@ function VeloceHeroPreview({
                       isDark ? "text-zinc-200" : "text-zinc-800",
                     )}
                   >
-                    codile@helpsupport.com
+                    hello@veloce.com
                   </span>{" "}
                   . For urgent matters, we recommend to call{" "}
                   <span
@@ -3196,38 +3782,37 @@ function VeloceHeroPreview({
                       isDark ? "text-zinc-200" : "text-zinc-800",
                     )}
                   >
-                    +6285292410704
+                    +1 (415) 890-XXXX
                   </span>
                 </>
               ),
             },
             {
-              question: "What Sets Codile Apart From Competitors?",
+              question: "Why Do Teams Choose Veloce?",
               answer: (
                 <>
-                  We combine data-driven strategy with hands-on creative execution,
-                  delivering measurable ROI and dedicated support at every stage of
-                  your growth.
+                  We pair fast, intuitive design with real-time data pipelines,
+                  helping teams launch quicker and measure impact without complex
+                  setup.
                 </>
               ),
             },
             {
               question:
-                "Are There Any Ongoing Support Options After Service Implementation?",
+                "Do You Offer Onboarding and Migration Help?",
               answer: (
                 <>
-                  Yes, we offer ongoing support to ensure the continued success of our
-                  services. Our team is dedicated to providing post-implementation
-                  support, addressing any questions or concerns you may have.
+                  Yes, every plan includes guided onboarding, template setup, and
+                  dedicated migration support to get your team running smoothly.
                 </>
               ),
             },
             {
-              question: "How Do I Get Started With Codile's Services?",
+              question: "How Quickly Can Our Team Get Started?",
               answer: (
                 <>
-                  Simply reach out through our contact form or schedule a consultation
-                  with our team to discuss your goals and receive a tailored roadmap.
+                  You can spin up your workspace in under two minutes or book a quick
+                  walkthrough with our solutions team for custom setups.
                 </>
               ),
             },
@@ -3250,13 +3835,86 @@ function VeloceHeroPreview({
                   <span className="text-[12.5px] @sm:text-[13.5px] font-medium tracking-tight">
                     {faq.question}
                   </span>
-                  <ChevronDown
+                  <span
                     className={cn(
-                      "size-4 shrink-0 transition-transform duration-200",
-                      isDark ? "text-zinc-400" : "text-zinc-600",
-                      isOpen && "rotate-180",
+                      "flex size-6 shrink-0 items-center justify-center rounded-full transition-colors duration-300",
+                      isDark
+                        ? "bg-white/[0.05] text-zinc-400 group-hover:bg-white/[0.08] group-hover:text-zinc-200"
+                        : "bg-[#F8F8F8] text-zinc-600 group-hover:bg-zinc-200/70",
                     )}
-                  />
+                  >
+                    <motion.svg
+                      viewBox="0 0 16 16"
+                      className="size-3.5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.75"
+                      strokeLinecap="round"
+                      initial={false}
+                      animate={
+                        prefersReducedMotion
+                          ? undefined
+                          : isOpen
+                            ? { rotate: 180, scale: [1, 1.18, 1] }
+                            : {
+                                rotate: [0, 8, 0, -8, 0],
+                                scale: [1, 1.06, 1, 1.06, 1],
+                              }
+                      }
+                      transition={
+                        prefersReducedMotion
+                          ? { duration: 0 }
+                          : isOpen
+                            ? {
+                                rotate: { type: "spring", stiffness: 320, damping: 22 },
+                                scale: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
+                              }
+                            : {
+                                duration: 3,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                              }
+                      }
+                      aria-hidden
+                    >
+                      <motion.line
+                        x1="3.5"
+                        y1="8"
+                        x2="12.5"
+                        y2="8"
+                        initial={false}
+                        animate={
+                          prefersReducedMotion
+                            ? undefined
+                            : { scaleX: isOpen ? [1, 1.15, 1] : 1 }
+                        }
+                        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                        style={{ transformOrigin: "8px 8px" }}
+                      />
+                      <motion.line
+                        x1="8"
+                        y1="3.5"
+                        x2="8"
+                        y2="12.5"
+                        initial={false}
+                        animate={
+                          isOpen
+                            ? { rotate: 90, opacity: 0, scaleY: 0 }
+                            : { rotate: 0, opacity: 1, scaleY: 1 }
+                        }
+                        transition={
+                          prefersReducedMotion
+                            ? { duration: 0 }
+                            : {
+                                rotate: { type: "spring", stiffness: 340, damping: 24 },
+                                scaleY: { duration: 0.25, ease: [0.22, 1, 0.36, 1] },
+                                opacity: { duration: 0.2, ease: "easeOut" },
+                              }
+                        }
+                        style={{ transformOrigin: "8px 8px" }}
+                      />
+                    </motion.svg>
+                  </span>
                 </button>
 
                 <AnimatePresence initial={false}>
@@ -3264,30 +3922,52 @@ function VeloceHeroPreview({
                     <motion.div
                       initial={
                         prefersReducedMotion
-                          ? { opacity: 1, height: "auto" }
-                          : { opacity: 0, height: 0 }
+                          ? { height: "auto" }
+                          : { height: 0 }
                       }
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={
-                        prefersReducedMotion
-                          ? { opacity: 0, height: 0 }
-                          : { opacity: 0, height: 0 }
-                      }
+                      animate={{ height: "auto" }}
+                      exit={{ height: 0 }}
                       transition={
                         prefersReducedMotion
                           ? { duration: 0 }
-                          : { duration: 0.25, ease: [0.16, 1, 0.3, 1] }
+                          : { duration: 0.52, ease: [0.32, 0.72, 0, 1] }
                       }
                       className="overflow-hidden"
                     >
-                      <p
+                      <motion.p
+                        initial={
+                          prefersReducedMotion
+                            ? { opacity: 1, y: 0, filter: "blur(0px)" }
+                            : { opacity: 0, y: -8, filter: "blur(3px)" }
+                        }
+                        animate={{
+                          opacity: 1,
+                          y: 0,
+                          filter: "blur(0px)",
+                          transition: prefersReducedMotion
+                            ? { duration: 0 }
+                            : {
+                                duration: 0.56,
+                                delay: 0.09,
+                                ease: [0.16, 1, 0.3, 1],
+                              },
+                        }}
+                        exit={
+                          prefersReducedMotion
+                            ? { opacity: 0 }
+                            : {
+                                opacity: 0,
+                                y: -4,
+                                transition: { duration: 0.22, ease: "easeIn" },
+                              }
+                        }
                         className={cn(
                           "mt-2 pr-6 text-[10.5px] @sm:text-[11.5px] leading-relaxed",
-                          isDark ? "text-zinc-400" : "text-zinc-500",
+                          isDark ? "text-zinc-500" : "text-[#ACACAC]",
                         )}
                       >
                         {faq.answer}
-                      </p>
+                      </motion.p>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -3309,16 +3989,16 @@ function VeloceHeroPreview({
           className={cn(
             "mx-auto mt-8 max-w-2xl rounded-2xl px-6 py-5 @sm:px-7 @sm:py-6 flex flex-col @sm:flex-row @sm:items-center justify-between gap-4",
             isDark
-              ? "bg-white/[0.04] border border-white/[0.08]"
-              : "bg-[#f6f6f8] border border-black/[0.03]",
+              ? "bg-[#141720]"
+              : "bg-[#F8F8F8]",
           )}
         >
           <div>
-            <p className="text-[10px] @sm:text-[10.5px] font-medium text-[#f45d5d]">
-              Do You Have Any Question
+            <p className="text-[10px] @sm:text-[10.5px] font-medium text-primary">
+              Still Have Questions?
             </p>
             <h4 className="mt-0.5 text-lg @sm:text-[20px] font-semibold tracking-tight">
-              Let&apos;s Talk With Us!
+              Start Building Today!
             </h4>
           </div>
 
@@ -3335,20 +4015,20 @@ function VeloceHeroPreview({
             {/* Left entering rounded-bg icon */}
             <span
               aria-hidden
-              className="absolute left-2.5 flex size-5 items-center justify-center rounded-full bg-[#f45d5d] text-white -translate-x-10 opacity-0 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0 group-hover:opacity-100"
+              className="absolute left-2.5 flex size-5 items-center justify-center rounded-full bg-primary text-primary-foreground -translate-x-10 opacity-0 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0 group-hover:opacity-100"
             >
               <ArrowRight className="size-3" />
             </span>
 
             {/* Label shifts right cleanly to make room for left icon */}
             <span className="relative z-10 pr-2.5 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-3.5">
-              Login
+              Sign In
             </span>
 
             {/* Right exiting rounded-bg icon */}
             <span
               aria-hidden
-              className="flex size-5 items-center justify-center rounded-full bg-[#f45d5d] text-white translate-x-0 opacity-100 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-12 group-hover:opacity-0"
+              className="flex size-5 items-center justify-center rounded-full bg-primary text-primary-foreground translate-x-0 opacity-100 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-12 group-hover:opacity-0"
             >
               <ArrowRight className="size-3" />
             </span>
@@ -3360,9 +4040,7 @@ function VeloceHeroPreview({
       <footer
         className={cn(
           "-mx-4 -mb-5 @sm:-mx-6 @lg:-mx-10 @lg:-mb-7 mt-8 px-4 @sm:px-6 @lg:px-10 pt-12 pb-8",
-          isDark
-            ? "bg-white/[0.02] border-t border-white/[0.06]"
-            : "bg-[#f7f7f9] border-t border-black/[0.03]",
+          isDark ? "bg-white/[0.02]" : "bg-[#F8F8F8]",
         )}
       >
         <div className="mx-auto max-w-[560px] @4xl:max-w-5xl">
@@ -3370,7 +4048,7 @@ function VeloceHeroPreview({
             {/* Left Brand + Contact Info */}
             <div className="@4xl:col-span-6">
               <div className="flex items-center gap-2">
-                <span className="flex size-6 items-center justify-center rounded-md bg-[#f45d5d] text-white shrink-0">
+                <span className="flex size-6 items-center justify-center rounded-md bg-primary text-primary-foreground shrink-0">
                   <svg viewBox="0 0 24 24" className="size-4 fill-current" aria-hidden>
                     <path d="M4.5 5.5L12 19.5L19.5 5.5H15.8L12 12.8L8.2 5.5H4.5Z" />
                   </svg>
@@ -3386,7 +4064,7 @@ function VeloceHeroPreview({
                   isDark ? "text-zinc-500" : "text-zinc-400",
                 )}
               >
-                Built for modern SaaS &amp; AI teams
+                Crafted for fast-moving product teams
               </p>
 
               <a
@@ -3394,7 +4072,7 @@ function VeloceHeroPreview({
                 onClick={(e) => e.preventDefault()}
                 className="mt-2 inline-block text-lg @sm:text-[21px] font-medium tracking-tight hover:opacity-80 transition-opacity"
               >
-                support@veloce.com
+                hello@veloce.com
               </a>
             </div>
 
@@ -3405,7 +4083,7 @@ function VeloceHeroPreview({
                   Pages
                 </h5>
                 <ul className="space-y-2">
-                  {["Home", "About", "Blog", "Contact"].map((item) => (
+                  {["Home", "Platform", "Insights", "Contact"].map((item) => (
                     <li key={item}>
                       <button
                         type="button"
@@ -3416,7 +4094,7 @@ function VeloceHeroPreview({
                             : "text-zinc-400 hover:text-zinc-700",
                         )}
                       >
-                        <ArrowRight className="size-3 shrink-0 opacity-65 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-[#f45d5d]" />
+                        <ArrowRight className="size-3 shrink-0 opacity-65 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-primary" />
                         <span>{item}</span>
                       </button>
                     </li>
@@ -3435,7 +4113,7 @@ function VeloceHeroPreview({
                       icon: (
                         <svg
                           viewBox="0 0 24 24"
-                          className="size-3.5 shrink-0 stroke-current fill-none opacity-75 transition-colors group-hover:text-[#f45d5d]"
+                          className="size-3.5 shrink-0 stroke-current fill-none opacity-75 transition-colors group-hover:text-primary"
                           strokeWidth="1.9"
                           aria-hidden
                         >
@@ -3450,7 +4128,7 @@ function VeloceHeroPreview({
                       icon: (
                         <svg
                           viewBox="0 0 24 24"
-                          className="size-3.5 shrink-0 fill-current opacity-75 transition-colors group-hover:text-[#f45d5d]"
+                          className="size-3.5 shrink-0 fill-current opacity-75 transition-colors group-hover:text-primary"
                           aria-hidden
                         >
                           <path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 4v2.2H8v3h2.5V21h3z" />
@@ -3462,7 +4140,7 @@ function VeloceHeroPreview({
                       icon: (
                         <svg
                           viewBox="0 0 24 24"
-                          className="size-3.5 shrink-0 fill-current opacity-75 transition-colors group-hover:text-[#f45d5d]"
+                          className="size-3.5 shrink-0 fill-current opacity-75 transition-colors group-hover:text-primary"
                           aria-hidden
                         >
                           <path d="M22 5.9a8.2 8.2 0 0 1-2.36.65 4.12 4.12 0 0 0 1.8-2.27 8.2 8.2 0 0 1-2.6 1 4.1 4.1 0 0 0-7 3.74A11.64 11.64 0 0 1 3.4 4.7a4.1 4.1 0 0 0 1.27 5.47 4.07 4.07 0 0 1-1.86-.51v.05a4.1 4.1 0 0 0 3.29 4.02 4.1 4.1 0 0 1-1.85.07 4.1 4.1 0 0 0 3.83 2.85A8.23 8.23 0 0 1 2 18.4a11.62 11.62 0 0 0 6.29 1.84c7.55 0 11.68-6.25 11.68-11.67 0-.18 0-.35-.01-.53A8.34 8.34 0 0 0 22 5.9Z" />
@@ -3490,13 +4168,13 @@ function VeloceHeroPreview({
 
               <div>
                 <h5 className="text-[11px] @sm:text-[11.5px] font-semibold mb-3">
-                  Service
+                  Resources
                 </h5>
                 <ul className="space-y-2">
                   {[
-                    "Privacy & Policy",
-                    "Terms and Conditions",
-                    "FAQ's",
+                    "Privacy Policy",
+                    "Terms of Use",
+                    "FAQ",
                     "Help Center",
                   ].map((item) => (
                     <li key={item}>
@@ -3509,7 +4187,7 @@ function VeloceHeroPreview({
                             : "text-zinc-400 hover:text-zinc-700",
                         )}
                       >
-                        <ArrowRight className="size-3 shrink-0 opacity-65 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-[#f45d5d]" />
+                        <ArrowRight className="size-3 shrink-0 opacity-65 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-primary" />
                         <span>{item}</span>
                       </button>
                     </li>
@@ -3564,7 +4242,7 @@ function VeloceHeroPreview({
                   isDark ? "hover:text-zinc-300" : "hover:text-zinc-700",
                 )}
               >
-                Go to top
+                Back to top
               </button>
             </div>
           </div>
@@ -3649,33 +4327,33 @@ export function VeloceTemplateView() {
             id: "home",
             number: "04",
             path: "/#content-marketing",
-            title: "Content Marketing",
+            title: "Creative Strategy",
             description:
-              "Portrait showcase with animated donut, sales chart, ad platforms, and interactive checklist.",
+              "Portrait showcase with animated donut, revenue lift chart, channel integrations, and interactive checklist.",
           },
           {
             id: "home",
             number: "05",
             path: "/#business-planning",
-            title: "Business Planning",
+            title: "Strategic Planning",
             description:
-              "2x2 strategy cards paired with portrait, verified badge, and interactive B2B income area chart.",
+              "2x2 strategy cards paired with portrait, active badge, and interactive annual revenue area chart.",
           },
           {
             id: "home",
             number: "06",
             path: "/#solutions",
-            title: "Crafting Solutions",
+            title: "Modular Systems",
             description:
-              "Asymmetric 4-card bento showcase for Subscription, Advertising, Tracking & Record, and Efficient Management.",
+              "Asymmetric 4-card bento showcase for Flexible Plans, Smart Outreach, Live Analytics, and Team Operations.",
           },
           {
             id: "home",
             number: "07",
             path: "/#achievements",
-            title: "Achievements",
+            title: "Milestones",
             description:
-              "Six annual laurel wreath accolades from 2019 to 2025 in a responsive grid.",
+              "Six annual laurel wreath recognitions from 2019 to 2025 in a responsive grid.",
           },
           {
             id: "home",
@@ -3683,7 +4361,7 @@ export function VeloceTemplateView() {
             path: "/#faq",
             title: "FAQ & Contact CTA",
             description:
-              "Interactive multi-open FAQ accordion paired with a bottom Let's Talk With Us! banner.",
+              "Interactive multi-open FAQ accordion paired with a bottom Start Building Today! banner.",
           },
           {
             id: "home",
@@ -3691,7 +4369,7 @@ export function VeloceTemplateView() {
             path: "/#footer",
             title: "Footer",
             description:
-              "Veloce brand footer with contact email, 3-column link directory, and Go to top action.",
+              "Veloce brand footer with contact email, 3-column link directory, and Back to top action.",
           },
         ],
       }}

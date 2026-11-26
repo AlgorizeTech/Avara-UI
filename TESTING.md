@@ -91,14 +91,13 @@ consumer's terminal, so it's worth writing well.
 
 These are the cases that break.
 
-**Multi-dependency** — `pricing-plan` pulls four primitives:
+**Multi-dependency** — `date-picker` pulls `time-picker`:
 
 ```bash
-npx shadcn@latest add http://localhost:3000/r/pricing-plan.json --yes
+npx shadcn@latest add http://localhost:3000/r/date-picker.json --yes
 ```
 
-Expect 5 files: `custom/ui/badge.tsx`, `custom/ui/button.tsx`, `ui/card.tsx`,
-`custom/ui/slider.tsx`, `custom/blocks/Pricing-plan.tsx`.
+Expect the block plus its `time-picker` dependency to be written.
 
 **Relative sibling import** — `advanced-table` imports `./SelectBlock`:
 
@@ -170,7 +169,7 @@ Priority items to verify:
 | `qr-code-reader` | `jsqr`, camera permission, secure context |
 | `calendar` | `react-day-picker` + two registry deps |
 | `carousel-3d` | `motion` auto-install |
-| `pricing-plan` | 4-item dependency graph |
+| `date-picker` | registry dependency graph |
 | `advanced-table` | relative sibling import, static |
 | `fleet-tracker` | relative sibling import, **dynamic** — `lazy(() => import("./Fleet-map"))` |
 

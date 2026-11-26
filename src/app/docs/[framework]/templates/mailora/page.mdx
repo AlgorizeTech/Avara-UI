@@ -1,0 +1,32 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+import { SITE_NAME } from "@/config/site";
+import { MailoraTemplateView } from "@/components/site/MailoraTemplateView";
+import { AnimatedSectionTitle } from "@/components/site/AnimatedSectionTitle";
+import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+
+export const metadata = docsPageMetadata("templates/mailora", {
+  title: `Mailora Email SaaS Template - ${SITE_NAME}`,
+  description:
+    "A single-page marketing template for an email delivery and lifecycle automation platform, featuring a clean navbar and interactive hero workspace in light and dark themes.",
+});
+
+<MailoraTemplateView />
+
+<AnimatedSectionTitle icon="zap" id="built-for-production">Built For Production</AnimatedSectionTitle>
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <InfoCard title="Theme-first architecture">
+    <p>Ships with light and dark modes wired to CSS custom properties and a built-in theme switcher, matching the rest of the library.</p>
+  </InfoCard>
+  <InfoCard title="Interactive hero workspace">
+    <p>Includes a live sequence switcher and deliverability metrics card right inside the hero showcase.</p>
+  </InfoCard>
+  <InfoCard title="Static export ready">
+    <p>Configured for static HTML export with generated sitemap, robots.txt, and per-page Open Graph metadata.</p>
+  </InfoCard>
+  <InfoCard title="Accessible & motion-safe">
+    <p>Keyboard navigation, semantic landmarks, and reduced-motion fallbacks are baked into every interactive block.</p>
+  </InfoCard>
+</div>
+
+<DocsJsonLd slug="templates/mailora" />

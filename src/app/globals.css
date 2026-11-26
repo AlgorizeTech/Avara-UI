@@ -1836,6 +1836,57 @@ button {
   }
 }
 
+/* Scroll reveal for the home sections: <InView className="reveal">.
+   Content is always in the HTML; the hidden start state exists only inside
+   the motion-allowed media query.
+   - Browsers with scroll-driven animations: the element eases in as it crosses
+     the bottom of the viewport, driven by scroll on the compositor (no JS).
+   - Others: InView arms the element and a transition plays on first sight.
+   --reveal-i (0-2) staggers siblings in a row. */
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(36px) scale(0.975);
+    filter: blur(6px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    --reveal-lag: calc(var(--reveal-i, 0) * 90ms);
+  }
+
+  .reveal[data-armed]:not([data-inview]) {
+    opacity: 0;
+    transform: translateY(36px) scale(0.975);
+    filter: blur(6px);
+  }
+
+  .reveal[data-armed] {
+    transition:
+      opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-lag),
+      transform 1s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-lag),
+      filter 0.9s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-lag);
+  }
+
+  @supports (animation-timeline: view()) {
+    .reveal,
+    .reveal[data-armed]:not([data-inview]) {
+      opacity: 1;
+      transform: none;
+      filter: none;
+      transition: none;
+      animation: reveal-in linear both;
+      animation-timeline: view();
+      /* "cover" spans the element plus the viewport, so the reveal takes roughly
+         a third of a screen of scrolling whatever the element's own height. */
+      animation-range:
+        cover calc(var(--reveal-i, 0) * 3%)
+        cover calc(36% + var(--reveal-i, 0) * 3%);
+    }
+  }
+}
+
 /* Each card plays its moment once as it enters; the voice waves loop only
    while the bento is on screen. None of it runs under reduced motion. */
 @media (prefers-reduced-motion: no-preference) {

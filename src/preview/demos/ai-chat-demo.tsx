@@ -48,7 +48,7 @@ export default function AIChatDemo({
   const isGlassLike = variant === "glass" || variant === "liquid-glass";
   return (
     <div
-      className={`w-full transition-all duration-500 py-[12px] ${
+      className={`w-full transition-all duration-500 ${
         isGlassLike
           ? "p-4 sm:p-8 bg-cover bg-center rounded-[var(--radius-3xl,1.5rem)] relative overflow-hidden"
           : ""

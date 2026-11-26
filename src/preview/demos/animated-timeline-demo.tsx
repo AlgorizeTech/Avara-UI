@@ -85,7 +85,7 @@ export default function AnimatedTimelineDemo({
   return (
     <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl border border-border bg-muted/40 overflow-hidden">
       {/* Scrollable container to demonstrate the intersection observer */}
-      <div className="w-full h-[600px] overflow-y-auto overflow-x-hidden p-6 sm:p-12 relative custom-scrollbar">
+      <div className="w-full h-[600px] overflow-y-auto overflow-x-hidden p-6 sm:p-12 relative [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         <div className="w-full max-w-3xl mx-auto pt-32 pb-48">
           <div className="text-center mb-16 opacity-50 select-none">
             <p className="text-sm font-medium uppercase tracking-widest text-muted-foreground">
