@@ -4,7 +4,15 @@ import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { RadioIcon } from "@/components/ui/radio-icon";
 import type { RadarIconHandle } from "@/components/ui/radar-icon";
+import { MailIcon, type MailIconHandle } from "@/components/ui/mail-icon";
+import { TwitterIcon, type TwitterIconHandle } from "@/components/ui/twitter-icon";
 import {
+  InstagramIcon,
+  type InstagramIconHandle,
+} from "@/components/ui/instagram-icon";
+import {
+  ArrowRight,
+  ArrowUp,
   ArrowUpRight,
   Award,
   BarChart2,
@@ -36,8 +44,14 @@ import { cn } from "@/lib/utils";
 
 function AnimatedMailLogo({
   prefersReducedMotion,
+  size = 21,
+  color = "#ffffff",
+  className = "pl-1 text-white",
 }: {
   prefersReducedMotion: boolean | null;
+  size?: number;
+  color?: string;
+  className?: string;
 }) {
   const iconRef = useRef<RadarIconHandle>(null);
 
@@ -67,15 +81,74 @@ function AnimatedMailLogo({
   }, [prefersReducedMotion]);
 
   return (
-    <span className="flex items-center justify-center pl-1 text-white">
+    <span className={cn("flex items-center justify-center", className)}>
       <RadioIcon
         ref={iconRef}
-        size={21}
+        size={size}
         duration={2.0}
         isAnimated={!prefersReducedMotion}
-        color="#ffffff"
+        color={color}
       />
     </span>
+  );
+}
+
+function FooterSocialIconButton({
+  label,
+  delayMs,
+  prefersReducedMotion,
+  isDark,
+  renderIcon,
+}: {
+  label: string;
+  delayMs: number;
+  prefersReducedMotion: boolean | null;
+  isDark: boolean;
+  renderIcon: (ref: React.RefObject<{ startAnimation: () => void; stopAnimation: () => void } | null>) => React.ReactNode;
+}) {
+  const iconRef = useRef<{ startAnimation: () => void; stopAnimation: () => void } | null>(null);
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    let intervalId: ReturnType<typeof setInterval> | undefined;
+    let resetTimerId: ReturnType<typeof setTimeout> | undefined;
+
+    const trigger = () => {
+      iconRef.current?.stopAnimation();
+      resetTimerId = setTimeout(() => {
+        iconRef.current?.startAnimation();
+      }, 60);
+    };
+
+    const startTimer = setTimeout(() => {
+      trigger();
+      intervalId = setInterval(trigger, 3600);
+    }, 300 + delayMs);
+
+    return () => {
+      clearTimeout(startTimer);
+      if (resetTimerId) clearTimeout(resetTimerId);
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [prefersReducedMotion, delayMs]);
+
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      onMouseEnter={() => {
+        if (!prefersReducedMotion) iconRef.current?.startAnimation();
+      }}
+      className={cn(
+        "flex size-6 items-center justify-center rounded-md transition-colors cursor-pointer",
+        isDark
+          ? "bg-[#FF5B1F]/15 text-[#FF5B1F] hover:bg-[#FF5B1F]/25"
+          : "bg-[#FF5B1F]/12 text-[#FF5B1F] hover:bg-[#FF5B1F]/20",
+      )}
+    >
+      {renderIcon(iconRef)}
+    </button>
   );
 }
 
@@ -609,7 +682,7 @@ function MailoraHeroPreview({
                 <span
                   className={cn(
                     "flex size-9 @sm:size-10 items-center justify-center rounded-full bg-[#FDE047] text-zinc-900 ring-2",
-                    isDark ? "ring-[#0B0D12]" : "ring-[#FAFAFA]",
+                    isDark ? "ring-[#0B0D12]" : "ring-[#F9F9F9]",
                   )}
                 >
                   <PieChart className="size-4" aria-hidden />
@@ -617,7 +690,7 @@ function MailoraHeroPreview({
                 <span
                   className={cn(
                     "flex size-9 @sm:size-10 items-center justify-center rounded-full bg-[#FF5B1F] text-white ring-2",
-                    isDark ? "ring-[#0B0D12]" : "ring-[#FAFAFA]",
+                    isDark ? "ring-[#0B0D12]" : "ring-[#F9F9F9]",
                   )}
                 >
                   <BarChart2 className="size-4" aria-hidden />
@@ -630,7 +703,7 @@ function MailoraHeroPreview({
               <span
                 className={cn(
                   "inline-flex size-9 @sm:size-10 items-center justify-center rounded-full bg-[#FDE047] text-zinc-900 ring-2 align-middle",
-                  isDark ? "ring-[#0B0D12]" : "ring-[#FAFAFA]",
+                  isDark ? "ring-[#0B0D12]" : "ring-[#F9F9F9]",
                 )}
               >
                 <CloudCog className="size-4" aria-hidden />
@@ -1258,7 +1331,7 @@ function MailoraHeroPreview({
                   "rounded-2xl border p-4",
                   isDark
                     ? "border-white/[0.07] bg-white/[0.03]"
-                    : "border-zinc-200/70 bg-[#FAFAFA]",
+                    : "border-zinc-200/70 bg-[#F9F9F9]",
                 )}
               >
                 <p
@@ -1993,6 +2066,864 @@ function MailoraHeroPreview({
           </div>
         </div>
       </section>
+
+      {/* 7. Testimonials Section */}
+      <section
+        id="testimonials"
+        className="relative z-10 -mx-4 @sm:-mx-6 @lg:-mx-8 overflow-hidden px-4 @sm:px-6 @lg:px-8 pt-16 @sm:pt-20 pb-14 @sm:pb-16"
+      >
+        <div className="mx-auto max-w-6xl">
+          {/* Centered Heading */}
+          <motion.div
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
+            }
+            className="text-center"
+          >
+            <h3 className="text-[24px] @sm:text-[32px] @lg:text-[36px] font-semibold tracking-tight leading-[1.2]">
+              Used by 10,000+ businesses, creators,
+              <br className="hidden @sm:inline" />{" "}
+              and{" "}
+              <span className={isDark ? "text-zinc-500" : "text-[#B5B5B5]"}>
+                other brands
+              </span>
+            </h3>
+          </motion.div>
+
+          {/* Staggered Testimonial Cards (Infinite Right-to-Left Marquee) */}
+          <div className="relative mt-10 @sm:mt-12 overflow-hidden">
+            {(() => {
+              const testimonials = [
+                {
+                  quote:
+                    "Mark transformed Microshaft's brand with his visionary design. His creativity and attention to detail brought our ideas to life, exceeding all expectations.",
+                  name: "Timothy Rodgers",
+                  role: "Head of Projects, Microshaft",
+                  offset: false,
+                  avatar: (
+                    <svg viewBox="0 0 40 40" className="size-full" aria-hidden>
+                      <circle cx="20" cy="20" r="20" fill="#EAEAEA" />
+                      <path d="M10 38c1.5-6 5.5-9 10-9s8.5 3 10 9" fill="#2A2A2A" />
+                      <circle cx="20" cy="18" r="7.5" fill="#F2C6A0" />
+                      <path d="M12.5 16c0-5 3.5-8 7.5-8s7.5 3 7.5 8c-2-2-4.5-2.5-7.5-2.5S14.5 14 12.5 16Z" fill="#4A2E1B" />
+                      <path d="M13 20c1.2 4 4.2 5.5 7 5.5s5.8-1.5 7-5.5c-1.5 2-4 2.8-7 2.8s-5.5-.8-7-2.8Z" fill="#4A2E1B" />
+                      <rect x="14.5" y="16" width="4.5" height="3.2" rx="1" fill="none" stroke="#1F1F1F" strokeWidth="1.1" />
+                      <rect x="21" y="16" width="4.5" height="3.2" rx="1" fill="none" stroke="#1F1F1F" strokeWidth="1.1" />
+                      <line x1="19" y1="17.5" x2="21" y2="17.5" stroke="#1F1F1F" strokeWidth="1.1" />
+                    </svg>
+                  ),
+                },
+                {
+                  quote:
+                    "Mark was a game-changer for Giggle. His creativity and professionalism perfectly captured our brand's essence, delivering stunning results for our campaign.",
+                  name: "Anna Korhonen",
+                  role: "Design Director, Giggle",
+                  offset: true,
+                  avatar: (
+                    <svg viewBox="0 0 40 40" className="size-full" aria-hidden>
+                      <circle cx="20" cy="20" r="20" fill="#EAEAEA" />
+                      <path d="M10.5 34c1-9 3.5-22 9.5-22s8.5 13 9.5 22" fill="#3B2314" />
+                      <path d="M11 38c1.5-5.5 4.8-8 9-8s7.5 2.5 9 8" fill="#1F2937" />
+                      <circle cx="20" cy="18.5" r="7" fill="#F5CBB0" />
+                      <path d="M13 17c1.5-4.5 4.5-6.5 7-6.5s5.5 2 7 6.5c-2.5-2-5-2.5-7-2.5S15.5 15 13 17Z" fill="#3B2314" />
+                      <rect x="14.2" y="16.5" width="4.8" height="3.5" rx="1.2" fill="#2DD4BF" fillOpacity="0.35" stroke="#115E59" strokeWidth="1.1" />
+                      <rect x="21" y="16.5" width="4.8" height="3.5" rx="1.2" fill="#2DD4BF" fillOpacity="0.35" stroke="#115E59" strokeWidth="1.1" />
+                      <line x1="19" y1="18" x2="21" y2="18" stroke="#115E59" strokeWidth="1.1" />
+                    </svg>
+                  ),
+                },
+                {
+                  quote:
+                    "Mr. Ashton's exceptional design expertise transformed Snapple's digital presence, elevating our brand with innovative and seamless execution.",
+                  name: "Layne Morgan",
+                  role: "Commercial Director, Snapple",
+                  offset: false,
+                  avatar: (
+                    <svg viewBox="0 0 40 40" className="size-full" aria-hidden>
+                      <circle cx="20" cy="20" r="20" fill="#EAEAEA" />
+                      <path d="M10 38c1.5-6 5.5-9 10-9s8.5 3 10 9" fill="#1F1F1F" />
+                      <circle cx="20" cy="19" r="7.5" fill="#C68B63" />
+                      <path d="M12.2 17c.5-5.5 3.8-8.5 7.8-8.5s7.3 3 7.8 8.5c-2.2-1.5-5-2-7.8-2s-5.6.5-7.8 2Z" fill="#222222" />
+                      <path d="M13.2 21c1.2 4 4 5.5 6.8 5.5s5.6-1.5 6.8-5.5c-1.4 2-3.8 2.8-6.8 2.8s-5.4-.8-6.8-2.8Z" fill="#1F1F1F" />
+                      <circle cx="17.2" cy="18.2" r="0.9" fill="#1F1F1F" />
+                      <circle cx="22.8" cy="18.2" r="0.9" fill="#1F1F1F" />
+                    </svg>
+                  ),
+                },
+                {
+                  quote:
+                    "Working with the team elevated our entire campaign workflow. Every launch feels faster, sharper, and effortlessly consistent.",
+                  name: "Elena Vance",
+                  role: "VP of Marketing, Lumina",
+                  offset: true,
+                  avatar: (
+                    <svg viewBox="0 0 40 40" className="size-full" aria-hidden>
+                      <circle cx="20" cy="20" r="20" fill="#EAEAEA" />
+                      <path d="M10 38c1.5-6 5.5-9 10-9s8.5 3 10 9" fill="#334155" />
+                      <circle cx="20" cy="18.5" r="7.2" fill="#F2C6A0" />
+                      <path d="M12.5 17c1-5 4-7.5 7.5-7.5s6.5 2.5 7.5 7.5c-2.2-2-4.8-2.5-7.5-2.5S14.7 15 12.5 17Z" fill="#7C2D12" />
+                      <circle cx="17.4" cy="18.5" r="0.9" fill="#1F1F1F" />
+                      <circle cx="22.6" cy="18.5" r="0.9" fill="#1F1F1F" />
+                    </svg>
+                  ),
+                },
+              ];
+
+              return (
+                <motion.div
+                  animate={prefersReducedMotion ? undefined : { x: ["0%", "-50%"] }}
+                  transition={
+                    prefersReducedMotion
+                      ? undefined
+                      : { duration: 40, ease: "linear", repeat: Infinity }
+                  }
+                  className="flex w-max items-start will-change-transform"
+                >
+                  {[0, 1].map((dupIdx) => (
+                    <div
+                      key={dupIdx}
+                      aria-hidden={dupIdx === 1}
+                      className="flex shrink-0 items-start gap-5 @lg:gap-6 pr-5 @lg:pr-6"
+                    >
+                      {testimonials.map((item) => (
+                        <article
+                          key={`${dupIdx}-${item.name}`}
+                          className={cn(
+                            "relative w-[260px] @sm:w-[290px] @lg:w-[310px] shrink-0 rounded-2xl px-6 pt-7 pb-14 transition-colors",
+                            item.offset && "mt-8 @md:mt-10",
+                            isDark
+                              ? "bg-gradient-to-b from-white/[0.045] via-white/[0.025] to-transparent"
+                              : "bg-gradient-to-b from-[#F8F8F8] via-[#F9F9F9] to-transparent",
+                          )}
+                        >
+                          <div className="flex items-start gap-2.5">
+                            <span
+                              aria-hidden
+                              className={cn(
+                                "select-none font-serif text-[28px] leading-[0.8] mt-1 shrink-0",
+                                isDark ? "text-zinc-600" : "text-[#D4D4D4]",
+                              )}
+                            >
+                              &ldquo;
+                            </span>
+
+                            <div className="flex-1 min-w-0">
+                              <p
+                                className={cn(
+                                  "text-[11.5px] @sm:text-[12px] leading-[1.65]",
+                                  isDark ? "text-zinc-300" : "text-zinc-700",
+                                )}
+                              >
+                                {item.quote}
+                              </p>
+
+                              <div className="mt-7">
+                                <div className="size-9 overflow-hidden rounded-full">
+                                  {item.avatar}
+                                </div>
+
+                                <p
+                                  className={cn(
+                                    "mt-2.5 text-[12px] font-semibold tracking-tight",
+                                    isDark ? "text-zinc-100" : "text-zinc-900",
+                                  )}
+                                >
+                                  {item.name}
+                                </p>
+
+                                <div
+                                  className={cn(
+                                    "my-2.5 h-px w-full",
+                                    isDark ? "bg-white/[0.08]" : "bg-zinc-200/80",
+                                  )}
+                                />
+
+                                <p
+                                  className={cn(
+                                    "text-[11px]",
+                                    isDark ? "text-zinc-400" : "text-zinc-500",
+                                  )}
+                                >
+                                  {item.role}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </article>
+                      ))}
+                    </div>
+                  ))}
+                </motion.div>
+              );
+            })()}
+
+            {/* Subtle Left & Right Edge Fades */}
+            <div
+              aria-hidden
+              className={cn(
+                "pointer-events-none absolute inset-y-0 left-0 w-10 @sm:w-16",
+                isDark
+                  ? "bg-gradient-to-r from-[#0B0D12] to-transparent"
+                  : "bg-gradient-to-r from-white to-transparent",
+              )}
+            />
+            <div
+              aria-hidden
+              className={cn(
+                "pointer-events-none absolute inset-y-0 right-0 w-10 @sm:w-16",
+                isDark
+                  ? "bg-gradient-to-l from-[#0B0D12] to-transparent"
+                  : "bg-gradient-to-l from-white to-transparent",
+              )}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* 8. CTA Section */}
+      <section
+        id="cta"
+        className="relative z-10 py-10 @sm:py-14"
+      >
+        <div className="mx-auto max-w-5xl">
+          <motion.div
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : { duration: 0.65, ease: [0.16, 1, 0.3, 1] }
+            }
+            className={cn(
+              "relative overflow-hidden rounded-[26px] @sm:rounded-[30px] border transition-colors",
+              isDark
+                ? "border-white/[0.08] bg-[#141720]"
+                : "border-zinc-200/50 bg-[#F7F7F7]",
+            )}
+          >
+            {/* Subtle warm peach ambient tint behind tablet */}
+            <div
+              aria-hidden
+              className={cn(
+                "pointer-events-none absolute -right-12 -top-12 h-72 w-72 rounded-full blur-3xl",
+                isDark ? "bg-[#FF5B1F]/[0.08]" : "bg-[#FF5B1F]/[0.06]",
+              )}
+            />
+
+            <div className="relative grid grid-cols-1 @lg:grid-cols-12 items-stretch gap-6 @lg:gap-4 px-6 @sm:px-10 @lg:px-12">
+              {/* Left Copy + Actions */}
+              <div className="@lg:col-span-6 relative z-10 pt-10 @sm:pt-12 pb-2 @lg:py-14">
+                <h3 className="text-[28px] @sm:text-[34px] @lg:text-[38px] font-semibold tracking-tight leading-[1.14]">
+                  Start sending smarter
+                  <br />
+                  <span className={isDark ? "text-zinc-500" : "text-[#B5B5B5]"}>
+                    emails today
+                  </span>
+                </h3>
+
+                <p
+                  className={cn(
+                    "mt-4 max-w-md text-[12px] @sm:text-[13px] leading-relaxed",
+                    isDark ? "text-zinc-400" : "text-zinc-500",
+                  )}
+                >
+                  Trigger emails based on user behavior, purchases, or engagement.
+                </p>
+
+                <div className="mt-7 flex flex-wrap items-center gap-3">
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center rounded-full bg-[#FF5B1F] px-6 py-3 text-[12.5px] font-medium text-white shadow-[0_10px_24px_rgba(255,91,31,0.32),inset_0_-4px_10px_rgba(255,190,150,0.35)] transition-all hover:bg-[#EA4D12] active:scale-[0.98] cursor-pointer"
+                  >
+                    Request Demo
+                  </button>
+
+                  <button
+                    type="button"
+                    className={cn(
+                      "inline-flex items-center justify-center gap-2 rounded-full border px-5 py-3 text-[12.5px] font-medium transition-colors cursor-pointer",
+                      isDark
+                        ? "border-white/15 bg-white/[0.04] text-zinc-100 hover:bg-white/[0.08]"
+                        : "border-zinc-200/90 bg-white text-zinc-800 hover:bg-zinc-50",
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        "flex size-4 items-center justify-center rounded-full",
+                        isDark ? "bg-white text-zinc-900" : "bg-zinc-900 text-white",
+                      )}
+                    >
+                      <Play className="size-2 fill-current translate-x-[0.5px]" aria-hidden />
+                    </span>
+                    <span>Watch Video</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Right Tilted Tablet Mockup */}
+              <div className="@lg:col-span-6 relative h-[230px] @sm:h-[250px] @lg:h-auto @lg:self-stretch">
+                <div
+                  aria-hidden
+                  className={cn(
+                    "absolute left-2 @sm:left-6 @lg:left-2 top-6 @sm:top-7 @lg:top-[72px] w-[470px] @sm:w-[530px] origin-top-left -rotate-[9deg] rounded-[24px] p-[2px] shadow-[-16px_22px_48px_rgba(15,23,42,0.18)]",
+                    isDark
+                      ? "bg-gradient-to-br from-zinc-600 via-zinc-800 to-zinc-700"
+                      : "bg-gradient-to-br from-zinc-300 via-zinc-500 to-zinc-400",
+                  )}
+                >
+                  {/* Side hardware buttons on top edge */}
+                  <span className="absolute -top-[2px] left-14 h-[2px] w-7 rounded-t-sm bg-zinc-400/80" />
+                  <span className="absolute -top-[2px] left-24 h-[2px] w-7 rounded-t-sm bg-zinc-400/80" />
+
+                  {/* Black Glass Bezel */}
+                  <div className="relative rounded-[22px] bg-[#111215] p-[11px] @sm:p-[13px]">
+                    {/* Front Camera Dot on Left Bezel */}
+                    <span className="absolute left-[4.5px] @sm:left-[5.5px] top-1/2 -translate-y-1/2 size-[4px] rounded-full bg-zinc-700 ring-1 ring-zinc-600/50" />
+
+                    {/* Inner Screen */}
+                    <div
+                      className={cn(
+                        "overflow-hidden rounded-[13px] p-4 @sm:p-5",
+                        isDark ? "bg-[#0F1219]" : "bg-[#F9F9F9]",
+                      )}
+                    >
+                      {/* Tablet Inner Header */}
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <span
+                            className={cn(
+                              "inline-flex items-center rounded-full border px-2 py-0.5 text-[7.5px] font-medium",
+                              isDark
+                                ? "border-white/10 bg-white/[0.05] text-zinc-300"
+                                : "border-zinc-200 bg-white text-zinc-500",
+                            )}
+                          >
+                            Email Signature
+                          </span>
+                          <p className="mt-2 text-[14px] @sm:text-[15px] font-semibold tracking-tight leading-[1.18]">
+                            Design stunning emails with our
+                            <br />
+                            <span className={isDark ? "text-zinc-500" : "text-zinc-400"}>
+                              no-code editor.
+                            </span>
+                          </p>
+                        </div>
+
+                        <div className="flex items-center -space-x-1.5 pt-1 pr-2">
+                          <span
+                            className={cn(
+                              "flex size-6 items-center justify-center rounded-full border",
+                              isDark
+                                ? "border-white/10 bg-white/[0.06] text-zinc-400"
+                                : "border-zinc-200/80 bg-zinc-100 text-zinc-400",
+                            )}
+                          >
+                            <TrendingUp className="size-3" />
+                          </span>
+                          <span className="relative z-10 flex size-7 items-center justify-center rounded-full bg-[#FF5B1F] text-white shadow-sm">
+                            <Zap className="size-3.5 fill-current" />
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Tablet Inner 2-Column Preview Cards */}
+                      <div className="mt-4 grid grid-cols-2 gap-3">
+                        {/* Mini Card 1: AI Subject Line */}
+                        <div
+                          className={cn(
+                            "rounded-xl border p-3",
+                            isDark
+                              ? "border-white/[0.08] bg-[#161A25]"
+                              : "border-zinc-200/70 bg-white",
+                          )}
+                        >
+                          <p className="text-[8.5px] font-semibold tracking-tight">
+                            Create high performing subject line
+                          </p>
+
+                          <div
+                            className={cn(
+                              "mt-2 rounded-lg border p-2",
+                              isDark
+                                ? "border-white/[0.07] bg-white/[0.03]"
+                                : "border-zinc-100 bg-[#F9F9F9]",
+                            )}
+                          >
+                            <div className="flex items-center justify-between text-[7px] text-zinc-400">
+                              <span className="inline-flex items-center gap-1">
+                                <Wand2 className="size-2.5 text-[#FF5B1F]" />
+                                Generate with AI
+                              </span>
+                              <span className="font-semibold text-emerald-500">+10.8%</span>
+                            </div>
+                            <p className="mt-1.5 text-[8px] font-medium">Blog Traffic</p>
+                            <div className="mt-2 flex items-center justify-center gap-1 rounded-full bg-[#FF5B1F] py-1 text-[7.5px] font-medium text-white">
+                              <Zap className="size-2.5 fill-current" />
+                              Generate Subject Line
+                            </div>
+                          </div>
+
+                          <div className="mt-2 flex items-center gap-1">
+                            <span
+                              className={cn(
+                                "rounded-full border px-1.5 py-0.5 text-[6.5px]",
+                                isDark
+                                  ? "border-white/10 text-zinc-400"
+                                  : "border-zinc-200 text-zinc-500",
+                              )}
+                            >
+                              New Features
+                            </span>
+                            <span
+                              className={cn(
+                                "rounded-full border px-1.5 py-0.5 text-[6.5px]",
+                                isDark
+                                  ? "border-white/10 text-zinc-400"
+                                  : "border-zinc-200 text-zinc-500",
+                              )}
+                            >
+                              Product Launch
+                            </span>
+                          </div>
+
+                          <div
+                            className={cn(
+                              "mt-2 rounded-md border px-2 py-1 text-[6.5px] truncate",
+                              isDark
+                                ? "border-white/[0.07] bg-white/[0.02] text-zinc-300"
+                                : "border-zinc-100 bg-[#F9F9F9] text-zinc-600",
+                            )}
+                          >
+                            Spring is here, Upgrade your wardrobe for 50% off!
+                          </div>
+                        </div>
+
+                        {/* Mini Card 2: Connect With Audience */}
+                        <div
+                          className={cn(
+                            "rounded-xl border p-3",
+                            isDark
+                              ? "border-white/[0.08] bg-[#161A25]"
+                              : "border-zinc-200/70 bg-white",
+                          )}
+                        >
+                          <p className="text-[8.5px] font-semibold tracking-tight">
+                            Connect with your audience
+                          </p>
+
+                          <div className="mt-2 grid grid-cols-12 gap-2 items-center">
+                            <div
+                              className={cn(
+                                "col-span-7 h-12 rounded-lg overflow-hidden",
+                                isDark ? "bg-white/[0.06]" : "bg-zinc-100",
+                              )}
+                            >
+                              <img
+                                src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_320,c_fill/v1790145141/pexels-photo-6311475-1790145143489.jpg"
+                                alt=""
+                                className="size-full object-cover"
+                              />
+                            </div>
+                            <div className="col-span-5 space-y-1">
+                              <div className="inline-flex items-center gap-1 text-[7px] text-zinc-400">
+                                <Eye className="size-2.5" />
+                                <span>1280 views</span>
+                              </div>
+                              <div className="flex -space-x-1">
+                                {[
+                                  "bg-amber-200",
+                                  "bg-sky-200",
+                                  "bg-emerald-200",
+                                ].map((bg, i) => (
+                                  <span
+                                    key={i}
+                                    className={cn("size-3.5 rounded-full border border-white", bg)}
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="mt-2 grid grid-cols-12 gap-2 items-start">
+                            <p
+                              className={cn(
+                                "col-span-5 text-[6.5px] leading-snug",
+                                isDark ? "text-zinc-400" : "text-zinc-500",
+                              )}
+                            >
+                              Discover powerful tools for engagement
+                            </p>
+                            <div
+                              className={cn(
+                                "col-span-7 rounded-lg border p-1.5 text-[6.5px] shadow-xs",
+                                isDark
+                                  ? "border-white/[0.07] bg-white/[0.03]"
+                                  : "border-zinc-100 bg-[#F9F9F9]",
+                              )}
+                            >
+                              <p className="font-semibold">Verveal</p>
+                              <p className={isDark ? "text-zinc-400" : "text-zinc-500"}>
+                                @Elisa This is really interesting! Let&apos;s chat.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 9. Footer Section */}
+      <footer
+        id="footer"
+        className={cn(
+          "relative z-10 -mx-4 @sm:-mx-6 @lg:-mx-8 px-4 @sm:px-6 @lg:px-8 mt-6 transition-colors",
+          isDark ? "bg-[#0F1219]" : "bg-[#F9F9F9]",
+        )}
+      >
+        <div className="mx-auto max-w-md @4xl:max-w-5xl pt-10 pb-6 @4xl:py-16">
+          <div className="grid grid-cols-1 @4xl:grid-cols-[1.2fr_0.15fr_1fr_1fr_1fr_1fr] gap-8 @4xl:gap-6">
+            {/* Column 1: Mailora Logo + Quick Links + Social Icons */}
+            <div>
+              {/* Brand Logo (Animated Mailora RadioIcon) */}
+              <div className="flex items-center">
+                <AnimatedMailLogo
+                  prefersReducedMotion={prefersReducedMotion}
+                  size={28}
+                  color="#FF5B1F"
+                  className="text-[#FF5B1F]"
+                />
+              </div>
+
+              {/* Quick Links with Arrows */}
+              <div
+                className={cn(
+                  "mt-8 divide-y border-b",
+                  isDark
+                    ? "divide-white/[0.07] border-white/[0.07]"
+                    : "divide-zinc-200/70 border-zinc-200/70",
+                )}
+              >
+                {[
+                  "Platform Overview",
+                  "AI",
+                  "Mobile Apps",
+                  "Integrations",
+                  "Documentation",
+                ].map((label) => (
+                  <button
+                    key={label}
+                    type="button"
+                    className={cn(
+                      "flex w-full items-center justify-between py-2.5 text-[11.5px] font-medium transition-colors cursor-pointer",
+                      isDark
+                        ? "text-zinc-100 hover:text-[#FF5B1F]"
+                        : "text-zinc-900 hover:text-[#FF5B1F]",
+                    )}
+                  >
+                    <span>{label}</span>
+                    <ArrowRight className="size-3.5 opacity-80" aria-hidden />
+                  </button>
+                ))}
+              </div>
+
+              {/* Soft Peach Animated Social Badges */}
+              <div className="mt-7 flex items-center gap-2">
+                <FooterSocialIconButton
+                  label="Email"
+                  delayMs={0}
+                  prefersReducedMotion={prefersReducedMotion}
+                  isDark={isDark}
+                  renderIcon={(ref) => (
+                    <MailIcon
+                      ref={ref as React.Ref<MailIconHandle>}
+                      size={12}
+                      duration={1.4}
+                      isAnimated={!prefersReducedMotion}
+                      color="#FF5B1F"
+                    />
+                  )}
+                />
+                <FooterSocialIconButton
+                  label="Twitter"
+                  delayMs={450}
+                  prefersReducedMotion={prefersReducedMotion}
+                  isDark={isDark}
+                  renderIcon={(ref) => (
+                    <TwitterIcon
+                      ref={ref as React.Ref<TwitterIconHandle>}
+                      size={12}
+                      duration={1.4}
+                      isAnimated={!prefersReducedMotion}
+                      color="#FF5B1F"
+                    />
+                  )}
+                />
+                <FooterSocialIconButton
+                  label="Instagram"
+                  delayMs={900}
+                  prefersReducedMotion={prefersReducedMotion}
+                  isDark={isDark}
+                  renderIcon={(ref) => (
+                    <InstagramIcon
+                      ref={ref as React.Ref<InstagramIconHandle>}
+                      size={12}
+                      duration={1.4}
+                      isAnimated={!prefersReducedMotion}
+                      color="#FF5B1F"
+                    />
+                  )}
+                />
+              </div>
+            </div>
+
+            {/* Spacer gap after Column 1 on desktop */}
+            <div aria-hidden className="hidden @4xl:block" />
+
+            {/* Column 2: Platform */}
+            <div>
+              <p className="text-[12px] font-semibold">Platform</p>
+              <ul
+                className={cn(
+                  "mt-4 space-y-2.5 text-[11.5px]",
+                  isDark ? "text-zinc-400" : "text-[#7D7D7D]",
+                )}
+              >
+                {["Overview", "Features", "Testimonials", "Voice of customer"].map(
+                  (item) => (
+                    <li key={item}>
+                      <button
+                        type="button"
+                        className="transition-colors hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer"
+                      >
+                        {item}
+                      </button>
+                    </li>
+                  ),
+                )}
+              </ul>
+            </div>
+
+            {/* Column 3: Home & Legal */}
+            <div>
+              <p className="text-[12px] font-semibold">Home</p>
+              <ul
+                className={cn(
+                  "mt-4 space-y-2.5 text-[11.5px]",
+                  isDark ? "text-zinc-400" : "text-[#7D7D7D]",
+                )}
+              >
+                {[
+                  "Overview",
+                  "Features",
+                  "Testimonials",
+                  "Legal",
+                  "Privacy Center",
+                  "Security",
+                ].map((item) => (
+                  <li key={item}>
+                    <button
+                      type="button"
+                      className="transition-colors hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer"
+                    >
+                      {item}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+
+              <p className="mt-7 text-[12px] font-semibold">Legal</p>
+              <ul
+                className={cn(
+                  "mt-4 space-y-2.5 text-[11.5px]",
+                  isDark ? "text-zinc-400" : "text-[#7D7D7D]",
+                )}
+              >
+                {["Terms & Condition", "Privacy Policy", "Agreement"].map(
+                  (item) => (
+                    <li key={item}>
+                      <button
+                        type="button"
+                        className="transition-colors hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer"
+                      >
+                        {item}
+                      </button>
+                    </li>
+                  ),
+                )}
+              </ul>
+            </div>
+
+            {/* Column 4: Solutions */}
+            <div>
+              <p className="text-[12px] font-semibold">Solutions</p>
+              <ul
+                className={cn(
+                  "mt-4 space-y-2.5 text-[11.5px]",
+                  isDark ? "text-zinc-400" : "text-[#7D7D7D]",
+                )}
+              >
+                {[
+                  "Business Automation",
+                  "AI Integration",
+                  "Data Analytics",
+                  "Overview",
+                  "Features",
+                  "Testimonials",
+                ].map((item) => (
+                  <li key={item}>
+                    <button
+                      type="button"
+                      className="transition-colors hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer"
+                    >
+                      {item}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Column 5: About Us & Resources */}
+            <div>
+              <p className="text-[12px] font-semibold">About Us</p>
+              <ul
+                className={cn(
+                  "mt-4 space-y-2.5 text-[11.5px]",
+                  isDark ? "text-zinc-400" : "text-[#7D7D7D]",
+                )}
+              >
+                {[
+                  "Our Mission",
+                  "Team",
+                  "Careers",
+                  "Legal",
+                  "Privacy Center",
+                  "Security",
+                ].map((item) => (
+                  <li key={item}>
+                    <button
+                      type="button"
+                      className="transition-colors hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer"
+                    >
+                      {item}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-7 flex items-center gap-2">
+                <p className="text-[12px] font-semibold">Resources</p>
+                <span
+                  className={cn(
+                    "inline-flex items-center rounded-full px-2 py-0.5 text-[9.5px] font-medium",
+                    isDark
+                      ? "bg-white/15 text-zinc-100"
+                      : "bg-zinc-900 text-white",
+                  )}
+                >
+                  News
+                </span>
+              </div>
+              <ul
+                className={cn(
+                  "mt-4 space-y-2.5 text-[11.5px]",
+                  isDark ? "text-zinc-400" : "text-[#7D7D7D]",
+                )}
+              >
+                {["Blog", "Case Studies", "Whitepapers"].map((item) => (
+                  <li key={item}>
+                    <button
+                      type="button"
+                      className="transition-colors hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer"
+                    >
+                      {item}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Copyright + Back to Top */}
+        <div
+          className={cn(
+            "border-t",
+            isDark ? "border-white/[0.07]" : "border-zinc-200/70",
+          )}
+        >
+          <div className="mx-auto max-w-md @4xl:max-w-5xl py-5 flex items-center justify-between gap-4 pr-10 @sm:pr-0">
+            <p
+              className={cn(
+                "text-[11px]",
+                isDark ? "text-zinc-400" : "text-zinc-500",
+              )}
+            >
+              &copy; 2025 Mailora. All Rights Reserved.
+            </p>
+
+            <motion.button
+              type="button"
+              aria-label="Back to Top"
+              whileTap={prefersReducedMotion ? undefined : { scale: 0.96 }}
+              onClick={(e) => {
+                let parent: HTMLElement | null = e.currentTarget.parentElement;
+                while (parent) {
+                  const { overflowY } = window.getComputedStyle(parent);
+                  if (
+                    (overflowY === "auto" || overflowY === "scroll") &&
+                    parent.scrollHeight > parent.clientHeight
+                  ) {
+                    parent.scrollTo({ top: 0, behavior: "smooth" });
+                    return;
+                  }
+                  parent = parent.parentElement;
+                }
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className={cn(
+                "group absolute right-4 bottom-3.5 @sm:static inline-flex items-center gap-2.5 text-[11px] font-medium transition-colors cursor-pointer",
+                isDark
+                  ? "text-zinc-400 hover:text-zinc-100"
+                  : "text-[#7D7D7D] hover:text-zinc-900",
+              )}
+            >
+              <span
+                className={cn(
+                  "flex size-7 items-center justify-center rounded-full transition-colors",
+                  isDark
+                    ? "bg-white/[0.06] group-hover:bg-white/[0.12]"
+                    : "bg-[#FDFDFD] group-hover:bg-white",
+                )}
+              >
+                <motion.span
+                  animate={prefersReducedMotion ? undefined : { y: [0, -2.5, 0] }}
+                  transition={
+                    prefersReducedMotion
+                      ? undefined
+                      : { duration: 1.6, repeat: Infinity, ease: "easeInOut" }
+                  }
+                  className="flex items-center justify-center"
+                >
+                  <ArrowUp className="size-3" aria-hidden />
+                </motion.span>
+              </span>
+              <span className="hidden @4xl:inline">Back to Top</span>
+            </motion.button>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
@@ -2089,6 +3020,30 @@ export function MailoraTemplateView() {
             title: "Email Analytics",
             description:
               "Total Sales channel bars and Total Visitor store metrics with purple gradient bar chart.",
+          },
+          {
+            id: "home",
+            number: "07",
+            path: "/#testimonials",
+            title: "Testimonials",
+            description:
+              "Staggered testimonial cards with soft bottom fade, quote marks, avatars, and role dividers.",
+          },
+          {
+            id: "home",
+            number: "08",
+            path: "/#cta",
+            title: "CTA Banner",
+            description:
+              "Rounded CTA banner with Request Demo & Watch Video pills and tilted tablet editor preview.",
+          },
+          {
+            id: "home",
+            number: "09",
+            path: "/#footer",
+            title: "Footer",
+            description:
+              "Five-column footer with Mailora logo, arrow quick links, social badges, Resources News pill, and Back to Top.",
           },
         ],
       }}
