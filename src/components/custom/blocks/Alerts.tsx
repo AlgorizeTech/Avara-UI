@@ -2,13 +2,13 @@
 
 import { cn } from "@/lib/utils";
 import {
-  CircleAlert,
-  CircleCheck,
-  Info,
-  LoaderCircle,
-  TriangleAlert,
-  X,
-} from "lucide-react";
+  CircleAlertIcon as CircleAlert,
+  CircleCheckIcon as CircleCheck,
+  InfoIcon as Info,
+  LoaderCircleIcon as LoaderCircle,
+  TriangleAlertIcon as TriangleAlert,
+  XIcon as X,
+} from "@/components/custom/ui/animated-icons";
 import React, {
   createContext,
   useContext,

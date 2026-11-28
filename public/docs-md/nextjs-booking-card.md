@@ -40,44 +40,8 @@ const SLOTS = [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM",
 
 export default function Booking() {
   return (
-    <div className="w-full max-w-md rounded-3xl border border-border bg-card text-card-foreground shadow-sm">
-      <BookingCard
-        className="flex h-full flex-col gap-5 p-6"
-        onBook={async ({ day, slot }) => {
-          await fetch("/api/book", { method: "POST", body: JSON.stringify({ day, slot }) });
-        }}
-      >
-        <h2 className="text-lg font-semibold tracking-tight">Book an appointment</h2>
-        <BookingCard.Days unavailable={(d) => d.getDay() === 0} />
-        <BookingCard.Times slots={SLOTS} />
-        <BookingCard.Submit className="mt-auto" />
-        <BookingCard.Confirmation withName="Dr. Nair" place="Riverside Heart & Medical Group" />
-      </BookingCard>
-    </div>
-  );
-}
-```
-
-## In a glass slab
-
-The same card inside a GlassPanel from Glass Panel. Nothing inside the card changes — it is surface-neutral by design.
-
-- Wrap it in a `GlassPanel` and the card takes the panel's corners: its root is `rounded-[inherit]`, so the confirmation's cover matches whatever shape it sits in.
-
-```tsx
-"use client";
-
-import { BookingCard } from "@/components/custom/blocks/BookingCardBlock";
-import { GlassBackdrop, GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
-
-const SLOTS = [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }, { label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM" }];
-
-export default function Booking() {
-  return (
-    <GlassBackdrop className="w-full max-w-md rounded-[36px]">
-      {/* The card is the panel's whole inside, so the confirmation reaches
-          the panel's edges and corners instead of stopping at the padding. */}
-      <GlassPanel shape="slab" className="col-span-full">
+    <div className="w-full max-w-md rounded-[2rem] bg-[#F7F7F6] p-3 dark:bg-background/50">
+      <div className="rounded-[1.75rem] bg-card text-card-foreground shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-16px_rgba(0,0,0,0.18)]">
         <BookingCard
           className="flex h-full flex-col gap-5 p-6"
           onBook={async ({ day, slot }) => {
@@ -90,8 +54,8 @@ export default function Booking() {
           <BookingCard.Submit className="mt-auto" />
           <BookingCard.Confirmation withName="Dr. Nair" place="Riverside Heart & Medical Group" />
         </BookingCard>
-      </GlassPanel>
-    </GlassBackdrop>
+      </div>
+    </div>
   );
 }
 ```

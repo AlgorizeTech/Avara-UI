@@ -85,7 +85,7 @@ An inline alert banner for persistent status messages in six severity types and 
 
 **What it is.** `Alert` is an inline banner with six `type` values (`neutral`, `info`, `success`, `warning`, `danger` and `loading`) and five `variant` surfaces (`inset`, `default`, `soft`, `glass`, `solid`). It takes a `title`, a `message`, an optional `action` slot and a `dismissible` close button. `AlertAction` is the matching pill button.
 
-**How it is built.** The `type` picks a `lucide-react` icon and a colour, and the `variant` picks the surface. `danger` and `warning` render with `role="alert"`, the other types with `role="status"`, and `loading` adds `aria-busy` with a spinning icon. Dismissing fades the alert out over 200 ms and then calls `onDismiss`.
+**How it is built.** The `type` picks an animated icon (from `ui-animated-icons`) and a colour, and the `variant` picks the surface. `danger` and `warning` render with `role="alert"`, the other types with `role="status"`, and `loading` adds `aria-busy` with a spinning icon. Dismissing fades the alert out over 200 ms and then calls `onDismiss`.
 
 **When to use it.** Use `Alert` for persistent in-page banners, form summaries and system notices that stay in the layout. For notifications that disappear on their own, use <DocLink to="toast">Toast</DocLink> or <DocLink to="sonner">Sonner</DocLink>.
 

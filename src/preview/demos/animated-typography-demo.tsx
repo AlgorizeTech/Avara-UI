@@ -8,7 +8,13 @@ import {
   TypographyTag,
   TypographyVariant,
 } from "@/components/custom/blocks/AnimatedTypographyBlock";
-import React from "react";
+import { isDefaultAccent, toBlockColor } from "@/lib/accent";
+import React, { useEffect, useState } from "react";
+
+/** Variants that already loop on their own; replaying them would cut the cycle. */
+const SELF_LOOPING: TypographyVariant[] = ["letter-bounce", "typewriter", "word-flip", "blur-swap", "wavy-float"];
+/** The preview replays its entrance this often. */
+const REPLAY_MS = 2000;
 
 const ALL_TAGS: TypographyTag[] = ["h1", "h2", "h3", "p", "blockquote"];
 const ALL_ALIGN: TypographyAlign[] = ["left", "center", "right", "justify"];
@@ -46,6 +52,15 @@ export default function AnimatedTypographyDemo({
   /** Whether the prefix holds still or re-centres as the rotating word changes. */
   prefixPosition?: PrefixPosition;
 }) {
+  // "Default" in the picker means plain foreground text; only a picked colour is applied.
+  const blockColor = isDefaultAccent(color) ? undefined : toBlockColor(color);
+  const [replay, setReplay] = useState(0);
+  const loops = !(singleVariant && SELF_LOOPING.includes(singleVariant));
+  useEffect(() => {
+    if (!loops) return;
+    const id = window.setInterval(() => setReplay((n) => n + 1), REPLAY_MS);
+    return () => window.clearInterval(id);
+  }, [loops]);
   if (singleVariant) {
     const tags: TypographyTag[] = ["h3", "h4", "p"];
     return (
@@ -53,7 +68,7 @@ export default function AnimatedTypographyDemo({
         <div className="w-full max-w-3xl flex flex-col gap-6 items-center text-center">
           {tags.map((t) => (
             <AnimatedTypographyBlock
-              key={`${animationKey}-${singleVariant}-${t}`}
+              key={`${animationKey}-${replay}-${singleVariant}-${t}`}
               as={t}
               variant={singleVariant}
               align="center"
@@ -61,7 +76,7 @@ export default function AnimatedTypographyDemo({
               titlePrefix={titlePrefix}
               words={words}
               prefixPosition={prefixPosition}
-              color={color}
+              color={blockColor}
             />
           ))}
         </div>
@@ -84,7 +99,7 @@ export default function AnimatedTypographyDemo({
                 align="left"
                 size="2xl"
                 text="The quick brown fox."
-                color={color}
+                color={blockColor}
               />
             </div>
           ))}
@@ -104,7 +119,7 @@ export default function AnimatedTypographyDemo({
                 variant="matrix-scramble"
                 align="left"
                 text="The quick brown fox."
-                color={color}
+                color={blockColor}
               />
             ),
           }))
@@ -118,7 +133,7 @@ export default function AnimatedTypographyDemo({
                   align={a}
                   size="lg"
                   text={customText}
-                  color={color}
+                  color={blockColor}
                 />
               ),
             }))
@@ -131,7 +146,7 @@ export default function AnimatedTypographyDemo({
                   align="left"
                   size={s}
                   text="The quick brown fox."
-                  color={color}
+                  color={blockColor}
                 />
               ),
             }));
@@ -162,7 +177,7 @@ export default function AnimatedTypographyDemo({
           align={align}
           size={customSize}
           text={customText}
-          color={color}
+          color={blockColor}
         />
       </div>
     </div>

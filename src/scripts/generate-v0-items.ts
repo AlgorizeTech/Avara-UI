@@ -232,7 +232,7 @@ async function main() {
         for (const example of examples) {
           const id = example.id ?? slugify(example.title);
           const key = `${previewName}/${id}`;
-          const usage = resolveUsage(resolveMotion(example.usage, library), "nextjs");
+          const usage = resolveUsage(resolveMotion(example.usage, library), "nextjs")?.replace(/\r\n/g, "\n");
           // No authored usage means the preview has nothing faithful to open.
           if (!usage) {
             skipped.push(`[${key}] has no usage snippet.`);

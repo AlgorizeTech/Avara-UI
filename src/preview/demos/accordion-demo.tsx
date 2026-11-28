@@ -83,7 +83,6 @@ type Variant =
   | "filled"
   | "ghost"
   | "elevated"
-  | "soft"
   | "tray"
   | "inset"
   | "bracket"
@@ -187,7 +186,7 @@ export default function AccordionDemo({
   }
 
   if (showAll === "variants") {
-    const variants: Variant[] = ["default", "bordered", "filled", "elevated", "soft", "tray", "inset", "bracket", "ghost", "brand-reveal"];
+    const variants: Variant[] = ["default", "bordered", "filled", "elevated", "tray", "inset", "bracket", "ghost", "brand-reveal"];
 
     return (
       <div className="mx-auto flex w-full max-w-4xl flex-col gap-10 p-4 md:p-8">

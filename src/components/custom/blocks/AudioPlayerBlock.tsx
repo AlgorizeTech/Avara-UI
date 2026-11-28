@@ -2,14 +2,14 @@
 
 import { cn } from "@/lib/utils";
 import {
-  Music,
-  Pause,
-  Play,
-  RotateCcw,
-  RotateCw,
-  Volume2,
-  VolumeX,
-} from "lucide-react";
+  MusicIcon as Music,
+  PauseIcon as Pause,
+  PlayIcon as Play,
+  RotateCcwIcon as RotateCcw,
+  RotateCwIcon as RotateCw,
+  Volume2Icon as Volume2,
+  VolumeXIcon as VolumeX,
+} from "@/components/custom/ui/animated-icons";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
 /**
@@ -18,10 +18,8 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
  * - `hero`   — full artwork card with its own transport (the default).
  * - `bar`    — one compact row: artwork thumb, copy, transport. Fits a sidebar
  *   or the bottom of a page without claiming a hero slot.
- * - `native` — the browser's own `<audio controls>` under the artwork. No
- *   custom transport to keep in sync, and the most accessible by default.
  */
-export type AudioVariant = "hero" | "bar" | "native";
+export type AudioVariant = "hero" | "bar";
 
 export interface AudioPlayerProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "onPlay" | "onPause"> {
@@ -60,7 +58,7 @@ function formatTime(seconds: number): string {
 }
 
 const ICON_BUTTON =
-  "flex items-center justify-center rounded-full text-white/70 transition-colors duration-200 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 cursor-pointer disabled:cursor-not-allowed disabled:opacity-40";
+  "flex shrink-0 cursor-pointer items-center justify-center rounded-full text-muted-foreground transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-[#EFEFED] hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 dark:hover:bg-background/70 motion-reduce:transition-none";
 
 export const AudioPlayer = React.forwardRef<
   HTMLDivElement,
@@ -187,8 +185,7 @@ export const AudioPlayer = React.forwardRef<
         loop={loop}
         autoPlay={autoPlay}
         preload={preload}
-        controls={variant === "native"}
-        className={variant === "native" ? "w-full" : "hidden"}
+        className="hidden"
       >
         <source src={audioUrl} type={audioType} />
         Your browser does not support the audio element.
@@ -198,18 +195,22 @@ export const AudioPlayer = React.forwardRef<
     const copy = (
       <div className="min-w-0">
         {badge && (
-          <span className="mb-1.5 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-2.5 py-1 text-[10px] font-semibold tracking-wider text-white uppercase backdrop-blur-md">
-            <Music className="h-3 w-3 shrink-0 text-amber-400" />
+          <span className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-[#F7F7F6] px-2.5 py-1 text-[10px] font-semibold tracking-wider text-muted-foreground uppercase dark:bg-background/50">
+            <Music
+              className="h-3 w-3 shrink-0"
+              style={{ color: accent }}
+              aria-hidden="true"
+            />
             {badge}
           </span>
         )}
         {title && (
-          <h3 className="truncate text-base font-extrabold tracking-tight text-white sm:text-xl md:text-2xl">
+          <h3 className="truncate text-base font-semibold tracking-tight text-foreground sm:text-xl">
             {title}
           </h3>
         )}
         {subtitle && (
-          <p className="truncate text-[11px] text-zinc-400 sm:text-sm">
+          <p className="truncate text-xs text-muted-foreground sm:text-sm">
             {subtitle}
           </p>
         )}
@@ -217,20 +218,25 @@ export const AudioPlayer = React.forwardRef<
     );
 
     const scrubber = (
-      <div className="flex items-center gap-2.5">
-        <span className="w-10 shrink-0 text-right font-mono text-[10px] text-zinc-400 tabular-nums sm:text-xs">
+      <div className="flex items-center gap-3">
+        <span className="w-10 shrink-0 text-right text-[11px] text-muted-foreground tabular-nums sm:text-xs">
           {formatTime(currentTime)}
         </span>
-        <div className="relative flex-1">
+        <div className="relative flex h-5 flex-1 items-center rounded-full has-[input:focus-visible]:outline-2 has-[input:focus-visible]:outline-offset-4 has-[input:focus-visible]:outline-ring">
           {/* The filled track is a plain div behind a transparent range input —
               `accent-color` alone cannot be themed per-instance, and a styled
               input loses the native keyboard behaviour this keeps. */}
-          <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/15">
+          <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#F7F7F6] dark:bg-background/50">
             <div
-              className="h-full rounded-full transition-[width] duration-100 ease-linear"
+              className="h-full rounded-full transition-[width] duration-100 ease-linear motion-reduce:transition-none"
               style={{ width: `${progress}%`, background: accent }}
             />
           </div>
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute top-1/2 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-card shadow-[0_1px_2px_rgba(0,0,0,0.12),0_2px_8px_-2px_rgba(0,0,0,0.25)]"
+            style={{ left: `${progress}%` }}
+          />
           <input
             type="range"
             min={0}
@@ -240,22 +246,22 @@ export const AudioPlayer = React.forwardRef<
             onChange={(e) => seek(Number(e.target.value))}
             disabled={!duration}
             aria-label="Seek"
-            className="absolute inset-0 h-full w-full cursor-pointer appearance-none bg-transparent opacity-0 disabled:cursor-not-allowed"
+            className="absolute inset-0 h-full w-full cursor-pointer appearance-none bg-transparent opacity-0 focus:outline-none disabled:cursor-not-allowed"
           />
         </div>
-        <span className="w-10 shrink-0 font-mono text-[10px] text-zinc-400 tabular-nums sm:text-xs">
+        <span className="w-10 shrink-0 text-[11px] text-muted-foreground tabular-nums sm:text-xs">
           {formatTime(duration)}
         </span>
       </div>
     );
 
     const transport = (
-      <div className="flex items-center gap-2 sm:gap-3">
+      <div className="flex items-center gap-1.5 sm:gap-2.5">
         {skipSeconds > 0 && (
           <button
             type="button"
             onClick={() => skip(-skipSeconds)}
-            className={cn(ICON_BUTTON, "h-9 w-9")}
+            className={cn(ICON_BUTTON, "h-10 w-10")}
             aria-label={`Rewind ${skipSeconds} seconds`}
           >
             <RotateCcw className="h-4 w-4" />
@@ -266,7 +272,7 @@ export const AudioPlayer = React.forwardRef<
           type="button"
           onClick={toggle}
           style={{ background: accent }}
-          className="flex h-12 w-12 shrink-0 cursor-pointer items-center justify-center rounded-full text-primary-foreground shadow-lg transition-transform duration-200 hover:scale-105 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 focus-visible:outline-none active:scale-95 sm:h-14 sm:w-14"
+          className="flex h-12 w-12 shrink-0 cursor-pointer items-center justify-center rounded-full text-primary-foreground shadow-[0_1px_2px_rgba(0,0,0,0.08),0_10px_20px_-8px_rgba(0,0,0,0.35)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:scale-[0.98] motion-reduce:transition-none sm:h-14 sm:w-14"
           aria-label={isPlaying ? "Pause" : "Play"}
         >
           {isPlaying ? (
@@ -280,7 +286,7 @@ export const AudioPlayer = React.forwardRef<
           <button
             type="button"
             onClick={() => skip(skipSeconds)}
-            className={cn(ICON_BUTTON, "h-9 w-9")}
+            className={cn(ICON_BUTTON, "h-10 w-10")}
             aria-label={`Forward ${skipSeconds} seconds`}
           >
             <RotateCw className="h-4 w-4" />
@@ -290,11 +296,11 @@ export const AudioPlayer = React.forwardRef<
     );
 
     const volumeControl = (
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1 rounded-full bg-[#F7F7F6] py-0.5 pr-4 pl-0.5 dark:bg-background/50">
         <button
           type="button"
           onClick={toggleMute}
-          className={cn(ICON_BUTTON, "h-8 w-8")}
+          className={cn(ICON_BUTTON, "h-9 w-9")}
           aria-label={isMuted ? "Unmute" : "Mute"}
         >
           {isMuted || volume === 0 ? (
@@ -311,14 +317,22 @@ export const AudioPlayer = React.forwardRef<
           value={isMuted ? 0 : volume}
           onChange={(e) => changeVolume(Number(e.target.value))}
           aria-label="Volume"
-          className="h-1 w-16 cursor-pointer appearance-none rounded-full bg-white/20 sm:w-20 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white"
+          className="h-1 w-16 cursor-pointer appearance-none rounded-full bg-foreground/15 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring sm:w-20 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-foreground [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-foreground"
         />
       </div>
     );
 
+    // A soft wash of the accent colour behind the card, never an outline.
     const glow = enableGlow ? (
-      <div className="pointer-events-none absolute -inset-4 z-0 rounded-3xl bg-gradient-to-tr from-indigo-500/20 via-purple-500/20 to-pink-500/10 opacity-80 blur-3xl transition-opacity duration-500 dark:opacity-50" />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-6 top-8 -bottom-2 z-0 rounded-[1.75rem] opacity-20 blur-3xl dark:opacity-15"
+        style={{ background: accent }}
+      />
     ) : null;
+
+    const SURFACE =
+      "relative z-10 bg-card text-card-foreground shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-16px_rgba(0,0,0,0.18)]";
 
     /* ── bar: one compact row ─────────────────────────────────────────────── */
     if (variant === "bar") {
@@ -330,58 +344,72 @@ export const AudioPlayer = React.forwardRef<
         >
           {glow}
           {audioElement}
-          <div className="relative z-10 flex w-full items-center gap-3 rounded-2xl border border-border/80 bg-zinc-900 p-3 shadow-2xl sm:gap-5 sm:p-4">
+          <div
+            className={cn(
+              SURFACE,
+              "flex w-full items-center gap-3 rounded-[1.75rem] p-2 sm:gap-4",
+            )}
+          >
             <img
               src={artworkUrl}
               alt={artworkAlt}
               loading="lazy"
-              className="h-14 w-14 shrink-0 rounded-xl object-cover sm:h-16 sm:w-16"
+              className="h-16 w-16 shrink-0 rounded-[1.25rem] object-cover sm:h-20 sm:w-20"
             />
-            <div className="flex min-w-0 flex-1 flex-col gap-2">
-              {copy}
+            <div className="flex min-w-0 flex-1 flex-col gap-2 py-1">
+              <div className="min-w-0">
+                {title && (
+                  <h3 className="truncate text-sm font-semibold tracking-tight text-foreground sm:text-base">
+                    {title}
+                  </h3>
+                )}
+                {subtitle && (
+                  <p className="truncate text-xs text-muted-foreground">
+                    {subtitle}
+                  </p>
+                )}
+              </div>
               {scrubber}
             </div>
-            <div className="flex shrink-0 items-center gap-3">
+            <div className="flex shrink-0 items-center gap-2 pr-2 sm:gap-3 sm:pr-3">
               {transport}
-              <div className="hidden sm:block">{volumeControl}</div>
+              <div className="hidden lg:block">{volumeControl}</div>
             </div>
           </div>
         </div>
       );
     }
 
-    /* ── hero + native: artwork card ──────────────────────────────────────── */
+    /* ── hero: artwork card ──────────────────────────────────────── */
     return (
       <div ref={ref} className={cn("relative w-full", className)} {...props}>
         {glow}
-        <div className="relative z-10 flex w-full flex-col overflow-hidden rounded-2xl border border-border/80 bg-zinc-900 shadow-2xl md:flex-row md:rounded-3xl">
-          <div className="relative aspect-square w-full shrink-0 overflow-hidden md:aspect-auto md:w-64 lg:w-80">
+        <div
+          className={cn(
+            SURFACE,
+            "flex w-full flex-col gap-2 rounded-[1.75rem] p-2 md:flex-row md:gap-3",
+          )}
+        >
+          <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden rounded-[1.25rem] md:aspect-square md:w-56 lg:w-64">
             <img
               src={artworkUrl}
               alt={artworkAlt}
               loading="lazy"
               className="h-full w-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/80 to-transparent md:bg-gradient-to-r" />
           </div>
 
-          <div className="flex flex-1 flex-col justify-center gap-4 p-5 sm:gap-5 sm:p-8">
+          <div className="flex min-w-0 flex-1 flex-col justify-center gap-5 p-3 sm:p-5">
             {copy}
 
-            {variant === "native" ? (
-              audioElement
-            ) : (
-              <>
-                {scrubber}
-                <div className="flex items-center justify-between gap-4">
-                  {transport}
-                  {volumeControl}
-                </div>
-              </>
-            )}
+            {scrubber}
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              {transport}
+              {volumeControl}
+            </div>
           </div>
         </div>
-        {variant !== "native" && audioElement}
+        {audioElement}
       </div>
     );
   },

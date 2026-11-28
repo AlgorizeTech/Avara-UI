@@ -46,14 +46,14 @@ export default function BreadcrumbDemo() {
 
 ## With icons
 
-- Give an item an `icon` — the Lucide component itself, not its name — to label it visually beside the text.
+- Give an item an `icon` — the icon component itself, not its name — to label it visually beside the text.
 
 ```tsx
 import { BreadcrumbBlock, type BreadcrumbItem } from "@/components/custom/blocks/BreadcrumbBlock";
-import { Home, Settings } from "lucide-react";
+import { HomeIcon as Home, SettingsIcon as Settings } from "@/components/custom/ui/animated-icons";
 
 const items: BreadcrumbItem[] = [
-  // icon takes the Lucide component itself, not a string
+  // icon takes the icon component itself, not a string
   { label: "Home", href: "/", icon: Home },
   { label: "Settings", href: "/settings", icon: Settings },
   { label: "Profile", href: "/settings/profile" },
@@ -70,7 +70,7 @@ export default function BreadcrumbWithIcons() {
 
 ```tsx
 import { BreadcrumbBlock, type BreadcrumbItem } from "@/components/custom/blocks/BreadcrumbBlock";
-import { FileText, Folder, Home } from "lucide-react";
+import { FileTextIcon as FileText, FolderIcon as Folder, HomeIcon as Home } from "@/components/custom/ui/animated-icons";
 
 const deepPath: BreadcrumbItem[] = [
   { label: "Home", href: "/", icon: Home },
@@ -90,9 +90,9 @@ export default function DeepBreadcrumb() {
 
 ## About Shadcn Breadcrumb
 
-**What it is.** Two ways to show where a page sits in a hierarchy. `BreadcrumbBlock` renders an `items` array in one of four `variant` styles, with optional Lucide icons and `maxItems` truncation. `BreadcrumbFlowBlock.tsx` exports separate parts (`Breadcrumb`, `BreadcrumbList`, `BreadcrumbItem` and more) that fade and slide as the route changes.
+**What it is.** Two ways to show where a page sits in a hierarchy. `BreadcrumbBlock` renders an `items` array in one of four `variant` styles, with optional icons and `maxItems` truncation. `BreadcrumbFlowBlock.tsx` exports separate parts (`Breadcrumb`, `BreadcrumbList`, `BreadcrumbItem` and more) that fade and slide as the route changes.
 
-**How it is built.** `BreadcrumbBlock` renders the last item as plain text with `aria-current="page"`, collapses long paths behind a `...` button, and takes a `linkComponent` such as `Link` from `next/link`. The flow parts animate with the Web Animations API and CSS transitions, skip that motion under `prefers-reduced-motion`, and neither build needs GSAP or Motion: both install only `lucide-react` and the `utils` item.
+**How it is built.** `BreadcrumbBlock` renders the last item as plain text with `aria-current="page"`, collapses long paths behind a `...` button, and takes a `linkComponent` such as `Link` from `next/link`. The flow parts animate with the Web Animations API and CSS transitions, skip that motion under `prefers-reduced-motion`, and neither build needs GSAP or Motion: both install only `ui-animated-icons` and the `utils` item.
 
 **When to use it.** Use `BreadcrumbBlock` when the trail comes from data. Use the flow parts when the trail changes without a page reload and you want items to animate in and out.
 
@@ -148,7 +148,7 @@ All 2 options as live previews: https://avaraui.com/view/breadcrumb
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `items` | `BreadcrumbItem[]` | Required | An array of objects containing a `label` (string), optional `href` (string), and optional `icon` (Lucide Component). |
+| `items` | `BreadcrumbItem[]` | Required | An array of objects containing a `label` (string), optional `href` (string), and optional `icon` (an icon component). |
 | `variant` | `"classic" \| "slash" \| "solid" \| "ghost"` | `"classic"` | Determines the visual styling of the links and the dividers between them. |
 | `color` | `"indigo" \| "rose" \| "emerald" \| "zinc" \| string` | `"primary"` | Applies a color theme to the active text and hover states. The default uses your `primary` theme token; an unknown name falls back to it. Accepts hex codes (e.g. `"#00FF00"`). |
 | `maxItems` | `number` | `4` | The most slots shown, the `...` button included, before the middle of the path collapses. A collapsed trail shows the first item, the button, then the last `maxItems - 2` items. |
@@ -191,7 +191,7 @@ Both render a `nav` landmark labelled "Breadcrumb" and mark the current page wit
 
 ## Which dependencies does the breadcrumb install?
 
-Both items install `lucide-react` and the `utils` helper that provides `cn`, and nothing else. The `breadcrumb` item also ships a small `breadcrumb-theme.ts` file for the color themes. There is no GSAP or Motion build, since the flow animation uses the Web Animations API.
+Both items install the `ui-animated-icons` item and the `utils` helper that provides `cn`, and nothing else. The `breadcrumb` item also ships a small `breadcrumb-theme.ts` file for the color themes. There is no GSAP or Motion build, since the flow animation uses the Web Animations API.
 
 ---
 

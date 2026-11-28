@@ -49,6 +49,7 @@ different animation library.
 **More Components**
 
 - [Action Button](https://avaraui.com/docs-md/nextjs-action-buttons.md): Animated action buttons: slide to confirm, hold to delete, star, add to cart, waitlist and payment. (Motion build available)
+- [Guest Morph](https://avaraui.com/docs-md/nextjs-guest-morph.md): A pill of overlapping faces that morphs into a guest list, with an invite form and pending invites. (Motion build available)
 
 **Marketing Sections**
 

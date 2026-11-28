@@ -634,7 +634,7 @@ export const AnimatedTypographyBlock = forwardRef<
       React.HTMLAttributes<HTMLElement> & React.RefAttributes<HTMLElement>
     >;
 
-    const color = colorProp ?? (bare ? undefined : "primary");
+    const color = colorProp ?? (bare ? undefined : "default");
     const align = alignProp ?? (bare ? undefined : "left");
     const { className: colorClass, style: colorStyle } = color
       ? getThemeStyles(color as string)
@@ -836,7 +836,7 @@ export const AnimatedTypographyBlock = forwardRef<
                 {text}
               </span>
               <svg
-                className="absolute left-0 bottom-0 w-full h-3 overflow-visible text-primary pointer-events-none"
+                className="absolute left-0 bottom-0 w-full h-3 overflow-visible pointer-events-none"
                 viewBox="0 0 100 12"
                 preserveAspectRatio="none"
               >

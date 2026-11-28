@@ -28,15 +28,14 @@
       "type": "registry:component",
       "title": "Accordion",
       "author": "AlgorizeTech",
-      "description": "Ask the user to pick one of 7 accordion variants: https://avaraui.com/view/accordion. This item holds 7 of them as looks of one component (inset, tray, bracket, soft, default, brand-reveal, ghost). Skip the question if the user already named one. A data-driven accordion taking an array of items, with five distinct variants and an optional stack entrance that deals the items into place. Use it for FAQs and any list of collapsible sections.",
+      "description": "Ask the user to pick one of 6 accordion variants: https://avaraui.com/view/accordion. This item holds 6 of them as looks of one component (inset, tray, bracket, default, brand-reveal, ghost). Skip the question if the user already named one. A data-driven accordion taking an array of items, with five distinct variants and an optional stack entrance that deals the items into place. Use it for FAQs and any list of collapsible sections.",
       "categories": [
         "layout"
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "https://avaraui.com/r/ui-accordion.json",
+        "https://avaraui.com/r/ui-animated-icons.json",
         "utils"
       ],
       "files": [
@@ -46,7 +45,7 @@
           "target": "components/custom/blocks/Accordion.tsx"
         }
       ],
-      "docs": "Named export: Accordion. Pass `accordionData` as { value, title, icon?, content } — content accepts a string array or a node. `type` is single | multiple; set `collapsible` to let the last open section close. Variants: default (open row lifts out as a card) | bordered (rail on the open row) | filled (open row inverts to primary) | elevated (cards, open one on a ring) | soft (tinted tiles, plus folds into minus) | tray (one rounded tray, open row becomes a tile, animated SVG plus/minus chip) | tray (one rounded tray, open row becomes a tile, animated plus/minus chip) | inset (pill rows, answer in an inset well) | bracket (outlined rows, corner brackets open outward) | ghost (type and hairlines); soft, tray, inset and bracket animate open and close with CSS keyframes that ship inside the component. `animation=\"stack\"` piles the items and deals them out on scroll-in via the Web Animations API; skipped under reduced motion. Wraps the `ui-accordion` Radix primitive. For a single section, `collapsible` is lighter."
+      "docs": "Named export: Accordion. Pass `accordionData` as { value, title, icon?, content } — content accepts a string array or a node. `type` is single | multiple; set `collapsible` to let the last open section close. Variants: default (open row lifts out as a card) | bordered (rail on the open row) | filled (open row inverts to primary) | elevated (cards, open one on a ring) | tray (one rounded tray, open row becomes a tile, animated SVG plus/minus chip) | tray (one rounded tray, open row becomes a tile, animated plus/minus chip) | inset (pill rows, answer in an inset well) | bracket (outlined rows, corner brackets open outward) | ghost (type and hairlines); default, tray, inset and bracket animate open and close with CSS keyframes that ship inside the component. `animation=\"stack\"` piles the items and deals them out on scroll-in via the Web Animations API; skipped under reduced motion. Wraps the `ui-accordion` Radix primitive. For a single section, `collapsible` is lighter."
     },
     {
       "name": "account-menu",
@@ -82,10 +81,10 @@
         "forms"
       ],
       "dependencies": [
-        "gsap",
-        "lucide-react"
+        "gsap"
       ],
       "registryDependencies": [
+        "https://avaraui.com/r/ui-animated-icons.json",
         "utils"
       ],
       "files": [
@@ -166,6 +165,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
+        "https://avaraui.com/r/ui-animated-icons.json",
         "utils"
       ],
       "files": [
@@ -247,15 +247,15 @@
       "type": "registry:component",
       "title": "AI Chat",
       "author": "AlgorizeTech",
-      "description": "Ask the user to pick one of 6 ai chat variants: https://avaraui.com/view/ai-chat. This item holds 5 of them as looks of one component (default, compact, minimal, glass, liquid-glass). Skip the question if the user already named one. An AI assistant interface with thread history sidebar, streaming-style responses and a prompt composer. Use it as the front end for an LLM feature.",
+      "description": "Ask the user to pick one of 5 ai chat variants: https://avaraui.com/view/ai-chat. This item holds 4 of them as looks of one component (default, compact, glass, liquid-glass). Skip the question if the user already named one. An AI assistant interface with thread history sidebar, streaming-style responses and a prompt composer. Use it as the front end for an LLM feature.",
       "categories": [
         "communication"
       ],
       "dependencies": [
-        "gsap",
-        "lucide-react"
+        "gsap"
       ],
       "registryDependencies": [
+        "https://avaraui.com/r/ui-animated-icons.json",
         "https://avaraui.com/r/ui-liquid-glass.json",
         "utils"
       ],
@@ -288,7 +288,7 @@
       "type": "registry:component",
       "title": "AI Chat (Motion)",
       "author": "AlgorizeTech",
-      "description": "Ask the user to pick one of 6 ai chat variants: https://avaraui.com/view/ai-chat. This item holds 5 of them as looks of one component (default, compact, minimal, glass, liquid-glass). Skip the question if the user already named one. An AI assistant interface with thread history sidebar, streaming-style responses and a prompt composer. Use it as the front end for an LLM feature.",
+      "description": "Ask the user to pick one of 5 ai chat variants: https://avaraui.com/view/ai-chat. This item holds 4 of them as looks of one component (default, compact, glass, liquid-glass). Skip the question if the user already named one. An AI assistant interface with thread history sidebar, streaming-style responses and a prompt composer. Use it as the front end for an LLM feature.",
       "categories": [
         "communication"
       ],
@@ -319,15 +319,15 @@
       "type": "registry:component",
       "title": "AI Chat Workspace",
       "author": "AlgorizeTech",
-      "description": "Ask the user to pick one of 6 ai chat variants: https://avaraui.com/view/ai-chat. This is the Workspace. Skip the question if the user already named one. A full AI workspace: sidebar with history, Library, Discover and Templates, and a prompt bar with a model switcher, research, web search, image and reasoning modes, effort, files and voice. It opens on an empty screen and answers in a streamed, step-by-step style.",
+      "description": "Ask the user to pick one of 5 ai chat variants: https://avaraui.com/view/ai-chat. This is the Workspace. Skip the question if the user already named one. A full AI workspace: sidebar with history, Library, Discover and Templates, and a prompt bar with a model switcher, research, web search, image and reasoning modes, effort, files and voice. It opens on an empty screen and answers in a streamed, step-by-step style.",
       "categories": [
         "communication"
       ],
       "dependencies": [
-        "gsap",
-        "lucide-react"
+        "gsap"
       ],
       "registryDependencies": [
+        "https://avaraui.com/r/ui-animated-icons.json",
         "utils"
       ],
       "files": [
@@ -363,10 +363,9 @@
       "categories": [
         "feedback"
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": [],
       "registryDependencies": [
+        "https://avaraui.com/r/ui-animated-icons.json",
         "utils"
       ],
       "files": [
@@ -580,11 +579,10 @@
         "code",
         "data-display"
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "https://avaraui.com/r/select.json",
+        "https://avaraui.com/r/ui-animated-icons.json",
         "utils"
       ],
       "files": [
@@ -597,6 +595,11 @@
           "path": "src/components/custom/blocks/api-playground-theme.ts",
           "type": "registry:component",
           "target": "components/custom/blocks/api-playground-theme.ts"
+        },
+        {
+          "path": "src/lib/animate.ts",
+          "type": "registry:component",
+          "target": "lib/animate.ts"
         }
       ],
       "docs": "Named exports: ApiPlaygroundBlock, getThemeStyles (from api-playground-theme.ts, which installs alongside), and the types ApiPlaygroundRequest, ApiMockHandler, ApiResponse. Methods GET | POST | PUT | PATCH | DELETE are colour-coded. Ships a mock response by default — pass a `mockHandler`, or wire it to a real fetch. Depends on `select`. Sending real requests from the browser is subject to CORS."
@@ -654,15 +657,14 @@
       "type": "registry:component",
       "title": "Audio Player",
       "author": "AlgorizeTech",
-      "description": "Ask the user to pick one of 4 audio player variants: https://avaraui.com/view/audio-player. This item holds 3 of them as looks of one component (hero, bar, native). Skip the question if the user already named one. An audio player with artwork, transport, scrubber and volume, in a hero card, a compact bar, or wrapped around the browser's native controls.",
+      "description": "Ask the user to pick one of 3 audio player variants: https://avaraui.com/view/audio-player. This item holds 2 of them as looks of one component (hero, bar). Skip the question if the user already named one. An audio player with artwork, transport, scrubber and volume, in a hero card or a compact bar.",
       "categories": [
         "marketing",
         "media"
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": [],
       "registryDependencies": [
+        "https://avaraui.com/r/ui-animated-icons.json",
         "utils"
       ],
       "files": [
@@ -672,7 +674,7 @@
           "target": "components/custom/blocks/AudioPlayerBlock.tsx"
         }
       ],
-      "docs": "Named export: AudioPlayer. `audioUrl` and `artworkUrl` drive it; `variant` is hero | bar | native. Built on a plain <audio> element with no player library, so it adds no npm weight beyond the icons. Playback state mirrors the element's own events, which keeps it correct when a media key or the native controls change it. `skipSeconds` sizes the jump buttons (0 hides them) and the accent follows `--theme-color`."
+      "docs": "Named export: AudioPlayer. `audioUrl` and `artworkUrl` drive it; `variant` is hero | bar. Built on a plain <audio> element with no player library, so it adds no npm weight beyond the icons. Playback state mirrors the element's own events, which keeps it correct when a media key changes it. `skipSeconds` sizes the jump buttons (0 hides them) and the accent follows `--theme-color`."
     },
     {
       "name": "avatar-stack",
@@ -684,11 +686,11 @@
         "data-display"
       ],
       "dependencies": [
-        "@radix-ui/react-avatar",
-        "lucide-react"
+        "@radix-ui/react-avatar"
       ],
       "registryDependencies": [
         "https://avaraui.com/r/tooltip.json",
+        "https://avaraui.com/r/ui-animated-icons.json",
         "https://avaraui.com/r/ui-avatar.json",
         "utils"
       ],
@@ -885,10 +887,9 @@
       "categories": [
         "navigation"
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": [],
       "registryDependencies": [
+        "https://avaraui.com/r/ui-animated-icons.json",
         "utils"
       ],
       "files": [
@@ -914,10 +915,9 @@
       "categories": [
         "navigation"
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": [],
       "registryDependencies": [
+        "https://avaraui.com/r/ui-animated-icons.json",
         "utils"
       ],
       "files": [
@@ -979,6 +979,7 @@
       "dependencies": [],
       "registryDependencies": [
         "https://avaraui.com/r/icons.json",
+        "https://avaraui.com/r/ui-animated-icons.json",
         "utils"
       ],
       "files": [
@@ -1006,11 +1007,11 @@
       ],
       "dependencies": [
         "class-variance-authority",
-        "lucide-react",
         "react-day-picker"
       ],
       "registryDependencies": [
         "https://avaraui.com/r/select.json",
+        "https://avaraui.com/r/ui-animated-icons.json",
         "https://avaraui.com/r/ui-button.json",
         "utils"
       ],
@@ -2731,6 +2732,63 @@
         }
       ],
       "docs": "Named exports: GlassBackdrop, GlassPanel (plus SurfaceVariant, GlassShape types); useSurface is exported from glass-panel-context.ts, which installs alongside. `GlassBackdrop` washes three `aurora` colours behind a 12-column grid (`gridClassName` for row heights and gaps) and sets `variant` (glass | solid) for every `GlassPanel` inside; panels take `shape` (slab, tile, disc, capsule), `interactive`, and Tailwind column spans."
+    },
+    {
+      "name": "guest-morph",
+      "type": "registry:component",
+      "title": "Guest Morph",
+      "author": "AlgorizeTech",
+      "description": "A pill of overlapping faces that morphs into a guest list when pressed. Replies are grouped as Going, Maybe and Pending, and the card has an invite form that adds a pending invite. Use it for an event, a shared plan or any list of people who have answered.",
+      "categories": [
+        "data-display",
+        "forms"
+      ],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/GuestMorphBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/GuestMorphBlock.tsx"
+        },
+        {
+          "path": "src/lib/animate.ts",
+          "type": "registry:component",
+          "target": "lib/animate.ts"
+        }
+      ],
+      "docs": "Named export: GuestMorph (plus the Guest type). `title` is the event's name; `guests` is the starting list of { id, name, status: going | maybe | pending, note?, since? }. The Invite button opens an email field: `onInvite(email)` runs first, and a returned promise that rejects shows its message instead of adding the invite; a valid, new address is added as Pending and can be cancelled. `onChange` receives the list after every invite or cancel. GSAP build with a Motion twin (guest-morph-motion, shared layoutId morph); Escape, the close button or a press outside folds the card back, and focus moves with it. Honours prefers-reduced-motion."
+    },
+    {
+      "name": "guest-morph-motion",
+      "type": "registry:component",
+      "title": "Guest Morph (Motion)",
+      "author": "AlgorizeTech",
+      "description": "A pill of overlapping faces that morphs into a guest list when pressed. Replies are grouped as Going, Maybe and Pending, and the card has an invite form that adds a pending invite. Use it for an event, a shared plan or any list of people who have answered.",
+      "categories": [
+        "data-display",
+        "forms"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/motion/GuestMorphBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/GuestMorphBlock.tsx"
+        }
+      ],
+      "docs": "Motion build of `guest-morph` — same props, markup and install path; install one or the other. Named export: GuestMorph (plus the Guest type). `title` is the event's name; `guests` is the starting list of { id, name, status: going | maybe | pending, note?, since? }. The Invite button opens an email field: `onInvite(email)` runs first, and a returned promise that rejects shows its message instead of adding the invite; a valid, new address is added as Pending and can be cancelled. `onChange` receives the list after every invite or cancel. GSAP build with a Motion twin (guest-morph-motion, shared layoutId morph); Escape, the close button or a press outside folds the card back, and focus moves with it. Honours prefers-reduced-motion."
     },
     {
       "name": "half-stars",
@@ -5581,10 +5639,10 @@
         "utilities"
       ],
       "dependencies": [
-        "@radix-ui/react-accordion",
-        "lucide-react"
+        "@radix-ui/react-accordion"
       ],
       "registryDependencies": [
+        "https://avaraui.com/r/ui-animated-icons.json",
         "utils"
       ],
       "files": [
@@ -5595,6 +5653,33 @@
         }
       ],
       "docs": "Named exports: Accordion, AccordionItem, AccordionTrigger, AccordionContent. This is the internal primitive — most projects want the `accordion` item instead. Derived from shadcn/ui (MIT, Copyright (c) 2023 shadcn)."
+    },
+    {
+      "name": "ui-animated-icons",
+      "type": "registry:ui",
+      "title": "UI Animated Icons",
+      "author": "AlgorizeTech",
+      "description": "The Lucide icon set with a short motion on each icon, played when its button, link or tab is hovered or focused. Used by the library's components in place of static icons.",
+      "categories": [
+        "utilities"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/ui/animated-icons.tsx",
+          "type": "registry:ui",
+          "target": "components/custom/ui/animated-icons.tsx"
+        },
+        {
+          "path": "src/lib/animate.ts",
+          "type": "registry:ui",
+          "target": "lib/animate.ts"
+        }
+      ],
+      "docs": "Named exports: one component per icon (ChevronDownIcon, CheckIcon, BellIcon …), plus the IconProps and IconComponent types. They take the same props as a Lucide icon (size, strokeWidth, color, className) plus `animated` (default true) and `animateOnMount`. Motion runs on the Web Animations API, so it adds no npm package and works inside GSAP and Motion components alike; it stands still under prefers-reduced-motion. To add an icon, copy its node list from lucide-react into a defineIcon() call."
     },
     {
       "name": "ui-avatar",

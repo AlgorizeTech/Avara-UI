@@ -94,7 +94,7 @@ export default function UsersEndpointDocs() {
 
 **What it is.** `ApiPlaygroundBlock` is a split-pane request builder and response viewer for API documentation. The left pane has a method picker, URL bar and Params, Headers and Body tabs, and the right pane shows the status, the time and the JSON response.
 
-**How it is built.** Pressing Send calls your async `mockHandler` with `{ method, url, headers, params, body }` and renders the `{ status, timeMs, data }` it returns. The component never calls `fetch` itself, and without a handler it returns a built-in echo of the request. It uses the `select` registry item for the method dropdown and `lucide-react` icons.
+**How it is built.** Pressing Send calls your async `mockHandler` with `{ method, url, headers, params, body }` and renders the `{ status, timeMs, data }` it returns. The component never calls `fetch` itself, and without a handler it returns a built-in echo of the request. It uses the `select` registry item for the method dropdown and the `ui-animated-icons` item for its icons.
 
 **When to use it.** Use it for REST API docs, SDK quickstarts, webhook simulators and developer portals where readers should try a request without leaving the page.
 

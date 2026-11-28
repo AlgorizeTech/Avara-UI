@@ -3,17 +3,18 @@
 import { cn } from "@/lib/utils";
 import { SelectBlock } from "./SelectBlock";
 import {
-  Activity,
-  Check,
-  CheckCircle2,
-  Clock,
-  Play,
-  Plus,
-  TerminalSquare,
-  Trash2,
-  XCircle,
-} from "lucide-react";
-import React, { forwardRef, useState } from "react";
+  ActivityIcon as Activity,
+  CheckIcon as Check,
+  CheckCircle2Icon as CheckCircle2,
+  ClockIcon as Clock,
+  PlayIcon as Play,
+  PlusIcon as Plus,
+  TerminalSquareIcon as TerminalSquare,
+  Trash2Icon as Trash2,
+  XCircleIcon as XCircle,
+} from "@/components/custom/ui/animated-icons";
+import { prefersReducedMotion } from "@/lib/animate";
+import React, { forwardRef, useLayoutEffect, useRef, useState } from "react";
 import { getThemeStyles } from "./api-playground-theme";
 
 // ==========================================
@@ -132,6 +133,65 @@ const parseParamsFromUrl = (fullUrl: string): KeyValuePair[] => {
 };
 
 // ==========================================
+// LOOK & MOTION — see DESIGN.md
+// Surfaces are lit by shadow, wells are soft gray, nothing is outlined, and
+// content blurs in instead of popping.
+// ==========================================
+type TabKey = "params" | "headers" | "body";
+const TABS: TabKey[] = ["params", "headers", "body"];
+
+const SURFACE = "shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-16px_rgba(0,0,0,0.18)]";
+const WELL = "bg-[#F7F7F6] dark:bg-background/50";
+const WELL_HOVER = "hover:bg-[#F7F7F6] dark:hover:bg-background/50";
+const FIELD = cn(
+  WELL,
+  "h-9 rounded-xl font-mono text-foreground outline-none placeholder:text-muted-foreground/60",
+  "transition-[box-shadow,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+  "focus:ring-2 focus:ring-ring/40 disabled:opacity-50",
+);
+
+const SOFT_SETTLE = "cubic-bezier(0.22, 1, 0.36, 1)";
+
+/** Fades an element in from a blur, 8px low. Does nothing under reduced motion. */
+const blurIn = (el: HTMLElement | null, delay = 0) => {
+  if (!el || typeof el.animate !== "function" || prefersReducedMotion()) return;
+  el.animate(
+    [
+      { opacity: 0, transform: "translateY(8px)", filter: "blur(8px)" },
+      { opacity: 1, transform: "none", filter: "blur(0px)" },
+    ],
+    { duration: 500, delay, easing: SOFT_SETTLE, fill: "backwards" },
+  );
+};
+
+/** Blurs in everything marked `data-blur` or `data-row` inside `root`, 35ms apart. */
+const cascade = (root: HTMLElement | null) => {
+  root
+    ?.querySelectorAll<HTMLElement>("[data-blur], [data-row]")
+    .forEach((el, i) => blurIn(el, i * 35));
+};
+
+/** Tints a JSON string: keys, strings, numbers and literals each get their own colour. */
+const highlightJson = (json: string) =>
+  json
+    .split(/("(?:\\.|[^"\\])*"(?:\s*:)?|\b(?:true|false|null)\b|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)/g)
+    .map((token, i) => {
+      if (i % 2 === 0) return token;
+      const tone = token.endsWith(":")
+        ? "text-foreground font-medium"
+        : token.startsWith('"')
+          ? "text-emerald-600 dark:text-emerald-400"
+          : /^(true|false|null)$/.test(token)
+            ? "text-violet-600 dark:text-violet-400"
+            : "text-amber-600 dark:text-amber-400";
+      return (
+        <span key={i} className={tone}>
+          {token}
+        </span>
+      );
+    });
+
+// ==========================================
 // COMPONENT
 // ==========================================
 export const ApiPlaygroundBlock = forwardRef<
@@ -154,9 +214,7 @@ export const ApiPlaygroundBlock = forwardRef<
     // State
     const [method, setMethod] = useState<HttpMethod>(defaultMethod);
     const [url, setUrl] = useState(() => defaultUrl);
-    const [activeTab, setActiveTab] = useState<"params" | "headers" | "body">(
-      "params",
-    );
+    const [activeTab, setActiveTab] = useState<TabKey>("params");
 
     const [params, setParams] = useState<KeyValuePair[]>(() => {
       const initialParsed = parseParamsFromUrl(defaultUrl);
@@ -327,6 +385,51 @@ export const ApiPlaygroundBlock = forwardRef<
       }
     };
 
+    // ── Motion (see DESIGN.md): a sliding tab indicator, and content that blurs in ──
+    const tabRefs = useRef<Partial<Record<TabKey, HTMLButtonElement | null>>>({});
+    const [indicator, setIndicator] = useState<{ left: number; width: number } | null>(null);
+    const panelRef = useRef<HTMLDivElement>(null);
+    const responseRef = useRef<HTMLDivElement>(null);
+    const seenRows = useRef(new Set<string>());
+
+    useLayoutEffect(() => {
+      const el = tabRefs.current[activeTab];
+      if (el && (indicator?.left !== el.offsetLeft || indicator?.width !== el.offsetWidth)) {
+        setIndicator({ left: el.offsetLeft, width: el.offsetWidth });
+      }
+    });
+
+    // A new tab's content cascades in.
+    useLayoutEffect(() => {
+      cascade(panelRef.current);
+      panelRef.current
+        ?.querySelectorAll<HTMLElement>("[data-row]")
+        .forEach((row) => seenRows.current.add(row.dataset.row as string));
+    }, [activeTab]);
+
+    // So does a row that was just added.
+    useLayoutEffect(() => {
+      panelRef.current?.querySelectorAll<HTMLElement>("[data-row]").forEach((row) => {
+        const id = row.dataset.row as string;
+        if (!seenRows.current.has(id)) {
+          seenRows.current.add(id);
+          blurIn(row);
+        }
+      });
+    }, [params, headers]);
+
+    // And so does each response.
+    useLayoutEffect(() => {
+      if (response) cascade(responseRef.current);
+    }, [response]);
+
+    const tabCount = (tab: TabKey) =>
+      tab === "params"
+        ? params.filter((p) => p.key).length
+        : tab === "headers"
+          ? headers.filter((p) => p.key).length
+          : 0;
+
     // Render Key-Value Editor (Mobile Optimized)
     const renderKvEditor = (
       items: KeyValuePair[],
@@ -336,9 +439,10 @@ export const ApiPlaygroundBlock = forwardRef<
         {items.map((item) => (
           <div
             key={item.id}
-            className="flex items-center gap-1.5 sm:gap-2 group"
+            data-row={item.id}
+            className="group flex items-center gap-1.5 sm:gap-2"
           >
-            <label className="relative flex items-center justify-center cursor-pointer shrink-0">
+            <label className="relative flex shrink-0 cursor-pointer items-center justify-center">
               <input
                 type="checkbox"
                 checked={item.enabled}
@@ -346,19 +450,18 @@ export const ApiPlaygroundBlock = forwardRef<
                   handleUpdatePair(setter, item.id, "enabled", e.target.checked)
                 }
                 className="peer sr-only"
+                aria-label={`${item.key || "Row"} enabled`}
               />
               <div
                 className={cn(
-                  "w-4 h-4 rounded flex items-center justify-center border transition-all duration-150 peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-focus-visible:ring-offset-1",
-                  item.enabled
-                    ? cn(theme.bg, theme.checkboxBorder ?? theme.border)
-                    : "border-input bg-background hover:border-foreground/40",
+                  "flex size-[18px] items-center justify-center rounded-md transition-[background-color,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-90 peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-focus-visible:ring-offset-1",
+                  item.enabled ? theme.bg : "bg-[#EBEBE9] hover:bg-[#E3E3E1] dark:bg-background dark:hover:bg-background/70",
                 )}
               >
                 <Check
                   className={cn(
-                    "w-3 h-3 stroke-[3] transition-transform duration-150",
-                    item.enabled ? "scale-100 opacity-100" : "scale-0 opacity-0",
+                    "size-3 stroke-[3] transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                    item.enabled ? "scale-100 opacity-100" : "scale-50 opacity-0",
                   )}
                 />
               </div>
@@ -366,38 +469,42 @@ export const ApiPlaygroundBlock = forwardRef<
             <input
               type="text"
               placeholder="Key"
+              aria-label="Key"
               value={item.key}
               onChange={(e) =>
                 handleUpdatePair(setter, item.id, "key", e.target.value)
               }
-              className="w-1/2 min-w-0 px-2 sm:px-3 py-1.5 text-xs sm:text-sm bg-background border border-input rounded-md outline-none focus:border-ring font-mono transition-colors"
+              className={cn(FIELD, "w-1/2 min-w-0 px-3 text-xs sm:text-[13px]")}
               disabled={!item.enabled}
             />
             <input
               type="text"
               placeholder="Value"
+              aria-label="Value"
               value={item.value}
               onChange={(e) =>
                 handleUpdatePair(setter, item.id, "value", e.target.value)
               }
-              className="w-1/2 min-w-0 px-2 sm:px-3 py-1.5 text-xs sm:text-sm bg-background border border-input rounded-md outline-none focus:border-ring font-mono transition-colors"
+              className={cn(FIELD, "w-1/2 min-w-0 px-3 text-xs sm:text-[13px]")}
               disabled={!item.enabled}
             />
             <button
               onClick={() => handleRemovePair(setter, item.id)}
-              className="p-1.5 text-muted-foreground hover:text-red-500 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all rounded-md hover:bg-red-50 dark:hover:bg-red-500/10 shrink-0 cursor-pointer"
-              title="Remove pair"
+              aria-label="Remove row"
+              className="shrink-0 cursor-pointer rounded-full p-1.5 text-muted-foreground opacity-100 transition-[opacity,background-color,color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-red-500/10 hover:text-red-500 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-ring sm:opacity-0 sm:group-hover:opacity-100"
             >
-              <Trash2 className="w-4 h-4" />
+              <Trash2 className="size-4" />
             </button>
           </div>
         ))}
         <button
           onClick={() => handleAddPair(setter)}
-          className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground w-max mt-2 transition-colors cursor-pointer"
+          className={cn(
+            "mt-1 flex w-max cursor-pointer items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold text-muted-foreground transition-[background-color,color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring",
+            WELL_HOVER,
+          )}
         >
-          <Plus className="w-3.5 h-3.5" /> Add{" "}
-          {activeTab === "params" ? "Parameter" : "Header"}
+          <Plus className="size-3.5" /> Add {activeTab === "params" ? "parameter" : "header"}
         </button>
       </div>
     );
@@ -406,17 +513,22 @@ export const ApiPlaygroundBlock = forwardRef<
       <div
         ref={ref}
         className={cn(
-          "w-full grid grid-cols-1 lg:grid-cols-2 gap-4 rounded-2xl bg-transparent border-none shadow-none",
+          "grid w-full grid-cols-1 gap-4 bg-transparent lg:grid-cols-2",
           className,
         )}
         style={style}
         {...props}
       >
         {/* LEFT PANE: REQUEST BUILDER */}
-        <div className="flex flex-col gap-4 min-w-0">
-          {/* ── RESPONSIVE URL BAR ─────────────────────────────────────── */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 p-1.5 sm:p-2 bg-card border border-border rounded-xl">
-            <div className="flex items-center gap-2 flex-1 min-w-0">
+        <div className="flex min-w-0 flex-col gap-4">
+          {/* ── URL BAR ─────────────────────────────────────────────────── */}
+          <div
+            className={cn(
+              "flex flex-col items-stretch gap-2 rounded-[1.75rem] bg-card p-2 sm:flex-row sm:items-center",
+              SURFACE,
+            )}
+          >
+            <div className="flex min-w-0 flex-1 items-center gap-2">
               <SelectBlock
                 options={METHOD_OPTIONS}
                 value={method}
@@ -431,7 +543,8 @@ export const ApiPlaygroundBlock = forwardRef<
                 type="text"
                 value={url}
                 onChange={(e) => handleUrlChange(e.target.value)}
-                className="w-full min-w-0 bg-transparent px-2 text-xs sm:text-sm font-mono text-foreground outline-none truncate"
+                aria-label="Request URL"
+                className={cn(FIELD, "h-10 w-full min-w-0 truncate rounded-full px-4 text-xs sm:text-[13px]")}
                 placeholder="https://api.example.com..."
               />
             </div>
@@ -440,60 +553,85 @@ export const ApiPlaygroundBlock = forwardRef<
               onClick={handleSend}
               disabled={isLoading}
               className={cn(
-                "flex items-center justify-center gap-2 h-9 px-4 rounded-lg text-sm font-semibold transition-all disabled:opacity-50 shrink-0 w-full sm:w-auto cursor-pointer",
+                "flex h-10 w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold transition-[transform,opacity,filter] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:scale-[0.97] disabled:opacity-60 sm:w-auto",
                 theme.bg,
-                !isLoading && theme.glow,
               )}
             >
               {isLoading ? (
-                <Activity className="w-4 h-4 animate-pulse" />
+                <Activity className="size-4 animate-pulse motion-reduce:animate-none" />
               ) : (
-                <>
-                  <Play className="w-4 h-4 fill-current" />
-                  Send
-                </>
+                <Play className="size-4 fill-current" />
               )}
+              {isLoading ? "Sending" : "Send"}
             </button>
           </div>
 
-          {/* Config Tabs */}
-          <div className="flex flex-col flex-1 bg-card border border-border rounded-xl overflow-hidden min-h-[250px] min-w-0">
-            {/* ── SCROLLABLE TABS ───────────────────────────────────────── */}
-            <div className="flex items-center border-b border-border bg-muted/50 px-2 pt-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              {(["params", "headers", "body"] as const).map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={cn(
-                    "px-3 sm:px-4 py-2 text-xs font-semibold capitalize transition-all border-b-2 whitespace-nowrap shrink-0 cursor-pointer",
-                    activeTab === tab
-                      ? cn(theme.tabBorder ?? theme.border ?? "border-primary", theme.text)
-                      : "border-transparent text-muted-foreground hover:text-foreground",
-                  )}
-                >
-                  {tab}
-                  {tab === "params" &&
-                    params.filter((p) => p.key).length > 0 &&
-                    ` (${params.filter((p) => p.key).length})`}
-                  {tab === "headers" &&
-                    headers.filter((p) => p.key).length > 0 &&
-                    ` (${headers.filter((p) => p.key).length})`}
-                  {tab === "body" &&
-                    method !== "GET" &&
-                    body.trim().length > 2 &&
-                    " (Raw)"}
-                </button>
-              ))}
+          {/* ── CONFIG ──────────────────────────────────────────────────── */}
+          <div
+            className={cn(
+              "flex min-h-[250px] min-w-0 flex-1 flex-col rounded-[1.75rem] bg-card p-3",
+              SURFACE,
+            )}
+          >
+            <div
+              role="tablist"
+              className={cn(
+                "relative flex w-full items-center [overflow-x:auto] rounded-full p-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+                WELL,
+              )}
+            >
+              {indicator && (
+                <span
+                  aria-hidden
+                  className="absolute inset-y-1 rounded-full bg-card shadow-[0_1px_2px_rgba(0,0,0,0.06),0_4px_12px_-6px_rgba(0,0,0,0.18)] transition-[left,width] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
+                  style={{ left: indicator.left, width: indicator.width }}
+                />
+              )}
+              {TABS.map((tab) => {
+                const count = tabCount(tab);
+                return (
+                  <button
+                    key={tab}
+                    ref={(el) => {
+                      tabRefs.current[tab] = el;
+                    }}
+                    role="tab"
+                    aria-selected={activeTab === tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={cn(
+                      "relative z-10 flex shrink-0 cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-4 py-1.5 text-xs font-semibold capitalize transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline-2 focus-visible:outline-ring sm:flex-1",
+                      activeTab === tab
+                        ? "text-foreground"
+                        : "text-muted-foreground hover:text-foreground",
+                    )}
+                  >
+                    {tab}
+                    {count > 0 && (
+                      <span
+                        className={cn(
+                          "min-w-4 rounded-full px-1 text-center text-[10px] leading-4 tabular-nums transition-colors duration-500",
+                          activeTab === tab ? cn(theme.bg) : "bg-foreground/10 text-muted-foreground",
+                        )}
+                      >
+                        {count}
+                      </span>
+                    )}
+                    {tab === "body" && method !== "GET" && body.trim().length > 2 && (
+                      <span className={cn("size-1.5 rounded-full", theme.bg)} aria-label="Has body" />
+                    )}
+                  </button>
+                );
+              })}
             </div>
 
-            <div className="p-3 sm:p-4 flex-1 overflow-y-auto">
+            <div ref={panelRef} role="tabpanel" className="flex-1 overflow-y-auto px-1 pb-1 pt-4">
               {activeTab === "params" && renderKvEditor(params, setParams)}
               {activeTab === "headers" && renderKvEditor(headers, setHeaders)}
               {activeTab === "body" && (
-                <div className="w-full h-full flex flex-col relative group">
+                <div data-blur className="relative flex h-full w-full flex-col">
                   {method === "GET" && (
-                    <div className="absolute inset-0 bg-card/80 backdrop-blur-[1px] z-10 flex items-center justify-center rounded-lg p-4 text-center">
-                      <p className="text-xs sm:text-sm font-medium text-muted-foreground">
+                    <div className="absolute inset-0 z-10 flex items-center justify-center rounded-[1.25rem] bg-card/60 p-4 text-center backdrop-blur-sm">
+                      <p className="text-xs font-medium text-muted-foreground sm:text-sm">
                         GET requests typically do not have a body.
                       </p>
                     </div>
@@ -501,7 +639,11 @@ export const ApiPlaygroundBlock = forwardRef<
                   <textarea
                     value={body}
                     onChange={(e) => setBody(e.target.value)}
-                    className="w-full h-full min-h-[150px] p-3 text-xs sm:text-sm font-mono bg-muted border border-input rounded-lg outline-none focus:border-ring resize-none transition-colors"
+                    aria-label="Request body"
+                    className={cn(
+                      FIELD,
+                      "h-full min-h-[150px] resize-none rounded-[1.25rem] p-4 text-xs leading-relaxed sm:text-[13px]",
+                    )}
                     spellCheck={false}
                   />
                 </div>
@@ -511,62 +653,76 @@ export const ApiPlaygroundBlock = forwardRef<
         </div>
 
         {/* RIGHT PANE: RESPONSE VIEWER */}
-        <div className="flex flex-col bg-card rounded-xl overflow-hidden border border-border min-h-[300px] min-w-0">
-          {/* ── RESPONSIVE TERMINAL HEADER ──────────────────────────────── */}
-          <div className="flex flex-wrap items-center justify-between gap-2 px-3 sm:px-4 py-2.5 bg-muted/80 border-b border-border">
-            <div className="flex items-center gap-2">
-              <TerminalSquare className="w-4 h-4 text-muted-foreground shrink-0" />
-              <span className="text-xs font-semibold text-muted-foreground">
-                Response
-              </span>
+        <div
+          className={cn(
+            "flex min-h-[300px] min-w-0 flex-col rounded-[1.75rem] bg-card p-3",
+            SURFACE,
+          )}
+        >
+          <div ref={responseRef} className="flex min-h-0 flex-1 flex-col">
+            <div className="flex flex-wrap items-center justify-between gap-2 px-2 pb-3 pt-1">
+              <div className="flex items-center gap-2.5">
+                <span className={cn("flex size-8 items-center justify-center rounded-full", WELL)}>
+                  <TerminalSquare className="size-4 text-muted-foreground" />
+                </span>
+                <span className="text-sm font-semibold">Response</span>
+              </div>
+
+              {response && !isLoading && (
+                <div className="flex items-center gap-2 font-mono text-[11px]">
+                  <span
+                    data-blur
+                    className={cn(
+                      "flex items-center gap-1.5 rounded-full px-2.5 py-1 font-semibold",
+                      response.status < 400
+                        ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                        : "bg-red-500/10 text-red-600 dark:text-red-400",
+                    )}
+                  >
+                    {response.status < 400 ? (
+                      <CheckCircle2 className="size-3 shrink-0" />
+                    ) : (
+                      <XCircle className="size-3 shrink-0" />
+                    )}
+                    {response.status}
+                  </span>
+                  <span
+                    data-blur
+                    className={cn("flex items-center gap-1.5 rounded-full px-2.5 py-1 text-muted-foreground", WELL)}
+                  >
+                    <Clock className="size-3 shrink-0" />
+                    {response.timeMs}ms
+                  </span>
+                </div>
+              )}
             </div>
 
-            {response && (
-              <div className="flex items-center gap-3 sm:gap-4 text-[11px] font-mono">
-                <div
-                  className={cn(
-                    "flex items-center gap-1 sm:gap-1.5 font-semibold",
-                    response.status < 400
-                      ? "text-emerald-600 dark:text-emerald-400"
-                      : "text-red-600 dark:text-red-400",
-                  )}
-                >
-                  {response.status < 400 ? (
-                    <CheckCircle2 className="w-3 h-3 shrink-0" />
-                  ) : (
-                    <XCircle className="w-3 h-3 shrink-0" />
-                  )}
-                  Status: {response.status}
+            <div className={cn("relative flex-1 overflow-auto rounded-[1.25rem] p-4", WELL)}>
+              {isLoading ? (
+                <div role="status" aria-live="polite" className="flex h-full flex-col justify-center gap-3">
+                  {[72, 48, 88, 36, 60].map((w, i) => (
+                    <span
+                      key={i}
+                      className="h-3 animate-pulse rounded-full bg-foreground/10 blur-[1.5px] motion-reduce:animate-none"
+                      style={{ width: `${w}%`, animationDelay: `${i * 120}ms` }}
+                    />
+                  ))}
+                  <span className="sr-only">Awaiting response…</span>
                 </div>
-                <div className="flex items-center gap-1 sm:gap-1.5 text-muted-foreground border-l border-border pl-3 sm:pl-4">
-                  <Clock className="w-3 h-3 shrink-0" />
-                  {response.timeMs}ms
+              ) : response ? (
+                <pre data-blur className="font-mono text-xs leading-relaxed text-foreground/70 sm:text-[13px]">
+                  <code>{highlightJson(JSON.stringify(response.data, null, 2))}</code>
+                </pre>
+              ) : (
+                <div className="flex h-full select-none flex-col items-center justify-center gap-2 p-4 text-center">
+                  <span className="mb-1 flex size-12 items-center justify-center rounded-full bg-card shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_20px_-10px_rgba(0,0,0,0.18)]">
+                    <TerminalSquare className="size-5 text-muted-foreground" />
+                  </span>
+                  <p className="text-sm font-medium text-foreground/80">No response yet</p>
+                  <p className="text-xs text-muted-foreground">Hit Send to see what comes back.</p>
                 </div>
-              </div>
-            )}
-          </div>
-
-          {/* Terminal Body */}
-          <div className="relative flex-1 p-3 sm:p-4 overflow-y-auto overflow-x-auto">
-            {isLoading ? (
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-card/80">
-                <Activity className={cn("w-6 h-6 animate-pulse", theme.text)} />
-                <span className="text-xs font-mono text-muted-foreground animate-pulse">
-                  Awaiting response...
-                </span>
-              </div>
-            ) : response ? (
-              <pre className="text-xs sm:text-[13px] font-mono leading-relaxed text-foreground">
-                <code>{JSON.stringify(response.data, null, 2)}</code>
-              </pre>
-            ) : (
-              <div className="h-full flex flex-col items-center justify-center gap-2 opacity-50 dark:opacity-30 select-none text-center p-4">
-                <TerminalSquare className="w-10 sm:w-12 h-10 sm:h-12 text-muted-foreground mb-2" />
-                <p className="text-xs sm:text-sm font-medium text-muted-foreground">
-                  Hit Send to get a response
-                </p>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>

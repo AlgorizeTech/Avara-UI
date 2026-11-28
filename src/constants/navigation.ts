@@ -245,6 +245,7 @@ const rawNavigation: NavigationItem[] = [
         slug: "glass-panel",
         keywords: ["glass", "glassmorphism", "frosted", "aurora", "bento", "panel", "card", "backdrop"],
       },
+      { label: "Guest Morph", slug: "guest-morph", badge: "New", addedOn: "2026-11-28", keywords: ["guest", "invite", "rsvp", "event", "people", "pill", "morph", "pending"] },
       { label: "Half Stars", slug: "half-stars" },
       { label: "Heart Signal", slug: "heart-signal" },
       { label: "Image Compare", slug: "image-compare" },

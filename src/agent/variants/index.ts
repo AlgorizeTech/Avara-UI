@@ -216,7 +216,7 @@ export const NO_CHOICE_NEEDED: string[] = [
   "hover-peek",
   // Linear-style command palette with full keyboard navigation and trigger button.
   "command-palette",
-  // Its three examples are the same surface-neutral card inside a plain card, a glass slab and a
+  // Its two examples are the same surface-neutral card inside a plain card and a
   // liquid-glass panel: the surface comes from the container, nothing inside the card changes
   // (audited 2026-11-25).
   "booking-card",

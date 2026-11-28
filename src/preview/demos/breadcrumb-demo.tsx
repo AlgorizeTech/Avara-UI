@@ -5,7 +5,12 @@ import {
   BreadcrumbColor,
   BreadcrumbVariant,
 } from "@/components/custom/blocks/BreadcrumbBlock";
-import { FileText, Folder, Home, Settings } from "lucide-react";
+import {
+  FileTextIcon as FileText,
+  FolderIcon as Folder,
+  HomeIcon as Home,
+  SettingsIcon as Settings,
+} from "@/components/custom/ui/animated-icons";
 
 // Mock Paths
 const shortPath = [

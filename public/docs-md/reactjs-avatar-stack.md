@@ -90,40 +90,9 @@ export default function BasicAvatarStack() {
 
 ## With tooltip (Zoom on hover)
 
-Hovering a face zooms it upward and shows its name in a tooltip.
+Hovering a face zooms it upward and shows its name in a tooltip with a pointer arrow.
 
-- `type="tooltip"` shows the avatar's name and designation in a floating tooltip.
-
-```tsx
-import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
-
-const PEOPLE = [
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy", designation: "Co-Founder & CTO" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade", designation: "Managing Director" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo Silva", designation: "Chairman & Co-Founder" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790082180/pexels-photo-1520760-1790082180553.jpg", alt: "June Carter", designation: "President & Co-Founder" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145141/pexels-photo-6311475-1790145143489.jpg", alt: "Sam Wilson", designation: "Chief Executive Officer" },
-];
-
-export default function TooltipZoomAvatarStack() {
-  return (
-    <AvatarStack
-      avatars={PEOPLE}
-      variant="zoom"
-      type="tooltip"
-      size="md"
-      max={4}
-    />
-  );
-}
-```
-
-## With tooltip arrow (Zoom on hover)
-
-The same tooltip with a pointer arrow and a spring popup.
-
-- `type="tooltip-arrow"` adds a pointer arrow anchoring the tooltip to the top of the avatar.
+- `variant="zoom"` scales the hovered face up and shows its name in a tooltip with a pointer arrow.
 
 ```tsx
 import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
@@ -142,38 +111,6 @@ export default function TooltipArrowAvatarStack() {
     <AvatarStack
       avatars={PEOPLE}
       variant="zoom"
-      type="tooltip-arrow"
-      size="md"
-      max={4}
-    />
-  );
-}
-```
-
-## Spread on hover (Expand width)
-
-Hovering the stack fans the faces out from the centre and lifts the hovered one, without zooming.
-
-- `variant="spread"` fans the faces out symmetrically and lifts the hovered one.
-
-```tsx
-import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
-
-const PEOPLE = [
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy", designation: "Co-Founder & CTO" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade", designation: "Managing Director" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo Silva", designation: "Chairman & Co-Founder" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790082180/pexels-photo-1520760-1790082180553.jpg", alt: "June Carter", designation: "President & Co-Founder" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145141/pexels-photo-6311475-1790145143489.jpg", alt: "Sam Wilson", designation: "Chief Executive Officer" },
-];
-
-export default function SpreadOnHover() {
-  return (
-    <AvatarStack
-      avatars={PEOPLE}
-      variant="spread"
-      type="default"
       size="md"
       max={4}
     />
@@ -183,40 +120,9 @@ export default function SpreadOnHover() {
 
 ## Spread with tooltip
 
-The spread fan-out with a floating name tooltip above the hovered face.
+The spread fan-out with the same arrow tooltip above the hovered face.
 
-- `type="tooltip"` adds a floating tooltip without an arrow.
-
-```tsx
-import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
-
-const PEOPLE = [
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy", designation: "Co-Founder & CTO" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade", designation: "Managing Director" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo Silva", designation: "Chairman & Co-Founder" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790082180/pexels-photo-1520760-1790082180553.jpg", alt: "June Carter", designation: "President & Co-Founder" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145141/pexels-photo-6311475-1790145143489.jpg", alt: "Sam Wilson", designation: "Chief Executive Officer" },
-];
-
-export default function SpreadWithTooltip() {
-  return (
-    <AvatarStack
-      avatars={PEOPLE}
-      variant="spread"
-      type="tooltip"
-      size="md"
-      max={4}
-    />
-  );
-}
-```
-
-## Spread with tooltip arrow
-
-The spread fan-out with a pointer-arrow tooltip.
-
-- `type="tooltip-arrow"` adds a floating tooltip with an anchored pointer arrow.
+- `variant="spread"` fans the faces out symmetrically and lifts the hovered one, with the same arrow tooltip.
 
 ```tsx
 import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
@@ -235,37 +141,8 @@ export default function SpreadWithTooltipArrow() {
     <AvatarStack
       avatars={PEOPLE}
       variant="spread"
-      type="tooltip-arrow"
       size="md"
       max={4}
-    />
-  );
-}
-```
-
-## With an action
-
-Three faces with tooltips and a trailing + button.
-
-- `action=() => void` adds the built-in + button at the end of the stack and calls your handler when it is clicked.
-
-```tsx
-import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
-
-const PEOPLE = [
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy", designation: "Co-Founder & CTO" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade", designation: "Managing Director" },
-];
-
-export default function Community() {
-  return (
-    <AvatarStack
-      avatars={PEOPLE}
-      variant="zoom"
-      type="tooltip"
-      size="md"
-      action={() => console.log("Action clicked")}
     />
   );
 }
@@ -296,12 +173,15 @@ export default function JoinedThisMonth() {
       <AvatarStack
         avatars={PEOPLE}
         variant="zoom"
-        type="tooltip-arrow"
-        max={3}
+          max={3}
         className="m-0 p-0"
         onMoreClick={(restCount) => console.log(`Clicked +${restCount} more`)}
       />
-      <p className="text-sm text-muted-foreground">
+      <p
+        className="text-sm text-muted-foreground motion-reduce:!animate-none"
+        style={{ animation: "avara-copy-in 800ms cubic-bezier(0.22, 1, 0.36, 1) 700ms backwards" }}
+      >
+        <style>{"@keyframes avara-copy-in { from { opacity: 0; transform: translateY(8px); filter: blur(10px); } }"}</style>
         <span className="font-semibold text-foreground">2,400+</span> people joined this month
       </p>
     </div>
@@ -338,7 +218,7 @@ export default function SizesDemo() {
       <AvatarStack avatars={PEOPLE} variant="zoom" type="default" size="md" max={4} className="m-0 p-0" />
 
       {/* Large with arrow tooltip */}
-      <AvatarStack avatars={PEOPLE} variant="zoom" type="tooltip-arrow" size="lg" max={4} className="m-0 p-0" />
+      <AvatarStack avatars={PEOPLE} variant="zoom" size="lg" max={4} className="m-0 p-0" />
     </div>
   );
 }
@@ -390,7 +270,7 @@ export default function SizesDemo() {
 | --- | --- | --- | --- |
 | `avatars` | `&#123; src: string; alt?: string; name?: string; tooltip?: string; designation?: string; role?: string; fallback?: string &#125;[]` | Required | The list of faces in order. Hover tooltips display the avatar's name/alt, and optionally `designation`/`role` beneath it if provided. |
 | `variant` | `"default" \| "shift" \| "zoom" \| "spread"` | `"default"` | Presentation style: `shift` (animate-ui spring shift upward with pointer tooltip), `zoom` (scale up on hover with fixed gap), or `spread` (smoothly fan out to the right and elevate on hover). |
-| `type` | `"default" \| "tooltip" \| "tooltip-arrow"` | `"tooltip"` | Tooltip presentation type for `zoom` and `spread` variants: `default` (no tooltip), `tooltip` (clean floating tooltip), or `tooltip-arrow` (tooltip with anchored pointer arrow). |
+| `type` | `"default" \| "tooltip" \| "tooltip-arrow"` | `"tooltip-arrow"` | Tooltip presentation type for `zoom` and `spread` variants: `default` (no tooltip), `tooltip` (clean floating tooltip), or `tooltip-arrow` (tooltip with anchored pointer arrow). |
 | `size` | `"sm" \| "md" \| "lg" \| "xl"` | `"md"` | Avatar diameter: `sm` (28px), `md` (36px), `lg` (44px), or `xl` (48px). |
 | `max` | `number` | `—` | Maximum faces shown before the rest fold into a `+N` count disc. If omitted, all avatars in the list are displayed. |
 | `onMoreClick` | `(restCount: number, hiddenAvatars: StackAvatar[], event: MouseEvent) => void` | — | Click handler triggered when the folded `+N` counter disc is clicked. |
@@ -402,7 +282,7 @@ export default function SizesDemo() {
 | `transitionDuration` | `number` | `500` | Duration of the spread and hover transition in milliseconds for a smooth, gentle animation. |
 | `liftOnHover` | `boolean` | `true` except for `spread` | Whether the hovered face rises above neighbours and scales up slightly. |
 | `showTooltip` | `boolean` | `true` | Whether hover reveals the avatar's `alt` text in a tooltip. Set to `false` to disable tooltips. (Alias: `tooltip`). |
-| `showTooltipArrow` | `boolean` | `false` | Whether to render an anchored pointer arrow beneath the hover tooltip. |
+| `showTooltipArrow` | `boolean` | `true` unless `type` is `"tooltip"` | Whether to render an anchored pointer arrow beneath the hover tooltip. |
 
 ## Works with other components
 
@@ -428,11 +308,11 @@ Pass `action`. A function becomes the button's click handler, `{ onClick, label 
 
 ## How do I show names and roles in AvatarStack tooltips?
 
-Add `name` to each item in `avatars`, plus `designation` or `role` for a second line. The tooltip falls back to `alt` or `tooltip` when there is no `name`. Turn tooltips off with `type="default"` or `showTooltip={false}`, and add an arrow with `type="tooltip-arrow"` (not in the `shift` variant).
+Add `name` to each item in `avatars`, plus `designation` or `role` for a second line. The tooltip falls back to `alt` or `tooltip` when there is no `name`. Turn tooltips off with `type="default"` or `showTooltip={false}`, and use `type="tooltip"` for a tooltip without the arrow (the arrow is on by default, but not in the `shift` variant).
 
 ## What does AvatarStack depend on, and does it run in Vite?
 
-It runs in Vite and Next.js, with no `next/*` imports. The install adds `@radix-ui/react-avatar` and `lucide-react`, and pulls in the library's Tooltip and Avatar items plus a small `animate` helper that handles `prefers-reduced-motion` for the `shift` spring.
+It runs in Vite and Next.js, with no `next/*` imports. The install adds `@radix-ui/react-avatar`, and pulls in the library's Tooltip, Avatar and animated icon items plus a small `animate` helper that handles `prefers-reduced-motion` for the `shift` spring.
 
 ---
 

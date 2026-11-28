@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-25T07:49:46.682Z",
-  "totalFiles": 351,
+  "generatedAt": "2026-11-28T12:35:35.863Z",
+  "totalFiles": 357,
   "files": [
     {
       "name": "docs",
@@ -49,6 +49,12 @@
       "path": "/docs-md/nextjs-animated-list.md",
       "url": "/docs/nextjs/animated-list",
       "originalMdx": "[framework]\\animated-list\\page.mdx"
+    },
+    {
+      "name": "nextjs/animated-number",
+      "path": "/docs-md/nextjs-animated-number.md",
+      "url": "/docs/nextjs/animated-number",
+      "originalMdx": "[framework]\\animated-number\\page.mdx"
     },
     {
       "name": "nextjs/animated-timeline",
@@ -489,6 +495,12 @@
       "originalMdx": "[framework]\\gsap-components\\page.mdx"
     },
     {
+      "name": "nextjs/guest-morph",
+      "path": "/docs-md/nextjs-guest-morph.md",
+      "url": "/docs/nextjs/guest-morph",
+      "originalMdx": "[framework]\\guest-morph\\page.mdx"
+    },
+    {
       "name": "nextjs/half-stars",
       "path": "/docs-md/nextjs-half-stars.md",
       "url": "/docs/nextjs/half-stars",
@@ -903,6 +915,12 @@
       "originalMdx": "[framework]\\tech-stack\\page.mdx"
     },
     {
+      "name": "nextjs/templates/mailora",
+      "path": "/docs-md/nextjs-templates-mailora.md",
+      "url": "/docs/nextjs/templates/mailora",
+      "originalMdx": "[framework]\\templates\\mailora\\page.mdx"
+    },
+    {
       "name": "nextjs/templates/veloce",
       "path": "/docs-md/nextjs-templates-veloce.md",
       "url": "/docs/nextjs/templates/veloce",
@@ -1099,6 +1117,12 @@
       "path": "/docs-md/reactjs-animated-list.md",
       "url": "/docs/reactjs/animated-list",
       "originalMdx": "[framework]\\animated-list\\page.mdx"
+    },
+    {
+      "name": "reactjs/animated-number",
+      "path": "/docs-md/reactjs-animated-number.md",
+      "url": "/docs/reactjs/animated-number",
+      "originalMdx": "[framework]\\animated-number\\page.mdx"
     },
     {
       "name": "reactjs/animated-timeline",
@@ -1539,6 +1563,12 @@
       "originalMdx": "[framework]\\gsap-components\\page.mdx"
     },
     {
+      "name": "reactjs/guest-morph",
+      "path": "/docs-md/reactjs-guest-morph.md",
+      "url": "/docs/reactjs/guest-morph",
+      "originalMdx": "[framework]\\guest-morph\\page.mdx"
+    },
+    {
       "name": "reactjs/half-stars",
       "path": "/docs-md/reactjs-half-stars.md",
       "url": "/docs/reactjs/half-stars",
@@ -1951,6 +1981,12 @@
       "path": "/docs-md/reactjs-tech-stack.md",
       "url": "/docs/reactjs/tech-stack",
       "originalMdx": "[framework]\\tech-stack\\page.mdx"
+    },
+    {
+      "name": "reactjs/templates/mailora",
+      "path": "/docs-md/reactjs-templates-mailora.md",
+      "url": "/docs/reactjs/templates/mailora",
+      "originalMdx": "[framework]\\templates\\mailora\\page.mdx"
     },
     {
       "name": "reactjs/templates/veloce",
