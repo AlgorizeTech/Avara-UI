@@ -132,7 +132,7 @@ export default function PlyrAudioHero() {
 
 ## About Shadcn Audio Player
 
-**What it is.** `AudioPlayer` plays one audio file through a plain `<audio>` element in two layouts: `"hero"` (artwork card with custom transport) and `"bar"` (a compact single row). It needs no player library, only `lucide-react` icons.
+**What it is.** `AudioPlayer` plays one audio file through a plain `<audio>` element in two layouts: `"hero"` (artwork card with custom transport) and `"bar"` (a compact single row). It needs no player library, only the `ui-animated-icons` item for its icons.
 
 **How it is built.** The `<audio>` element is the source of truth. The component listens to its `play`, `pause`, `timeupdate`, `volumechange` and `ended` events, so media keys and the OS keep the UI correct. The accent comes from `--theme-color`, falling back to `--primary`. `PlyrPlayer` with `mediaType="audio"` is the alternative.
 

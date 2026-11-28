@@ -287,6 +287,7 @@
     "src/components/custom/squircle-carousel.tsx",
     "src/components/custom/ui/FluidGlassSlider.tsx",
     "src/components/custom/ui/accordion.tsx",
+    "src/components/custom/ui/animated-icons.tsx",
     "src/components/custom/ui/avatar.tsx",
     "src/components/custom/ui/badge-variants.ts",
     "src/components/custom/ui/badge.tsx",

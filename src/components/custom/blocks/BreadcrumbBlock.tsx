@@ -1,7 +1,11 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { ChevronRight, MoreHorizontal, Slash } from "lucide-react";
+import {
+  ChevronRightIcon as ChevronRight,
+  MoreHorizontalIcon as MoreHorizontal,
+  SlashIcon as Slash,
+} from "@/components/custom/ui/animated-icons";
 import React, { useState } from "react";
 import { getThemeStyles } from "./breadcrumb-theme";
 

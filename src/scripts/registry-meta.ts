@@ -1301,6 +1301,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["utilities"],
     docs: "Named exports: Avatar, AvatarImage, AvatarFallback. Derived from shadcn/ui (MIT, Copyright (c) 2023 shadcn).",
   },
+  "ui-animated-icons": {
+    description:
+      "The Lucide icon set with a short motion on each icon, played when its button, link or tab is hovered or focused. Used by the library's components in place of static icons.",
+    categories: ["utilities"],
+    docs: "Named exports: one component per icon (ChevronDownIcon, CheckIcon, BellIcon …), plus the IconProps and IconComponent types. They take the same props as a Lucide icon (size, strokeWidth, color, className) plus `animated` (default true) and `animateOnMount`. Motion runs on the Web Animations API, so it adds no npm package and works inside GSAP and Motion components alike; it stands still under prefers-reduced-motion. To add an icon, copy its node list from lucide-react into a defineIcon() call.",
+  },
   "ui-badge": {
     description:
       "A small status label primitive with CVA-driven variants. Used internally by pricing blocks.",

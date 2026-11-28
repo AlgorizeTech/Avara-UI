@@ -297,7 +297,7 @@ export default function MultipleOpenFaq() {
 
 **What it is.** A data-driven accordion for React built on the Radix UI primitive, shipping eight list variants plus an interactive `BrandLogoAccordion` showcase. Pass an `accordionData` array and it renders icons, triggers, and animated panels.
 
-**How it is built.** The `default`, `tray`, `inset`, and `bracket` variants animate via CSS keyframes inside the component, while `animation="stack"` uses the Web Animations API—requiring no external animation library beyond Radix UI and `lucide-react`. Every variant reads your shadcn theme tokens (`--primary`, `--border`, `--card`) and respects `prefers-reduced-motion`.
+**How it is built.** The `default`, `tray`, `inset`, and `bracket` variants animate via CSS keyframes inside the component, while `animation="stack"` uses the Web Animations API—requiring no external animation library beyond Radix UI and the `ui-animated-icons` item. Every variant reads your shadcn theme tokens (`--primary`, `--border`, `--card`) and respects `prefers-reduced-motion`.
 
 **When to use it.** Reach for it in FAQ sections, settings panels, onboarding checklists, and help centers, or use `brand-reveal` for client and partner showcases. When using `animation="stack"`, apply it once per page with at least three items and a `defaultValue` set so the open card is part of the initial deal.
 

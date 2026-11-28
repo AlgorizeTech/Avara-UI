@@ -369,6 +369,23 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
         }
     }
 
+    // Page-block edge: a fixed thin strip with two hairlines on any side that
+    // still holds pages, so it reads as paper without crowding the cover.
+    const edgeThickness = 5;
+    const rightThickness = currentTurned < totalLeaves ? edgeThickness : 0;
+    const leftThickness = currentTurned > 0 ? edgeThickness : 0;
+    // Landing on the first or last page empties one half of the spread. Drop that
+    // half's shadow and edge at once so no page-sized ghost lingers behind.
+    const snap = flipping !== null && (currentTurned === 0 || currentTurned === totalLeaves);
+    const shadowTransition = snap ? "none" : `left ${duration}s ${easing}, width ${duration}s ${easing}`;
+    const paperEdge = "#eee8da";
+    const paperLine = "rgba(70, 55, 30, 0.3)";
+    const twoLines = (dir: string) =>
+        `linear-gradient(${dir}, ${paperEdge} 0 1.4px, ${paperLine} 1.4px 2px, ${paperEdge} 2px 3.4px, ${paperLine} 3.4px 4px, ${paperEdge} 4px)`;
+    // Ground shadow spans only what is open: the closed cover, or the full spread.
+    const shadowLeft = currentTurned === 0 ? 0 : -effectivePageWidth;
+    const shadowRight = currentTurned === totalLeaves ? 0 : effectivePageWidth;
+
     return (
         <div
             className={cn("w-full flex flex-col items-center justify-center select-none py-6", className)}
@@ -403,15 +420,87 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                         page's own gutter gradient meets in the centre. */}
                     {showSpineBinding && (
                         <div
-                            className="absolute top-0 bottom-0 left-[-4px] w-[12px] z-[999] pointer-events-none"
+                            className="absolute top-0 bottom-0 pointer-events-none z-[999]"
                             style={{
-                                background: "linear-gradient(to right, rgba(0,0,0,0.38), rgba(0,0,0,0.16) 45%, transparent)",
-                                borderRadius: `${parsedRadius} 0 0 ${parsedRadius}`,
+                                left: 0,
+                                width: 24,
+                                background: "linear-gradient(to right, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.18) 20%, rgba(0,0,0,0.08) 45%, rgba(0,0,0,0.02) 75%, transparent 100%)",
+                                filter: "blur(3px)",
                                 opacity: currentTurned === 0 ? 1 : 0,
                                 transition: `opacity ${duration}s ${easing}`,
                             }}
                         />
                     )}
+
+                    {/* Soft ground shadow: a wide ambient pool plus a tight contact line */}
+                    {shadowIntensity > 0 && (
+                        <>
+                            <div
+                                aria-hidden
+                                className="absolute pointer-events-none"
+                                style={{
+                                    zIndex: 0,
+                                    left: shadowLeft - 14,
+                                    width: shadowRight - shadowLeft + 28,
+                                    bottom: -26,
+                                    height: 44,
+                                    borderRadius: "50%",
+                                    background: `radial-gradient(ellipse at center, rgba(0,0,0,${shadowIntensity * 0.75}) 0%, rgba(0,0,0,${shadowIntensity * 0.35}) 45%, transparent 72%)`,
+                                    filter: "blur(10px)",
+                                    transition: shadowTransition,
+                                }}
+                            />
+                            <div
+                                aria-hidden
+                                className="absolute pointer-events-none"
+                                style={{
+                                    zIndex: 0,
+                                    left: shadowLeft + 4,
+                                    width: shadowRight - shadowLeft - 8,
+                                    bottom: -6,
+                                    height: 10,
+                                    borderRadius: "50%",
+                                    background: `rgba(0,0,0,${shadowIntensity * 0.9})`,
+                                    filter: "blur(5px)",
+                                    transition: shadowTransition,
+                                }}
+                            />
+                        </>
+                    )}
+
+                    {/* Page blocks: the paper edges peeking out beside the covers */}
+                    {[
+                        { side: "right" as const, t: rightThickness },
+                        { side: "left" as const, t: leftThickness },
+                    ].map(({ side, t }) => (
+                        <div
+                            key={side}
+                            aria-hidden
+                            className="absolute pointer-events-none overflow-hidden"
+                            style={{
+                                zIndex: 0,
+                                top: 2,
+                                // The left stack lies over x in [-pageWidth, 0] of the container.
+                                left: side === "left" ? -(effectivePageWidth + t) : 0,
+                                right: side === "left" ? effectivePageWidth : -t,
+                                bottom: 2,
+                                borderRadius: side === "right" ? `0 ${parsedRadius} ${parsedRadius} 0` : `${parsedRadius} 0 0 ${parsedRadius}`,
+                                opacity: t < 0.5 ? 0 : 1,
+                                // A side that just lost its pages vanishes at once; one that
+                                // gains them fades in as the turning leaves arrive.
+                                transition: t < 0.5 ? "none" : `opacity ${duration * 0.4}s ${easing} ${duration * 0.6}s`,
+                            }}
+                        >
+                            <div
+                                className="absolute top-0 bottom-0"
+                                style={{
+                                    [side]: 0,
+                                    width: Math.max(t, 0),
+                                    background: `${twoLines(side === "right" ? "to right" : "to left")}`,
+                                }}
+                            />
+                        </div>
+                    ))}
 
                     {/* Book Leaves Stacking Loop */}
                     {pages.map((leaf, index) => {
@@ -448,15 +537,6 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                             leafRotation = -peekAngle;
                         }
 
-                        // One shadow per stack, cast by the leaf at its bottom: the
-                        // last leaf under the unturned stack, the first under the
-                        // turned one. Every leaf casting its own stacked the same
-                        // shadow N times into a dark halo on all sides, and a turned
-                        // leaf's box-shadow isn't hidden by backface-visibility.
-                        const castsShadow =
-                            shadowIntensity > 0 &&
-                            ((index === totalLeaves - 1 && !isTurned) || (index === 0 && isTurned));
-
                         const frontGrad = leaf.frontColor || "from-emerald-500 to-teal-600";
                         const backGrad = leaf.backColor || "from-indigo-500 to-purple-600";
 
@@ -480,12 +560,6 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                     transform: `rotateY(${leafRotation}deg)`,
                                     zIndex,
                                     borderRadius: frontRadius,
-                                    // Three soft layers (contact, mid, ambient) with negative
-                                    // spread keep the shadow beneath the book and free of hard
-                                    // edges, rather than one tight halo round every side.
-                                    boxShadow: castsShadow
-                                        ? `0 1px 2px rgba(0,0,0,${shadowIntensity * 0.25}), 0 8px 16px -6px rgba(0,0,0,${shadowIntensity * 0.55}), 0 28px 48px -18px rgba(0,0,0,${shadowIntensity})`
-                                        : "none",
                                 }}
                             >
                                 {/* FRONT FACE */}

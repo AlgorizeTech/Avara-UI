@@ -3,16 +3,16 @@
 import { cn } from "@/lib/utils";
 import { SelectBlock } from "./SelectBlock";
 import {
-  Activity,
-  Check,
-  CheckCircle2,
-  Clock,
-  Play,
-  Plus,
-  TerminalSquare,
-  Trash2,
-  XCircle,
-} from "lucide-react";
+  ActivityIcon as Activity,
+  CheckIcon as Check,
+  CheckCircle2Icon as CheckCircle2,
+  ClockIcon as Clock,
+  PlayIcon as Play,
+  PlusIcon as Plus,
+  TerminalSquareIcon as TerminalSquare,
+  Trash2Icon as Trash2,
+  XCircleIcon as XCircle,
+} from "@/components/custom/ui/animated-icons";
 import { prefersReducedMotion } from "@/lib/animate";
 import React, { forwardRef, useLayoutEffect, useRef, useState } from "react";
 import { getThemeStyles } from "./api-playground-theme";

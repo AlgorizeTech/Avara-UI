@@ -1,27 +1,27 @@
 "use client";
 
 import {
-  Calendar as CalendarIcon,
-  Calendar1,
-  CheckSquare,
-  ChevronDown,
+  CalendarIcon,
+  Calendar1Icon as Calendar1,
+  CheckSquareIcon as CheckSquare,
+  ChevronDownIcon as ChevronDown,
   ChevronDownIcon,
-  ChevronLeft,
+  ChevronLeftIcon as ChevronLeft,
   ChevronLeftIcon,
-  ChevronRight,
+  ChevronRightIcon as ChevronRight,
   ChevronRightIcon,
-  Clock,
-  Download,
-  Edit2,
-  Hash,
-  Menu,
-  MessageSquare,
-  Plus,
-  Square,
-  Trash2,
-  Video,
-  X,
-} from "lucide-react";
+  ClockIcon as Clock,
+  DownloadIcon as Download,
+  Edit2Icon as Edit2,
+  HashIcon as Hash,
+  MenuIcon as Menu,
+  MessageSquareIcon as MessageSquare,
+  PlusIcon as Plus,
+  SquareIcon as Square,
+  Trash2Icon as Trash2,
+  VideoIcon as Video,
+  XIcon as X,
+} from "@/components/custom/ui/animated-icons";
 import * as React from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { DayButton, DayPicker, getDefaultClassNames } from "react-day-picker";

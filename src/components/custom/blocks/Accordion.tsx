@@ -8,24 +8,24 @@ import {
 } from "@/components/custom/ui/accordion"; // Adjust path to your shadcn accordion if needed
 import { cn } from "@/lib/utils";
 import {
-  ArrowDown,
-  ArrowUpRight,
-  ChevronDown,
-  Code,
-  CreditCard,
-  FileText,
-  HelpCircle,
-  Lock,
-  MessageCircle,
-  Palette,
-  Plus,
-  RefreshCw,
-  Scale,
-  Shield,
-  Smartphone,
-  Sparkles,
-  Users,
-} from "lucide-react";
+  ArrowDownIcon as ArrowDown,
+  ArrowUpRightIcon as ArrowUpRight,
+  ChevronDownIcon as ChevronDown,
+  CodeIcon as Code,
+  CreditCardIcon as CreditCard,
+  FileTextIcon as FileText,
+  HelpCircleIcon as HelpCircle,
+  LockIcon as Lock,
+  MessageCircleIcon as MessageCircle,
+  PaletteIcon as Palette,
+  PlusIcon as Plus,
+  RefreshCwIcon as RefreshCw,
+  ScaleIcon as Scale,
+  ShieldIcon as Shield,
+  SmartphoneIcon as Smartphone,
+  SparklesIcon as Sparkles,
+  UsersIcon as Users,
+} from "@/components/custom/ui/animated-icons";
 import React from "react";
 
 // Icon Map for MDX/String compatibility

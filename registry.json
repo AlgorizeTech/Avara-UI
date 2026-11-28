@@ -32,11 +32,10 @@
       "categories": [
         "layout"
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "https://avaraui.com/r/ui-accordion.json",
+        "https://avaraui.com/r/ui-animated-icons.json",
         "utils"
       ],
       "files": [
@@ -82,10 +81,10 @@
         "forms"
       ],
       "dependencies": [
-        "gsap",
-        "lucide-react"
+        "gsap"
       ],
       "registryDependencies": [
+        "https://avaraui.com/r/ui-animated-icons.json",
         "utils"
       ],
       "files": [
@@ -166,6 +165,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
+        "https://avaraui.com/r/ui-animated-icons.json",
         "utils"
       ],
       "files": [
@@ -252,10 +252,10 @@
         "communication"
       ],
       "dependencies": [
-        "gsap",
-        "lucide-react"
+        "gsap"
       ],
       "registryDependencies": [
+        "https://avaraui.com/r/ui-animated-icons.json",
         "https://avaraui.com/r/ui-liquid-glass.json",
         "utils"
       ],
@@ -324,10 +324,10 @@
         "communication"
       ],
       "dependencies": [
-        "gsap",
-        "lucide-react"
+        "gsap"
       ],
       "registryDependencies": [
+        "https://avaraui.com/r/ui-animated-icons.json",
         "utils"
       ],
       "files": [
@@ -363,10 +363,9 @@
       "categories": [
         "feedback"
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": [],
       "registryDependencies": [
+        "https://avaraui.com/r/ui-animated-icons.json",
         "utils"
       ],
       "files": [
@@ -580,11 +579,10 @@
         "code",
         "data-display"
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "https://avaraui.com/r/select.json",
+        "https://avaraui.com/r/ui-animated-icons.json",
         "utils"
       ],
       "files": [
@@ -664,10 +662,9 @@
         "marketing",
         "media"
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": [],
       "registryDependencies": [
+        "https://avaraui.com/r/ui-animated-icons.json",
         "utils"
       ],
       "files": [
@@ -689,11 +686,11 @@
         "data-display"
       ],
       "dependencies": [
-        "@radix-ui/react-avatar",
-        "lucide-react"
+        "@radix-ui/react-avatar"
       ],
       "registryDependencies": [
         "https://avaraui.com/r/tooltip.json",
+        "https://avaraui.com/r/ui-animated-icons.json",
         "https://avaraui.com/r/ui-avatar.json",
         "utils"
       ],
@@ -890,10 +887,9 @@
       "categories": [
         "navigation"
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": [],
       "registryDependencies": [
+        "https://avaraui.com/r/ui-animated-icons.json",
         "utils"
       ],
       "files": [
@@ -919,10 +915,9 @@
       "categories": [
         "navigation"
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": [],
       "registryDependencies": [
+        "https://avaraui.com/r/ui-animated-icons.json",
         "utils"
       ],
       "files": [
@@ -984,6 +979,7 @@
       "dependencies": [],
       "registryDependencies": [
         "https://avaraui.com/r/icons.json",
+        "https://avaraui.com/r/ui-animated-icons.json",
         "utils"
       ],
       "files": [
@@ -1011,11 +1007,11 @@
       ],
       "dependencies": [
         "class-variance-authority",
-        "lucide-react",
         "react-day-picker"
       ],
       "registryDependencies": [
         "https://avaraui.com/r/select.json",
+        "https://avaraui.com/r/ui-animated-icons.json",
         "https://avaraui.com/r/ui-button.json",
         "utils"
       ],
@@ -5643,10 +5639,10 @@
         "utilities"
       ],
       "dependencies": [
-        "@radix-ui/react-accordion",
-        "lucide-react"
+        "@radix-ui/react-accordion"
       ],
       "registryDependencies": [
+        "https://avaraui.com/r/ui-animated-icons.json",
         "utils"
       ],
       "files": [
@@ -5657,6 +5653,33 @@
         }
       ],
       "docs": "Named exports: Accordion, AccordionItem, AccordionTrigger, AccordionContent. This is the internal primitive — most projects want the `accordion` item instead. Derived from shadcn/ui (MIT, Copyright (c) 2023 shadcn)."
+    },
+    {
+      "name": "ui-animated-icons",
+      "type": "registry:ui",
+      "title": "UI Animated Icons",
+      "author": "AlgorizeTech",
+      "description": "The Lucide icon set with a short motion on each icon, played when its button, link or tab is hovered or focused. Used by the library's components in place of static icons.",
+      "categories": [
+        "utilities"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/ui/animated-icons.tsx",
+          "type": "registry:ui",
+          "target": "components/custom/ui/animated-icons.tsx"
+        },
+        {
+          "path": "src/lib/animate.ts",
+          "type": "registry:ui",
+          "target": "lib/animate.ts"
+        }
+      ],
+      "docs": "Named exports: one component per icon (ChevronDownIcon, CheckIcon, BellIcon …), plus the IconProps and IconComponent types. They take the same props as a Lucide icon (size, strokeWidth, color, className) plus `animated` (default true) and `animateOnMount`. Motion runs on the Web Animations API, so it adds no npm package and works inside GSAP and Motion components alike; it stands still under prefers-reduced-motion. To add an icon, copy its node list from lucide-react into a defineIcon() call."
     },
     {
       "name": "ui-avatar",

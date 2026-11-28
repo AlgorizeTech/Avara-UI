@@ -408,7 +408,7 @@ Set `color` to `"primary"` (the default, which follows your theme tokens), `"ind
 
 ## Does AI Chat work in Vite and does it respect reduced motion?
 
-It runs in Vite as well as Next.js, since it has no `next/*` imports. It needs `gsap` and `lucide-react` from npm, or `motion` in the Motion build, and the `ui-liquid-glass` registry item. The Pro and Premium model flourishes are skipped when `prefers-reduced-motion: reduce` is set.
+It runs in Vite as well as Next.js, since it has no `next/*` imports. It needs `gsap` from npm, or `motion` in the Motion build, and the `ui-liquid-glass` and `ui-animated-icons` registry items. The Pro and Premium model flourishes are skipped when `prefers-reduced-motion: reduce` is set.
 
 ---
 

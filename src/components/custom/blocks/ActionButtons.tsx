@@ -3,20 +3,20 @@
 import * as React from "react";
 import gsap from "gsap";
 import {
-  ArrowRight,
-  Check,
-  ChevronDown,
-  CircleAlert,
-  Download,
-  GitBranch,
-  Loader2,
-  Lock,
-  Minus,
-  Plus,
-  Rocket,
-  RotateCcw,
-  type LucideIcon,
-} from "lucide-react";
+  ArrowRightIcon as ArrowRight,
+  CheckIcon as Check,
+  ChevronDownIcon as ChevronDown,
+  CircleAlertIcon as CircleAlert,
+  DownloadIcon as Download,
+  GitBranchIcon as GitBranch,
+  Loader2Icon as Loader2,
+  LockIcon as Lock,
+  MinusIcon as Minus,
+  PlusIcon as Plus,
+  RocketIcon as Rocket,
+  RotateCcwIcon as RotateCcw,
+  type IconComponent,
+} from "@/components/custom/ui/animated-icons";
 import { cn } from "@/lib/utils";
 import { bezierEase } from "./gsap-motion";
 import { springEase } from "./motion-curves";
@@ -1992,7 +1992,7 @@ export type SplitOption = {
   value: string;
   label: string;
   description?: string;
-  icon?: LucideIcon;
+  icon?: IconComponent;
 };
 
 export type SplitButtonProps = {

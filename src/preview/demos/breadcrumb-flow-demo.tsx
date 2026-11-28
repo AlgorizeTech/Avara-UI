@@ -8,7 +8,12 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/custom/blocks/BreadcrumbFlowBlock";
-import { ChevronRight, FileText, Folder, Home } from "lucide-react";
+import {
+  ChevronRightIcon as ChevronRight,
+  FileTextIcon as FileText,
+  FolderIcon as Folder,
+  HomeIcon as Home,
+} from "@/components/custom/ui/animated-icons";
 import { useState } from "react";
 
 type Page = { label: string; children?: string[] };

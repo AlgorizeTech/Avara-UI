@@ -1,7 +1,10 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { ChevronRight, Ellipsis } from "lucide-react";
+import {
+  ChevronRightIcon as ChevronRight,
+  EllipsisIcon as Ellipsis,
+} from "@/components/custom/ui/animated-icons";
 import React, {
   Children,
   createContext,

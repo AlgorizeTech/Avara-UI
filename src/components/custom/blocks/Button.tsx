@@ -2,42 +2,12 @@
 
 import { cn } from "@/lib/utils";
 import React, { useEffect, useState } from "react";
+import { ArrowRightIcon, LoaderCircleIcon, type IconProps } from "@/components/custom/ui/animated-icons";
 import { getButtonThemeStyle } from "./button-theme";
 
-const Loader2: React.FC<{ className?: string }> = ({ className }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={cn("animate-spin", className)}
-  >
-    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-  </svg>
-);
-
-const ArrowRightIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={className}
-    aria-hidden="true"
-  >
-    <path d="M5 12h14" />
-    <path d="m12 5 7 7-7 7" />
-  </svg>
+/** The loading spinner: always turning, so it takes no hover motion of its own. */
+const Loader2 = ({ className, ...props }: IconProps) => (
+  <LoaderCircleIcon animated={false} className={cn("animate-spin", className)} {...props} />
 );
 
 export type ButtonVariant =
@@ -1519,12 +1489,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             {!loading && (iconRight || (showArrow && !iconRight)) && (
               isTypographic && !iconRight ? (
                 <div className="relative z-10 w-4 h-4 overflow-hidden flex items-center">
-                  <ArrowRightIcon className="absolute w-4 h-4 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" />
-                  <ArrowRightIcon className="absolute w-4 h-4 translate-x-0 group-hover:translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" />
+                  <ArrowRightIcon animated={false} className="absolute w-4 h-4 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" />
+                  <ArrowRightIcon animated={false} className="absolute w-4 h-4 translate-x-0 group-hover:translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" />
                 </div>
               ) : (
                 <span className="inline-flex items-center transition-transform duration-200 group-hover:translate-x-1">
-                  {iconRight ?? <ArrowRightIcon className="w-4 h-4 stroke-[2] transition-transform duration-200 group-hover:translate-x-1" />}
+                  {iconRight ?? <ArrowRightIcon animated={false} className="w-4 h-4 stroke-[2] transition-transform duration-200 group-hover:translate-x-1" />}
                 </span>
               )
             )}

@@ -2,14 +2,14 @@
 
 import { cn } from "@/lib/utils";
 import {
-  Music,
-  Pause,
-  Play,
-  RotateCcw,
-  RotateCw,
-  Volume2,
-  VolumeX,
-} from "lucide-react";
+  MusicIcon as Music,
+  PauseIcon as Pause,
+  PlayIcon as Play,
+  RotateCcwIcon as RotateCcw,
+  RotateCwIcon as RotateCw,
+  Volume2Icon as Volume2,
+  VolumeXIcon as VolumeX,
+} from "@/components/custom/ui/animated-icons";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
 /**

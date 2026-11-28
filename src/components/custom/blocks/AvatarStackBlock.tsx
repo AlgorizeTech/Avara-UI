@@ -2,7 +2,9 @@
 
 import React, { useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo } from "react";
 import { createPortal } from "react-dom";
-import { Plus } from "lucide-react";
+import {
+  PlusIcon as Plus,
+} from "@/components/custom/ui/animated-icons";
 import { cn } from "@/lib/utils";
 import {
   prefersReducedMotion,
