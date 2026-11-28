@@ -75,18 +75,18 @@ export function BreadcrumbBlock({
 
   const getVariantClasses = (isActive: boolean, isEllipsis: boolean) => {
     const base =
-      "flex items-center gap-1.5 text-sm font-medium transition-all outline-none rounded-md px-2 py-1 -mx-2";
+      "flex items-center gap-1.5 text-sm font-medium transition-[color,background-color,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none outline-none rounded-full px-3 py-1.5 -mx-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring";
 
     switch (variant) {
       case "solid":
         return cn(
           base,
           isActive
-            ? cn("shadow-sm", theme.bg)
+            ? cn("shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-16px_rgba(0,0,0,0.18)]", theme.bg)
             : cn(
-                "bg-muted text-muted-foreground",
+                "bg-[#F7F7F6] dark:bg-background/50 text-muted-foreground",
                 !isEllipsis &&
-                  "hover:bg-muted hover:text-foreground",
+                  "hover:bg-[#EFEFED] dark:hover:bg-background/70 hover:text-foreground",
               ),
         );
       case "ghost":
@@ -98,7 +98,7 @@ export function BreadcrumbBlock({
                 "text-muted-foreground",
                 !isEllipsis &&
                   cn(
-                    "hover:bg-muted",
+                    "hover:bg-muted/50",
                     theme.hoverText,
                   ),
               ),
@@ -107,7 +107,7 @@ export function BreadcrumbBlock({
       case "classic":
       default:
         return cn(
-          "flex items-center gap-1.5 text-sm font-medium transition-colors outline-none",
+          "flex items-center gap-1.5 rounded-full text-sm font-medium transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
           isActive
             ? theme.text
             : cn(

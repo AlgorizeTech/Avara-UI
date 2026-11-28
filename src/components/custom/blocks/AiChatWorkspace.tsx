@@ -1666,6 +1666,7 @@ export default function AIChatWorkspace({
 
   const categories = ["All", ...Array.from(new Set(templates.map((t) => t.category).filter(Boolean) as string[]))];
   const visibleTemplates = templates.filter((t) => templateFilter === "All" || t.category === templateFilter);
+
   const connectedCount = connectors.filter((c) => connectorState[c.id] === "connected").length;
   const stripText = !isPro
     ? `Go Pro to link your apps to ${brandName}`

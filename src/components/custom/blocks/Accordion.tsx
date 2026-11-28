@@ -61,8 +61,6 @@ export type AccordionVariant =
   | "filled"
   | "ghost"
   | "elevated"
-  /** White tiles that settle to soft gray when open, with a plus that folds into a minus. */
-  | "soft"
   /** One rounded tray; the open row becomes a tile with an animated plus/minus chip. */
   | "tray"
   /** Pill rows; the open one rises as a card with the answer in an inset well. */
@@ -139,12 +137,15 @@ const VARIANTS: Record<Exclude<AccordionVariant, "card-filled" | "brand-reveal">
   // "Lift": closed rows are quiet hairline rows; the open one lifts out as a card.
   default: {
     list: "flex flex-col",
+    // Layout never changes between states (no margin or padding shift), so the
+    // open row only recolours and lifts while the panel's height animates.
     item: cn(
-      "relative rounded-2xl border-b border-border transition-all duration-300 ease-out last:border-b-0",
-      "data-[state=open]:my-2 data-[state=open]:border-b-transparent data-[state=open]:bg-card",
-      "data-[state=open]:ring-1 data-[state=open]:ring-[#F7F7F6] dark:data-[state=open]:ring-border",
+      "relative rounded-2xl border-b border-border last:border-b-0",
+      "shadow-[0_0_0_rgba(0,0,0,0)] ring-1 ring-transparent",
+      "transition-[background-color,box-shadow,border-color,--tw-ring-color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+      "data-[state=open]:border-b-transparent data-[state=open]:bg-card data-[state=open]:-translate-y-px",
+      "data-[state=open]:ring-[#F7F7F6] dark:data-[state=open]:ring-border",
       "data-[state=open]:shadow-[0_1px_2px_rgba(0,0,0,0.06),0_12px_24px_-18px_rgba(0,0,0,0.42)]",
-      "data-[state=open]:first:mt-0 data-[state=open]:last:mb-0 sm:data-[state=open]:-mx-3 sm:data-[state=open]:px-3",
       "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring/60",
     ),
     trigger: "items-center gap-4 px-4 py-4",
@@ -159,6 +160,7 @@ const VARIANTS: Record<Exclude<AccordionVariant, "card-filled" | "brand-reveal">
     content: "relative px-4 pb-5 pr-12 text-muted-foreground",
     contentWithIcon: "sm:pl-[4.5rem]",
     thread: true,
+    smooth: true,
   },
 
   // "Rail": one outlined panel; a primary rail grows down the open row.
@@ -225,30 +227,6 @@ const VARIANTS: Record<Exclude<AccordionVariant, "card-filled" | "brand-reveal">
     expandIcon: "chevron",
     content: "px-5 pb-5 pr-12 text-muted-foreground",
     contentWithIcon: "sm:pl-[4.25rem]",
-  },
-
-  // "Soft": white tiles that settle to soft gray when open; the plus folds into a minus.
-  soft: {
-    list: "flex flex-col gap-2.5",
-    item: cn(
-      "rounded-2xl bg-card ring-1 ring-[#F7F7F6] dark:ring-border/60",
-      CARD_SHADOW,
-      "transition-[background-color,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
-      "hover:bg-[#F7F7F6] data-[state=open]:bg-[#F7F7F6]",
-      "dark:hover:bg-muted/60 dark:data-[state=open]:bg-muted dark:data-[state=open]:hover:bg-muted",
-      "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring/60",
-    ),
-    trigger: "items-center gap-4 px-4 py-3.5 sm:px-5",
-    iconWrap: cn(
-      "flex size-9 shrink-0 items-center justify-center rounded-xl bg-muted text-muted-foreground transition-colors duration-300",
-      "group-hover:text-foreground group-data-[state=open]:bg-card group-data-[state=open]:text-foreground",
-    ),
-    title: "text-[15px] font-medium tracking-[-0.01em] text-foreground",
-    expand: cn(EXPAND_CHIP, "group-data-[state=open]:bg-foreground/15"),
-    expandIcon: "morph",
-    content: "px-4 pb-5 pr-14 text-muted-foreground sm:px-5 sm:pr-16",
-    contentWithIcon: "sm:pl-[4.75rem]",
-    smooth: true,
   },
 
   // "Tray": rows sit in one rounded tray; the open row becomes a soft tile and

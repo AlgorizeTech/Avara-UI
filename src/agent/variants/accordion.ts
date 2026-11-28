@@ -1,7 +1,7 @@
 import type { PageVariants } from "./types";
 
 /**
- * Accordion: the docs show 7 looks (inset, tray, bracket, soft, lift-card and ghost lists, brand-reveal showcase), all one registry item
+ * Accordion: the docs show 6 looks (inset, tray, bracket, lift-card and ghost lists, brand-reveal showcase), all one registry item
  * (`accordion`), chosen with the `variant` prop. How many panels stay open is
  * `interaction` (a behaviour), and the stack entrance is `animation`, so the
  * examples that only change those are not separate designs. Claims come from
@@ -9,7 +9,7 @@ import type { PageVariants } from "./types";
  */
 export const accordion: PageVariants = {
   slug: "accordion",
-  intro: "A data-driven accordion. You pass an `accordionData` array and the open panel is the only thing that gets the accent. The examples show the inset, tray, bracket, soft, lift-card and ghost lists and an automated brand reveal showcase; `variant` also accepts `soft`, `tray`, `inset`, `bracket`, `bordered`, `filled` and `elevated`.",
+  intro: "A data-driven accordion. You pass an `accordionData` array and the open panel is the only thing that gets the accent. The examples show the inset, tray, bracket, lift-card and ghost lists and an automated brand reveal showcase; `variant` also accepts `tray`, `inset`, `bracket`, `bordered`, `filled` and `elevated`.",
   gotchas: [
     "All of them are looks of the one `accordion` item: install it once and set `variant` from the index.",
     "How many panels may be open is the `interaction` prop (single, multiple, mandatory, non-collapsible), not a design; in multiple mode `defaultValue` must be an array.",
@@ -59,27 +59,13 @@ export const accordion: PageVariants = {
       setProps: { variant: "bracket" },
     },
     {
-      id: "soft",
-      label: "Soft tiles",
-      group: "Boxed",
-      summary: "Tinted tiles; the open one fills its chip with the accent as the plus folds into a minus.",
-      bestFor: ["a friendly product or support FAQ"],
-      avoidIf: ["you want a flat, document-like list"],
-      traits: ["tinted tile per row", "plus folds into minus", "CSS open and close motion"],
-      item: "accordion",
-      demo: "accordion",
-      example: "Soft tiles",
-      props: { variant: "soft", interaction: "single" },
-      setProps: { variant: "soft" },
-    },
-    {
       id: "default",
       label: "Lift card",
       group: "Quiet",
       summary: "Closed rows stay quiet and the open one lifts out as a card.",
       bestFor: ["a FAQ on a plain page background"],
       avoidIf: ["the accordion sits inside a card or panel that is already boxed"],
-      traits: ["open row becomes a card", "quiet closed rows"],
+      traits: ["open row becomes a card", "quiet closed rows", "CSS open and close motion"],
       item: "accordion",
       demo: "accordion",
       example: "Lift card",

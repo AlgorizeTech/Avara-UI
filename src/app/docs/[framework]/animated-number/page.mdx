@@ -8,7 +8,7 @@ import { extractCode } from "@/lib/code";
 
 # Shadcn Animated Number
 
-A number that counts up when it scrolls into view, then counts to each new value.
+A number that counts up when it scrolls into view, then counts, rolls or blurs to each new value.
 
 <ExampleShowcase minHeight={320} headingLevel={2}
   name="animated-number"
@@ -30,6 +30,8 @@ A number that counts up when it scrolls into view, then counts to each new value
 
 **How it works.** When `value` changes, it counts from the figure on screen to the new one, so a total can count down after a payment. `format` turns the running number into text, such as a currency string.
 
+**Variants.** `variant="count"` ticks through the values. `"roll"` slides each changed digit in from below when the number goes up and from above when it goes down. `"blur"` fades each changed digit in out of a blur, drifting the same way.
+
 **When to use it.** Use it for totals, balances and statistics that change. For a stat card with a label, use <DocLink to="counter">Counter</DocLink>.
 
 ## For AI agents
@@ -49,6 +51,7 @@ A number that counts up when it scrolls into view, then counts to each new value
 
 - Named export `AnimatedNumber` from `@/components/custom/blocks/AnimatedNumberBlock`. It renders a `span`; style it with `className`.
 - `format` runs every frame, so keep it cheap. Use `Intl.NumberFormat` created once, outside the component.
+- `variant="roll"` and `"blur"` animate per character, so `format` runs once per render, not per frame.
 - Screen readers get the final value, not the count.
 - Honours `prefers-reduced-motion`: the figure shows without counting.
 
@@ -84,6 +87,12 @@ A number that counts up when it scrolls into view, then counts to each new value
         <td><code>number</code></td>
         <td><code>0.9</code></td>
         <td>Seconds each count takes.</td>
+      </tr>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"count" | "roll" | "blur"</code></td>
+        <td><code>"count"</code></td>
+        <td>How the figure changes. Roll and blur follow the direction of the change.</td>
       </tr>
       <tr>
         <td><code>...props</code></td>

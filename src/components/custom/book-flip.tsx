@@ -54,7 +54,7 @@ export interface BookFlipProps {
     shadowIntensity?: number;
     /** Dynamically shift spine horizontally when book is open to center the 2-page spread (default: true) */
     spineShift?: boolean;
-    /** Border radius for pages (default: "4px") */
+    /** Outer corner radius of pages; the spine side stays nearly square like a bound book (default: "8px") */
     radius?: string | number;
     /** Enable page numbering tags (default: true) */
     showPageNumbers?: boolean;
@@ -192,6 +192,20 @@ const DEFAULT_PAGES: PageFlipLeaf[] = [
     },
 ];
 
+/** Fine light rim plus a soft inner falloff so the cut edge of a page reads as paper, not a crop. */
+function PaperEdge() {
+    return (
+        <div
+            aria-hidden
+            className="absolute inset-0 pointer-events-none z-20"
+            style={{
+                borderRadius: "inherit",
+                boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08), inset 0 0 22px rgba(0,0,0,0.16)",
+            }}
+        />
+    );
+}
+
 export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
     pages = DEFAULT_PAGES,
     defaultTurnedIndex = 0,
@@ -206,7 +220,7 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
     easing = "cubic-bezier(0.4, 0, 0.2, 1)",
     shadowIntensity = 0.35,
     spineShift = true,
-    radius = "4px",
+    radius = "8px",
     showPageNumbers = true,
     showSpineBinding = true,
     autoplay = false,
@@ -262,6 +276,11 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
     }, [currentTurned, duration]);
 
     const parsedRadius = typeof radius === "number" ? `${radius}px` : radius;
+    // A bound book is nearly square at the spine and rounded on the outer edges.
+    // The back face is mirrored inside the leaf, so its outer edge is local-left.
+    const spineRadius = `min(2px, ${parsedRadius})`;
+    const frontRadius = `${spineRadius} ${parsedRadius} ${parsedRadius} ${spineRadius}`;
+    const backRadius = `${parsedRadius} ${spineRadius} ${spineRadius} ${parsedRadius}`;
 
     const setTurned = useCallback((newCount: number) => {
         const clamped = Math.max(0, Math.min(newCount, totalLeaves));
@@ -380,10 +399,17 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                         transform: `translateX(${containerTranslateX}px)`,
                     }}
                 >
-                    {/* Spine Binding Crease Line */}
+                    {/* Spine hinge shading: only on the closed book. Once open, each
+                        page's own gutter gradient meets in the centre. */}
                     {showSpineBinding && (
                         <div
-                            className="absolute top-0 bottom-0 left-[-3px] w-[6px] rounded-l-sm bg-gradient-to-r from-black/80 via-zinc-800 to-black/30 z-[999] pointer-events-none opacity-95"
+                            className="absolute top-0 bottom-0 left-[-4px] w-[12px] z-[999] pointer-events-none"
+                            style={{
+                                background: "linear-gradient(to right, rgba(0,0,0,0.38), rgba(0,0,0,0.16) 45%, transparent)",
+                                borderRadius: `${parsedRadius} 0 0 ${parsedRadius}`,
+                                opacity: currentTurned === 0 ? 1 : 0,
+                                transition: `opacity ${duration}s ${easing}`,
+                            }}
                         />
                     )}
 
@@ -453,11 +479,12 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                     transition: `transform ${duration}s ${easing}`,
                                     transform: `rotateY(${leafRotation}deg)`,
                                     zIndex,
-                                    borderRadius: parsedRadius,
-                                    // Negative spread keeps it beneath the book rather
-                                    // than as an even halo round every edge.
+                                    borderRadius: frontRadius,
+                                    // Three soft layers (contact, mid, ambient) with negative
+                                    // spread keep the shadow beneath the book and free of hard
+                                    // edges, rather than one tight halo round every side.
                                     boxShadow: castsShadow
-                                        ? `0 14px 28px -10px rgba(0, 0, 0, ${shadowIntensity})`
+                                        ? `0 1px 2px rgba(0,0,0,${shadowIntensity * 0.25}), 0 8px 16px -6px rgba(0,0,0,${shadowIntensity * 0.55}), 0 28px 48px -18px rgba(0,0,0,${shadowIntensity})`
                                         : "none",
                                 }}
                             >
@@ -467,7 +494,7 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                     style={{
                                         backfaceVisibility: "hidden",
                                         WebkitBackfaceVisibility: "hidden",
-                                        borderRadius: parsedRadius,
+                                        borderRadius: frontRadius,
                                     }}
                                 >
                                     <img
@@ -479,7 +506,11 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent pointer-events-none" />
 
                                     {/* Integrated Spine Crease Overlay on Front Face */}
-                                    <div className="absolute top-0 bottom-0 left-0 w-[8px] bg-gradient-to-r from-black/90 via-zinc-900/60 to-transparent pointer-events-none z-30" />
+                                    <div
+                                        className="absolute top-0 bottom-0 left-0 w-[18%] pointer-events-none z-30"
+                                        style={{ background: "linear-gradient(to right, rgba(0,0,0,0.34) 0%, rgba(0,0,0,0.2) 16%, rgba(0,0,0,0.09) 38%, rgba(0,0,0,0.03) 68%, transparent 100%)" }}
+                                    />
+                                    <PaperEdge />
 
                                      {/* Top Header */}
                                     <div className="relative p-2 sm:p-3.5 z-10 flex items-center justify-between pointer-events-none">
@@ -552,7 +583,7 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                         backfaceVisibility: "hidden",
                                         WebkitBackfaceVisibility: "hidden",
                                         transform: "rotateY(180deg)",
-                                        borderRadius: parsedRadius,
+                                        borderRadius: backRadius,
                                     }}
                                 >
                                     <img
@@ -564,7 +595,11 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent pointer-events-none" />
 
                                     {/* Integrated Spine Crease Overlay on Back Face */}
-                                    <div className="absolute top-0 bottom-0 right-0 w-[8px] bg-gradient-to-l from-black/90 via-zinc-900/60 to-transparent pointer-events-none z-30" />
+                                    <div
+                                        className="absolute top-0 bottom-0 right-0 w-[18%] pointer-events-none z-30"
+                                        style={{ background: "linear-gradient(to left, rgba(0,0,0,0.34) 0%, rgba(0,0,0,0.2) 16%, rgba(0,0,0,0.09) 38%, rgba(0,0,0,0.03) 68%, transparent 100%)" }}
+                                    />
+                                    <PaperEdge />
 
                                     {/* Top Header */}
                                     <div className="relative p-2 sm:p-3.5 z-10 flex items-center justify-between pointer-events-none">
@@ -624,13 +659,13 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
 
             {/* Minimal Shadowless Icon-Only Controls Toolbar */}
             {showControls && (
-                <div className="flex items-center justify-center gap-2 mt-5 p-1.5 rounded-full bg-muted/60 border border-border/70 backdrop-blur-md z-50 select-none shadow-none">
+                <div className="flex items-center justify-center gap-2 mt-5 p-1.5 rounded-full bg-card shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-16px_rgba(0,0,0,0.18)] z-50 select-none">
                     {/* Prev Button (Icon Only) */}
                     <button
                         onClick={flipPrev}
                         disabled={currentTurned === 0}
                         aria-label="Previous Page"
-                        className="p-2.5 rounded-full flex items-center justify-center bg-background hover:bg-muted text-foreground border border-border/60 active:scale-90 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer shadow-none"
+                        className="p-2.5 rounded-full flex items-center justify-center bg-[#F7F7F6] dark:bg-background/50 hover:bg-[#EFEFED] dark:hover:bg-background/70 text-foreground active:scale-[0.98] disabled:opacity-30 disabled:pointer-events-none transition-[background-color,transform,color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                     >
                         <ChevronLeft className="w-4 h-4" />
                     </button>
@@ -640,13 +675,13 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                         onClick={resetBook}
                         disabled={currentTurned === 0}
                         aria-label="Reset Book"
-                        className="p-2.5 rounded-full flex items-center justify-center bg-background hover:bg-muted text-muted-foreground hover:text-foreground border border-border/60 active:scale-90 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer group shadow-none"
+                        className="p-2.5 rounded-full flex items-center justify-center bg-[#F7F7F6] dark:bg-background/50 hover:bg-[#EFEFED] dark:hover:bg-background/70 text-muted-foreground hover:text-foreground active:scale-[0.98] disabled:opacity-30 disabled:pointer-events-none transition-[background-color,transform,color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer group focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                     >
-                        <RotateCcw className="w-4 h-4 group-hover:-rotate-90 transition-transform duration-300" />
+                        <RotateCcw className="w-4 h-4 group-hover:-rotate-90 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none" />
                     </button>
 
                     {/* Page Leaves Counter Badge */}
-                    <div className="px-3.5 py-1.5 rounded-full bg-background border border-border/60 text-xs font-mono font-semibold text-foreground flex items-center gap-1.5 shadow-none">
+                    <div className="px-3.5 py-1.5 rounded-full bg-[#F7F7F6] dark:bg-background/50 text-xs font-mono font-semibold text-foreground flex items-center gap-1.5">
                         <span className="text-primary font-extrabold">{currentTurned}</span>
                         <span className="text-muted-foreground/60 font-normal">/</span>
                         <span>{totalLeaves}</span>
@@ -657,7 +692,7 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                         onClick={flipNext}
                         disabled={currentTurned === totalLeaves}
                         aria-label="Next Page"
-                        className="p-2.5 rounded-full flex items-center justify-center bg-primary hover:bg-primary/90 text-primary-foreground border border-primary/20 active:scale-90 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer shadow-none"
+                        className="p-2.5 rounded-full flex items-center justify-center bg-primary hover:bg-primary/90 text-primary-foreground active:scale-[0.98] disabled:opacity-30 disabled:pointer-events-none transition-[background-color,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                     >
                         <ChevronRight className="w-4 h-4" />
                     </button>

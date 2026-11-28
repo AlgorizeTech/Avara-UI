@@ -455,7 +455,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A data-driven accordion taking an array of items, with five distinct variants and an optional stack entrance that deals the items into place. Use it for FAQs and any list of collapsible sections.",
     categories: ["layout"],
-    docs: "Named export: Accordion. Pass `accordionData` as { value, title, icon?, content } — content accepts a string array or a node. `type` is single | multiple; set `collapsible` to let the last open section close. Variants: default (open row lifts out as a card) | bordered (rail on the open row) | filled (open row inverts to primary) | elevated (cards, open one on a ring) | soft (tinted tiles, plus folds into minus) | tray (one rounded tray, open row becomes a tile, animated SVG plus/minus chip) | tray (one rounded tray, open row becomes a tile, animated plus/minus chip) | inset (pill rows, answer in an inset well) | bracket (outlined rows, corner brackets open outward) | ghost (type and hairlines); soft, tray, inset and bracket animate open and close with CSS keyframes that ship inside the component. `animation=\"stack\"` piles the items and deals them out on scroll-in via the Web Animations API; skipped under reduced motion. Wraps the `ui-accordion` Radix primitive. For a single section, `collapsible` is lighter.",
+    docs: "Named export: Accordion. Pass `accordionData` as { value, title, icon?, content } — content accepts a string array or a node. `type` is single | multiple; set `collapsible` to let the last open section close. Variants: default (open row lifts out as a card) | bordered (rail on the open row) | filled (open row inverts to primary) | elevated (cards, open one on a ring) | tray (one rounded tray, open row becomes a tile, animated SVG plus/minus chip) | tray (one rounded tray, open row becomes a tile, animated plus/minus chip) | inset (pill rows, answer in an inset well) | bracket (outlined rows, corner brackets open outward) | ghost (type and hairlines); default, tray, inset and bracket animate open and close with CSS keyframes that ship inside the component. `animation=\"stack\"` piles the items and deals them out on scroll-in via the Web Animations API; skipped under reduced motion. Wraps the `ui-accordion` Radix primitive. For a single section, `collapsible` is lighter.",
   },
   "breadcrumb-flow": {
     description:
@@ -1035,9 +1035,9 @@ export const META: Record<string, ItemMeta> = {
   "audio-player": {
     title: "Audio Player",
     description:
-      "An audio player with artwork, transport, scrubber and volume, in a hero card, a compact bar, or wrapped around the browser's native controls.",
+      "An audio player with artwork, transport, scrubber and volume, in a hero card or a compact bar.",
     categories: ["marketing", "media"],
-    docs: "Named export: AudioPlayer. `audioUrl` and `artworkUrl` drive it; `variant` is hero | bar | native. Built on a plain <audio> element with no player library, so it adds no npm weight beyond the icons. Playback state mirrors the element's own events, which keeps it correct when a media key or the native controls change it. `skipSeconds` sizes the jump buttons (0 hides them) and the accent follows `--theme-color`.",
+    docs: "Named export: AudioPlayer. `audioUrl` and `artworkUrl` drive it; `variant` is hero | bar. Built on a plain <audio> element with no player library, so it adds no npm weight beyond the icons. Playback state mirrors the element's own events, which keeps it correct when a media key changes it. `skipSeconds` sizes the jump buttons (0 hides them) and the accent follows `--theme-color`.",
   },
   "video-player-plyr": {
     title: "Video Player (Plyr)",
@@ -1095,6 +1095,12 @@ export const META: Record<string, ItemMeta> = {
       "A list whose items rise and blur in one after another, then fade in, fade out and glide as items are added, removed or filtered. Use it for feeds, bills and any list that changes.",
     categories: ["data-display", "scroll"],
     docs: "Named exports: AnimatedList, AnimatedListItem. AnimatedList renders a ul (`as` for ol or div) and owns only the motion; AnimatedListItem renders an li (`as=\"div\"` inside a div list) and takes any content. Give every item a stable `key`: it decides what counts as added, removed or moved. Titles, filters and totals live outside the list. `staggerDelay` and `duration` tune the entrance. Avoid transform utilities on the item itself, since the motion owns its transform. GSAP build; honours prefers-reduced-motion.",
+  },
+  "guest-morph": {
+    description:
+      "A pill of overlapping faces that morphs into a guest list when pressed. Replies are grouped as Going, Maybe and Pending, and the card has an invite form that adds a pending invite. Use it for an event, a shared plan or any list of people who have answered.",
+    categories: ["data-display", "forms"],
+    docs: "Named export: GuestMorph (plus the Guest type). `title` is the event's name; `guests` is the starting list of { id, name, status: going | maybe | pending, note?, since? }. The Invite button opens an email field: `onInvite(email)` runs first, and a returned promise that rejects shows its message instead of adding the invite; a valid, new address is added as Pending and can be cancelled. `onChange` receives the list after every invite or cancel. GSAP build with a Motion twin (guest-morph-motion, shared layoutId morph); Escape, the close button or a press outside folds the card back, and focus moves with it. Honours prefers-reduced-motion.",
   },
   "animated-number": {
     description:

@@ -1,13 +1,12 @@
 import type { PageVariants } from "./types";
 
 /**
- * AI chat: 5 looks of one registry item (`ai-chat`), chosen with the `variant`
- * prop. "Wired to your backend" is the default look with real handlers, so it
- * is not listed. Claims come from src/app/docs/[framework]/ai-chat/page.mdx.
+ * AI chat: 4 looks of one registry item (`ai-chat`), chosen with the `variant`
+ * prop. Claims come from src/app/docs/[framework]/ai-chat/page.mdx.
  */
 export const aiChat: PageVariants = {
   slug: "ai-chat",
-  intro: "An LLM chat interface with conversation history, typing indicators, editable titles and a full prompt composer (a + menu for files and mentions, an upload indicator, a model picker), in five looks of one item plus a separate full workspace.",
+  intro: "An LLM chat interface with conversation history, typing indicators, editable titles and a full prompt composer (a + menu for files and mentions, an upload indicator, a model picker), in four looks of one item plus a separate full workspace.",
   whenNot: [
     {
       use: "Chat",
@@ -16,7 +15,7 @@ export const aiChat: PageVariants = {
     },
   ],
   gotchas: [
-    "Five are looks of the one `ai-chat` item: install it once and set `variant` from the index. The workspace is a separate item, `ai-chat-workspace`, with no `variant` prop.",
+    "Four are looks of the one `ai-chat` item: install it once and set `variant` from the index. The workspace is a separate item, `ai-chat-workspace`, with no `variant` prop.",
     "To connect a real backend, pass your own upload and send handlers; the simulated stream and upload are the defaults.",
     "`glass` and `liquid-glass` need a colourful backdrop behind them to read.",
   ],
@@ -60,20 +59,6 @@ export const aiChat: PageVariants = {
       example: "Compact",
       props: { variant: "compact" },
       setProps: { variant: "compact" },
-    },
-    {
-      id: "minimal",
-      label: "Minimal",
-      group: "Surface",
-      summary: "Borders, shadows and dividers are stripped so the assistant blends into the surface around it.",
-      bestFor: ["an assistant inside a page or panel that already has its own frame"],
-      avoidIf: ["you want it to read as a standalone card"],
-      traits: ["no borders or shadows"],
-      item: "ai-chat",
-      demo: "ai-chat",
-      example: "Minimal",
-      props: { variant: "minimal" },
-      setProps: { variant: "minimal" },
     },
     {
       id: "glass",

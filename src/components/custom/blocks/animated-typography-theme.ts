@@ -8,7 +8,7 @@ const colorThemes: Record<string, string> = {
   rose: "text-rose-600 dark:text-rose-400",
   emerald: "text-emerald-600 dark:text-emerald-400",
   zinc: "text-zinc-900 dark:text-zinc-100",
-  default: "text-primary",
+  default: "text-foreground",
 };
 
 const hexToRgb = (hex: string) => {

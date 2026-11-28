@@ -334,7 +334,7 @@ export function BreadcrumbLink({ className, render, ...props }: BreadcrumbLinkPr
   const linkProps = {
     ...props,
     className: cn(
-      "inline-flex min-h-8 min-w-0 items-center gap-1.5 rounded-md px-2 font-medium text-muted-foreground transition-colors duration-150 hover:bg-muted/60 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 [&>svg]:size-3.5 [&>svg]:shrink-0",
+      "inline-flex min-h-8 min-w-0 items-center gap-1.5 rounded-full px-3 font-medium text-muted-foreground transition-colors duration-150 hover:bg-muted/50 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 [&>svg]:size-3.5 [&>svg]:shrink-0",
       className,
     ),
   };
@@ -349,7 +349,7 @@ export function BreadcrumbPage({ className, children, ...props }: BreadcrumbPage
       {...props}
       aria-current="page"
       className={cn(
-        "relative isolate inline-flex min-h-8 min-w-0 items-center gap-1.5 rounded-md px-2 font-medium text-foreground [overflow-wrap:anywhere] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&>svg]:size-3.5 [&>svg]:shrink-0",
+        "relative isolate inline-flex min-h-8 min-w-0 items-center gap-1.5 rounded-full px-3 font-medium text-foreground [overflow-wrap:anywhere] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&>svg]:size-3.5 [&>svg]:shrink-0",
         className,
       )}
     >
@@ -509,7 +509,7 @@ export function BreadcrumbEllipsis({ children, className, label }: BreadcrumbEll
         aria-label={label ?? labels.showHidden}
         aria-expanded={open}
         aria-controls={mounted ? panelId : undefined}
-        className="inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         onClick={(event) => {
           // A mouse click on a hover-opened list keeps it open; touch and the
           // keyboard toggle it.
@@ -539,7 +539,7 @@ export function BreadcrumbEllipsis({ children, className, label }: BreadcrumbEll
           onClick={(event) => {
             if ((event.target as Element).closest("a[href]")) setOpen(false);
           }}
-          className="absolute z-50 rounded-[10px] border border-border bg-popover p-1.5 text-popover-foreground shadow-lg"
+          className="absolute z-50 rounded-[1.25rem] bg-card p-1.5 text-popover-foreground shadow-[0_24px_48px_-24px_rgb(0_0_0/0.28)]"
           style={{
             [side === "bottom" ? "top" : "bottom"]: "calc(100% + 6px)",
             [align === "start" ? "left" : "right"]: 0,

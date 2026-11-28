@@ -3,7 +3,6 @@
     "inset-panel": "Accordion — Inset panel",
     "tray": "Accordion — Tray",
     "bracket-frame": "Accordion — Bracket frame",
-    "soft-tiles": "Accordion — Soft tiles",
     "lift-card": "Accordion — Lift card",
     "brand-reveal": "Accordion — Brand reveal",
     "multiple-open": "Accordion — Multiple open"
@@ -35,16 +34,12 @@
   "ai-chat": {
     "ai-assistant": "AI Chat — AI assistant",
     "compact": "AI Chat — Compact",
-    "wired-to-your-backend": "AI Chat — Wired to your backend",
-    "minimal": "AI Chat — Minimal",
     "glass": "AI Chat — Glass",
     "liquid-glass": "AI Chat — Liquid Glass"
   },
   "ai-chat-motion": {
     "ai-assistant": "AI Chat — AI assistant",
     "compact": "AI Chat — Compact",
-    "wired-to-your-backend": "AI Chat — Wired to your backend",
-    "minimal": "AI Chat — Minimal",
     "glass": "AI Chat — Glass",
     "liquid-glass": "AI Chat — Liquid Glass"
   },
@@ -80,21 +75,21 @@
     "animated-timeline": "Animated Timeline"
   },
   "animated-typography": {
+    "spotlight-focus-reveal": "Animated Typography — Spotlight Focus Reveal",
+    "blur-swap": "Animated Typography — Blur Swap",
+    "color-reveal-staggered-sweep": "Animated Typography — Color Reveal Staggered Sweep",
+    "split-stagger-entrance": "Animated Typography — Split Stagger Entrance",
+    "matrix-scramble-decryption": "Animated Typography — Matrix Scramble Decryption",
     "typewriter": "Animated Typography — Typewriter",
     "typewriter-fixed-prefix": "Animated Typography — Typewriter, Fixed Prefix",
     "letter-bounce-word-rotator": "Animated Typography — Letter Bounce Word Rotator",
     "word-flip": "Animated Typography — Word Flip",
-    "blur-swap": "Animated Typography — Blur Swap",
     "blur-rise": "Animated Typography — Blur Rise",
     "color-wipe": "Animated Typography — Color Wipe",
-    "color-reveal-staggered-sweep": "Animated Typography — Color Reveal Staggered Sweep",
     "wavy-float-sine-wave": "Animated Typography — Wavy Float Sine Wave",
     "3d-perspective-flip": "Animated Typography — 3D Perspective Flip",
     "elastic-spring-overshoot": "Animated Typography — Elastic Spring Overshoot",
-    "spotlight-focus-reveal": "Animated Typography — Spotlight Focus Reveal",
-    "split-stagger-entrance": "Animated Typography — Split Stagger Entrance",
-    "underline-stroke-draw": "Animated Typography — Underline Stroke Draw",
-    "matrix-scramble-decryption": "Animated Typography — Matrix Scramble Decryption"
+    "underline-stroke-draw": "Animated Typography — Underline Stroke Draw"
   },
   "api-playground": {
     "api-playground": "API Playground"
@@ -110,8 +105,7 @@
   },
   "audio-player": {
     "audio-hero": "Audio Player — Audio hero",
-    "compact-bar": "Audio Player — Compact bar",
-    "native-controls": "Audio Player — Native controls"
+    "compact-bar": "Audio Player — Compact bar"
   },
   "video-player-plyr": {
     "plyr-audio": "Video Player (Plyr) — Plyr — Audio",
@@ -139,11 +133,7 @@
     "avatar-group-shift-on-hover": "Avatar Stack — Avatar Group (Shift on hover)",
     "without-tooltip": "Avatar Stack — Without tooltip",
     "with-tooltip-zoom-on-hover": "Avatar Stack — With tooltip (Zoom on hover)",
-    "with-tooltip-arrow-zoom-on-hover": "Avatar Stack — With tooltip arrow (Zoom on hover)",
-    "spread-on-hover-expand-width": "Avatar Stack — Spread on hover (Expand width)",
     "spread-with-tooltip": "Avatar Stack — Spread with tooltip",
-    "spread-with-tooltip-arrow": "Avatar Stack — Spread with tooltip arrow",
-    "with-an-action": "Avatar Stack — With an action",
     "folded-count": "Avatar Stack — Folded count",
     "sizes": "Avatar Stack — Sizes"
   },
@@ -159,7 +149,6 @@
   },
   "booking-card": {
     "in-a-card": "Booking Card — In a card",
-    "in-a-glass-slab": "Booking Card — In a glass slab",
     "liquid-glass": "Booking Card — Liquid glass"
   },
   "brand-bridge": {
@@ -556,6 +545,12 @@
     "bento-layout": "Glass Panel — Bento layout",
     "solid": "Glass Panel — Solid",
     "liquid-glass": "Glass Panel — Liquid glass"
+  },
+  "guest-morph": {
+    "guest-morph": "Guest Morph"
+  },
+  "guest-morph-motion": {
+    "guest-morph": "Guest Morph"
   },
   "half-stars": {
     "full-stars": "Half Stars — Full stars",

@@ -1,12 +1,12 @@
 ---
 title: "Shadcn Accordion"
-description: "A data-driven accordion with nine list styles and a brand reveal showcase. Free shadcn/ui Accordion component for React, Next.js and Tailwind CSS."
+description: "A data-driven accordion with eight list styles and a brand reveal showcase. Free shadcn/ui Accordion component for React, Next.js and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/accordion
 ---
 
 # Shadcn Accordion
 
-A data-driven accordion with nine list styles and a brand reveal showcase.
+A data-driven accordion with eight list styles and a brand reveal showcase.
 
 ## Installation
 
@@ -170,55 +170,6 @@ export default function BracketFaq() {
 }
 ```
 
-## Soft tiles
-
-White tiles that settle to soft gray when open with a folding plus-to-minus icon.
-
-- Use `variant="soft"` for white tiles that settle to soft gray when open, with a plus that folds into a minus.
-
-```tsx
-import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
-
-const faqItems: AccordionDataItem[] = [
-  {
-    value: "getting-started",
-    title: "How do I get started?",
-    icon: "HelpCircle", // any key of the block's ICON_MAP
-    content: [
-      "Getting started takes a couple of minutes. Sign up for a free account, confirm your email and follow the guided setup to create your profile, invite your team and connect the tools you already use.",
-    ],
-  },
-  {
-    value: "pricing",
-    title: "What are your pricing plans?",
-    icon: "CreditCard",
-    content: [
-      "We offer flexible plans that grow with you. The Basic plan starts at $9 per month and includes every core feature, while Pro and Team add priority support, advanced analytics and unlimited projects.",
-    ],
-  },
-  {
-    value: "security",
-    title: "How secure is my data?",
-    icon: "Shield",
-    content: [
-      "Security is our top priority. Your data is encrypted in transit and at rest, stored in certified data centers and backed up every day, so your information stays private and recoverable at all times.",
-    ],
-  },
-];
-
-export default function SoftFaq() {
-  return (
-    <div className="mx-auto w-full max-w-2xl">
-      <Accordion
-        accordionData={faqItems}
-        variant="soft"
-        defaultValue="getting-started"
-      />
-    </div>
-  );
-}
-```
-
 ## Lift card
 
 Default card-lift style with an optional one-time stack entrance when scrolled into view.
@@ -344,9 +295,9 @@ export default function MultipleOpenFaq() {
 
 ## About Shadcn Accordion
 
-**What it is.** A data-driven accordion for React built on the Radix UI primitive, shipping nine list variants plus an interactive `BrandLogoAccordion` showcase. Pass an `accordionData` array and it renders icons, triggers, and animated panels.
+**What it is.** A data-driven accordion for React built on the Radix UI primitive, shipping eight list variants plus an interactive `BrandLogoAccordion` showcase. Pass an `accordionData` array and it renders icons, triggers, and animated panels.
 
-**How it is built.** The `soft`, `tray`, `inset`, and `bracket` variants animate via CSS keyframes inside the component, while `animation="stack"` uses the Web Animations API—requiring no external animation library beyond Radix UI and `lucide-react`. Every variant reads your shadcn theme tokens (`--primary`, `--border`, `--card`) and respects `prefers-reduced-motion`.
+**How it is built.** The `default`, `tray`, `inset`, and `bracket` variants animate via CSS keyframes inside the component, while `animation="stack"` uses the Web Animations API—requiring no external animation library beyond Radix UI and `lucide-react`. Every variant reads your shadcn theme tokens (`--primary`, `--border`, `--card`) and respects `prefers-reduced-motion`.
 
 **When to use it.** Reach for it in FAQ sections, settings panels, onboarding checklists, and help centers, or use `brand-reveal` for client and partner showcases. When using `animation="stack"`, apply it once per page with at least three items and a `defaultValue` set so the open card is part of the initial deal.
 
@@ -370,11 +321,11 @@ export default function MultipleOpenFaq() {
 - Use `animation="stack"` on at most one accordion per page, with 3+ items and `defaultValue` set.
 - No GSAP or Motion dependency is needed; animations use CSS keyframes and the Web Animations API.
 
-**Ask before you pick.** This page has 7 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+**Ask before you pick.** This page has 6 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
 
-All 7 options as live previews: https://avaraui.com/view/accordion
+All 6 options as live previews: https://avaraui.com/view/accordion
 
-**When to use it.** A data-driven accordion. You pass an `accordionData` array and the open panel is the only thing that gets the accent. The examples show the inset, tray, bracket, soft, lift-card and ghost lists and an automated brand reveal showcase; `variant` also accepts `soft`, `tray`, `inset`, `bracket`, `bordered`, `filled` and `elevated`.
+**When to use it.** A data-driven accordion. You pass an `accordionData` array and the open panel is the only thing that gets the accent. The examples show the inset, tray, bracket, lift-card and ghost lists and an automated brand reveal showcase; `variant` also accepts `tray`, `inset`, `bracket`, `bordered`, `filled` and `elevated`.
 
 **Gotchas:**
 
@@ -382,7 +333,7 @@ All 7 options as live previews: https://avaraui.com/view/accordion
 - How many panels may be open is the `interaction` prop (single, multiple, mandatory, non-collapsible), not a design; in multiple mode `defaultValue` must be an array.
 - `animation="stack"` deals the items down when the accordion scrolls into view and works with any list style.
 
-### The 7 variants
+### The 6 variants
 
 1. **Inset panel** (`inset`): Quiet pill rows; the open one rises as a card with the answer set in an inset well.
    - Live: https://avaraui.com/view/accordion/inset
@@ -408,23 +359,15 @@ All 7 options as live previews: https://avaraui.com/view/accordion
    - Install: `npx shadcn@latest add @avara-ui/accordion`
    - Set these props: `{"variant":"bracket"}`
    - Docs: https://avaraui.com/docs/nextjs/accordion#bracket-frame
-4. **Soft tiles** (`soft`): Tinted tiles; the open one fills its chip with the accent as the plus folds into a minus.
-   - Live: https://avaraui.com/view/accordion/soft
-   - Best for: a friendly product or support FAQ
-   - Avoid if: you want a flat, document-like list
-   - Traits: tinted tile per row, plus folds into minus, CSS open and close motion
-   - Install: `npx shadcn@latest add @avara-ui/accordion`
-   - Set these props: `{"variant":"soft"}`
-   - Docs: https://avaraui.com/docs/nextjs/accordion#soft-tiles
-5. **Lift card** (`default`): Closed rows stay quiet and the open one lifts out as a card.
+4. **Lift card** (`default`): Closed rows stay quiet and the open one lifts out as a card.
    - Live: https://avaraui.com/view/accordion/default
    - Best for: a FAQ on a plain page background
    - Avoid if: the accordion sits inside a card or panel that is already boxed
-   - Traits: open row becomes a card, quiet closed rows
+   - Traits: open row becomes a card, quiet closed rows, CSS open and close motion
    - Install: `npx shadcn@latest add @avara-ui/accordion`
    - Set these props: `{"variant":"default"}`
    - Docs: https://avaraui.com/docs/nextjs/accordion#lift-card
-6. **Brand reveal** (`brand-reveal`): An editorial horizontal brand accordion that cycles through client or partner brands on a timer.
+5. **Brand reveal** (`brand-reveal`): An editorial horizontal brand accordion that cycles through client or partner brands on a timer.
    - Live: https://avaraui.com/view/accordion/brand-reveal
    - Best for: showing clients or partners as a feature, not answering questions
    - Avoid if: you need a FAQ or any text-heavy list
@@ -432,7 +375,7 @@ All 7 options as live previews: https://avaraui.com/view/accordion
    - Install: `npx shadcn@latest add @avara-ui/accordion`
    - Set these props: `{"variant":"brand-reveal"}`
    - Docs: https://avaraui.com/docs/nextjs/accordion#brand-reveal
-7. **Ghost** (`ghost`): Type and hairlines only, with no boxes.
+6. **Ghost** (`ghost`): Type and hairlines only, with no boxes.
    - Live: https://avaraui.com/view/accordion/ghost
    - Best for: a long editorial FAQ
    - Avoid if: you want the open item to stand out strongly
@@ -446,7 +389,7 @@ All 7 options as live previews: https://avaraui.com/view/accordion
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `accordionData` | `AccordionDataItem[]` | `[]` | Array of objects defining `value`, `title`, `icon`, and `content`. |
-| `variant` | `"default" \| "bordered" \| "filled" \| "elevated" \| "soft" \| "tray" \| "inset" \| "bracket" \| "ghost" \| "brand-reveal"` | `"default"` | Which look to use. `default` lifts the open row out as a card, `bordered` grows a rail on it, `filled` inverts it to `primary`, `elevated` raises it on a ring, `soft` uses white tiles that settle to soft gray with a plus that folds into a minus, `tray` sets the rows in one rounded tray with an animated plus/minus chip, `inset` sets the answer in a well inside the open card, `bracket` opens corner brackets outward, `ghost` is a stack of white cards lit by a hairline and soft shadow, and `brand-reveal` renders an interactive horizontal brand showcase. |
+| `variant` | `"default" \| "bordered" \| "filled" \| "elevated" \| "tray" \| "inset" \| "bracket" \| "ghost" \| "brand-reveal"` | `"default"` | Which look to use. `default` lifts the open row out as a card, `bordered` grows a rail on it, `filled` inverts it to `primary`, `elevated` raises it on a ring, `tray` sets the rows in one rounded tray with an animated plus/minus chip, `inset` sets the answer in a well inside the open card, `bracket` opens corner brackets outward, `ghost` is a stack of white cards lit by a hairline and soft shadow, and `brand-reveal` renders an interactive horizontal brand showcase. |
 | `brands` | `BrandItem[]` | `DEFAULT_BRANDS` | Used when `variant="brand-reveal"`. Array of objects defining `id`, `name`, `caption`, and optional `logo`, `link`, and `index`. |
 | `animation` | `"none" \| "stack"` | `"none"` | `"stack"` piles the items on the first one and deals them into place once the accordion scrolls into view. Runs once; skipped under `prefers-reduced-motion`. |
 | `type` | `"single" \| "multiple"` | `"single"` | Determines if one or multiple panels can be open simultaneously. |
@@ -470,7 +413,7 @@ Use `animation="stack"` on a single focal accordion per page—having two decks 
 
 ## Which variants use CSS animations instead of JS?
 
-The `soft`, `tray`, `inset`, and `bracket` variants open and close using CSS keyframes shipped inside the component. Only `animation="stack"` uses the Web Animations API, and no external animation library (GSAP or Motion) is required.
+The `default`, `tray`, `inset`, and `bracket` variants open and close using CSS keyframes shipped inside the component. Only `animation="stack"` uses the Web Animations API, and no external animation library (GSAP or Motion) is required.
 
 ## Can multiple accordion panels stay open at once?
 

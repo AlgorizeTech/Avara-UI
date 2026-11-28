@@ -54,8 +54,8 @@ export default function AvatarStackDemo({
   showTooltip,
   showTooltipArrow,
 }: {
-  /** `default` shows a clean stack without tooltips; `tooltip` shows tooltip and zoom without gap; `tooltip-arrow` shows tooltip with arrow pointer; `spread` widens gap without zoom; `spread-tooltip` widens gap with tooltip; `spread-tooltip-arrow` widens gap with arrow tooltip; `avatar-group` shows the animate-ui spring shift on hover; `action` adds a "+" button; `count` folds the rest into "+N"; `sizes` shows all three sizes. */
-  example?: "default" | "tooltip" | "tooltip-arrow" | "zoom" | "spread" | "spread-tooltip" | "spread-tooltip-arrow" | "action" | "count" | "sizes" | "avatar-group" | "shift";
+  /** `default` shows a clean stack without tooltips; `tooltip-arrow` shows the zoom stack with the default arrow tooltip; `spread` widens the gap on hover; `avatar-group` shows the spring shift on hover; `count` folds the rest into "+N"; `sizes` shows three sizes. */
+  example?: "default" | "tooltip-arrow" | "zoom" | "spread" | "count" | "sizes" | "avatar-group" | "shift";
   variant?: AvatarStackVariant;
   type?: AvatarStackType;
   size?: AvatarStackSize;
@@ -82,14 +82,14 @@ export default function AvatarStackDemo({
     );
   }
 
-  // Direct variant="zoom" or variant="spread" via props (excluding count/sizes/action examples)
-  if ((variant === "zoom" || variant === "spread") && example !== "count" && example !== "sizes" && example !== "action") {
+  // Direct variant="zoom" or variant="spread" via props (excluding count/sizes examples)
+  if ((variant === "zoom" || variant === "spread") && example !== "count" && example !== "sizes") {
     return (
       <div className="flex min-h-[220px] w-full items-center justify-center px-6">
         <AvatarStack
           avatars={PEOPLE}
           variant={variant}
-          type={type ?? "default"}
+          type={type}
           size={size}
           max={max}
           spreadOnHover={spreadOnHover}
@@ -118,27 +118,13 @@ export default function AvatarStackDemo({
     );
   }
 
-  if (example === "tooltip" || example === "zoom") {
-    return (
-      <div className="flex min-h-[220px] w-full items-center justify-center px-6">
-        <AvatarStack
-          avatars={PEOPLE}
-          variant="zoom"
-          type={type ?? "tooltip"}
-          size={size}
-          max={max}
-        />
-      </div>
-    );
-  }
-
   if (example === "tooltip-arrow") {
     return (
       <div className="flex min-h-[220px] w-full items-center justify-center px-6">
         <AvatarStack
           avatars={PEOPLE}
           variant="zoom"
-          type={type ?? "tooltip-arrow"}
+          type={type}
           size={size}
           max={max}
         />
@@ -152,35 +138,7 @@ export default function AvatarStackDemo({
         <AvatarStack
           avatars={PEOPLE}
           variant="spread"
-          type={type ?? "default"}
-          size={size}
-          max={max}
-        />
-      </div>
-    );
-  }
-
-  if (example === "spread-tooltip") {
-    return (
-      <div className="flex min-h-[220px] w-full items-center justify-center px-6">
-        <AvatarStack
-          avatars={PEOPLE}
-          variant="spread"
-          type={type ?? "tooltip"}
-          size={size}
-          max={max}
-        />
-      </div>
-    );
-  }
-
-  if (example === "spread-tooltip-arrow") {
-    return (
-      <div className="flex min-h-[220px] w-full items-center justify-center px-6">
-        <AvatarStack
-          avatars={PEOPLE}
-          variant="spread"
-          type={type ?? "tooltip-arrow"}
+          type={type}
           size={size}
           max={max}
         />
@@ -193,7 +151,7 @@ export default function AvatarStackDemo({
       <div className="flex min-h-[220px] w-full flex-col items-center justify-center gap-6 px-6">
         <AvatarStack avatars={PEOPLE} variant="zoom" type="tooltip" size="sm" max={max ?? 4} className="m-0 p-0" />
         <AvatarStack avatars={PEOPLE} variant="zoom" type="default" size="md" max={max ?? 4} className="m-0 p-0" />
-        <AvatarStack avatars={PEOPLE} variant="zoom" type="tooltip-arrow" size="lg" max={max ?? 4} className="m-0 p-0" />
+        <AvatarStack avatars={PEOPLE} variant="zoom" size="lg" max={max ?? 4} className="m-0 p-0" />
       </div>
     );
   }
@@ -204,27 +162,20 @@ export default function AvatarStackDemo({
         <AvatarStack
           avatars={PEOPLE}
           variant="zoom"
-          type="tooltip-arrow"
           size={size}
           max={max}
           className="m-0 p-0"
         />
-        <p className="text-sm text-muted-foreground">
+        <p
+          className="text-sm text-muted-foreground motion-reduce:!animate-none"
+          style={{ animation: "avara-copy-in 800ms cubic-bezier(0.22, 1, 0.36, 1) 700ms backwards" }}
+        >
+          <style>{"@keyframes avara-copy-in { from { opacity: 0; transform: translateY(8px); filter: blur(10px); } }"}</style>
           <span className="font-semibold text-foreground">2,400+</span> people joined this month
         </p>
       </div>
     );
   }
 
-  return (
-    <div className="flex min-h-[220px] w-full items-center justify-center px-6">
-      <AvatarStack
-        avatars={PEOPLE.slice(0, 3)}
-        variant="zoom"
-        type="tooltip"
-        size={size}
-        action={() => console.log("Action clicked")}
-      />
-    </div>
-  );
+  return null;
 }

@@ -72,7 +72,7 @@ export const Avatar = React.forwardRef<
       src,
       alt = "",
       size = "md",
-      ringClassName = "ring-background",
+      ringClassName = "ring-card",
       className,
       children,
       ...props
@@ -169,6 +169,17 @@ function timingOf(transition: AvatarTransition): Timing {
   }
   return springTiming(transition);
 }
+
+// First-load intro (DESIGN.md): faces scale and blur in one after another, left to
+// right. Animates the individual `scale`/`opacity`/`filter` properties so it never
+// fights the hover `transform`, and the backwards fill leaves no resting filter.
+const ENTRANCE_CSS = `
+@keyframes avara-avatar-in { from { opacity: 0; scale: 0.5; filter: blur(6px); } }
+.avara-avatar-in > * { animation: avara-avatar-in 900ms cubic-bezier(0.22, 1, 0.36, 1) backwards; }
+${Array.from({ length: 16 }, (_, i) => `.avara-avatar-in > :nth-child(${i + 1}) { animation-delay: ${i * 90}ms; }`).join(" ")}
+.avara-avatar-in > :nth-child(n + 17) { animation-delay: 1440ms; }
+@media (prefers-reduced-motion: reduce) { .avara-avatar-in > * { animation: none; } }
+`;
 
 const TOOLTIP_TEXT_CSS = `
 @keyframes avatar-tooltip-text { from { opacity: 0; transform: translateY(6px); } }
@@ -380,10 +391,11 @@ export const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
 
     return (
       <>
+        <style>{ENTRANCE_CSS}</style>
         <div
           ref={ref}
           data-slot="avatar-group"
-          className={cn("relative flex w-fit mx-auto items-center justify-center h-12 -space-x-3 py-20 px-6", className)}
+          className={cn("avara-avatar-in relative flex w-fit mx-auto items-center justify-center h-12 -space-x-3 py-20 px-6", className)}
           onMouseLeave={() => setActiveIndex(null)}
           {...props}
         >
@@ -496,7 +508,7 @@ export interface AvatarStackProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   size?: AvatarStackSize;
   /** Presentation variant: `shift` (spring lift), `zoom` (scale up on hover, fixed gap), or `spread` (fan out to the right on hover). */
   variant?: AvatarStackVariant;
-  /** Tooltip presentation type for `zoom` and `spread` variants: `default` (no tooltip), `tooltip` (clean tooltip), or `tooltip-arrow` (arrow pointer tooltip). */
+  /** Tooltip presentation type for `zoom` and `spread` variants: `default` (no tooltip), `tooltip` (clean tooltip), or `tooltip-arrow` (arrow pointer tooltip, the default). */
   type?: AvatarStackType;
   /** Invert overlapping order so the first avatar appears on top. */
   invertOverlap?: boolean;
@@ -538,12 +550,12 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
       avatars,
       size = "md",
       variant = "default",
-      type,
+      type = "tooltip-arrow",
       invertOverlap = true,
       translate,
       max,
       onMoreClick,
-      ringClassName = "ring-background",
+      ringClassName = "ring-card",
       action,
       spreadOnHover,
       spreadDistance = 6,
@@ -650,7 +662,7 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
           {shown.map((a, i) => (
             <Avatar
               key={i}
-              className={cn(s.box, "border-[3px] border-background ring-0 cursor-pointer", ringClassName)}
+              className={cn(s.box, "border-[3px] border-card ring-0 cursor-pointer", ringClassName)}
             >
               <img src={a.src} alt={a.alt ?? a.name ?? ""} className="h-full w-full object-cover" />
               {(enableTooltip && (a.tooltip || a.alt || a.name)) && (
@@ -665,7 +677,7 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
               onClick={handleMoreClick}
               className={cn(
                 s.box,
-                "border-[3px] border-background ring-0 bg-muted text-muted-foreground font-semibold text-xs flex items-center justify-center cursor-pointer",
+                "border-[3px] border-card ring-0 bg-muted text-muted-foreground font-semibold text-xs flex items-center justify-center cursor-pointer",
                 ringClassName,
               )}
             >
@@ -679,7 +691,7 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
             <Avatar
               className={cn(
                 s.box,
-                "border-[3px] border-background ring-0 bg-transparent flex items-center justify-center cursor-pointer overflow-visible",
+                "border-[3px] border-card ring-0 bg-transparent flex items-center justify-center cursor-pointer overflow-visible",
                 ringClassName,
               )}
             >
@@ -698,10 +710,12 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
 
     // Default variant: smooth centered fan-out spread on hover & z-index elevation on hover
     return (
+      <>
+      <style>{ENTRANCE_CSS}</style>
       <div
         ref={ref}
         {...props}
-        className={cn("group flex w-fit mx-auto items-center justify-center py-20 px-6", s.overlap, className)}
+        className={cn("avara-avatar-in group flex w-fit mx-auto items-center justify-center py-20 px-6", s.overlap, className)}
         style={style}
         onMouseEnter={(e) => {
           setIsHovered(true);
@@ -875,6 +889,7 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
           );
         })()}
       </div>
+      </>
     );
   },
 );

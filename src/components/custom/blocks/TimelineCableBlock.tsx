@@ -88,6 +88,14 @@ const WHEEL_PX = 190;
 const FLICK_MOMENTUM = 0.3;
 const MAX_FLICK_EVENTS = 4;
 
+// Below this stage width the block switches to its compact layout: a shorter
+// stage and smaller year numerals, so one card and its neighbours fit a phone.
+const NARROW_WIDTH = 640;
+const NARROW_MAX_HEIGHT = 460;
+// Stage width the tick groups are sized for in the compact layout.
+const NARROW_REFERENCE = 390;
+const NARROW_YEAR_SCALE = 0.6;
+
 const MONTH = new Intl.DateTimeFormat("en-US", { month: "short", timeZone: "UTC" });
 
 const toDate = (date: string | Date) => (typeof date === "string" ? new Date(date) : date);
@@ -122,7 +130,7 @@ function geometryFor(width: number, itemWidth: number): Geometry {
   // About a third of the stage at most, so each neighbour shows in full or
   // nearly beside the focused card; phones give the card more of the width and
   // keep a sliver of each neighbour.
-  const cardWidth = Math.min(itemWidth, stage * (stage < 640 ? 0.58 : 0.36));
+  const cardWidth = Math.min(itemWidth, stage * (stage < NARROW_WIDTH ? 0.58 : 0.36));
   // One gap everywhere, wide enough to hold the tick group between cards.
   const gap = clamp(cardWidth * 0.22, 40, 72);
   return {
@@ -176,6 +184,9 @@ export const TimelineCableBlock = forwardRef<HTMLElement, TimelineCableBlockProp
     const found = events.findIndex((e) => e.id === activeId);
     const activeIndex = found === -1 ? 0 : found;
 
+    // Whether the stage is phone-width. Changes only when it crosses the
+    // breakpoint, so resizing does not re-render the cards.
+    const [narrow, setNarrow] = useState(false);
     const stageRef = useRef<HTMLElement | null>(null);
     const setRefs = useCallback(
       (node: HTMLElement | null) => {
@@ -331,6 +342,7 @@ export const TimelineCableBlock = forwardRef<HTMLElement, TimelineCableBlockProp
       if (!el) return;
       const m = state.current;
       m.width = el.clientWidth;
+      setNarrow(m.width < NARROW_WIDTH);
       m.target = clamp(m.target, 0, last);
       m.pos = clamp(m.pos, 0, last);
       paint();
@@ -338,6 +350,7 @@ export const TimelineCableBlock = forwardRef<HTMLElement, TimelineCableBlockProp
         typeof ResizeObserver !== "undefined"
           ? new ResizeObserver(() => {
               m.width = el.clientWidth;
+              setNarrow(m.width < NARROW_WIDTH);
               paint();
             })
           : null;
@@ -493,10 +506,11 @@ export const TimelineCableBlock = forwardRef<HTMLElement, TimelineCableBlockProp
     };
 
     // Starting geometry for the first paint; paint() takes over once measured.
-    const g0 = geometryFor(0, itemWidth);
+    const stageHeight = narrow ? Math.min(height, NARROW_MAX_HEIGHT) : height;
+    const g0 = geometryFor(narrow ? NARROW_REFERENCE : 0, itemWidth);
     const tickSpacing = (g0.gap * GAP_TICK_SPAN) / (GAP_TICKS - 1);
     const middle = (GAP_TICKS - 1) / 2;
-    const yearSize = height * 0.14;
+    const yearSize = stageHeight * 0.14 * (narrow ? NARROW_YEAR_SCALE : 1);
 
     return (
       <section
@@ -510,7 +524,7 @@ export const TimelineCableBlock = forwardRef<HTMLElement, TimelineCableBlockProp
           "relative w-full cursor-grab touch-pan-y overscroll-x-contain select-none [clip-path:inset(0)] active:cursor-grabbing",
           className,
         )}
-        style={{ height, ...styleProp }}
+        style={{ height: stageHeight, ...styleProp }}
         {...props}
       >
         <p id={hintId} className="sr-only">
@@ -551,10 +565,10 @@ export const TimelineCableBlock = forwardRef<HTMLElement, TimelineCableBlockProp
                   cableRefs.current[i] = node;
                 }}
               >
-                <line x1={g0.halfWidth} y1={0} x2={g0.halfWidth} y2={height * CARD_CENTER} />
-                <line x1={g0.halfWidth} y1={0} x2={g0.halfWidth} y2={height * CARD_CENTER} />
-                <line x1={g0.halfWidth} y1={height} x2={g0.halfWidth} y2={height * CARD_CENTER} />
-                <line x1={g0.halfWidth} y1={height} x2={g0.halfWidth} y2={height * CARD_CENTER} />
+                <line x1={g0.halfWidth} y1={0} x2={g0.halfWidth} y2={stageHeight * CARD_CENTER} />
+                <line x1={g0.halfWidth} y1={0} x2={g0.halfWidth} y2={stageHeight * CARD_CENTER} />
+                <line x1={g0.halfWidth} y1={stageHeight} x2={g0.halfWidth} y2={stageHeight * CARD_CENTER} />
+                <line x1={g0.halfWidth} y1={stageHeight} x2={g0.halfWidth} y2={stageHeight * CARD_CENTER} />
               </g>
             ))}
           </svg>

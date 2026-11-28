@@ -157,28 +157,28 @@ export type CalendarColor =
 const dashboardVariants: Record<CalendarVariant, Record<string, string>> = {
   default: {
     wrapper:
-      "bg-card text-card-foreground border border-border shadow-sm",
+      "bg-card text-card-foreground ring-1 ring-[#F7F7F6] dark:ring-border/60 shadow-[0_1px_2px_rgb(0_0_0/0.04),0_18px_40px_-24px_rgb(0_0_0/0.22)]",
     sidebar:
-      "bg-card text-card-foreground border-r border-border",
+      "bg-card text-card-foreground",
     header:
-      "bg-card text-card-foreground border-b border-border",
-    gridOuter: "bg-border p-px",
+      "bg-card text-card-foreground",
+    gridOuter: "bg-border/40 p-px",
     gridGap: "gap-px",
     gridHeader:
-      "bg-card/95 border-b border-border",
+      "bg-card/95",
     cellBg:
       "bg-card hover:bg-muted/50 text-card-foreground",
   },
   minimal: {
     wrapper: "bg-transparent border-none",
     sidebar:
-      "bg-muted/50 rounded-2xl border border-border lg:mr-6",
+      "bg-[#F7F7F6] dark:bg-background/50 rounded-[1.25rem] lg:mr-6",
     header: "bg-transparent border-none mb-4 rounded-xl",
     gridOuter: "bg-transparent p-0",
     gridGap: "gap-2 sm:gap-3",
     gridHeader: "bg-transparent border-none pb-2",
     cellBg:
-      "bg-muted rounded-2xl border border-border hover:border-foreground/20 hover:shadow-sm",
+      "bg-[#F7F7F6] dark:bg-background/50 rounded-[1.25rem] hover:bg-[#EFEFED] dark:hover:bg-background/70 transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
   },
   glass: {
     wrapper:
@@ -318,7 +318,7 @@ function Calendar({
           defaultClassNames.dropdowns,
         ),
         dropdown_root: cn(
-          "relative has-focus:border-ring border border-input shadow-xs has-focus:ring-ring/50 has-focus:ring-[3px] rounded-md cursor-pointer",
+          "relative bg-[#F7F7F6] dark:bg-background/50 has-focus:ring-ring/50 has-focus:ring-[3px] rounded-full cursor-pointer",
           defaultClassNames.dropdown_root,
         ),
         dropdown: cn(
@@ -606,7 +606,7 @@ function CustomDatePicker({
             ? "border-white/25 text-white bg-white/10 hover:bg-white/15 focus:bg-white/20 focus:border-white/50 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]"
             : variant === "glass"
               ? "border-black/15 text-neutral-900 bg-black/5 hover:bg-black/10 focus:bg-white/40 focus:border-black/30 dark:border-white/25 dark:text-white dark:bg-white/10 dark:hover:bg-white/15 dark:focus:bg-white/20 dark:focus:border-white/50"
-              : "border-input text-foreground bg-background hover:bg-muted/50",
+              : "border-transparent text-foreground bg-[#F7F7F6] dark:bg-background/50 hover:bg-[#EFEFED] dark:hover:bg-background/70",
           isOpen && (theme.focusRing || "ring-2 ring-primary/20"),
         )}
       >
@@ -626,12 +626,12 @@ function CustomDatePicker({
       {isOpen && (
         <div
           className={cn(
-            "absolute top-full left-0 mt-2 z-50 w-72 rounded-2xl border p-3.5 shadow-2xl animate-in fade-in zoom-in-95 duration-150 cursor-default",
+            "absolute top-full left-0 mt-2 z-50 w-72 rounded-[1.25rem] border p-3.5 shadow-2xl animate-in fade-in zoom-in-95 duration-150 cursor-default",
             variant === "liquid-glass"
               ? "bg-black/50 backdrop-blur-3xl border border-white/30 text-white shadow-[0_25px_60px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.4),inset_-1px_-1px_1px_rgba(255,255,255,0.15)]"
               : variant === "glass"
                 ? "bg-white/45 dark:bg-black/60 backdrop-blur-3xl border-white/50 dark:border-white/20 text-neutral-900 dark:text-white shadow-2xl"
-                : "bg-popover text-popover-foreground border-border",
+                : "bg-card text-card-foreground border-transparent shadow-[0_24px_48px_-24px_rgb(0_0_0/0.28)]",
           )}
           onClick={(e) => e.stopPropagation()}
         >
@@ -832,7 +832,7 @@ function CustomTimePicker({
             ? "border-white/25 text-white bg-white/10 hover:bg-white/15 focus:bg-white/20 focus:border-white/50 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]"
             : variant === "glass"
               ? "border-black/15 text-neutral-900 bg-black/5 hover:bg-black/10 focus:bg-white/40 focus:border-black/30 dark:border-white/25 dark:text-white dark:bg-white/10 dark:hover:bg-white/15 dark:focus:bg-white/20 dark:focus:border-white/50"
-              : "border-input text-foreground bg-background hover:bg-muted/50",
+              : "border-transparent text-foreground bg-[#F7F7F6] dark:bg-background/50 hover:bg-[#EFEFED] dark:hover:bg-background/70",
           isOpen && (theme.focusRing || "ring-2 ring-primary/20"),
         )}
       >
@@ -852,12 +852,12 @@ function CustomTimePicker({
       {isOpen && (
         <div
           className={cn(
-            "absolute top-full right-0 mt-2 z-50 w-64 rounded-2xl border p-3.5 shadow-2xl animate-in fade-in zoom-in-95 duration-150 cursor-default",
+            "absolute top-full right-0 mt-2 z-50 w-64 rounded-[1.25rem] border p-3.5 shadow-2xl animate-in fade-in zoom-in-95 duration-150 cursor-default",
             variant === "liquid-glass"
               ? "bg-black/50 backdrop-blur-3xl border border-white/30 text-white shadow-[0_25px_60px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.4),inset_-1px_-1px_1px_rgba(255,255,255,0.15)]"
               : variant === "glass"
                 ? "bg-white/45 dark:bg-black/60 backdrop-blur-3xl border-white/50 dark:border-white/20 text-neutral-900 dark:text-white shadow-2xl"
-                : "bg-popover text-popover-foreground border-border",
+                : "bg-card text-card-foreground border-transparent shadow-[0_24px_48px_-24px_rgb(0_0_0/0.28)]",
           )}
           onClick={(e) => e.stopPropagation()}
         >
@@ -1593,7 +1593,7 @@ export default function CalendarDashboard({
                     "w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-md text-sm font-medium transition-colors cursor-pointer",
                     isGlass
                       ? "border border-white/25 bg-white/15 hover:bg-white/25 text-white backdrop-blur-md shadow-sm"
-                      : "border border-border bg-muted/50 hover:bg-muted text-foreground",
+                      : "bg-[#F7F7F6] dark:bg-background/50 hover:bg-[#EFEFED] dark:hover:bg-background/70 text-foreground",
                   )}
                 >
                   Export CSV <Download className="w-4 h-4" />
@@ -1823,7 +1823,7 @@ export default function CalendarDashboard({
                       ? "bg-white/15 hover:bg-white/25 border border-white/20 text-white backdrop-blur-md"
                       : variant === "glass"
                         ? "bg-white/40 hover:bg-white/60 border border-white/40 text-neutral-900 dark:bg-white/15 dark:hover:bg-white/25 dark:border-white/20 dark:text-white backdrop-blur-md"
-                        : "bg-muted/80 hover:bg-muted border border-border text-foreground",
+                        : "bg-[#F7F7F6] dark:bg-background/50 hover:bg-[#EFEFED] dark:hover:bg-background/70 text-foreground",
                   )}
                   aria-label="Open Calendar Filters"
                 >
@@ -1966,7 +1966,7 @@ export default function CalendarDashboard({
                     ? "border border-white/25 bg-white/15 hover:bg-white/25 text-white backdrop-blur-md shadow-xs"
                     : variant === "glass"
                       ? "border border-white/40 dark:border-white/20 bg-white/30 hover:bg-white/50 text-neutral-900 dark:bg-white/10 dark:hover:bg-white/20 dark:text-white backdrop-blur-md shadow-xs"
-                      : "border border-border hover:bg-foreground/5",
+                      : "hover:bg-muted/50",
                 )}
               >
                 Export <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 cursor-pointer" />
@@ -2008,7 +2008,7 @@ export default function CalendarDashboard({
                             ? "text-neutral-900 dark:text-white/90"
                             : "text-muted-foreground",
                         variant !== "minimal" && idx !== 6
-                          ? isGlass ? "border-r border-white/15" : "border-r border-border"
+                          ? isGlass ? "border-r border-white/15" : "border-r border-transparent"
                           : "",
                       )}
                     >
@@ -2099,7 +2099,7 @@ export default function CalendarDashboard({
                                 ? "text-neutral-900 dark:text-white"
                                 : "text-foreground",
                             idx < calendarDays.length - 1
-                              ? isGlass ? "border-r border-white/15" : "border-r border-border"
+                              ? isGlass ? "border-r border-white/15" : "border-r border-transparent"
                               : "",
                           )}
                         >
@@ -2219,7 +2219,7 @@ export default function CalendarDashboard({
                 ? "rounded-[22px] sm:rounded-[28px] text-white shadow-[0_25px_60px_rgba(0,0,0,0.5)] border-0"
                 : variant === "glass"
                   ? "rounded-xl bg-white/50 dark:bg-black/60 backdrop-blur-3xl border border-white/50 dark:border-white/20 text-neutral-900 dark:text-white shadow-2xl"
-                  : "rounded-xl bg-card border border-border",
+                  : "rounded-[1.25rem] bg-card shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-16px_rgba(0,0,0,0.18)]",
             )}
             onClick={(e) => e.stopPropagation()}
           >

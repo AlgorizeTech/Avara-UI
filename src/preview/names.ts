@@ -90,6 +90,8 @@ export const sandboxNames = [
   "gallery",
   "gallery-motion",
   "glass-panel",
+  "guest-morph",
+  "guest-morph-motion",
   "half-stars",
   "heart-signal",
   "hero-bento-cascade",

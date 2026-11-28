@@ -8,7 +8,7 @@ import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Accordion
 
-A data-driven accordion with nine list styles and a brand reveal showcase.
+A data-driven accordion with eight list styles and a brand reveal showcase.
 
 export const usageData = `const faqItems: AccordionDataItem[] = [
   {
@@ -51,22 +51,6 @@ export default function Faq() {
         type="single"
         collapsible
         animation="stack"
-        defaultValue="getting-started"
-      />
-    </div>
-  );
-}`;
-
-export const usageSoft = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
-
-${usageData}
-
-export default function SoftFaq() {
-  return (
-    <div className="mx-auto w-full max-w-2xl">
-      <Accordion
-        accordionData={faqItems}
-        variant="soft"
         defaultValue="getting-started"
       />
     </div>
@@ -206,21 +190,6 @@ export const accordionCode = extractCode("src/components/custom/blocks/Accordion
       code: accordionCode,
     },
     {
-      title: "Soft tiles",
-      description: "White tiles that settle to soft gray when open with a folding plus-to-minus icon.",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "variant",
-          value: '"soft"',
-          effect: "for white tiles that settle to soft gray when open, with a plus that folds into a minus.",
-        },
-      ],
-      props: { variant: "soft", interaction: "single" },
-      usage: usageSoft,
-      code: accordionCode,
-    },
-    {
       title: "Lift card",
       description: "Default card-lift style with an optional one-time stack entrance when scrolled into view.",
       propNotes: [
@@ -269,9 +238,9 @@ export const accordionCode = extractCode("src/components/custom/blocks/Accordion
 
 ## About Shadcn Accordion
 
-**What it is.** A data-driven accordion for React built on the Radix UI primitive, shipping nine list variants plus an interactive `BrandLogoAccordion` showcase. Pass an `accordionData` array and it renders icons, triggers, and animated panels.
+**What it is.** A data-driven accordion for React built on the Radix UI primitive, shipping eight list variants plus an interactive `BrandLogoAccordion` showcase. Pass an `accordionData` array and it renders icons, triggers, and animated panels.
 
-**How it is built.** The `soft`, `tray`, `inset`, and `bracket` variants animate via CSS keyframes inside the component, while `animation="stack"` uses the Web Animations API—requiring no external animation library beyond Radix UI and `lucide-react`. Every variant reads your shadcn theme tokens (`--primary`, `--border`, `--card`) and respects `prefers-reduced-motion`.
+**How it is built.** The `default`, `tray`, `inset`, and `bracket` variants animate via CSS keyframes inside the component, while `animation="stack"` uses the Web Animations API—requiring no external animation library beyond Radix UI and `lucide-react`. Every variant reads your shadcn theme tokens (`--primary`, `--border`, `--card`) and respects `prefers-reduced-motion`.
 
 **When to use it.** Reach for it in FAQ sections, settings panels, onboarding checklists, and help centers, or use `brand-reveal` for client and partner showcases. When using `animation="stack"`, apply it once per page with at least three items and a `defaultValue` set so the open card is part of the initial deal.
 
@@ -332,7 +301,7 @@ export const accordionCode = extractCode("src/components/custom/blocks/Accordion
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "bordered" | "filled" | "elevated" | "soft" | "tray" | "inset" | "bracket" | "ghost" | "brand-reveal"</code>
+          <code>"default" | "bordered" | "filled" | "elevated" | "tray" | "inset" | "bracket" | "ghost" | "brand-reveal"</code>
         </td>
         <td>
           <code>"default"</code>
@@ -341,8 +310,7 @@ export const accordionCode = extractCode("src/components/custom/blocks/Accordion
           Which look to use. <code>default</code> lifts the open row out as a
           card, <code>bordered</code> grows a rail on it, <code>filled</code>{" "}
           inverts it to <code>primary</code>, <code>elevated</code> raises it on
-          a ring, <code>soft</code> uses white tiles that settle to soft gray with a plus that folds
-          into a minus, <code>tray</code> sets the rows in one rounded tray with an
+          a ring, <code>tray</code> sets the rows in one rounded tray with an
           animated plus/minus chip, <code>inset</code> sets the answer in a well inside the
           open card, <code>bracket</code> opens corner brackets outward,{" "}
           <code>ghost</code> is a stack of white cards lit by a hairline and soft shadow, and{" "}
@@ -501,7 +469,7 @@ Use `animation="stack"` on a single focal accordion per page—having two decks 
 
 ## Which variants use CSS animations instead of JS?
 
-The `soft`, `tray`, `inset`, and `bracket` variants open and close using CSS keyframes shipped inside the component. Only `animation="stack"` uses the Web Animations API, and no external animation library (GSAP or Motion) is required.
+The `default`, `tray`, `inset`, and `bracket` variants open and close using CSS keyframes shipped inside the component. Only `animation="stack"` uses the Web Animations API, and no external animation library (GSAP or Motion) is required.
 
 ## Can multiple accordion panels stay open at once?
 

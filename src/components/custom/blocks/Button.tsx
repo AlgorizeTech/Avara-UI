@@ -159,22 +159,22 @@ export type ShardsEffectMode = "once" | "continuous";
  */
 const PLAIN_VARIANTS: Record<string, string> = {
   default:
-    "bg-primary text-primary-foreground border-transparent hover:bg-primary/90",
+    "bg-primary text-primary-foreground border-transparent shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-16px_rgba(0,0,0,0.18)] hover:bg-primary/90",
   destructive:
     "bg-destructive text-white border-transparent hover:bg-destructive/90",
   secondary:
-    "bg-secondary text-secondary-foreground border-transparent hover:bg-secondary/80",
+    "bg-[#F7F7F6] dark:bg-background/50 hover:bg-[#EFEFED] dark:hover:bg-background/70 text-foreground border-transparent",
   ghost:
     "bg-transparent text-foreground border-transparent shadow-none hover:bg-accent hover:text-accent-foreground",
   link: "bg-transparent text-primary border-transparent shadow-none underline-offset-4 hover:underline",
   "pricing-primary":
     "rounded-lg font-sans text-[13.5px] font-semibold px-7 py-3.5 bg-primary text-primary-foreground border-transparent shadow-xs hover:bg-primary/90 hover:shadow-md hover:shadow-primary/20 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200",
   "pricing-outline":
-    "rounded-lg font-sans text-[13.5px] font-semibold px-6 py-3 border border-border bg-muted/50 dark:bg-card text-foreground hover:bg-muted/80 dark:hover:bg-muted/40 hover:border-foreground/15 dark:hover:border-foreground/25 hover:shadow-xs hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200",
+    "rounded-lg font-sans text-[13.5px] font-semibold px-6 py-3 bg-card text-foreground shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-16px_rgba(0,0,0,0.18)] hover:bg-muted/50 active:scale-[0.98] transition-[background-color,color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none",
   "pricing-glow":
     "rounded-lg font-sans text-sm font-semibold px-7 py-3.5 bg-primary text-primary-foreground border border-primary/30 shadow-[0_0_20px_-3px_color-mix(in_oklab,var(--primary)_45%,transparent)] hover:shadow-[0_0_32px_-1px_color-mix(in_oklab,var(--primary)_70%,transparent)] hover:brightness-105 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200",
   "pricing-muted":
-    "rounded-lg font-sans text-[13.5px] font-semibold px-7 py-3.5 bg-muted text-foreground border-transparent shadow-2xs hover:bg-muted/70 hover:shadow-xs hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200",
+    "rounded-lg font-sans text-[13.5px] font-semibold px-7 py-3.5 bg-[#F7F7F6] dark:bg-background/50 hover:bg-[#EFEFED] dark:hover:bg-background/70 text-foreground border-transparent active:scale-[0.98] transition-[background-color,color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none",
   "pricing-pill":
     "rounded-lg font-sans text-xs sm:text-[13px] font-bold uppercase tracking-wider px-8 py-3.5 bg-primary text-primary-foreground border-transparent shadow-md hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/25 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200",
   "pricing-dark":
@@ -184,23 +184,23 @@ const PLAIN_VARIANTS: Record<string, string> = {
   "pricing-typographic-muted":
     "rounded-lg font-sans text-xs sm:text-sm font-semibold uppercase tracking-widest px-8 py-4 bg-muted text-foreground border-transparent shadow-none active:scale-[0.99] transition-all duration-300",
   "auth-social":
-    "h-11 px-5 rounded-xl border border-border/80 bg-card/70 backdrop-blur-md text-foreground hover:bg-card hover:text-foreground shadow-xs transition-all duration-200",
+    "h-11 px-5 rounded-full bg-card text-foreground hover:bg-muted/50 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-16px_rgba(0,0,0,0.18)] active:scale-[0.98] transition-[background-color,color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none",
   "glass-social":
-    "h-11 px-5 rounded-xl border border-foreground/15 bg-background/55 backdrop-blur-lg text-foreground hover:bg-background/80 hover:text-foreground shadow-xs transition-all duration-200",
+    "h-11 px-5 rounded-full bg-[#F7F7F6] dark:bg-background/50 hover:bg-[#EFEFED] dark:hover:bg-background/70 text-foreground active:scale-[0.98] transition-[background-color,color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none",
   "liquid-glass-social":
     "h-11 px-5 rounded-xl border border-white/20 bg-zinc-900/75 dark:bg-white/15 backdrop-blur-md text-white hover:bg-zinc-900/90 dark:hover:bg-white/25 hover:text-white shadow-sm transition-all duration-200",
   "liquid-glass-primary":
-    "h-11 px-6 rounded-xl font-semibold bg-white text-zinc-950 border border-zinc-200/80 dark:border-transparent hover:bg-zinc-50 dark:hover:bg-white/90 shadow-md shadow-black/10 dark:shadow-black/20 transition-all duration-200",
+    "h-11 px-6 rounded-full font-semibold bg-card text-foreground hover:bg-muted/50 shadow-[0_24px_48px_-24px_rgb(0_0_0/0.28)] active:scale-[0.98] transition-[background-color,color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none",
   "ribbon-primary":
     "relative isolate h-11 sm:h-12 overflow-hidden rounded-full px-6 text-[14px] sm:text-[15px] font-medium bg-foreground text-background border-transparent shadow-lg hover:bg-foreground hover:text-white before:absolute before:inset-0 before:-z-10 before:bg-gradient-to-br before:from-primary before:to-[var(--brand-secondary,var(--brand,#9B8AFB))] before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-100 transition-all duration-200",
   "ribbon-social":
-    "relative isolate h-11 sm:h-12 overflow-hidden rounded-full px-6 text-[14px] sm:text-[15px] font-medium border-0 bg-white ring-1 ring-black/10 hover:bg-gray-50/80 dark:bg-[#1d1d20] dark:ring-white/10 dark:hover:bg-[#252529] text-foreground shadow-xs transition-all duration-200",
+    "relative isolate h-11 sm:h-12 overflow-hidden rounded-full px-6 text-[14px] sm:text-[15px] font-medium border-0 bg-card hover:bg-muted/50 text-foreground shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-16px_rgba(0,0,0,0.18)] transition-[background-color,color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none",
   "scenic-primary":
     "h-11 sm:h-12 px-6 rounded-2xl font-semibold text-sm sm:text-base bg-primary text-primary-foreground border-transparent hover:bg-primary/90 shadow-sm transition-all duration-200",
   "scenic-secondary":
-    "h-11 px-6 rounded-2xl text-xs sm:text-sm font-medium bg-zinc-100/90 text-zinc-700 hover:bg-zinc-200/90 border border-zinc-200/60 dark:bg-white/[0.08] dark:text-white/85 dark:hover:bg-white/[0.14] dark:border-white/5 shadow-none transition-all duration-200",
+    "h-11 px-6 rounded-full text-xs sm:text-sm font-medium bg-[#F7F7F6] dark:bg-background/50 hover:bg-[#EFEFED] dark:hover:bg-background/70 text-foreground transition-[background-color,color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none",
   "scenic-option":
-    "h-12 px-5 rounded-2xl font-medium text-[15px] bg-zinc-100 hover:bg-zinc-200/90 text-zinc-900 border border-zinc-200/80 shadow-xs dark:bg-[#1e1f21] dark:hover:bg-[#282a2d] dark:text-white dark:border-white/[0.08] transition-all duration-200",
+    "h-12 px-5 rounded-full font-medium text-[15px] bg-[#F7F7F6] dark:bg-background/50 hover:bg-[#EFEFED] dark:hover:bg-background/70 text-foreground transition-[background-color,color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none",
 };
 
 export interface ButtonProps
@@ -1451,10 +1451,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       variant === "slide-text" ||
       variant === "slide-text-down" ||
       variant === "slide-text-bounce"
-        ? "relative inline-flex items-center justify-center rounded-xl text-sm font-semibold transition-all duration-300 focus:outline-none disabled:opacity-50 disabled:pointer-events-none active:scale-[0.97] cursor-pointer group bg-background text-foreground border border-border hover:bg-primary hover:text-primary-foreground shadow-xs overflow-hidden"
+        ? "relative inline-flex items-center justify-center rounded-xl text-sm font-semibold transition-[background-color,color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring focus:outline-none disabled:opacity-50 disabled:pointer-events-none active:scale-[0.98] cursor-pointer group bg-card text-foreground hover:bg-primary hover:text-primary-foreground shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-16px_rgba(0,0,0,0.18)] overflow-hidden"
         : variant === "expand-icon" || variant === "slide-bg"
-        ? "relative inline-flex items-center justify-center rounded-xl text-sm font-semibold transition-all duration-300 focus:outline-none disabled:opacity-50 disabled:pointer-events-none active:scale-[0.97] cursor-pointer group bg-background text-foreground border border-border shadow-xs overflow-hidden"
-        : "relative inline-flex items-center justify-center rounded-xl text-sm font-semibold transition-all duration-300 focus:outline-none disabled:opacity-50 disabled:pointer-events-none active:scale-[0.97] cursor-pointer group bg-background text-foreground border border-border hover:bg-primary hover:text-primary-foreground shadow-xs";
+        ? "relative inline-flex items-center justify-center rounded-xl text-sm font-semibold transition-[background-color,color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring focus:outline-none disabled:opacity-50 disabled:pointer-events-none active:scale-[0.98] cursor-pointer group bg-card text-foreground shadow-xs overflow-hidden"
+        : "relative inline-flex items-center justify-center rounded-xl text-sm font-semibold transition-[background-color,color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring focus:outline-none disabled:opacity-50 disabled:pointer-events-none active:scale-[0.98] cursor-pointer group bg-card text-foreground hover:bg-primary hover:text-primary-foreground shadow-xs";
 
     const sizeClasses = {
       default: iconOnly ? "h-12 w-12 p-0" : "h-12 py-2.5 px-6",
@@ -1477,12 +1477,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       return (
         <button
           className={cn(
-            "group relative inline-flex items-center justify-center border text-sm font-semibold transition-all duration-300 overflow-hidden cursor-pointer",
-            "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+            "group relative inline-flex items-center justify-center text-sm font-semibold transition-[background-color,color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none overflow-hidden cursor-pointer",
+            "focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
             "disabled:opacity-50 disabled:pointer-events-none",
             isPricingVariant
               ? "gap-2.5 font-sans rounded-lg"
-              : "rounded-xl shadow-xs active:scale-[0.97]",
+              : "rounded-full active:scale-[0.98]",
             !isPricingVariant && sizeClasses[size],
             PLAIN_VARIANTS[variant],
             className,
