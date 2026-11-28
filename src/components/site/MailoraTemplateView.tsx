@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
 import { RadioIcon } from "@/components/ui/radio-icon";
 import type { RadarIconHandle } from "@/components/ui/radar-icon";
 import { MailIcon, type MailIconHandle } from "@/components/ui/mail-icon";
@@ -10,6 +10,12 @@ import {
   InstagramIcon,
   type InstagramIconHandle,
 } from "@/components/ui/instagram-icon";
+import { TargetIcon, type TargetIconHandle } from "@/components/ui/target-icon";
+import { TrophyIcon, type TrophyIconHandle } from "@/components/ui/trophy-icon";
+import {
+  MegaphoneIcon,
+  type MegaphoneIconHandle,
+} from "@/components/ui/megaphone-icon";
 import {
   ArrowRight,
   ArrowUp,
@@ -143,12 +149,137 @@ function FooterSocialIconButton({
       className={cn(
         "flex size-6 items-center justify-center rounded-md transition-colors cursor-pointer",
         isDark
-          ? "bg-[#FF5B1F]/15 text-[#FF5B1F] hover:bg-[#FF5B1F]/25"
-          : "bg-[#FF5B1F]/12 text-[#FF5B1F] hover:bg-[#FF5B1F]/20",
+          ? "bg-primary/15 text-primary hover:bg-primary/25"
+          : "bg-primary/12 text-primary hover:bg-primary/20",
       )}
     >
       {renderIcon(iconRef)}
     </button>
+  );
+}
+
+function AnimatedCounter({
+  target,
+  prefix = "",
+  suffix = "",
+  decimals = 0,
+  useLocale = false,
+  prefersReducedMotion,
+}: {
+  target: number;
+  prefix?: string;
+  suffix?: string;
+  decimals?: number;
+  useLocale?: boolean;
+  prefersReducedMotion: boolean | null;
+}) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const [displayValue, setDisplayValue] = useState(
+    prefersReducedMotion ? target : 0,
+  );
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      setDisplayValue(target);
+      return;
+    }
+    if (!isInView) return;
+
+    let rafId = 0;
+    const duration = 1100;
+    const start = performance.now();
+
+    const step = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setDisplayValue(target * eased);
+      if (progress < 1) {
+        rafId = requestAnimationFrame(step);
+      }
+    };
+
+    rafId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(rafId);
+  }, [isInView, target, prefersReducedMotion]);
+
+  const formatted =
+    decimals > 0
+      ? displayValue.toFixed(decimals)
+      : useLocale
+        ? Math.round(displayValue).toLocaleString("en-US")
+        : Math.round(displayValue).toString();
+
+  return (
+    <span ref={ref} className="tabular-nums">
+      {prefix}
+      {formatted}
+      {suffix}
+    </span>
+  );
+}
+
+function MetricBadgeWithAnimatedIcon({
+  badge,
+  delayMs,
+  prefersReducedMotion,
+  isDark,
+  renderIcon,
+}: {
+  badge: string;
+  delayMs: number;
+  prefersReducedMotion: boolean | null;
+  isDark: boolean;
+  renderIcon: (
+    ref: React.RefObject<{
+      startAnimation: () => void;
+      stopAnimation: () => void;
+    } | null>,
+  ) => React.ReactNode;
+}) {
+  const iconRef = useRef<{
+    startAnimation: () => void;
+    stopAnimation: () => void;
+  } | null>(null);
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    let intervalId: ReturnType<typeof setInterval> | undefined;
+    let resetTimerId: ReturnType<typeof setTimeout> | undefined;
+
+    const trigger = () => {
+      iconRef.current?.stopAnimation();
+      resetTimerId = setTimeout(() => {
+        iconRef.current?.startAnimation();
+      }, 60);
+    };
+
+    const startTimer = setTimeout(() => {
+      trigger();
+      intervalId = setInterval(trigger, 3400);
+    }, 300 + delayMs);
+
+    return () => {
+      clearTimeout(startTimer);
+      if (resetTimerId) clearTimeout(resetTimerId);
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [prefersReducedMotion, delayMs]);
+
+  return (
+    <span
+      onMouseEnter={() => {
+        if (!prefersReducedMotion) iconRef.current?.startAnimation();
+      }}
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-[10.5px] font-medium",
+        isDark ? "bg-primary/15 text-primary" : "bg-primary/12 text-primary",
+      )}
+    >
+      {renderIcon(iconRef)}
+      <span>{badge}</span>
+    </span>
   );
 }
 
@@ -162,23 +293,23 @@ function MailoraHeroPreview({
   const isDark = theme === "dark";
   const prefersReducedMotion = useReducedMotion();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [targetName, setTargetName] = useState("Sales Promotion");
+  const [targetName, setTargetName] = useState("Spring Onboarding");
   const [customerTypes, setCustomerTypes] = useState([
-    "Teacher",
-    "Man",
-    "Woman",
-    "Cloth",
+    "Founders",
+    "Marketers",
+    "SaaS",
+    "Creators",
   ]);
   const [audienceReachStep, setAudienceReachStep] = useState(5);
   const [subjectIndex, setSubjectIndex] = useState(0);
 
   const generatedSubjects = [
-    "Spring is here, Upgrade your wardrobe for 50% off!",
-    "Last chance: Unlock 40% off your seasonal refresh today",
-    "Your exclusive early-access invite ends at midnight",
+    "Your onboarding checklist is ready — launch in 5 minutes",
+    "Quick tip: triple your weekly open rate with smart triggers",
+    "Don't miss your 30-day deliverability audit report",
   ];
 
-  const extraCustomerTypes = ["Founder", "Agency", "Retail", "SaaS"];
+  const extraCustomerTypes = ["Agency", "Retail", "Enterprise", "Startups"];
   const handleAddCustomerType = () => {
     const next = extraCustomerTypes.find((t) => !customerTypes.includes(t));
     if (next) {
@@ -187,18 +318,18 @@ function MailoraHeroPreview({
   };
 
   const navItems = [
-    { label: "Home", active: true, hasDropdown: false },
-    { label: "Features", active: false, hasDropdown: true },
-    { label: "Services", active: false, hasDropdown: false },
-    { label: "Pricing", active: false, hasDropdown: false },
-    { label: "Help", active: false, hasDropdown: false },
+    { label: "Overview", active: true, hasDropdown: false },
+    { label: "Product", active: false, hasDropdown: true },
+    { label: "Workflows", active: false, hasDropdown: false },
+    { label: "Plans", active: false, hasDropdown: false },
+    { label: "Support", active: false, hasDropdown: false },
   ];
 
   const floatingCardClass = cn(
     "rounded-2xl border backdrop-blur-sm transition-colors",
     isDark
-      ? "border-white/10 bg-[#141720]/95 shadow-[0_12px_32px_rgba(0,0,0,0.45)]"
-      : "border-zinc-200/70 bg-white/95 shadow-[0_12px_32px_rgba(15,23,42,0.06)]",
+      ? "border-primary/[0.12] bg-[#141720]/95"
+      : "border-primary/[0.1] bg-white/95",
   );
 
   return (
@@ -209,7 +340,12 @@ function MailoraHeroPreview({
       )}
     >
       {/* Hero + Navbar + Edge-Anchored Floating Cards */}
-      <div className="relative -mx-4 @sm:-mx-6 @lg:-mx-8 px-4 @sm:px-6 @lg:px-8 pt-5 @lg:pt-6 pb-8 min-h-[600px] @lg:min-h-[640px] overflow-hidden">
+      <div
+        className={cn(
+          "relative -mx-4 @sm:-mx-6 @lg:-mx-8 px-4 @sm:px-6 @lg:px-8 pt-5 @lg:pt-6 pb-8 min-h-[600px] @lg:min-h-[640px] overflow-hidden transition-colors",
+          !isDark && "bg-[#F9F9F9]",
+        )}
+      >
       {/* Large Subtle Edge-Only Architectural Boxes + Warm Peach Tinted Cells */}
       <div
         aria-hidden
@@ -221,7 +357,7 @@ function MailoraHeroPreview({
             "absolute inset-0",
             isDark
               ? "bg-[linear-gradient(to_right,rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:112px_112px]"
-              : "bg-[linear-gradient(to_right,rgba(255,91,31,0.045)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,91,31,0.045)_1px,transparent_1px)] bg-[size:112px_112px]",
+              : "bg-[linear-gradient(to_right,color-mix(in_oklab,var(--primary)_5%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_oklab,var(--primary)_5%,transparent)_1px,transparent_1px)] bg-[size:112px_112px]",
           )}
         />
 
@@ -229,31 +365,31 @@ function MailoraHeroPreview({
         <div
           className={cn(
             "absolute left-0 top-0 h-[112px] w-[112px]",
-            isDark ? "bg-[#FF5B1F]/[0.05]" : "bg-[#FF5B1F]/[0.045]",
+            isDark ? "bg-primary/[0.05]" : "bg-primary/[0.045]",
           )}
         />
         <div
           className={cn(
             "absolute left-[112px] top-[112px] h-[112px] w-[112px]",
-            isDark ? "bg-[#FF5B1F]/[0.03]" : "bg-[#FF5B1F]/[0.03]",
+            isDark ? "bg-primary/[0.03]" : "bg-primary/[0.03]",
           )}
         />
         <div
           className={cn(
             "absolute left-0 top-[224px] h-[112px] w-[112px]",
-            isDark ? "bg-[#FF5B1F]/[0.04]" : "bg-[#FF5B1F]/[0.035]",
+            isDark ? "bg-primary/[0.04]" : "bg-primary/[0.035]",
           )}
         />
         <div
           className={cn(
             "absolute left-[112px] top-[336px] h-[112px] w-[112px]",
-            isDark ? "bg-[#FF5B1F]/[0.05]" : "bg-[#FF5B1F]/[0.05]",
+            isDark ? "bg-primary/[0.05]" : "bg-primary/[0.05]",
           )}
         />
         <div
           className={cn(
             "absolute left-[224px] top-[448px] h-[112px] w-[112px]",
-            isDark ? "bg-[#FF5B1F]/[0.03]" : "bg-[#FF5B1F]/[0.03]",
+            isDark ? "bg-primary/[0.03]" : "bg-primary/[0.03]",
           )}
         />
 
@@ -261,31 +397,40 @@ function MailoraHeroPreview({
         <div
           className={cn(
             "absolute right-0 top-[112px] h-[112px] w-[112px]",
-            isDark ? "bg-[#FF5B1F]/[0.05]" : "bg-[#FF5B1F]/[0.045]",
+            isDark ? "bg-primary/[0.05]" : "bg-primary/[0.045]",
           )}
         />
         <div
           className={cn(
             "absolute right-[112px] top-[224px] h-[112px] w-[112px]",
-            isDark ? "bg-[#FF5B1F]/[0.03]" : "bg-[#FF5B1F]/[0.03]",
+            isDark ? "bg-primary/[0.03]" : "bg-primary/[0.03]",
           )}
         />
         <div
           className={cn(
             "absolute right-0 top-[336px] h-[112px] w-[112px]",
-            isDark ? "bg-[#FF5B1F]/[0.04]" : "bg-[#FF5B1F]/[0.04]",
+            isDark ? "bg-primary/[0.04]" : "bg-primary/[0.04]",
           )}
         />
         <div
           className={cn(
             "absolute right-[112px] top-[448px] h-[112px] w-[112px]",
-            isDark ? "bg-[#FF5B1F]/[0.05]" : "bg-[#FF5B1F]/[0.045]",
+            isDark ? "bg-primary/[0.05]" : "bg-primary/[0.045]",
           )}
         />
       </div>
 
       {/* 1. Floating Black Pill Navbar */}
-      <header className="relative z-20 mx-auto max-w-4xl flex items-center justify-between gap-2">
+      <motion.header
+        initial={prefersReducedMotion ? false : { opacity: 0, y: -12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={
+          prefersReducedMotion
+            ? { duration: 0 }
+            : { duration: 0.55, ease: [0.16, 1, 0.3, 1] }
+        }
+        className="relative z-20 mx-auto max-w-md @4xl:max-w-4xl flex items-center justify-between gap-2"
+      >
         <div
           className={cn(
             "flex w-full items-center justify-between rounded-full px-2.5 py-1.5 @sm:px-3 @sm:py-2 transition-colors",
@@ -323,7 +468,7 @@ function MailoraHeroPreview({
                 className={cn(
                   "inline-flex items-center gap-1 rounded-full px-3.5 py-1.5 transition-colors cursor-pointer",
                   item.active
-                    ? "bg-[#FF5B1F] text-white font-medium"
+                    ? "bg-primary text-white font-medium"
                     : "text-zinc-300 hover:text-white",
                 )}
               >
@@ -350,18 +495,18 @@ function MailoraHeroPreview({
               type="button"
               className="hidden @sm:inline-flex px-2.5 py-1.5 text-[11.5px] font-medium text-zinc-200 hover:text-white transition-colors cursor-pointer"
             >
-              Login
+              Sign in
             </button>
 
             <button
               type="button"
               className="inline-flex h-8 items-center justify-center rounded-full bg-white px-4 text-[11.5px] font-semibold text-zinc-950 transition-colors hover:bg-zinc-100 cursor-pointer"
             >
-              Sign Up
+              Get Started
             </button>
           </div>
         </div>
-      </header>
+      </motion.header>
 
       {/* Mobile Drawer */}
       <AnimatePresence>
@@ -414,7 +559,7 @@ function MailoraHeroPreview({
                       className={cn(
                         "flex items-center justify-between rounded-lg px-3 py-2 text-left text-[13px] cursor-pointer",
                         item.active
-                          ? "bg-[#FF5B1F]/15 font-semibold text-[#FF5B1F]"
+                          ? "bg-primary/15 font-semibold text-primary"
                           : isDark
                             ? "text-zinc-400 hover:bg-white/5"
                             : "text-zinc-600 hover:bg-zinc-50",
@@ -428,9 +573,9 @@ function MailoraHeroPreview({
 
               <button
                 type="button"
-                className="inline-flex h-9 w-full items-center justify-center rounded-full bg-[#FF5B1F] text-white text-[12px] font-medium cursor-pointer"
+                className="inline-flex h-9 w-full items-center justify-center rounded-full bg-gradient-to-b from-primary to-[color-mix(in_oklab,var(--primary)_86%,black)] text-white text-[12px] font-medium cursor-pointer"
               >
-                Request Demo
+                Book a Demo
               </button>
             </motion.aside>
           </>
@@ -452,10 +597,15 @@ function MailoraHeroPreview({
           floatingCardClass,
         )}
       >
-        <span className="block h-0.5 w-4 rounded-full bg-[#FF5B1F]" />
+        <span className="block h-0.5 w-4 rounded-full bg-primary" />
         <div className="mt-2.5 flex items-center justify-between gap-1">
-          <span className="text-[17px] font-semibold tracking-tight text-[#FF5B1F]">
-            $2,320
+          <span className="text-[17px] font-semibold tracking-tight text-primary">
+            <AnimatedCounter
+              target={4850}
+              prefix="$"
+              useLocale
+              prefersReducedMotion={prefersReducedMotion}
+            />
           </span>
           <ArrowUpRight className="size-3.5 text-zinc-500" aria-hidden />
         </div>
@@ -465,7 +615,7 @@ function MailoraHeroPreview({
             isDark ? "text-zinc-400" : "text-zinc-500",
           )}
         >
-          Increase Rate
+          Monthly Revenue
         </p>
       </motion.div>
 
@@ -483,7 +633,7 @@ function MailoraHeroPreview({
           floatingCardClass,
         )}
       >
-        <p className="text-[11px] font-semibold">Growth</p>
+        <p className="text-[11px] font-semibold">Deliverability</p>
         <div className="mt-2 h-20 w-full">
           <svg viewBox="0 0 180 72" className="h-full w-full overflow-visible" aria-hidden>
             <defs>
@@ -543,7 +693,7 @@ function MailoraHeroPreview({
             isDark ? "text-zinc-500" : "text-zinc-400",
           )}
         >
-          {["Apr", "May", "Jun", "Jul", "Aug"].map((m) => (
+          {["Jan", "Feb", "Mar", "Apr", "May"].map((m) => (
             <span key={m}>{m}</span>
           ))}
         </div>
@@ -570,17 +720,17 @@ function MailoraHeroPreview({
               isDark ? "text-zinc-500" : "text-zinc-400",
             )}
           >
-            <span>$100k</span>
-            <span>$75k</span>
-            <span>$50k</span>
-            <span>$25k</span>
-            <span>$5k</span>
+            <span>120k</span>
+            <span>90k</span>
+            <span>60k</span>
+            <span>30k</span>
+            <span>10k</span>
           </div>
           <div className="relative flex-1 pt-4">
             {/* Peak Tooltip */}
             <div className="absolute left-[62%] -translate-x-1/2 top-0 z-10 flex flex-col items-center">
               <span className="rounded-full bg-zinc-950 px-2 py-0.5 text-[7.5px] font-semibold text-white">
-                $69k
+                84k
               </span>
               <span className="h-0 w-0 border-x-[3px] border-t-[4px] border-x-transparent border-t-zinc-950" />
               <span className="h-14 w-px bg-zinc-950/70 dark:bg-white/60" />
@@ -622,20 +772,25 @@ function MailoraHeroPreview({
           floatingCardClass,
         )}
       >
-        <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#FF5B1F] text-white">
+        <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-b from-primary to-[color-mix(in_oklab,var(--primary)_86%,black)] text-white">
           <TrendingUp className="size-3.5" aria-hidden />
         </span>
         <div className="flex-1 space-y-2">
-          <div className="h-2 w-full rounded-full bg-gradient-to-r from-[#FF5B1F]/35 to-[#FF5B1F]/10" />
-          <div className="h-2 w-3/5 rounded-full bg-gradient-to-r from-[#FF5B1F]/40 to-[#FF5B1F]/10" />
+          <div className="h-2 w-full rounded-full bg-gradient-to-r from-primary/35 to-primary/10" />
+          <div className="h-2 w-3/5 rounded-full bg-gradient-to-r from-primary/40 to-primary/10" />
         </div>
-        <span className="text-[11px] font-semibold text-[#FF5B1F] shrink-0">
-          +88%
+        <span className="text-[11px] font-semibold text-primary shrink-0">
+          <AnimatedCounter
+            target={94}
+            prefix="+"
+            suffix="%"
+            prefersReducedMotion={prefersReducedMotion}
+          />
         </span>
       </motion.div>
 
       {/* 2. Hero Center Content */}
-      <section className="relative z-10 mx-auto max-w-3xl pt-14 @sm:pt-16 pb-16">
+      <section className="relative z-10 mx-auto max-w-md @4xl:max-w-3xl pt-14 @sm:pt-16 pb-16">
 
         {/* Center Hero Content */}
         <div className="mx-auto max-w-2xl text-center">
@@ -652,10 +807,10 @@ function MailoraHeroPreview({
               "inline-flex items-center rounded-full border px-4 py-1 text-[11px] font-medium",
               isDark
                 ? "border-white/10 bg-white/[0.05] text-zinc-300"
-                : "border-zinc-200/80 bg-white text-zinc-600 shadow-xs",
+                : "border-zinc-200/80 bg-white text-zinc-600",
             )}
           >
-            Email Signature
+            Email Automation
           </motion.div>
 
           {/* 2-Line Headline with Inline Icon Badges */}
@@ -670,15 +825,15 @@ function MailoraHeroPreview({
             className="mt-5 text-[30px] @sm:text-[42px] @lg:text-[48px] font-semibold tracking-tight leading-[1.15]"
           >
             <span className="block">
-              Email signature{" "}
-              <span className={isDark ? "text-zinc-500" : "text-zinc-400"}>
-                marketing
+              Lifecycle email{" "}
+              <span className={isDark ? "text-zinc-500" : "text-[#939393]"}>
+                delivery
               </span>
             </span>
 
             <span className="mt-1.5 flex flex-wrap items-center justify-center gap-2.5">
               {/* Left Overlapping Yellow + Orange Badges */}
-              <span className="inline-flex items-center -space-x-2 align-middle">
+              <span className="inline-flex translate-y-[5px] items-center -space-x-2">
                 <span
                   className={cn(
                     "flex size-9 @sm:size-10 items-center justify-center rounded-full bg-[#FDE047] text-zinc-900 ring-2",
@@ -689,7 +844,7 @@ function MailoraHeroPreview({
                 </span>
                 <span
                   className={cn(
-                    "flex size-9 @sm:size-10 items-center justify-center rounded-full bg-[#FF5B1F] text-white ring-2",
+                    "flex size-9 @sm:size-10 items-center justify-center rounded-full bg-gradient-to-b from-primary to-[color-mix(in_oklab,var(--primary)_86%,black)] text-white ring-2",
                     isDark ? "ring-[#0B0D12]" : "ring-[#F9F9F9]",
                   )}
                 >
@@ -697,12 +852,12 @@ function MailoraHeroPreview({
                 </span>
               </span>
 
-              <span>on autopilot</span>
+              <span className="-translate-y-[1px] leading-none">built for scale</span>
 
               {/* Right Yellow Cloud Badge */}
               <span
                 className={cn(
-                  "inline-flex size-9 @sm:size-10 items-center justify-center rounded-full bg-[#FDE047] text-zinc-900 ring-2 align-middle",
+                  "inline-flex translate-y-[5px] size-9 @sm:size-10 items-center justify-center rounded-full bg-[#FDE047] text-zinc-900 ring-2",
                   isDark ? "ring-[#0B0D12]" : "ring-[#F9F9F9]",
                 )}
               >
@@ -725,8 +880,8 @@ function MailoraHeroPreview({
               isDark ? "text-zinc-400" : "text-zinc-500",
             )}
           >
-            All-in-one platform to collect, manage, and optimize campaigns
-            <br className="hidden @sm:inline" /> securely and globally.
+            Everything your team needs to draft, schedule, and track high-converting
+            <br className="hidden @sm:inline" /> emails from one workspace.
           </motion.p>
 
           {/* Dual CTA Buttons */}
@@ -742,9 +897,9 @@ function MailoraHeroPreview({
           >
             <button
               type="button"
-              className="inline-flex h-11 items-center justify-center rounded-full bg-[#FF5B1F] px-7 text-[12.5px] font-medium text-white shadow-[0_10px_24px_rgba(255,91,31,0.3)] transition-all hover:bg-[#e84f17] active:scale-95 cursor-pointer"
+              className="inline-flex h-11 items-center justify-center rounded-full bg-gradient-to-b from-primary to-[color-mix(in_oklab,var(--primary)_86%,black)] px-7 text-[12.5px] font-medium text-white transition-all hover:to-[color-mix(in_oklab,var(--primary)_78%,black)] active:scale-95 cursor-pointer"
             >
-              Request Demo
+              Start Free Trial
             </button>
 
             <button
@@ -753,7 +908,7 @@ function MailoraHeroPreview({
                 "inline-flex h-11 items-center justify-center gap-2.5 rounded-full border px-6 text-[12.5px] font-medium transition-colors active:scale-95 cursor-pointer",
                 isDark
                   ? "border-white/15 bg-white/[0.05] text-white hover:bg-white/10"
-                  : "border-zinc-200 bg-white text-zinc-900 hover:bg-zinc-50 shadow-xs",
+                  : "border-zinc-200 bg-white text-zinc-900 hover:bg-zinc-50",
               )}
             >
               <span
@@ -764,7 +919,7 @@ function MailoraHeroPreview({
               >
                 <Play className="size-2 fill-current ml-0.5" aria-hidden />
               </span>
-              <span>Watch Video</span>
+              <span>See How It Works</span>
             </button>
           </motion.div>
         </div>
@@ -772,34 +927,62 @@ function MailoraHeroPreview({
       </div>
 
       {/* 3. Key Features Section */}
-      <section className="relative z-10 mx-auto max-w-5xl pt-12 @sm:pt-16 pb-6">
+      <section className="relative z-10 mx-auto max-w-md @4xl:max-w-5xl pt-12 @sm:pt-16 pb-6">
         {/* Top Tag Pill */}
-        <div className="inline-flex items-center rounded-full border border-zinc-200/80 bg-white px-3.5 py-1 text-[11px] font-medium text-zinc-600 shadow-xs dark:border-white/10 dark:bg-white/[0.05] dark:text-zinc-300">
-          Key Features
-        </div>
+        <motion.div
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={
+            prefersReducedMotion
+              ? { duration: 0 }
+              : { duration: 0.55, ease: [0.16, 1, 0.3, 1] }
+          }
+          className="inline-flex items-center rounded-full border border-zinc-200/80 bg-white px-5 py-1 text-[11px] font-medium text-zinc-600 dark:border-white/10 dark:bg-white/[0.05] dark:text-zinc-300"
+        >
+          Core Capabilities
+        </motion.div>
 
         {/* Heading + Right Subtitle */}
         <div className="mt-4 flex flex-col gap-4 @md:flex-row @md:items-end @md:justify-between">
-          <h3 className="text-[26px] @sm:text-[34px] @lg:text-[38px] font-semibold tracking-tight leading-[1.14]">
-            Reach the right{" "}
+          <motion.h3
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : { duration: 0.6, delay: 0.06, ease: [0.16, 1, 0.3, 1] }
+            }
+            className="text-[26px] @sm:text-[34px] @lg:text-[38px] font-semibold tracking-tight leading-[1.14]"
+          >
+            Target every{" "}
             <span className={isDark ? "text-zinc-500" : "text-zinc-400"}>
-              audience
+              segment
             </span>
             <br />
             <span className={isDark ? "text-zinc-500" : "text-zinc-400"}>
               without
             </span>{" "}
-            headaches.
-          </h3>
+            manual work.
+          </motion.h3>
 
-          <p
+          <motion.p
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : { duration: 0.6, delay: 0.12, ease: [0.16, 1, 0.3, 1] }
+            }
             className={cn(
               "max-w-[260px] text-[11.5px] @sm:text-[12px] leading-relaxed",
               isDark ? "text-zinc-400" : "text-zinc-500",
             )}
           >
-            Reach the right audience at the right time without the tech headaches.
-          </p>
+            Send personalized sequences based on live user activity and smart audience rules.
+          </motion.p>
         </div>
 
         {/* Bento Container */}
@@ -809,7 +992,7 @@ function MailoraHeroPreview({
             isDark ? "bg-white/[0.04]" : "bg-[#F5F5F5]",
           )}
         >
-          <div className="grid grid-cols-1 @lg:grid-cols-12 gap-4 @sm:gap-5 items-stretch">
+          <div className="grid grid-cols-1 @4xl:grid-cols-12 gap-4 @sm:gap-5 items-stretch">
             {/* Left Card: Audience + World Map */}
             <motion.div
               initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
@@ -821,7 +1004,7 @@ function MailoraHeroPreview({
                   : { duration: 0.65, ease: [0.16, 1, 0.3, 1] }
               }
               className={cn(
-                "@lg:col-span-5 rounded-2xl p-5 flex flex-col justify-between",
+                "@4xl:col-span-5 rounded-2xl p-5 flex flex-col justify-between",
                 isDark ? "bg-[#141720]" : "bg-white",
               )}
             >
@@ -830,7 +1013,7 @@ function MailoraHeroPreview({
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <h4 className="text-[15px] font-semibold tracking-tight">
-                      Audience
+                      Active Subscribers
                     </h4>
                     <p
                       className={cn(
@@ -838,22 +1021,26 @@ function MailoraHeroPreview({
                         isDark ? "text-zinc-400" : "text-zinc-400",
                       )}
                     >
-                      Activate for 12 hours
+                      Updated 5 minutes ago
                     </p>
                   </div>
 
                   <button
                     type="button"
-                    className="inline-flex h-8 items-center justify-center rounded-full bg-[#FF5B1F] px-4 text-[11px] font-medium text-white transition-colors hover:bg-[#e84f17] cursor-pointer"
+                    className="inline-flex h-8 items-center justify-center rounded-full bg-gradient-to-b from-primary to-[color-mix(in_oklab,var(--primary)_86%,black)] px-4 text-[11px] font-medium text-white transition-colors hover:to-[color-mix(in_oklab,var(--primary)_78%,black)] cursor-pointer"
                   >
-                    Details
+                    View Report
                   </button>
                 </div>
 
                 {/* Big Metric + Country Pill */}
                 <div className="mt-4 flex items-center gap-3">
                   <span className="text-[28px] @sm:text-[32px] font-semibold tracking-tight leading-none">
-                    14.020
+                    <AnimatedCounter
+                      target={28450}
+                      useLocale
+                      prefersReducedMotion={prefersReducedMotion}
+                    />
                   </span>
                   <span
                     className={cn(
@@ -866,11 +1053,11 @@ function MailoraHeroPreview({
                     <span className="flex size-3.5 items-center justify-center rounded-full bg-[#E11D48] text-[7px] font-bold text-white">
                       ★
                     </span>
-                    <span>Russian</span>
+                    <span>United States</span>
                   </span>
                 </div>
 
-                {/* Gender Breakdown Rows */}
+                {/* Device Breakdown Rows */}
                 <div
                   className={cn(
                     "mt-5 divide-y border-t",
@@ -881,17 +1068,19 @@ function MailoraHeroPreview({
                 >
                   {[
                     {
-                      symbol: "♂",
-                      label: "Male",
-                      amount: "$2.480",
-                      delta: "+5.6%",
+                      symbol: "⌘",
+                      label: "Desktop",
+                      amount: 18920,
+                      deltaPrefix: "+",
+                      delta: 8.4,
                       positive: true,
                     },
                     {
-                      symbol: "♀",
-                      label: "Female",
-                      amount: "$480",
-                      delta: "-2.6%",
+                      symbol: "◎",
+                      label: "Mobile",
+                      amount: 9530,
+                      deltaPrefix: "-",
+                      delta: 1.2,
                       positive: false,
                     },
                   ].map((row) => (
@@ -920,15 +1109,25 @@ function MailoraHeroPreview({
 
                       <div className="flex items-center gap-4">
                         <span className="font-semibold tabular-nums">
-                          {row.amount}
+                          <AnimatedCounter
+                            target={row.amount}
+                            useLocale
+                            prefersReducedMotion={prefersReducedMotion}
+                          />
                         </span>
                         <span
                           className={cn(
                             "w-11 text-right font-medium tabular-nums",
-                            row.positive ? "text-emerald-500" : "text-[#FF5B1F]",
+                            row.positive ? "text-emerald-500" : "text-primary",
                           )}
                         >
-                          {row.delta}
+                          <AnimatedCounter
+                            target={row.delta}
+                            prefix={row.deltaPrefix}
+                            suffix="%"
+                            decimals={1}
+                            prefersReducedMotion={prefersReducedMotion}
+                          />
                         </span>
                       </div>
                     </div>
@@ -973,24 +1172,30 @@ function MailoraHeroPreview({
                   {/* Highlighted Regions: Alaska/US + Turkey + Japan */}
                   <path
                     d="M28 32 L46 28 L42 42 L26 42 Z"
-                    fill="#FF5B1F"
+                    className="fill-primary"
                   />
                   <path
                     d="M46 50 L86 52 L82 68 L58 70 L46 60 Z"
-                    fill="#FF5B1F"
+                    className="fill-primary"
                   />
                   <path
                     d="M198 52 L214 52 L212 60 L196 58 Z"
-                    fill="#FF5B1F"
+                    className="fill-primary"
                   />
                   <path
                     d="M312 52 L322 48 L320 62 L310 62 Z"
-                    fill="#FF5B1F"
+                    className="fill-primary"
                   />
                 </svg>
 
                 {/* Floating Country Pins */}
-                <div
+                <motion.div
+                  animate={prefersReducedMotion ? undefined : { y: [0, -2.5, 0] }}
+                  transition={
+                    prefersReducedMotion
+                      ? undefined
+                      : { duration: 3.2, repeat: Infinity, ease: "easeInOut" }
+                  }
                   className={cn(
                     "absolute left-[50%] top-[44%] -translate-x-1/2 -translate-y-1/2 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[9px] font-medium shadow-sm",
                     isDark
@@ -1001,10 +1206,21 @@ function MailoraHeroPreview({
                   <span className="flex size-3 items-center justify-center rounded-full bg-[#E11D48] text-[6px] text-white">
                     ☾
                   </span>
-                  <span>Turkey</span>
-                </div>
+                  <span>Germany</span>
+                </motion.div>
 
-                <div
+                <motion.div
+                  animate={prefersReducedMotion ? undefined : { y: [0, -2.5, 0] }}
+                  transition={
+                    prefersReducedMotion
+                      ? undefined
+                      : {
+                          duration: 3.2,
+                          delay: 0.7,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                        }
+                  }
                   className={cn(
                     "absolute right-3 top-[54%] inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[9px] font-medium shadow-sm",
                     isDark
@@ -1015,13 +1231,13 @@ function MailoraHeroPreview({
                   <span className="flex size-3 items-center justify-center rounded-full bg-zinc-100">
                     <span className="size-1.5 rounded-full bg-[#E11D48]" />
                   </span>
-                  <span>Japan</span>
-                </div>
+                  <span>Singapore</span>
+                </motion.div>
               </div>
             </motion.div>
 
             {/* Right Column: 2 Stacked Cards */}
-            <div className="@lg:col-span-7 flex flex-col gap-4 @sm:gap-5">
+            <div className="@4xl:col-span-7 flex flex-col gap-4 @sm:gap-5">
               {/* Top Card: Our Team */}
               <motion.div
                 initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
@@ -1109,7 +1325,7 @@ function MailoraHeroPreview({
                 </div>
 
                 <h4 className="mt-5 text-[14px] font-semibold tracking-tight">
-                  Our Team
+                  Workspace Collaborators
                 </h4>
                 <p
                   className={cn(
@@ -1117,8 +1333,8 @@ function MailoraHeroPreview({
                     isDark ? "text-zinc-400" : "text-zinc-500",
                   )}
                 >
-                  Clarifying roles, responsibilities, and contributions of each team
-                  member to sales.
+                  Assign campaign approvals, review copy drafts, and manage sender
+                  permissions together.
                 </p>
               </motion.div>
 
@@ -1137,13 +1353,13 @@ function MailoraHeroPreview({
                   isDark ? "bg-[#141720]" : "bg-white",
                 )}
               >
-                {/* Target Name */}
+                {/* Campaign Name */}
                 <div>
                   <label
                     htmlFor="mailora-target-name"
                     className="block text-[11.5px] font-semibold tracking-tight"
                   >
-                    Target Name
+                    Campaign Name
                   </label>
                   <input
                     id="mailora-target-name"
@@ -1153,16 +1369,16 @@ function MailoraHeroPreview({
                     className={cn(
                       "mt-2 w-full rounded-xl border px-3.5 py-2 text-[11.5px] outline-none transition-colors",
                       isDark
-                        ? "border-white/10 bg-white/[0.03] text-zinc-100 focus:border-[#FF5B1F]/60"
-                        : "border-zinc-200/80 bg-white text-zinc-800 focus:border-[#FF5B1F]/60",
+                        ? "border-white/10 bg-white/[0.03] text-zinc-100 focus:border-primary/60"
+                        : "border-zinc-200/80 bg-white text-zinc-800 focus:border-primary/60",
                     )}
                   />
                 </div>
 
-                {/* Customer Type */}
+                {/* Audience Segments */}
                 <div>
                   <p className="text-[11.5px] font-semibold tracking-tight">
-                    Customer Type
+                    Audience Segments
                   </p>
                   <div className="mt-2 flex flex-wrap items-center gap-2">
                     {customerTypes.map((tag) => (
@@ -1193,18 +1409,18 @@ function MailoraHeroPreview({
                     <button
                       type="button"
                       onClick={handleAddCustomerType}
-                      className="inline-flex items-center gap-1 rounded-full border border-[#FF5B1F]/40 bg-[#FF5B1F]/[0.06] px-2.5 py-1 text-[10.5px] font-medium text-[#FF5B1F] hover:bg-[#FF5B1F]/[0.12] transition-colors cursor-pointer"
+                      className="inline-flex items-center gap-1 rounded-full border border-primary/40 bg-primary/[0.06] px-2.5 py-1 text-[10.5px] font-medium text-primary hover:bg-primary/[0.12] transition-colors cursor-pointer"
                     >
-                      <span>Add New</span>
+                      <span>Add Tag</span>
                       <Plus className="size-2.5" />
                     </button>
                   </div>
                 </div>
 
-                {/* Choose Location */}
+                {/* Delivery Region */}
                 <div>
                   <p className="text-[11.5px] font-semibold tracking-tight">
-                    Choose Location
+                    Delivery Region
                   </p>
                   <div
                     className={cn(
@@ -1218,7 +1434,7 @@ function MailoraHeroPreview({
                         isDark ? "text-zinc-200" : "text-zinc-700",
                       )}
                     >
-                      Worldwide Audience
+                      Global Delivery
                     </span>
 
                     <div className="flex items-center gap-1">
@@ -1233,7 +1449,7 @@ function MailoraHeroPreview({
                             className={cn(
                               "size-2.5 rounded-[3px] transition-colors cursor-pointer",
                               active
-                                ? "bg-[#FF5B1F]"
+                                ? "bg-primary"
                                 : isDark
                                   ? "bg-white/20 hover:bg-white/35"
                                   : "bg-white hover:bg-white/80",
@@ -1258,51 +1474,92 @@ function MailoraHeroPreview({
       <section
         className={cn(
           "relative z-10 -mx-4 @sm:-mx-6 @lg:-mx-8 mt-10 px-4 @sm:px-6 @lg:px-8 py-14 @sm:py-20 transition-colors",
-          isDark ? "bg-white/[0.03]" : "bg-[#F5F5F5]",
+          isDark ? "bg-white/[0.03]" : "bg-[#F9F9F9]",
         )}
       >
-        <div className="mx-auto max-w-5xl">
+        <div className="mx-auto max-w-md @4xl:max-w-5xl">
         {/* Top Tag Pill */}
-        <div
+        <motion.div
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={
+            prefersReducedMotion
+              ? { duration: 0 }
+              : { duration: 0.55, ease: [0.16, 1, 0.3, 1] }
+          }
           className={cn(
-            "inline-flex items-center rounded-full border px-3.5 py-1 text-[11px] font-medium shadow-xs",
+            "inline-flex items-center rounded-full border px-5 py-1 text-[11px] font-medium",
             isDark
               ? "border-white/10 bg-white/[0.05] text-zinc-300"
               : "border-zinc-200/80 bg-white text-zinc-600",
           )}
         >
-          Our Service
-        </div>
+          Smart Studio
+        </motion.div>
 
         {/* Heading + Overlapping Action Badges */}
-        <div className="mt-4 flex flex-col gap-5 @md:flex-row @md:items-center @md:justify-between">
-          <h3 className="text-[26px] @sm:text-[34px] @lg:text-[38px] font-semibold tracking-tight leading-[1.15]">
-            Design stunning emails with our
+        <div className="mt-4 flex flex-col gap-5 @4xl:flex-row @4xl:items-center @4xl:justify-between">
+          <motion.h3
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : { duration: 0.6, delay: 0.06, ease: [0.16, 1, 0.3, 1] }
+            }
+            className="text-[26px] @sm:text-[34px] @lg:text-[38px] font-semibold tracking-tight leading-[1.15]"
+          >
+            Craft high-converting emails
             <br />
-            <span className={isDark ? "text-zinc-500" : "text-zinc-400"}>
-              no-code editor.
+            <span className={isDark ? "text-zinc-500" : "text-[#C1C1C1]"}>
+              in minutes.
             </span>
-          </h3>
+          </motion.h3>
 
           <div className="flex items-center -space-x-3 self-start @md:self-auto">
-            <span
+            <motion.span
+              animate={prefersReducedMotion ? undefined : { y: [0, -2.5, 0] }}
+              transition={
+                prefersReducedMotion
+                  ? undefined
+                  : { duration: 2.6, repeat: Infinity, ease: "easeInOut" }
+              }
               className={cn(
-                "flex size-12 items-center justify-center rounded-full border shadow-sm",
+                "flex size-12 items-center justify-center rounded-full border",
                 isDark
-                  ? "border-white/10 bg-[#141720] text-[#FF5B1F]"
-                  : "border-zinc-200/80 bg-white text-[#FF5B1F]",
+                  ? "border-white/10 bg-[#141720] text-primary"
+                  : "border-zinc-200/70 bg-white text-primary",
               )}
             >
               <TrendingUp className="size-4" aria-hidden />
-            </span>
-            <span className="flex size-14 items-center justify-center rounded-full bg-[#FF5B1F] text-white shadow-[0_10px_24px_rgba(255,91,31,0.3)] ring-2 ring-white dark:ring-[#0B0D12]">
-              <Zap className="size-5 fill-current" aria-hidden />
-            </span>
+            </motion.span>
+            <motion.span
+              animate={
+                prefersReducedMotion
+                  ? undefined
+                  : { y: [0, 2.5, 0], scale: [1, 1.04, 1] }
+              }
+              transition={
+                prefersReducedMotion
+                  ? undefined
+                  : {
+                      duration: 2.6,
+                      delay: 0.35,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }
+              }
+              className="relative z-10 flex size-12 items-center justify-center rounded-full bg-gradient-to-b from-primary to-[color-mix(in_oklab,var(--primary)_86%,black)] text-white"
+            >
+              <Zap className="size-4 fill-current" aria-hidden />
+            </motion.span>
           </div>
         </div>
 
         {/* 2-Column Service Cards */}
-        <div className="mt-9 grid grid-cols-1 @lg:grid-cols-2 gap-5 items-stretch">
+        <div className="mt-9 grid grid-cols-1 @4xl:grid-cols-2 gap-5 items-stretch">
           {/* Left Card: Create high performing subject line */}
           <motion.div
             initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
@@ -1314,49 +1571,43 @@ function MailoraHeroPreview({
                 : { duration: 0.65, ease: [0.16, 1, 0.3, 1] }
             }
             className={cn(
-              "rounded-3xl border p-5 @sm:p-7 flex flex-col justify-between",
-              isDark
-                ? "border-white/[0.07] bg-[#141720]"
-                : "border-zinc-200/60 bg-white shadow-[0_8px_28px_rgba(15,23,42,0.03)]",
+              "rounded-3xl p-6 @sm:p-8 flex flex-col",
+              isDark ? "bg-[#141720]" : "bg-white",
             )}
           >
-            <h4 className="text-center text-[15px] @sm:text-[16px] font-semibold tracking-tight">
-              Create high performing subject line
+            <h4 className="text-center text-[15px] @sm:text-[17px] font-semibold tracking-tight">
+              Write subject lines that get opened
             </h4>
 
-            <div className="mt-6">
+            <div className="mt-6 flex-1 flex flex-col justify-center">
               {/* Inner AI Generator Card */}
               <div
                 className={cn(
-                  "rounded-2xl border p-4",
-                  isDark
-                    ? "border-white/[0.07] bg-white/[0.03]"
-                    : "border-zinc-200/70 bg-[#F9F9F9]",
+                  "mx-1 @sm:mx-3 rounded-2xl p-4",
+                  isDark ? "bg-white/[0.03]" : "bg-[#F9F9F9]",
                 )}
               >
                 <p
                   className={cn(
                     "text-[11px] font-medium",
-                    isDark ? "text-zinc-400" : "text-zinc-500",
+                    isDark ? "text-zinc-400" : "text-zinc-600",
                   )}
                 >
-                  Generate with AI
+                  AI Copy Assistant
                 </p>
 
-                {/* Blog Traffic Box */}
+                {/* Welcome Series Box */}
                 <div
                   className={cn(
-                    "mt-3 rounded-xl border p-3",
-                    isDark
-                      ? "border-white/10 bg-white/[0.03]"
-                      : "border-zinc-200/70 bg-white",
+                    "mt-3 rounded-xl p-3.5",
+                    isDark ? "bg-white/[0.04]" : "bg-white",
                   )}
                 >
                   <div className="flex items-center justify-between gap-2 text-[11px]">
-                    <span className="font-medium">Blog Traffic</span>
+                    <span className="font-medium">Welcome Series</span>
                     <span className="inline-flex items-center gap-1 font-semibold text-emerald-500">
                       <TrendingUp className="size-3" aria-hidden />
-                      <span>15.16%</span>
+                      <span>+22.4%</span>
                     </span>
                   </div>
                   <div
@@ -1373,33 +1624,31 @@ function MailoraHeroPreview({
                   onClick={() =>
                     setSubjectIndex((i) => (i + 1) % generatedSubjects.length)
                   }
-                  className="mt-3 flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-[#FF5B1F] text-[11.5px] font-medium text-white shadow-[0_8px_20px_rgba(255,91,31,0.25)] transition-all hover:bg-[#e84f17] active:scale-[0.99] cursor-pointer"
+                  className="mt-3 flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-primary text-[11.5px] font-medium text-white transition-colors hover:bg-primary/90 active:scale-[0.99] cursor-pointer"
                 >
                   <Wand2 className="size-3.5" aria-hidden />
-                  <span>Generate Subject Line</span>
+                  <span>Suggest New Line</span>
                 </button>
 
                 {/* Pill Tags Row */}
                 <div className="mt-3 flex flex-wrap items-center gap-2">
                   <span
                     className={cn(
-                      "rounded-lg border px-2.5 py-1 text-[10px] font-medium",
+                      "rounded-lg px-2.5 py-1.5 text-[10px] font-medium",
                       isDark
-                        ? "border-white/10 bg-white/[0.04] text-zinc-300"
-                        : "border-zinc-200/70 bg-zinc-50 text-zinc-700",
+                        ? "bg-white/[0.05] text-zinc-300"
+                        : "bg-white text-zinc-700",
                     )}
                   >
-                    Add Urgency
+                    Boost Clarity
                   </span>
                   {[48, 56, 44].map((w, idx) => (
                     <span
                       key={idx}
                       style={{ width: `${w}px` }}
                       className={cn(
-                        "h-6 rounded-lg border",
-                        isDark
-                          ? "border-white/[0.06] bg-white/[0.02]"
-                          : "border-zinc-100 bg-zinc-50/70",
+                        "h-6 rounded-lg",
+                        isDark ? "bg-white/[0.03]" : "bg-white/80",
                       )}
                     />
                   ))}
@@ -1409,10 +1658,10 @@ function MailoraHeroPreview({
               {/* Floating Subject Result Card */}
               <div
                 className={cn(
-                  "relative z-10 -mt-3 mx-1 rounded-xl border p-3.5",
+                  "relative z-10 -mt-3 rounded-xl p-3.5",
                   isDark
-                    ? "border-white/10 bg-[#181C27] shadow-[0_12px_28px_rgba(0,0,0,0.45)]"
-                    : "border-zinc-100 bg-white shadow-[0_12px_28px_rgba(15,23,42,0.07)]",
+                    ? "bg-[#181C27] shadow-[0_12px_28px_rgba(0,0,0,0.45)]"
+                    : "bg-white shadow-[0_12px_28px_rgba(15,23,42,0.06)]",
                 )}
               >
                 <p className="text-[11.5px] font-medium leading-snug">
@@ -1425,10 +1674,12 @@ function MailoraHeroPreview({
                     isDark ? "border-white/[0.07]" : "border-zinc-100",
                   )}
                 >
-                  <span className="inline-flex items-center gap-1.5 font-medium text-emerald-500">
-                    <CheckCircle2 className="size-3.5" aria-hidden />
+                  <span className="inline-flex items-center gap-1.5 font-medium">
+                    <span className="flex size-3.5 items-center justify-center rounded-full bg-emerald-500 text-white">
+                      <CheckCircle2 className="size-2.5" aria-hidden />
+                    </span>
                     <span className={isDark ? "text-zinc-200" : "text-zinc-700"}>
-                      Added
+                      Approved
                     </span>
                   </span>
 
@@ -1448,13 +1699,13 @@ function MailoraHeroPreview({
               {/* Subtle Faded Bottom Input Hint */}
               <div
                 className={cn(
-                  "mt-2 mx-4 flex items-center justify-between rounded-lg border px-3 py-1.5 text-[9.5px] opacity-45",
+                  "mt-2 mx-4 flex items-center justify-between rounded-lg px-3 py-1.5 text-[9.5px] opacity-45",
                   isDark
-                    ? "border-white/[0.06] text-zinc-400"
-                    : "border-zinc-200/70 text-zinc-400",
+                    ? "bg-white/[0.02] text-zinc-400"
+                    : "bg-[#F9F9F9] text-zinc-400",
                 )}
               >
-                <span>+ Use Subject Line</span>
+                <span>+ Insert into Draft</span>
                 <div className="flex items-center gap-2">
                   <Flag className="size-2.5" aria-hidden />
                   <MoreVertical className="size-2.5" aria-hidden />
@@ -1474,37 +1725,35 @@ function MailoraHeroPreview({
                 : { duration: 0.65, delay: 0.1, ease: [0.16, 1, 0.3, 1] }
             }
             className={cn(
-              "relative rounded-3xl border p-5 @sm:p-7 overflow-hidden flex flex-col justify-between",
-              isDark
-                ? "border-white/[0.07] bg-[#141720]"
-                : "border-zinc-200/60 bg-white shadow-[0_8px_28px_rgba(15,23,42,0.03)]",
+              "relative rounded-3xl p-6 @sm:p-8 overflow-hidden flex flex-col",
+              isDark ? "bg-[#141720]" : "bg-white",
             )}
           >
-            <h4 className="text-center text-[15px] @sm:text-[16px] font-semibold tracking-tight">
-              Connect with your audience
+            <h4 className="text-center text-[15px] @sm:text-[17px] font-semibold tracking-tight">
+              Collaborate before you hit send
             </h4>
 
-            <div className="relative mt-6 min-h-[275px]">
-              {/* Top-Right Floating Pills: 1300 Views & 2.8m+ Followers */}
+            <div className="relative mt-6 flex-1 min-h-[295px]">
+              {/* Top-Right Floating Pills: 2,450 Opens & 1.4m+ Subscribers */}
               <div className="flex flex-col items-end gap-2.5 @sm:absolute @sm:right-0 @sm:top-2 @sm:z-10 mb-4 @sm:mb-0">
                 <div
                   className={cn(
-                    "inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-[11px] font-medium",
+                    "inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-[11px] font-medium",
                     isDark
-                      ? "border-white/10 bg-[#141720] text-zinc-200 shadow-md"
-                      : "border-zinc-200/70 bg-white text-zinc-800 shadow-[0_6px_18px_rgba(15,23,42,0.04)]",
+                      ? "bg-[#1B2030] text-zinc-200 shadow-md"
+                      : "bg-white text-zinc-800 shadow-[0_4px_16px_rgba(15,23,42,0.04)]",
                   )}
                 >
                   <Eye className="size-3.5 text-zinc-500" aria-hidden />
-                  <span>1300 Views</span>
+                  <span>2,450 Opens</span>
                 </div>
 
                 <div
                   className={cn(
-                    "inline-flex items-center gap-2 rounded-full border px-2.5 py-1.5",
+                    "inline-flex items-center gap-2 rounded-full px-2.5 py-1.5",
                     isDark
-                      ? "border-white/10 bg-[#141720] shadow-md"
-                      : "border-zinc-200/70 bg-white shadow-[0_6px_18px_rgba(15,23,42,0.04)]",
+                      ? "bg-[#1B2030] shadow-md"
+                      : "bg-white shadow-[0_4px_16px_rgba(15,23,42,0.04)]",
                   )}
                 >
                   <div className="flex items-center -space-x-1.5">
@@ -1519,72 +1768,70 @@ function MailoraHeroPreview({
                       className="size-5 rounded-full object-cover ring-1 ring-white dark:ring-[#141720]"
                     />
                     <span className="flex size-5 items-center justify-center rounded-full bg-[#8B7CFF] text-[7px] font-semibold text-white ring-1 ring-white dark:ring-[#141720]">
-                      28k+
+                      16k+
                     </span>
                   </div>
                   <div className="leading-tight pr-1">
-                    <p className="text-[9.5px] font-semibold">2.8m+</p>
+                    <p className="text-[9.5px] font-semibold">1.4m+</p>
                     <p
                       className={cn(
                         "text-[8px]",
                         isDark ? "text-zinc-400" : "text-zinc-400",
                       )}
                     >
-                      Followers
+                      Subscribers
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* Left Back Card: Generate with AI + Team Photo */}
+              {/* Left Back Card: Live Preview + Team Photo */}
               <div
                 className={cn(
-                  "w-full @sm:w-[58%] rounded-2xl border p-3.5",
-                  isDark
-                    ? "border-white/[0.07] bg-[#141720]"
-                    : "border-zinc-100 bg-white shadow-[0_4px_18px_rgba(15,23,42,0.03)]",
+                  "w-full @sm:w-[58%] rounded-2xl p-3.5",
+                  isDark ? "bg-white/[0.03]" : "bg-[#F9F9F9]",
                 )}
               >
                 <p
                   className={cn(
-                    "text-[10.5px] font-medium",
-                    isDark ? "text-zinc-400" : "text-zinc-500",
+                    "text-[11px] font-medium",
+                    isDark ? "text-zinc-400" : "text-zinc-600",
                   )}
                 >
-                  Generate with AI
+                  Live Preview
                 </p>
 
                 <div className="mt-2.5 overflow-hidden rounded-xl">
                   <img
-                    src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_fill/v1790145141/pexels-photo-6311475-1790145143489.jpg"
+                    src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1795848272/gemini_generated_image_rjovsfrjovsfrjov-1795848268642.jpg"
                     alt="Team collaborating on email campaign"
-                    className="h-24 w-full object-cover"
+                    className="h-32 w-full object-cover"
                   />
                 </div>
 
-                <p className="mt-2.5 text-[11.5px] font-medium leading-snug">
-                  Discover powerful boost engagement
+                <p className="mt-2.5 text-[12px] font-medium leading-snug">
+                  Real-time feedback from your growth team
                 </p>
 
                 <div className="mt-2 space-y-1.5">
                   <div
                     className={cn(
                       "h-1.5 w-full rounded-full",
-                      isDark ? "bg-white/10" : "bg-zinc-100",
+                      isDark ? "bg-white/10" : "bg-zinc-200/60",
                     )}
                   />
                   <div
                     className={cn(
                       "h-1.5 w-3/4 rounded-full",
-                      isDark ? "bg-white/10" : "bg-zinc-100",
+                      isDark ? "bg-white/10" : "bg-zinc-200/60",
                     )}
                   />
                 </div>
 
-                <div className="mt-3 flex items-center gap-2 pt-2 border-t border-current/5">
+                <div className="mt-3 flex items-center gap-2 pt-2">
                   <img
                     src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_80,h_80,c_fill/v1790082180/pexels-photo-1520760-1790082180553.jpg"
-                    alt="Hello Cralencel"
+                    alt="Nadia Rahman"
                     className="size-4 rounded-full object-cover"
                   />
                   <span
@@ -1593,7 +1840,7 @@ function MailoraHeroPreview({
                       isDark ? "text-zinc-400" : "text-zinc-500",
                     )}
                   >
-                    Hello Cralencel
+                    Nadia Rahman
                   </span>
                 </div>
               </div>
@@ -1601,10 +1848,10 @@ function MailoraHeroPreview({
               {/* Overlapping Front-Right Comment Thread Card */}
               <div
                 className={cn(
-                  "mt-4 @sm:mt-0 @sm:absolute @sm:right-0 @sm:bottom-0 @sm:w-[60%] z-10 rounded-2xl border p-3.5",
+                  "mt-4 @sm:mt-0 @sm:absolute @sm:right-0 @sm:bottom-0 @sm:w-[60%] z-10 rounded-2xl p-3.5",
                   isDark
-                    ? "border-white/10 bg-[#181C27] shadow-[0_14px_32px_rgba(0,0,0,0.5)]"
-                    : "border-zinc-100 bg-white shadow-[0_14px_32px_rgba(15,23,42,0.08)]",
+                    ? "bg-[#181C27] shadow-[0_14px_32px_rgba(0,0,0,0.5)]"
+                    : "bg-white shadow-[0_14px_32px_rgba(15,23,42,0.07)]",
                 )}
               >
                 {/* Comment 1 */}
@@ -1612,22 +1859,21 @@ function MailoraHeroPreview({
                   <div className="flex items-center gap-2">
                     <img
                       src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_80,h_80,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg"
-                      alt="Maxwell"
+                      alt="David Chen"
                       className="size-5 rounded-full object-cover"
                     />
-                    <span className="text-[11px] font-semibold">Maxwell</span>
+                    <span className="text-[11px] font-semibold">David Chen</span>
                   </div>
                   <p
                     className={cn(
-                      "mt-1.5 text-[9.5px] leading-relaxed",
+                      "mt-1.5 text-[10px] leading-relaxed",
                       isDark ? "text-zinc-300" : "text-zinc-600",
                     )}
                   >
                     <span className="rounded bg-blue-500/15 px-1 py-0.5 font-medium text-blue-600 dark:text-blue-400">
-                      @Gerland
+                      @Sarah
                     </span>{" "}
-                    this is really interesting. Let&apos;s chat about this more
-                    tomorrow
+                    the new subject line tested 18% higher in our morning batch
                   </p>
                   <div
                     className={cn(
@@ -1650,11 +1896,11 @@ function MailoraHeroPreview({
                   <div className="flex items-center gap-2">
                     <img
                       src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_80,h_80,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg"
-                      alt="Julian Smith"
+                      alt="Claire Bennett"
                       className="size-5 rounded-full object-cover"
                     />
                     <span className="text-[10.5px] font-semibold">
-                      Julian Smith
+                      Claire Bennett
                     </span>
                   </div>
                   <div className="mt-1.5 space-y-1">
@@ -1680,79 +1926,134 @@ function MailoraHeroPreview({
       </section>
 
       {/* 5. Metrics Strip Section */}
-      <section className="relative z-10 mx-auto max-w-5xl py-14 @sm:py-20">
-        <div className="grid grid-cols-1 @md:grid-cols-3 gap-8 @md:gap-0">
+      <section className="relative z-10 mx-auto max-w-md @4xl:max-w-5xl py-14 @sm:py-20">
+        <div className="flex flex-col @4xl:flex-row @4xl:items-stretch @4xl:justify-between gap-7 @4xl:gap-6">
           {[
             {
-              badge: "Customer",
-              icon: Users,
-              value: "20K",
-              suffix: "+",
-              description: "Design stunning emails with our no-code editor.",
+              badge: "Senders",
+              value: 35,
+              suffix: "K",
+              sup: "+",
+              description: "Launch automated campaigns with drag-and-drop blocks.",
+              renderIcon: (
+                ref: React.RefObject<{
+                  startAnimation: () => void;
+                  stopAnimation: () => void;
+                } | null>,
+              ) => (
+                <MegaphoneIcon
+                  ref={ref as React.Ref<MegaphoneIconHandle>}
+                  size={12}
+                  duration={1.5}
+                  isAnimated={!prefersReducedMotion}
+                  color="var(--primary)"
+                />
+              ),
             },
             {
-              badge: "Impact",
-              icon: Target,
-              value: "99",
-              suffix: "%",
+              badge: "Inbox Rate",
+              value: 99,
+              suffix: "",
+              sup: "%",
               description:
-                "Trigger emails based on user behavior, purchases, or engagement.",
+                "Built-in domain warmup and smart bounce protection.",
+              renderIcon: (
+                ref: React.RefObject<{
+                  startAnimation: () => void;
+                  stopAnimation: () => void;
+                } | null>,
+              ) => (
+                <TargetIcon
+                  ref={ref as React.Ref<TargetIconHandle>}
+                  size={12}
+                  duration={1.5}
+                  isAnimated={!prefersReducedMotion}
+                  color="var(--primary)"
+                />
+              ),
             },
             {
-              badge: "Experience",
-              icon: Award,
-              value: "89",
-              suffix: "%",
+              badge: "Time Saved",
+              value: 78,
+              suffix: "",
+              sup: "%",
               description:
-                "Track open rates, click-throughs, conversions, and ROI.",
+                "Cut weekly campaign setup time across your entire team.",
+              renderIcon: (
+                ref: React.RefObject<{
+                  startAnimation: () => void;
+                  stopAnimation: () => void;
+                } | null>,
+              ) => (
+                <TrophyIcon
+                  ref={ref as React.Ref<TrophyIconHandle>}
+                  size={12}
+                  duration={1.5}
+                  isAnimated={!prefersReducedMotion}
+                  color="var(--primary)"
+                />
+              ),
             },
           ].map((stat, idx) => (
-            <motion.div
-              key={stat.badge}
-              initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={
-                prefersReducedMotion
-                  ? { duration: 0 }
-                  : { duration: 0.6, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }
-              }
-              className={cn(
-                "flex flex-col items-start @md:px-8 first:@md:pl-0 last:@md:pr-0",
-                idx < 2 &&
-                  (isDark
-                    ? "@md:border-r @md:border-dashed @md:border-white/10"
-                    : "@md:border-r @md:border-dashed @md:border-zinc-200"),
+            <React.Fragment key={stat.badge}>
+              <motion.div
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.25 }}
+                transition={
+                  prefersReducedMotion
+                    ? { duration: 0 }
+                    : { duration: 0.6, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }
+                }
+                className={cn(
+                  "flex flex-col items-start",
+                  idx < 2 &&
+                    (isDark
+                      ? "border-b border-dashed border-white/10 pb-7 @4xl:border-b-0 @4xl:pb-0"
+                      : "border-b border-dashed border-zinc-200 pb-7 @4xl:border-b-0 @4xl:pb-0"),
+                )}
+              >
+                <MetricBadgeWithAnimatedIcon
+                  badge={stat.badge}
+                  delayMs={idx * 450}
+                  prefersReducedMotion={prefersReducedMotion}
+                  isDark={isDark}
+                  renderIcon={stat.renderIcon}
+                />
+
+                <div className="mt-4 flex items-start font-medium tracking-tight leading-none">
+                  <span className="text-[42px] @sm:text-[48px]">
+                    <AnimatedCounter
+                      target={stat.value}
+                      suffix={stat.suffix}
+                      prefersReducedMotion={prefersReducedMotion}
+                    />
+                  </span>
+                  <span className="ml-1 mt-0.5 text-[22px] @sm:text-[26px] font-medium leading-none">
+                    {stat.sup}
+                  </span>
+                </div>
+
+                <p
+                  className={cn(
+                    "mt-3.5 max-w-[235px] text-[12px] leading-relaxed",
+                    isDark ? "text-zinc-400" : "text-zinc-500",
+                  )}
+                >
+                  {stat.description}
+                </p>
+              </motion.div>
+
+              {idx < 2 && (
+                <div
+                  aria-hidden
+                  className={cn(
+                    "hidden @4xl:block w-px self-stretch border-r border-dashed",
+                    isDark ? "border-white/10" : "border-zinc-200",
+                  )}
+                />
               )}
-            >
-              <span
-                className={cn(
-                  "inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-[10.5px] font-medium",
-                  isDark
-                    ? "bg-[#FF5B1F]/15 text-[#FF5B1F]"
-                    : "bg-[#FF5B1F]/12 text-[#FF5B1F]",
-                )}
-              >
-                <stat.icon className="size-3" aria-hidden />
-                <span>{stat.badge}</span>
-              </span>
-
-              <div className="mt-5 flex items-start font-semibold tracking-tight leading-none">
-                <span className="text-[40px] @sm:text-[48px]">{stat.value}</span>
-                <sup className="ml-1 mt-1.5 text-[22px] @sm:text-[26px] font-medium">
-                  {stat.suffix}
-                </sup>
-              </div>
-
-              <p
-                className={cn(
-                  "mt-4 max-w-[230px] text-[12px] leading-relaxed",
-                  isDark ? "text-zinc-400" : "text-zinc-500",
-                )}
-              >
-                {stat.description}
-              </p>
-            </motion.div>
+            </React.Fragment>
           ))}
         </div>
       </section>
@@ -1761,44 +2062,69 @@ function MailoraHeroPreview({
       <section
         className={cn(
           "relative z-10 -mx-4 @sm:-mx-6 @lg:-mx-8 px-4 @sm:px-6 @lg:px-8 py-14 @sm:py-20 transition-colors",
-          isDark ? "bg-white/[0.03]" : "bg-[#F5F5F5]",
+          isDark ? "bg-white/[0.03]" : "bg-[#F9F9F9]",
         )}
       >
-        <div className="mx-auto max-w-5xl">
+        <div className="mx-auto max-w-md @4xl:max-w-5xl">
           {/* Centered Header */}
           <div className="text-center">
-            <div
+            <motion.div
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : { duration: 0.55, ease: [0.16, 1, 0.3, 1] }
+              }
               className={cn(
-                "inline-flex items-center rounded-full border px-3.5 py-1 text-[11px] font-medium shadow-xs",
+                "inline-flex items-center rounded-full border px-5 py-1 text-[11px] font-medium",
                 isDark
                   ? "border-white/10 bg-white/[0.05] text-zinc-300"
                   : "border-zinc-200/80 bg-white text-zinc-600",
               )}
             >
-              Email Analytics
-            </div>
+              Live Insights
+            </motion.div>
 
-            <h3 className="mt-4 text-[26px] @sm:text-[34px] @lg:text-[40px] font-semibold tracking-tight leading-[1.15]">
-              We love making good first{" "}
-              <span className={isDark ? "text-zinc-500" : "text-zinc-400"}>
-                Impressions.
+            <motion.h3
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : { duration: 0.6, delay: 0.06, ease: [0.16, 1, 0.3, 1] }
+              }
+              className="mt-4 text-[26px] @sm:text-[34px] @lg:text-[40px] font-semibold tracking-tight leading-[1.15]"
+            >
+              Measure every click with{" "}
+              <span className={isDark ? "text-zinc-500" : "text-[#C1C1C1]"}>
+                clarity.
               </span>
-            </h3>
+            </motion.h3>
 
-            <p
+            <motion.p
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : { duration: 0.6, delay: 0.12, ease: [0.16, 1, 0.3, 1] }
+              }
               className={cn(
-                "mx-auto mt-3 max-w-md text-[11.5px] @sm:text-[12.5px] leading-relaxed",
+                "mx-auto mt-3 max-w-lg text-[11.5px] @sm:text-[12.5px] leading-relaxed",
                 isDark ? "text-zinc-400" : "text-zinc-500",
               )}
             >
-              Reach the right audience at the right time without the tech headaches.
-              Create, send,
-              <br className="hidden @sm:inline" /> &amp; optimize email campaigns.
-            </p>
+              Monitor revenue attribution, subscriber growth, and inbox placement in real time.
+              <br className="hidden @sm:inline" /> Turn raw campaign metrics into clear next steps.
+            </motion.p>
           </div>
 
           {/* 2-Column Analytics Cards */}
-          <div className="mt-10 grid grid-cols-1 @lg:grid-cols-2 gap-5 items-stretch">
+          <div className="mt-10 grid grid-cols-1 @4xl:grid-cols-2 gap-5 items-stretch">
             {/* Left Card: Total Sales */}
             <motion.div
               initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
@@ -1810,20 +2136,18 @@ function MailoraHeroPreview({
                   : { duration: 0.65, ease: [0.16, 1, 0.3, 1] }
               }
               className={cn(
-                "rounded-3xl border p-5 @sm:p-6 flex flex-col justify-between",
-                isDark
-                  ? "border-white/[0.07] bg-[#141720]"
-                  : "border-zinc-200/60 bg-white shadow-[0_8px_28px_rgba(15,23,42,0.03)]",
+                "rounded-3xl p-5 @sm:p-6 flex flex-col justify-between",
+                isDark ? "bg-[#141720]" : "bg-white",
               )}
             >
               <div>
                 {/* Header */}
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="flex size-6 items-center justify-center rounded-md bg-[#FF5B1F] text-white">
+                    <span className="flex size-6 items-center justify-center rounded-md bg-primary text-white">
                       <TrendingUp className="size-3.5" aria-hidden />
                     </span>
-                    <span className="text-[13px] font-semibold">Total Sales</span>
+                    <span className="text-[13px] font-semibold">Attributed Revenue</span>
                   </div>
 
                   <button
@@ -1835,18 +2159,30 @@ function MailoraHeroPreview({
                         : "border-zinc-200/80 text-zinc-600 hover:bg-zinc-50",
                     )}
                   >
-                    Details
+                    Export
                   </button>
                 </div>
 
                 {/* Big Number + Growth Pill */}
                 <div className="mt-5 flex flex-wrap items-center gap-2.5">
                   <span className="text-[28px] @sm:text-[32px] font-semibold tracking-tight leading-none">
-                    +$3,224.34
+                    <AnimatedCounter
+                      target={14890}
+                      prefix="+$"
+                      suffix=".00"
+                      useLocale
+                      prefersReducedMotion={prefersReducedMotion}
+                    />
                   </span>
                   <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
                     <TrendingUp className="size-2.5" aria-hidden />
-                    <span>+10.8%</span>
+                    <AnimatedCounter
+                      target={18.4}
+                      prefix="+"
+                      suffix="%"
+                      decimals={1}
+                      prefersReducedMotion={prefersReducedMotion}
+                    />
                   </span>
                 </div>
               </div>
@@ -1860,43 +2196,53 @@ function MailoraHeroPreview({
               >
                 {[
                   {
-                    name: "Tokopedia",
-                    value: "100k",
+                    name: "Welcome Flow",
+                    value: 94,
                     width: "w-[78%]",
                     badgeBg: "bg-[#42B549] text-white",
-                    icon: "T",
+                    icon: "W",
                   },
                   {
-                    name: "Shopee",
-                    value: "56k",
+                    name: "Cart Recovery",
+                    value: 68,
                     width: "w-[46%]",
                     badgeBg: "bg-[#EE4D2D] text-white",
-                    icon: "S",
+                    icon: "C",
                   },
                   {
-                    name: "Tiktok",
-                    value: "78k",
+                    name: "Product Launch",
+                    value: 82,
                     width: "w-[60%]",
                     badgeBg: "bg-zinc-950 text-white",
-                    icon: "♪",
+                    icon: "P",
                   },
                   {
-                    name: "Shopify",
-                    value: "66k",
+                    name: "Weekly Digest",
+                    value: 54,
                     width: "w-[52%]",
                     badgeBg: "bg-[#95BF47] text-white",
-                    icon: "S",
+                    icon: "D",
                   },
-                ].map((channel) => (
-                  <div
+                ].map((channel, idx) => (
+                  <motion.div
                     key={channel.name}
+                    initial={prefersReducedMotion ? false : { opacity: 0, x: -12 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={
+                      prefersReducedMotion
+                        ? { duration: 0 }
+                        : { duration: 0.5, delay: idx * 0.07, ease: [0.16, 1, 0.3, 1] }
+                    }
                     className="flex items-center justify-between gap-3"
                   >
                     <div
                       className={cn(
-                        "flex items-center gap-2.5 rounded-xl px-3 py-2.5 transition-all",
+                        "flex items-center gap-2.5 rounded-xl border px-3 py-2.5 transition-all",
                         channel.width,
-                        isDark ? "bg-white/[0.05]" : "bg-[#F5F5F5]",
+                        isDark
+                          ? "border-white/[0.06] bg-white/[0.05]"
+                          : "border-zinc-200/50 bg-[#F9F9F9]",
                       )}
                     >
                       <span
@@ -1918,9 +2264,13 @@ function MailoraHeroPreview({
                         isDark ? "text-zinc-400" : "text-zinc-500",
                       )}
                     >
-                      {channel.value}
+                      <AnimatedCounter
+                        target={channel.value}
+                        suffix="k"
+                        prefersReducedMotion={prefersReducedMotion}
+                      />
                     </span>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </motion.div>
@@ -1936,10 +2286,8 @@ function MailoraHeroPreview({
                   : { duration: 0.65, delay: 0.1, ease: [0.16, 1, 0.3, 1] }
               }
               className={cn(
-                "rounded-3xl border p-5 @sm:p-6 flex flex-col justify-between",
-                isDark
-                  ? "border-white/[0.07] bg-[#141720]"
-                  : "border-zinc-200/60 bg-white shadow-[0_8px_28px_rgba(15,23,42,0.03)]",
+                "rounded-3xl p-5 @sm:p-6 flex flex-col justify-between",
+                isDark ? "bg-[#141720]" : "bg-white",
               )}
             >
               <div>
@@ -1949,7 +2297,7 @@ function MailoraHeroPreview({
                     <span className="flex size-6 items-center justify-center rounded-md bg-[#8B7CFF]/15 text-[#8B7CFF]">
                       <Users className="size-3.5" aria-hidden />
                     </span>
-                    <span className="text-[13px] font-semibold">Total Visitor</span>
+                    <span className="text-[13px] font-semibold">Total Opens</span>
                   </div>
 
                   <button
@@ -1961,21 +2309,31 @@ function MailoraHeroPreview({
                         : "border-zinc-200/80 text-zinc-600 hover:bg-zinc-50",
                     )}
                   >
-                    Details
+                    Breakdown
                   </button>
                 </div>
 
-                {/* Big Number + Negative Pill */}
+                {/* Big Number + Positive Pill */}
                 <div className="mt-5 flex items-center gap-2.5">
                   <span className="text-[28px] @sm:text-[32px] font-semibold tracking-tight leading-none">
-                    84.020
+                    <AnimatedCounter
+                      target={126480}
+                      useLocale
+                      prefersReducedMotion={prefersReducedMotion}
+                    />
                   </span>
-                  <span className="inline-flex items-center rounded-full bg-[#FF5B1F]/15 px-2.5 py-0.5 text-[10px] font-semibold text-[#FF5B1F]">
-                    -4%
+                  <span className="inline-flex items-center rounded-full bg-primary/15 px-2.5 py-0.5 text-[10px] font-semibold text-primary">
+                    <AnimatedCounter
+                      target={6.2}
+                      prefix="+"
+                      suffix="%"
+                      decimals={1}
+                      prefersReducedMotion={prefersReducedMotion}
+                    />
                   </span>
                 </div>
 
-                {/* Store Breakdown Rows */}
+                {/* Stream Breakdown Rows */}
                 <div
                   className={cn(
                     "mt-5 divide-y border-t",
@@ -1987,17 +2345,17 @@ function MailoraHeroPreview({
                   {[
                     {
                       icon: Globe,
-                      label: "Online Store",
-                      amount: "$2.480",
-                      delta: "+5.6%",
+                      label: "Transactional",
+                      amount: 78240,
+                      delta: 9.1,
                       positive: true,
                     },
                     {
                       icon: Home,
-                      label: "Offline Store",
-                      amount: "$480",
-                      delta: "-2.6%",
-                      positive: false,
+                      label: "Newsletter",
+                      amount: 48240,
+                      delta: 3.4,
+                      positive: true,
                     },
                   ].map((row) => (
                     <div
@@ -2024,15 +2382,25 @@ function MailoraHeroPreview({
 
                       <div className="flex items-center gap-4">
                         <span className="font-semibold tabular-nums">
-                          {row.amount}
+                          <AnimatedCounter
+                            target={row.amount}
+                            useLocale
+                            prefersReducedMotion={prefersReducedMotion}
+                          />
                         </span>
                         <span
                           className={cn(
                             "w-11 text-right font-medium tabular-nums",
-                            row.positive ? "text-emerald-500" : "text-[#FF5B1F]",
+                            row.positive ? "text-emerald-500" : "text-primary",
                           )}
                         >
-                          {row.delta}
+                          <AnimatedCounter
+                            target={row.delta}
+                            prefix="+"
+                            suffix="%"
+                            decimals={1}
+                            prefersReducedMotion={prefersReducedMotion}
+                          />
                         </span>
                       </div>
                     </div>
@@ -2044,9 +2412,21 @@ function MailoraHeroPreview({
               <div className="mt-5">
                 <div className="flex items-end justify-between gap-1.5 h-28">
                   {[62, 48, 66, 76, 86, 72, 54, 70].map((h, idx) => (
-                    <div
+                    <motion.div
                       key={idx}
-                      style={{ height: `${h}%` }}
+                      initial={prefersReducedMotion ? false : { scaleY: 0, opacity: 0 }}
+                      whileInView={{ scaleY: 1, opacity: 1 }}
+                      viewport={{ once: true, amount: 0.25 }}
+                      transition={
+                        prefersReducedMotion
+                          ? { duration: 0 }
+                          : {
+                              duration: 0.55,
+                              delay: idx * 0.08,
+                              ease: [0.16, 1, 0.3, 1],
+                            }
+                      }
+                      style={{ height: `${h}%`, transformOrigin: "bottom" }}
                       className="flex-1 rounded-t-xs border-t-2 border-[#8B7CFF]/70 bg-gradient-to-b from-[#8B7CFF]/40 via-[#8B7CFF]/15 to-transparent"
                     />
                   ))}
@@ -2057,7 +2437,7 @@ function MailoraHeroPreview({
                     isDark ? "text-zinc-500" : "text-zinc-400",
                   )}
                 >
-                  {["09:00", "12:00", "15:00", "18:00", "21:00"].map((t) => (
+                  {["08:00", "11:00", "14:00", "17:00", "20:00"].map((t) => (
                     <span key={t}>{t}</span>
                   ))}
                 </div>
@@ -2072,7 +2452,7 @@ function MailoraHeroPreview({
         id="testimonials"
         className="relative z-10 -mx-4 @sm:-mx-6 @lg:-mx-8 overflow-hidden px-4 @sm:px-6 @lg:px-8 pt-16 @sm:pt-20 pb-14 @sm:pb-16"
       >
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto max-w-md @4xl:max-w-6xl">
           {/* Centered Heading */}
           <motion.div
             initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
@@ -2086,11 +2466,11 @@ function MailoraHeroPreview({
             className="text-center"
           >
             <h3 className="text-[24px] @sm:text-[32px] @lg:text-[36px] font-semibold tracking-tight leading-[1.2]">
-              Used by 10,000+ businesses, creators,
+              Trusted by 12,000+ teams, founders,
               <br className="hidden @sm:inline" />{" "}
               and{" "}
-              <span className={isDark ? "text-zinc-500" : "text-[#B5B5B5]"}>
-                other brands
+              <span className={isDark ? "text-zinc-500" : "text-[#C2C2C2]"}>
+                growing brands
               </span>
             </h3>
           </motion.div>
@@ -2101,76 +2481,39 @@ function MailoraHeroPreview({
               const testimonials = [
                 {
                   quote:
-                    "Mark transformed Microshaft's brand with his visionary design. His creativity and attention to detail brought our ideas to life, exceeding all expectations.",
-                  name: "Timothy Rodgers",
-                  role: "Head of Projects, Microshaft",
+                    "Switching our lifecycle emails to Mailora doubled our onboarding activation within three weeks. The visual builder is fast and reliable.",
+                  name: "Marcus Vance",
+                  role: "Head of Growth, Northstar",
                   offset: false,
-                  avatar: (
-                    <svg viewBox="0 0 40 40" className="size-full" aria-hidden>
-                      <circle cx="20" cy="20" r="20" fill="#EAEAEA" />
-                      <path d="M10 38c1.5-6 5.5-9 10-9s8.5 3 10 9" fill="#2A2A2A" />
-                      <circle cx="20" cy="18" r="7.5" fill="#F2C6A0" />
-                      <path d="M12.5 16c0-5 3.5-8 7.5-8s7.5 3 7.5 8c-2-2-4.5-2.5-7.5-2.5S14.5 14 12.5 16Z" fill="#4A2E1B" />
-                      <path d="M13 20c1.2 4 4.2 5.5 7 5.5s5.8-1.5 7-5.5c-1.5 2-4 2.8-7 2.8s-5.5-.8-7-2.8Z" fill="#4A2E1B" />
-                      <rect x="14.5" y="16" width="4.5" height="3.2" rx="1" fill="none" stroke="#1F1F1F" strokeWidth="1.1" />
-                      <rect x="21" y="16" width="4.5" height="3.2" rx="1" fill="none" stroke="#1F1F1F" strokeWidth="1.1" />
-                      <line x1="19" y1="17.5" x2="21" y2="17.5" stroke="#1F1F1F" strokeWidth="1.1" />
-                    </svg>
-                  ),
+                  avatar:
+                    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg",
                 },
                 {
                   quote:
-                    "Mark was a game-changer for Giggle. His creativity and professionalism perfectly captured our brand's essence, delivering stunning results for our campaign.",
-                  name: "Anna Korhonen",
-                  role: "Design Director, Giggle",
+                    "Our weekly newsletter open rates jumped from 24% to 41% after enabling Mailora's send-time optimization and AI subject testing.",
+                  name: "Hannah Lindqvist",
+                  role: "Marketing Lead, Veloce",
                   offset: true,
-                  avatar: (
-                    <svg viewBox="0 0 40 40" className="size-full" aria-hidden>
-                      <circle cx="20" cy="20" r="20" fill="#EAEAEA" />
-                      <path d="M10.5 34c1-9 3.5-22 9.5-22s8.5 13 9.5 22" fill="#3B2314" />
-                      <path d="M11 38c1.5-5.5 4.8-8 9-8s7.5 2.5 9 8" fill="#1F2937" />
-                      <circle cx="20" cy="18.5" r="7" fill="#F5CBB0" />
-                      <path d="M13 17c1.5-4.5 4.5-6.5 7-6.5s5.5 2 7 6.5c-2.5-2-5-2.5-7-2.5S15.5 15 13 17Z" fill="#3B2314" />
-                      <rect x="14.2" y="16.5" width="4.8" height="3.5" rx="1.2" fill="#2DD4BF" fillOpacity="0.35" stroke="#115E59" strokeWidth="1.1" />
-                      <rect x="21" y="16.5" width="4.8" height="3.5" rx="1.2" fill="#2DD4BF" fillOpacity="0.35" stroke="#115E59" strokeWidth="1.1" />
-                      <line x1="19" y1="18" x2="21" y2="18" stroke="#115E59" strokeWidth="1.1" />
-                    </svg>
-                  ),
+                  avatar:
+                    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg",
                 },
                 {
                   quote:
-                    "Mr. Ashton's exceptional design expertise transformed Snapple's digital presence, elevating our brand with innovative and seamless execution.",
-                  name: "Layne Morgan",
-                  role: "Commercial Director, Snapple",
+                    "Mailora replaced three separate tools for our team. Every transactional and promotional flow now lives in one clean dashboard.",
+                  name: "Devon Brooks",
+                  role: "Product Director, Kinetix",
                   offset: false,
-                  avatar: (
-                    <svg viewBox="0 0 40 40" className="size-full" aria-hidden>
-                      <circle cx="20" cy="20" r="20" fill="#EAEAEA" />
-                      <path d="M10 38c1.5-6 5.5-9 10-9s8.5 3 10 9" fill="#1F1F1F" />
-                      <circle cx="20" cy="19" r="7.5" fill="#C68B63" />
-                      <path d="M12.2 17c.5-5.5 3.8-8.5 7.8-8.5s7.3 3 7.8 8.5c-2.2-1.5-5-2-7.8-2s-5.6.5-7.8 2Z" fill="#222222" />
-                      <path d="M13.2 21c1.2 4 4 5.5 6.8 5.5s5.6-1.5 6.8-5.5c-1.4 2-3.8 2.8-6.8 2.8s-5.4-.8-6.8-2.8Z" fill="#1F1F1F" />
-                      <circle cx="17.2" cy="18.2" r="0.9" fill="#1F1F1F" />
-                      <circle cx="22.8" cy="18.2" r="0.9" fill="#1F1F1F" />
-                    </svg>
-                  ),
+                  avatar:
+                    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg",
                 },
                 {
                   quote:
-                    "Working with the team elevated our entire campaign workflow. Every launch feels faster, sharper, and effortlessly consistent.",
-                  name: "Elena Vance",
-                  role: "VP of Marketing, Lumina",
+                    "Deliverability used to be our biggest bottleneck. With Mailora's automated warmup, our campaigns consistently land in the primary inbox.",
+                  name: "Priya Nair",
+                  role: "VP of Marketing, Solis",
                   offset: true,
-                  avatar: (
-                    <svg viewBox="0 0 40 40" className="size-full" aria-hidden>
-                      <circle cx="20" cy="20" r="20" fill="#EAEAEA" />
-                      <path d="M10 38c1.5-6 5.5-9 10-9s8.5 3 10 9" fill="#334155" />
-                      <circle cx="20" cy="18.5" r="7.2" fill="#F2C6A0" />
-                      <path d="M12.5 17c1-5 4-7.5 7.5-7.5s6.5 2.5 7.5 7.5c-2.2-2-4.8-2.5-7.5-2.5S14.7 15 12.5 17Z" fill="#7C2D12" />
-                      <circle cx="17.4" cy="18.5" r="0.9" fill="#1F1F1F" />
-                      <circle cx="22.6" cy="18.5" r="0.9" fill="#1F1F1F" />
-                    </svg>
-                  ),
+                  avatar:
+                    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg",
                 },
               ];
 
@@ -2202,15 +2545,47 @@ function MailoraHeroPreview({
                           )}
                         >
                           <div className="flex items-start gap-2.5">
-                            <span
+                            <svg
+                              viewBox="0 0 18 14"
                               aria-hidden
                               className={cn(
-                                "select-none font-serif text-[28px] leading-[0.8] mt-1 shrink-0",
-                                isDark ? "text-zinc-600" : "text-[#D4D4D4]",
+                                "mt-0.5 h-3.5 w-4.5 shrink-0",
+                                isDark ? "text-zinc-600" : "text-[#CFCFCF]",
                               )}
+                              fill="currentColor"
                             >
-                              &ldquo;
-                            </span>
+                              <motion.path
+                                d="M1.2 13V7.6C1.2 4.4 2.7 2.2 5.7 1.1L6.6 2.5C4.7 3.3 3.9 4.7 3.8 6.8H6.6V13H1.2Z"
+                                animate={
+                                  prefersReducedMotion
+                                    ? undefined
+                                    : { opacity: [0.55, 1, 0.55], y: [0, -1.2, 0] }
+                                }
+                                transition={
+                                  prefersReducedMotion
+                                    ? undefined
+                                    : { duration: 2.8, repeat: Infinity, ease: "easeInOut" }
+                                }
+                              />
+                              <motion.path
+                                d="M9.6 13V7.6C9.6 4.4 11.1 2.2 14.1 1.1L15 2.5C13.1 3.3 12.3 4.7 12.2 6.8H15V13H9.6Z"
+                                animate={
+                                  prefersReducedMotion
+                                    ? undefined
+                                    : { opacity: [0.55, 1, 0.55], y: [0, -1.2, 0] }
+                                }
+                                transition={
+                                  prefersReducedMotion
+                                    ? undefined
+                                    : {
+                                        duration: 2.8,
+                                        delay: 0.25,
+                                        repeat: Infinity,
+                                        ease: "easeInOut",
+                                      }
+                                }
+                              />
+                            </svg>
 
                             <div className="flex-1 min-w-0">
                               <p
@@ -2224,7 +2599,11 @@ function MailoraHeroPreview({
 
                               <div className="mt-7">
                                 <div className="size-9 overflow-hidden rounded-full">
-                                  {item.avatar}
+                                  <img
+                                    src={item.avatar}
+                                    alt={item.name}
+                                    className="size-full object-cover"
+                                  />
                                 </div>
 
                                 <p
@@ -2239,7 +2618,7 @@ function MailoraHeroPreview({
                                 <div
                                   className={cn(
                                     "my-2.5 h-px w-full",
-                                    isDark ? "bg-white/[0.08]" : "bg-zinc-200/80",
+                                    isDark ? "bg-white/[0.06]" : "bg-zinc-200/50",
                                   )}
                                 />
 
@@ -2288,9 +2667,9 @@ function MailoraHeroPreview({
       {/* 8. CTA Section */}
       <section
         id="cta"
-        className="relative z-10 py-10 @sm:py-14"
+        className="relative z-10 py-10 @4xl:py-14"
       >
-        <div className="mx-auto max-w-5xl">
+        <div className="mx-auto max-w-md @4xl:max-w-5xl">
           <motion.div
             initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -2301,56 +2680,66 @@ function MailoraHeroPreview({
                 : { duration: 0.65, ease: [0.16, 1, 0.3, 1] }
             }
             className={cn(
-              "relative overflow-hidden rounded-[26px] @sm:rounded-[30px] border transition-colors",
+              "relative overflow-hidden rounded-[24px] @4xl:rounded-[28px] transition-colors",
               isDark
-                ? "border-white/[0.08] bg-[#141720]"
-                : "border-zinc-200/50 bg-[#F7F7F7]",
+                ? "border border-white/[0.08] bg-[#141720]"
+                : "bg-gradient-to-r from-[#F9F9F9] via-[#F9F9F9] to-[#FCF4F0]",
             )}
           >
             {/* Subtle warm peach ambient tint behind tablet */}
             <div
               aria-hidden
               className={cn(
-                "pointer-events-none absolute -right-12 -top-12 h-72 w-72 rounded-full blur-3xl",
-                isDark ? "bg-[#FF5B1F]/[0.08]" : "bg-[#FF5B1F]/[0.06]",
+                "pointer-events-none absolute -right-10 -top-10 h-64 w-64 rounded-full blur-3xl",
+                isDark ? "bg-primary/[0.08]" : "bg-primary/[0.05]",
               )}
             />
 
-            <div className="relative grid grid-cols-1 @lg:grid-cols-12 items-stretch gap-6 @lg:gap-4 px-6 @sm:px-10 @lg:px-12">
+            <div className="relative grid grid-cols-1 @4xl:grid-cols-12 items-stretch gap-6 @4xl:gap-4 px-6 @sm:px-8 @4xl:px-12">
               {/* Left Copy + Actions */}
-              <div className="@lg:col-span-6 relative z-10 pt-10 @sm:pt-12 pb-2 @lg:py-14">
-                <h3 className="text-[28px] @sm:text-[34px] @lg:text-[38px] font-semibold tracking-tight leading-[1.14]">
-                  Start sending smarter
+              <motion.div
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={
+                  prefersReducedMotion
+                    ? { duration: 0 }
+                    : { duration: 0.6, delay: 0.06, ease: [0.16, 1, 0.3, 1] }
+                }
+                className="@4xl:col-span-6 relative z-10 pt-12 pb-4 @4xl:py-22"
+              >
+                <h3 className="text-[32px] @sm:text-[38px] @4xl:text-[48px] font-medium tracking-tight leading-[1.12]">
+                  Ship better email flows
                   <br />
-                  <span className={isDark ? "text-zinc-500" : "text-[#B5B5B5]"}>
-                    emails today
+                  <span className={isDark ? "text-zinc-500" : "text-[#C1C1C1]"}>
+                    starting today
                   </span>
                 </h3>
 
                 <p
                   className={cn(
-                    "mt-4 max-w-md text-[12px] @sm:text-[13px] leading-relaxed",
+                    "mt-5 max-w-md text-[12px] @4xl:text-[13px] leading-relaxed",
                     isDark ? "text-zinc-400" : "text-zinc-500",
                   )}
                 >
-                  Trigger emails based on user behavior, purchases, or engagement.
+                  Connect your product events, personalize every message, and scale without limits.
                 </p>
 
-                <div className="mt-7 flex flex-wrap items-center gap-3">
+                <div className="mt-5 flex flex-wrap items-center gap-3">
                   <button
                     type="button"
-                    className="inline-flex items-center justify-center rounded-full bg-[#FF5B1F] px-6 py-3 text-[12.5px] font-medium text-white shadow-[0_10px_24px_rgba(255,91,31,0.32),inset_0_-4px_10px_rgba(255,190,150,0.35)] transition-all hover:bg-[#EA4D12] active:scale-[0.98] cursor-pointer"
+                    className="inline-flex items-center justify-center rounded-full bg-gradient-to-b from-primary to-[color-mix(in_oklab,var(--primary)_86%,black)] px-7 py-3.5 text-[12.5px] font-medium text-white cursor-pointer"
                   >
-                    Request Demo
+                    Get Started Free
                   </button>
 
                   <button
                     type="button"
                     className={cn(
-                      "inline-flex items-center justify-center gap-2 rounded-full border px-5 py-3 text-[12.5px] font-medium transition-colors cursor-pointer",
+                      "inline-flex items-center justify-center gap-2.5 rounded-full border px-6 py-3.5 text-[12.5px] font-medium cursor-pointer",
                       isDark
-                        ? "border-white/15 bg-white/[0.04] text-zinc-100 hover:bg-white/[0.08]"
-                        : "border-zinc-200/90 bg-white text-zinc-800 hover:bg-zinc-50",
+                        ? "border-white/15 bg-white/[0.04] text-zinc-100"
+                        : "border-zinc-200 bg-white text-zinc-900",
                     )}
                   >
                     <span
@@ -2361,26 +2750,32 @@ function MailoraHeroPreview({
                     >
                       <Play className="size-2 fill-current translate-x-[0.5px]" aria-hidden />
                     </span>
-                    <span>Watch Video</span>
+                    <span>Tour the Product</span>
                   </button>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Right Tilted Tablet Mockup */}
-              <div className="@lg:col-span-6 relative h-[230px] @sm:h-[250px] @lg:h-auto @lg:self-stretch">
+              <motion.div
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={
+                  prefersReducedMotion
+                    ? { duration: 0 }
+                    : { duration: 0.7, delay: 0.14, ease: [0.16, 1, 0.3, 1] }
+                }
+                className="@4xl:col-span-6 relative h-[280px] @sm:h-[300px] @4xl:h-auto @4xl:self-stretch"
+              >
                 <div
                   aria-hidden
                   className={cn(
-                    "absolute left-2 @sm:left-6 @lg:left-2 top-6 @sm:top-7 @lg:top-[72px] w-[470px] @sm:w-[530px] origin-top-left -rotate-[9deg] rounded-[24px] p-[2px] shadow-[-16px_22px_48px_rgba(15,23,42,0.18)]",
+                    "absolute left-2 @sm:left-4 @4xl:left-6 top-14 @4xl:top-[142px] w-[420px] @sm:w-[450px] @4xl:w-[520px] origin-top-left -rotate-[9.5deg] rounded-[24px] p-[2px]",
                     isDark
                       ? "bg-gradient-to-br from-zinc-600 via-zinc-800 to-zinc-700"
                       : "bg-gradient-to-br from-zinc-300 via-zinc-500 to-zinc-400",
                   )}
                 >
-                  {/* Side hardware buttons on top edge */}
-                  <span className="absolute -top-[2px] left-14 h-[2px] w-7 rounded-t-sm bg-zinc-400/80" />
-                  <span className="absolute -top-[2px] left-24 h-[2px] w-7 rounded-t-sm bg-zinc-400/80" />
-
                   {/* Black Glass Bezel */}
                   <div className="relative rounded-[22px] bg-[#111215] p-[11px] @sm:p-[13px]">
                     {/* Front Camera Dot on Left Bezel */}
@@ -2389,46 +2784,50 @@ function MailoraHeroPreview({
                     {/* Inner Screen */}
                     <div
                       className={cn(
-                        "overflow-hidden rounded-[13px] p-4 @sm:p-5",
-                        isDark ? "bg-[#0F1219]" : "bg-[#F9F9F9]",
+                        "min-h-[330px] @4xl:min-h-[380px] overflow-hidden rounded-[13px] px-4 pb-4 pt-2.5 @sm:px-5 @sm:pb-5 @sm:pt-3",
+                        isDark ? "bg-[#0F1219]" : "bg-[#EFEFEF]",
                       )}
                     >
                       {/* Tablet Inner Header */}
-                      <div className="flex items-start justify-between gap-3">
-                        <div>
-                          <span
-                            className={cn(
-                              "inline-flex items-center rounded-full border px-2 py-0.5 text-[7.5px] font-medium",
-                              isDark
-                                ? "border-white/10 bg-white/[0.05] text-zinc-300"
-                                : "border-zinc-200 bg-white text-zinc-500",
-                            )}
-                          >
-                            Email Signature
-                          </span>
-                          <p className="mt-2 text-[14px] @sm:text-[15px] font-semibold tracking-tight leading-[1.18]">
-                            Design stunning emails with our
+                      <div>
+                        <span
+                          className={cn(
+                            "inline-flex items-center rounded-full px-1.5 py-[1px] text-[5.5px] font-medium",
+                            isDark
+                              ? "bg-white/[0.05] text-zinc-300"
+                              : "bg-[#F2F4F3] text-zinc-500",
+                          )}
+                        >
+                          Smart Studio
+                        </span>
+
+                        <div className="mt-2 flex items-center justify-between gap-3 pr-3 @sm:pr-5 @4xl:pr-8">
+                          <p className="text-[17.5px] @sm:text-[19px] font-semibold tracking-tight leading-[1.18]">
+                            Craft high-converting emails
                             <br />
-                            <span className={isDark ? "text-zinc-500" : "text-zinc-400"}>
-                              no-code editor.
+                            <span
+                              className={cn(
+                                "mt-[3px] inline-block",
+                                isDark ? "text-zinc-500" : "text-zinc-400",
+                              )}
+                            >
+                              in minutes.
                             </span>
                           </p>
-                        </div>
 
-                        <div className="flex items-center -space-x-1.5 pt-1 pr-2">
-                          <span
-                            className={cn(
-                              "flex size-6 items-center justify-center rounded-full border",
-                              isDark
-                                ? "border-white/10 bg-white/[0.06] text-zinc-400"
-                                : "border-zinc-200/80 bg-zinc-100 text-zinc-400",
-                            )}
-                          >
-                            <TrendingUp className="size-3" />
-                          </span>
-                          <span className="relative z-10 flex size-7 items-center justify-center rounded-full bg-[#FF5B1F] text-white shadow-sm">
-                            <Zap className="size-3.5 fill-current" />
-                          </span>
+                          <div className="flex items-center -space-x-1.5 shrink-0">
+                            <span
+                              className={cn(
+                                "flex size-7 items-center justify-center rounded-full text-primary",
+                                isDark ? "bg-white/[0.1]" : "bg-[#E1E1E1]",
+                              )}
+                            >
+                              <TrendingUp className="size-2.5" />
+                            </span>
+                            <span className="relative z-10 flex size-7 items-center justify-center rounded-full bg-primary text-white">
+                              <Zap className="size-2.5 fill-current" />
+                            </span>
+                          </div>
                         </div>
                       </div>
 
@@ -2437,140 +2836,238 @@ function MailoraHeroPreview({
                         {/* Mini Card 1: AI Subject Line */}
                         <div
                           className={cn(
-                            "rounded-xl border p-3",
-                            isDark
-                              ? "border-white/[0.08] bg-[#161A25]"
-                              : "border-zinc-200/70 bg-white",
+                            "rounded-xl p-3",
+                            isDark ? "bg-[#161A25]" : "bg-[#F2F4F3]",
                           )}
                         >
                           <p className="text-[8.5px] font-semibold tracking-tight">
-                            Create high performing subject line
+                            Write subject lines that get opened
                           </p>
 
                           <div
                             className={cn(
-                              "mt-2 rounded-lg border p-2",
-                              isDark
-                                ? "border-white/[0.07] bg-white/[0.03]"
-                                : "border-zinc-100 bg-[#F9F9F9]",
+                              "mt-2 rounded-lg p-2",
+                              isDark ? "bg-white/[0.03]" : "bg-[#EFEFEF]",
                             )}
                           >
                             <div className="flex items-center justify-between text-[7px] text-zinc-400">
                               <span className="inline-flex items-center gap-1">
-                                <Wand2 className="size-2.5 text-[#FF5B1F]" />
-                                Generate with AI
+                                <Wand2 className="size-2.5 text-primary" />
+                                AI Copy Assistant
                               </span>
-                              <span className="font-semibold text-emerald-500">+10.8%</span>
+                              <span className="font-semibold text-emerald-500">+22.4%</span>
                             </div>
-                            <p className="mt-1.5 text-[8px] font-medium">Blog Traffic</p>
-                            <div className="mt-2 flex items-center justify-center gap-1 rounded-full bg-[#FF5B1F] py-1 text-[7.5px] font-medium text-white">
+                            <p className="mt-1.5 text-[8px] font-medium">Welcome Series</p>
+                            <div className="mt-2 flex items-center justify-center gap-1 rounded-full bg-primary py-1 text-[7.5px] font-medium text-white">
                               <Zap className="size-2.5 fill-current" />
-                              Generate Subject Line
+                              Suggest New Line
                             </div>
                           </div>
 
                           <div className="mt-2 flex items-center gap-1">
                             <span
                               className={cn(
-                                "rounded-full border px-1.5 py-0.5 text-[6.5px]",
+                                "rounded-full px-1.5 py-0.5 text-[6.5px]",
                                 isDark
-                                  ? "border-white/10 text-zinc-400"
-                                  : "border-zinc-200 text-zinc-500",
+                                  ? "bg-white/[0.05] text-zinc-400"
+                                  : "bg-[#EFEFEF] text-zinc-500",
                               )}
                             >
-                              New Features
+                              Onboarding
                             </span>
                             <span
                               className={cn(
-                                "rounded-full border px-1.5 py-0.5 text-[6.5px]",
+                                "rounded-full px-1.5 py-0.5 text-[6.5px]",
                                 isDark
-                                  ? "border-white/10 text-zinc-400"
-                                  : "border-zinc-200 text-zinc-500",
+                                  ? "bg-white/[0.05] text-zinc-400"
+                                  : "bg-[#EFEFEF] text-zinc-500",
                               )}
                             >
-                              Product Launch
+                              Retention
                             </span>
                           </div>
 
                           <div
                             className={cn(
-                              "mt-2 rounded-md border px-2 py-1 text-[6.5px] truncate",
+                              "mt-2 rounded-md px-2 py-1.5 text-[6.5px]",
                               isDark
-                                ? "border-white/[0.07] bg-white/[0.02] text-zinc-300"
-                                : "border-zinc-100 bg-[#F9F9F9] text-zinc-600",
+                                ? "bg-white/[0.02] text-zinc-300"
+                                : "bg-[#EFEFEF] text-zinc-600",
                             )}
                           >
-                            Spring is here, Upgrade your wardrobe for 50% off!
+                            <p className="truncate">
+                              Your onboarding checklist is ready — launch in 5 minutes
+                            </p>
+                            <div className="mt-1.5 flex items-center justify-between text-[6px]">
+                              <span className="inline-flex items-center gap-1 text-emerald-500 font-medium">
+                                <span className="size-1.5 rounded-full bg-emerald-500" />
+                                Approved
+                              </span>
+                              <span className="text-zinc-400">99.1% score</span>
+                            </div>
+                          </div>
+
+                          <div
+                            className={cn(
+                              "mt-2 flex items-center justify-between rounded-md px-2 py-1.5 text-[6.5px]",
+                              isDark
+                                ? "bg-white/[0.02] text-zinc-400"
+                                : "bg-[#EFEFEF] text-zinc-500",
+                            )}
+                          >
+                            <span>Click rate lift</span>
+                            <span className="font-semibold text-emerald-500">+31.2%</span>
                           </div>
                         </div>
 
-                        {/* Mini Card 2: Connect With Audience */}
+                        {/* Mini Card 2: Collaborate */}
                         <div
                           className={cn(
-                            "rounded-xl border p-3",
-                            isDark
-                              ? "border-white/[0.08] bg-[#161A25]"
-                              : "border-zinc-200/70 bg-white",
+                            "rounded-xl p-3",
+                            isDark ? "bg-[#161A25]" : "bg-[#F2F4F3]",
                           )}
                         >
-                          <p className="text-[8.5px] font-semibold tracking-tight">
-                            Connect with your audience
+                          <p className="text-center text-[8.5px] font-semibold tracking-tight">
+                            Collaborate before you hit send
                           </p>
 
-                          <div className="mt-2 grid grid-cols-12 gap-2 items-center">
+                          <div className="mt-2.5 grid grid-cols-12 gap-2 items-start">
+                            {/* Left Sub-card: Live Preview + Photo + Author */}
                             <div
                               className={cn(
-                                "col-span-7 h-12 rounded-lg overflow-hidden",
-                                isDark ? "bg-white/[0.06]" : "bg-zinc-100",
+                                "col-span-7 rounded-lg p-2",
+                                isDark ? "bg-white/[0.04]" : "bg-[#EFEFEF]",
                               )}
                             >
-                              <img
-                                src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_320,c_fill/v1790145141/pexels-photo-6311475-1790145143489.jpg"
-                                alt=""
-                                className="size-full object-cover"
-                              />
-                            </div>
-                            <div className="col-span-5 space-y-1">
-                              <div className="inline-flex items-center gap-1 text-[7px] text-zinc-400">
-                                <Eye className="size-2.5" />
-                                <span>1280 views</span>
+                              <p
+                                className={cn(
+                                  "text-[6px] font-medium",
+                                  isDark ? "text-zinc-400" : "text-zinc-500",
+                                )}
+                              >
+                                Live Preview
+                              </p>
+
+                              <div className="mt-1.5 h-16 rounded-md overflow-hidden">
+                                <img
+                                  src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1795848272/gemini_generated_image_rjovsfrjovsfrjov-1795848268642.jpg"
+                                  alt=""
+                                  className="size-full object-cover"
+                                />
                               </div>
-                              <div className="flex -space-x-1">
+
+                              <p
+                                className={cn(
+                                  "mt-2 text-[6.5px] leading-snug",
+                                  isDark ? "text-zinc-300" : "text-zinc-600",
+                                )}
+                              >
+                                Real-time feedback from your growth team
+                              </p>
+
+                              <div className="mt-3 flex items-center gap-1.5">
+                                <img
+                                  src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_80,h_80,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg"
+                                  alt=""
+                                  className="size-3.5 rounded-full object-cover shrink-0"
+                                />
+                                <span
+                                  className={cn(
+                                    "text-[6px] font-medium",
+                                    isDark ? "text-zinc-400" : "text-zinc-500",
+                                  )}
+                                >
+                                  Nadia Rahman
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Right Column: Views Pill + Avatars + Overlapping Comment Card */}
+                            <div className="col-span-5 flex flex-col items-start">
+                              <div
+                                className={cn(
+                                  "inline-flex items-center gap-1 rounded-full px-2 py-1 text-[6px] font-medium",
+                                  isDark
+                                    ? "bg-white/[0.05] text-zinc-300"
+                                    : "bg-[#EFEFEF] text-zinc-600",
+                                )}
+                              >
+                                <Eye className="size-2.5" />
+                                <span>2,450 Opens</span>
+                              </div>
+
+                              <div className="mt-2.5 flex items-center -space-x-1">
                                 {[
-                                  "bg-amber-200",
-                                  "bg-sky-200",
-                                  "bg-emerald-200",
-                                ].map((bg, i) => (
-                                  <span
+                                  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_80,h_80,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg",
+                                  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_80,h_80,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg",
+                                  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_80,h_80,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg",
+                                ].map((src, i) => (
+                                  <img
                                     key={i}
-                                    className={cn("size-3.5 rounded-full border border-white", bg)}
+                                    src={src}
+                                    alt=""
+                                    className="size-4 rounded-full object-cover"
                                   />
                                 ))}
+                                <span className="flex size-4 items-center justify-center rounded-full bg-[#8B7CFF] text-[5px] font-semibold text-white">
+                                  16+
+                                </span>
                               </div>
-                            </div>
-                          </div>
 
-                          <div className="mt-2 grid grid-cols-12 gap-2 items-start">
-                            <p
-                              className={cn(
-                                "col-span-5 text-[6.5px] leading-snug",
-                                isDark ? "text-zinc-400" : "text-zinc-500",
-                              )}
-                            >
-                              Discover powerful tools for engagement
-                            </p>
-                            <div
-                              className={cn(
-                                "col-span-7 rounded-lg border p-1.5 text-[6.5px] shadow-xs",
-                                isDark
-                                  ? "border-white/[0.07] bg-white/[0.03]"
-                                  : "border-zinc-100 bg-[#F9F9F9]",
-                              )}
-                            >
-                              <p className="font-semibold">Verveal</p>
-                              <p className={isDark ? "text-zinc-400" : "text-zinc-500"}>
-                                @Elisa This is really interesting! Let&apos;s chat.
-                              </p>
+                              {/* Overlapping Comment Card */}
+                              <div
+                                className={cn(
+                                  "relative z-10 mt-2.5 -ml-5 w-[calc(100%+20px)] rounded-xl p-2",
+                                  isDark ? "bg-[#1E2331]" : "bg-[#F2F4F3]",
+                                )}
+                              >
+                                <div className="flex items-center gap-1.5">
+                                  <img
+                                    src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_80,h_80,c_fill/v1790082180/pexels-photo-1520760-1790082180553.jpg"
+                                    alt=""
+                                    className="size-3.5 rounded-full object-cover shrink-0"
+                                  />
+                                  <span className="text-[6.5px] font-semibold">
+                                    David Chen
+                                  </span>
+                                </div>
+
+                                <p
+                                  className={cn(
+                                    "mt-1 text-[5.5px] leading-snug",
+                                    isDark ? "text-zinc-300" : "text-zinc-600",
+                                  )}
+                                >
+                                  <span className="rounded bg-sky-500/15 px-0.5 font-medium text-sky-600">
+                                    @Sarah
+                                  </span>{" "}
+                                  the new subject line tested 18% higher in our morning batch
+                                </p>
+
+                                <div className="mt-1 flex items-center gap-2 text-[5px] text-zinc-400">
+                                  <span>Like</span>
+                                  <span>Reply</span>
+                                </div>
+
+                                <div className="mt-2 flex items-center gap-1.5">
+                                  <img
+                                    src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_80,h_80,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg"
+                                    alt=""
+                                    className="size-3.5 rounded-full object-cover shrink-0"
+                                  />
+                                  <div>
+                                    <p className="text-[6px] font-semibold leading-none">
+                                      Claire Bennett
+                                    </p>
+                                    <span
+                                      className={cn(
+                                        "mt-1 block h-1 w-10 rounded-full",
+                                        isDark ? "bg-white/10" : "bg-zinc-200",
+                                      )}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -2578,7 +3075,7 @@ function MailoraHeroPreview({
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         </div>
@@ -2592,7 +3089,17 @@ function MailoraHeroPreview({
           isDark ? "bg-[#0F1219]" : "bg-[#F9F9F9]",
         )}
       >
-        <div className="mx-auto max-w-md @4xl:max-w-5xl pt-10 pb-6 @4xl:py-16">
+        <motion.div
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={
+            prefersReducedMotion
+              ? { duration: 0 }
+              : { duration: 0.65, ease: [0.16, 1, 0.3, 1] }
+          }
+          className="mx-auto max-w-md @4xl:max-w-5xl pt-10 pb-6 @4xl:py-16"
+        >
           <div className="grid grid-cols-1 @4xl:grid-cols-[1.2fr_0.15fr_1fr_1fr_1fr_1fr] gap-8 @4xl:gap-6">
             {/* Column 1: Mailora Logo + Quick Links + Social Icons */}
             <div>
@@ -2601,8 +3108,8 @@ function MailoraHeroPreview({
                 <AnimatedMailLogo
                   prefersReducedMotion={prefersReducedMotion}
                   size={28}
-                  color="#FF5B1F"
-                  className="text-[#FF5B1F]"
+                  color="var(--primary)"
+                  className="text-primary"
                 />
               </div>
 
@@ -2616,11 +3123,11 @@ function MailoraHeroPreview({
                 )}
               >
                 {[
-                  "Platform Overview",
-                  "AI",
-                  "Mobile Apps",
-                  "Integrations",
-                  "Documentation",
+                  "Product Tour",
+                  "AI Studio",
+                  "Templates",
+                  "API & Webhooks",
+                  "Changelog",
                 ].map((label) => (
                   <button
                     key={label}
@@ -2628,8 +3135,8 @@ function MailoraHeroPreview({
                     className={cn(
                       "flex w-full items-center justify-between py-2.5 text-[11.5px] font-medium transition-colors cursor-pointer",
                       isDark
-                        ? "text-zinc-100 hover:text-[#FF5B1F]"
-                        : "text-zinc-900 hover:text-[#FF5B1F]",
+                        ? "text-zinc-100 hover:text-primary"
+                        : "text-zinc-900 hover:text-primary",
                     )}
                   >
                     <span>{label}</span>
@@ -2651,7 +3158,7 @@ function MailoraHeroPreview({
                       size={12}
                       duration={1.4}
                       isAnimated={!prefersReducedMotion}
-                      color="#FF5B1F"
+                      color="var(--primary)"
                     />
                   )}
                 />
@@ -2666,7 +3173,7 @@ function MailoraHeroPreview({
                       size={12}
                       duration={1.4}
                       isAnimated={!prefersReducedMotion}
-                      color="#FF5B1F"
+                      color="var(--primary)"
                     />
                   )}
                 />
@@ -2681,7 +3188,7 @@ function MailoraHeroPreview({
                       size={12}
                       duration={1.4}
                       isAnimated={!prefersReducedMotion}
-                      color="#FF5B1F"
+                      color="var(--primary)"
                     />
                   )}
                 />
@@ -2691,16 +3198,16 @@ function MailoraHeroPreview({
             {/* Spacer gap after Column 1 on desktop */}
             <div aria-hidden className="hidden @4xl:block" />
 
-            {/* Column 2: Platform */}
+            {/* Column 2: Product */}
             <div>
-              <p className="text-[12px] font-semibold">Platform</p>
+              <p className="text-[12px] font-semibold">Product</p>
               <ul
                 className={cn(
                   "mt-4 space-y-2.5 text-[11.5px]",
                   isDark ? "text-zinc-400" : "text-[#7D7D7D]",
                 )}
               >
-                {["Overview", "Features", "Testimonials", "Voice of customer"].map(
+                {["Overview", "Automation", "Deliverability", "Customer Stories"].map(
                   (item) => (
                     <li key={item}>
                       <button
@@ -2715,9 +3222,9 @@ function MailoraHeroPreview({
               </ul>
             </div>
 
-            {/* Column 3: Home & Legal */}
+            {/* Column 3: Navigation & Compliance */}
             <div>
-              <p className="text-[12px] font-semibold">Home</p>
+              <p className="text-[12px] font-semibold">Navigation</p>
               <ul
                 className={cn(
                   "mt-4 space-y-2.5 text-[11.5px]",
@@ -2725,12 +3232,12 @@ function MailoraHeroPreview({
                 )}
               >
                 {[
-                  "Overview",
-                  "Features",
-                  "Testimonials",
-                  "Legal",
-                  "Privacy Center",
-                  "Security",
+                  "Home",
+                  "Capabilities",
+                  "Analytics",
+                  "Reviews",
+                  "Pricing",
+                  "Status",
                 ].map((item) => (
                   <li key={item}>
                     <button
@@ -2743,14 +3250,14 @@ function MailoraHeroPreview({
                 ))}
               </ul>
 
-              <p className="mt-7 text-[12px] font-semibold">Legal</p>
+              <p className="mt-7 text-[12px] font-semibold">Compliance</p>
               <ul
                 className={cn(
                   "mt-4 space-y-2.5 text-[11.5px]",
                   isDark ? "text-zinc-400" : "text-[#7D7D7D]",
                 )}
               >
-                {["Terms & Condition", "Privacy Policy", "Agreement"].map(
+                {["Terms of Service", "Privacy Policy", "DPA & GDPR"].map(
                   (item) => (
                     <li key={item}>
                       <button
@@ -2765,9 +3272,9 @@ function MailoraHeroPreview({
               </ul>
             </div>
 
-            {/* Column 4: Solutions */}
+            {/* Column 4: Use Cases */}
             <div>
-              <p className="text-[12px] font-semibold">Solutions</p>
+              <p className="text-[12px] font-semibold">Use Cases</p>
               <ul
                 className={cn(
                   "mt-4 space-y-2.5 text-[11.5px]",
@@ -2775,12 +3282,12 @@ function MailoraHeroPreview({
                 )}
               >
                 {[
-                  "Business Automation",
-                  "AI Integration",
-                  "Data Analytics",
-                  "Overview",
-                  "Features",
-                  "Testimonials",
+                  "SaaS Onboarding",
+                  "E-commerce Flows",
+                  "Creator Newsletters",
+                  "Event Triggers",
+                  "A/B Testing",
+                  "Retention",
                 ].map((item) => (
                   <li key={item}>
                     <button
@@ -2794,9 +3301,9 @@ function MailoraHeroPreview({
               </ul>
             </div>
 
-            {/* Column 5: About Us & Resources */}
+            {/* Column 5: Company & Library */}
             <div>
-              <p className="text-[12px] font-semibold">About Us</p>
+              <p className="text-[12px] font-semibold">Company</p>
               <ul
                 className={cn(
                   "mt-4 space-y-2.5 text-[11.5px]",
@@ -2804,12 +3311,12 @@ function MailoraHeroPreview({
                 )}
               >
                 {[
-                  "Our Mission",
-                  "Team",
-                  "Careers",
-                  "Legal",
-                  "Privacy Center",
-                  "Security",
+                  "Our Story",
+                  "Leadership",
+                  "Open Roles",
+                  "Partners",
+                  "Trust Center",
+                  "Contact",
                 ].map((item) => (
                   <li key={item}>
                     <button
@@ -2823,7 +3330,7 @@ function MailoraHeroPreview({
               </ul>
 
               <div className="mt-7 flex items-center gap-2">
-                <p className="text-[12px] font-semibold">Resources</p>
+                <p className="text-[12px] font-semibold">Library</p>
                 <span
                   className={cn(
                     "inline-flex items-center rounded-full px-2 py-0.5 text-[9.5px] font-medium",
@@ -2832,7 +3339,7 @@ function MailoraHeroPreview({
                       : "bg-zinc-900 text-white",
                   )}
                 >
-                  News
+                  New
                 </span>
               </div>
               <ul
@@ -2841,7 +3348,7 @@ function MailoraHeroPreview({
                   isDark ? "text-zinc-400" : "text-[#7D7D7D]",
                 )}
               >
-                {["Blog", "Case Studies", "Whitepapers"].map((item) => (
+                {["Guides", "Benchmarks", "Playbooks"].map((item) => (
                   <li key={item}>
                     <button
                       type="button"
@@ -2854,10 +3361,18 @@ function MailoraHeroPreview({
               </ul>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Bottom Copyright + Back to Top */}
-        <div
+        <motion.div
+          initial={prefersReducedMotion ? false : { opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={
+            prefersReducedMotion
+              ? { duration: 0 }
+              : { duration: 0.55, delay: 0.1, ease: [0.16, 1, 0.3, 1] }
+          }
           className={cn(
             "border-t",
             isDark ? "border-white/[0.07]" : "border-zinc-200/70",
@@ -2870,12 +3385,12 @@ function MailoraHeroPreview({
                 isDark ? "text-zinc-400" : "text-zinc-500",
               )}
             >
-              &copy; 2025 Mailora. All Rights Reserved.
+              &copy; 2026 Mailora Inc. All rights reserved.
             </p>
 
             <motion.button
               type="button"
-              aria-label="Back to Top"
+              aria-label="Scroll to Top"
               whileTap={prefersReducedMotion ? undefined : { scale: 0.96 }}
               onClick={(e) => {
                 let parent: HTMLElement | null = e.currentTarget.parentElement;
@@ -2919,10 +3434,10 @@ function MailoraHeroPreview({
                   <ArrowUp className="size-3" aria-hidden />
                 </motion.span>
               </span>
-              <span className="hidden @4xl:inline">Back to Top</span>
+              <span className="hidden @4xl:inline">Scroll to Top</span>
             </motion.button>
           </div>
-        </div>
+        </motion.div>
       </footer>
     </div>
   );
