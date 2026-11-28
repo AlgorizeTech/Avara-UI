@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
 import { RadioIcon } from "@/components/ui/radio-icon";
 import type { RadarIconHandle } from "@/components/ui/radar-icon";
@@ -16,6 +16,17 @@ import {
   MegaphoneIcon,
   type MegaphoneIconHandle,
 } from "@/components/ui/megaphone-icon";
+import { UsersIcon, type UsersIconHandle } from "@/components/ui/users-icon";
+import { PlusIcon, type PlusIconHandle } from "@/components/ui/plus-icon";
+import {
+  MoreHorizontalIcon,
+  type MoreHorizontalIconHandle,
+} from "@/components/ui/more-horizontal-icon";
+import { TrendingUpIcon } from "@/components/ui/trending-up-icon";
+import { PieChartIcon } from "@/components/ui/pie-chart-icon";
+import { BarChartIcon } from "@/components/ui/bar-chart-icon";
+import { CloudCogIcon } from "@/components/ui/cloud-cog-icon";
+import { PlayIcon } from "@/components/ui/play-icon";
 import {
   ArrowRight,
   ArrowUp,
@@ -158,6 +169,62 @@ function FooterSocialIconButton({
   );
 }
 
+function AutoAnimatedIcon({
+  delayMs = 0,
+  prefersReducedMotion,
+  renderIcon,
+}: {
+  delayMs?: number;
+  prefersReducedMotion: boolean | null;
+  renderIcon: (
+    ref: React.RefObject<{
+      startAnimation: () => void;
+      stopAnimation: () => void;
+    } | null>,
+  ) => React.ReactNode;
+}) {
+  const iconRef = useRef<{
+    startAnimation: () => void;
+    stopAnimation: () => void;
+  } | null>(null);
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    let intervalId: ReturnType<typeof setInterval> | undefined;
+    let resetTimerId: ReturnType<typeof setTimeout> | undefined;
+
+    const trigger = () => {
+      iconRef.current?.stopAnimation();
+      resetTimerId = setTimeout(() => {
+        iconRef.current?.startAnimation();
+      }, 60);
+    };
+
+    const startTimer = setTimeout(() => {
+      trigger();
+      intervalId = setInterval(trigger, 2800);
+    }, 300 + delayMs);
+
+    return () => {
+      clearTimeout(startTimer);
+      if (resetTimerId) clearTimeout(resetTimerId);
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [prefersReducedMotion, delayMs]);
+
+  return (
+    <span
+      className="inline-flex items-center justify-center"
+      onMouseEnter={() => {
+        if (!prefersReducedMotion) iconRef.current?.startAnimation();
+      }}
+    >
+      {renderIcon(iconRef)}
+    </span>
+  );
+}
+
 function AnimatedCounter({
   target,
   prefix = "",
@@ -291,6 +358,7 @@ function MailoraHeroPreview({
   onToggleTheme?: (e: React.MouseEvent<HTMLElement>) => void;
 }) {
   const isDark = theme === "dark";
+  const uid = useId();
   const prefersReducedMotion = useReducedMotion();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [targetName, setTargetName] = useState("Spring Onboarding");
@@ -301,7 +369,45 @@ function MailoraHeroPreview({
     "Creators",
   ]);
   const [audienceReachStep, setAudienceReachStep] = useState(5);
+  const [animatedReachStep, setAnimatedReachStep] = useState(0);
   const [subjectIndex, setSubjectIndex] = useState(0);
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      setAnimatedReachStep(audienceReachStep);
+      return;
+    }
+
+    let step = 0;
+    let direction: 1 | -1 = 1;
+    let pauseTicks = 0;
+    setAnimatedReachStep(0);
+
+    const id = setInterval(() => {
+      if (pauseTicks > 0) {
+        pauseTicks -= 1;
+        return;
+      }
+
+      step += direction;
+      if (step >= audienceReachStep) {
+        step = audienceReachStep;
+        direction = -1;
+        pauseTicks = 5;
+      } else if (step <= 0) {
+        step = 0;
+        direction = 1;
+        pauseTicks = 2;
+      }
+      setAnimatedReachStep(step);
+    }, 450);
+
+    return () => clearInterval(id);
+  }, [audienceReachStep, prefersReducedMotion]);
+
+  const displayReachStep = prefersReducedMotion
+    ? audienceReachStep
+    : animatedReachStep;
 
   const generatedSubjects = [
     "Your onboarding checklist is ready — launch in 5 minutes",
@@ -328,8 +434,8 @@ function MailoraHeroPreview({
   const floatingCardClass = cn(
     "rounded-2xl border backdrop-blur-sm transition-colors",
     isDark
-      ? "border-primary/[0.12] bg-[#141720]/95"
-      : "border-primary/[0.1] bg-white/95",
+      ? "border-primary/20 bg-[#141720]/95"
+      : "border-primary/15 bg-white/95",
   );
 
   return (
@@ -339,85 +445,179 @@ function MailoraHeroPreview({
         isDark ? "bg-[#0B0D12] text-zinc-100" : "bg-white text-zinc-900",
       )}
     >
+      {/* Mobile / Tablet Drawer (above all page sections) */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.25 }}
+              onClick={() => setMobileMenuOpen(false)}
+              className="@4xl:hidden absolute inset-0 z-40 bg-black/40 backdrop-blur-[2px]"
+            />
+            <motion.aside
+              aria-label="Mobile navigation"
+              initial={prefersReducedMotion ? false : { x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={prefersReducedMotion ? undefined : { x: "-100%" }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : { duration: 0.35, ease: [0.16, 1, 0.3, 1] }
+              }
+              className={cn(
+                "@4xl:hidden absolute inset-y-0 left-0 z-50 w-64 border-r",
+                isDark
+                  ? "bg-[#11141d] border-white/10 text-zinc-100"
+                  : "bg-white border-zinc-200 text-zinc-900",
+              )}
+            >
+              <div className="sticky top-0 flex h-[520px] max-h-screen flex-col justify-between p-5">
+                <div>
+                  <div className="flex items-center justify-between pb-4 border-b border-current/10">
+                    <span className="text-[15px] font-semibold">Mailora</span>
+                    <button
+                      type="button"
+                      aria-label="Close navigation menu"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="p-1 rounded-md opacity-70 hover:opacity-100 cursor-pointer"
+                    >
+                      <X className="size-4" />
+                    </button>
+                  </div>
+
+                  <nav className="mt-4 flex flex-col gap-1">
+                    {navItems.map((item) => (
+                      <button
+                        key={item.label}
+                        type="button"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className={cn(
+                          "flex items-center justify-between rounded-lg px-3 py-2 text-left text-[13px] cursor-pointer",
+                          item.active
+                            ? "bg-primary/15 font-semibold text-primary"
+                            : isDark
+                              ? "text-zinc-400 hover:bg-white/5"
+                              : "text-zinc-600 hover:bg-zinc-50",
+                        )}
+                      >
+                        <span>{item.label}</span>
+                      </button>
+                    ))}
+                  </nav>
+                </div>
+
+                <button
+                  type="button"
+                  className="inline-flex h-9 w-full items-center justify-center rounded-full bg-gradient-to-b from-primary to-[color-mix(in_oklab,var(--primary)_86%,black)] text-white text-[12px] font-medium cursor-pointer"
+                >
+                  Book a Demo
+                </button>
+              </div>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
+
       {/* Hero + Navbar + Edge-Anchored Floating Cards */}
       <div
         className={cn(
-          "relative -mx-4 @sm:-mx-6 @lg:-mx-8 px-4 @sm:px-6 @lg:px-8 pt-5 @lg:pt-6 pb-8 min-h-[600px] @lg:min-h-[640px] overflow-hidden transition-colors",
+          "relative -mx-4 @sm:-mx-6 @lg:-mx-8 px-4 @sm:px-6 @lg:px-8 pt-5 @lg:pt-6 pb-6 @4xl:pb-10 overflow-hidden transition-colors",
           !isDark && "bg-[#F9F9F9]",
         )}
       >
-      {/* Large Subtle Edge-Only Architectural Boxes + Warm Peach Tinted Cells */}
+      {/* Large Subtle Edge-Only Architectural Boxes + Warm Tinted Cells */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 overflow-hidden [mask-image:linear-gradient(to_right,black_0%,transparent_34%,transparent_66%,black_100%)]"
+        className="pointer-events-none absolute inset-0 overflow-hidden [mask-image:linear-gradient(to_right,black_0%,rgba(0,0,0,0.75)_18%,transparent_38%,transparent_62%,rgba(0,0,0,0.75)_82%,black_100%)]"
       >
-        {/* Warm-tinted 112px box grid */}
-        <div
-          className={cn(
-            "absolute inset-0",
-            isDark
-              ? "bg-[linear-gradient(to_right,rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:112px_112px]"
-              : "bg-[linear-gradient(to_right,color-mix(in_oklab,var(--primary)_5%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_oklab,var(--primary)_5%,transparent)_1px,transparent_1px)] bg-[size:112px_112px]",
-          )}
-        />
+        <div className="absolute inset-0 [mask-image:linear-gradient(to_bottom,transparent_0%,black_16%,black_82%,transparent_100%)]">
+          {/* Soft ambient edge glow on left & right */}
+          <div
+            className={cn(
+              "absolute -left-24 top-1/2 -translate-y-1/2 h-[420px] w-[420px] rounded-full blur-3xl",
+              isDark ? "bg-primary/[0.08]" : "bg-primary/[0.07]",
+            )}
+          />
+          <div
+            className={cn(
+              "absolute -right-24 top-1/2 -translate-y-1/2 h-[420px] w-[420px] rounded-full blur-3xl",
+              isDark ? "bg-primary/[0.08]" : "bg-primary/[0.07]",
+            )}
+          />
 
-        {/* Crisp 112px-aligned warm peach-tinted cells on left */}
-        <div
-          className={cn(
-            "absolute left-0 top-0 h-[112px] w-[112px]",
-            isDark ? "bg-primary/[0.05]" : "bg-primary/[0.045]",
-          )}
-        />
-        <div
-          className={cn(
-            "absolute left-[112px] top-[112px] h-[112px] w-[112px]",
-            isDark ? "bg-primary/[0.03]" : "bg-primary/[0.03]",
-          )}
-        />
-        <div
-          className={cn(
-            "absolute left-0 top-[224px] h-[112px] w-[112px]",
-            isDark ? "bg-primary/[0.04]" : "bg-primary/[0.035]",
-          )}
-        />
-        <div
-          className={cn(
-            "absolute left-[112px] top-[336px] h-[112px] w-[112px]",
-            isDark ? "bg-primary/[0.05]" : "bg-primary/[0.05]",
-          )}
-        />
-        <div
-          className={cn(
-            "absolute left-[224px] top-[448px] h-[112px] w-[112px]",
-            isDark ? "bg-primary/[0.03]" : "bg-primary/[0.03]",
-          )}
-        />
+          {/* Subtle 112px architectural box grid */}
+          <div
+            className={cn(
+              "absolute inset-0",
+              isDark
+                ? "bg-[linear-gradient(to_right,rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:112px_112px]"
+                : "bg-[linear-gradient(to_right,color-mix(in_oklab,var(--primary)_7%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_oklab,var(--primary)_7%,transparent)_1px,transparent_1px)] bg-[size:112px_112px]",
+            )}
+          />
 
-        {/* Crisp 112px-aligned warm peach-tinted cells on right */}
-        <div
-          className={cn(
-            "absolute right-0 top-[112px] h-[112px] w-[112px]",
-            isDark ? "bg-primary/[0.05]" : "bg-primary/[0.045]",
-          )}
-        />
-        <div
-          className={cn(
-            "absolute right-[112px] top-[224px] h-[112px] w-[112px]",
-            isDark ? "bg-primary/[0.03]" : "bg-primary/[0.03]",
-          )}
-        />
-        <div
-          className={cn(
-            "absolute right-0 top-[336px] h-[112px] w-[112px]",
-            isDark ? "bg-primary/[0.04]" : "bg-primary/[0.04]",
-          )}
-        />
-        <div
-          className={cn(
-            "absolute right-[112px] top-[448px] h-[112px] w-[112px]",
-            isDark ? "bg-primary/[0.05]" : "bg-primary/[0.045]",
-          )}
-        />
+          {/* Crisp 112px-aligned tinted cells on left */}
+          <div
+            className={cn(
+              "absolute left-0 top-[112px] h-[112px] w-[112px]",
+              isDark
+                ? "bg-gradient-to-b from-primary/[0.08] to-primary/[0.02]"
+                : "bg-gradient-to-b from-primary/[0.07] to-primary/[0.02]",
+            )}
+          />
+          <div
+            className={cn(
+              "absolute left-[112px] top-[112px] h-[112px] w-[112px]",
+              isDark
+                ? "bg-gradient-to-br from-primary/[0.05] to-transparent"
+                : "bg-gradient-to-br from-primary/[0.045] to-transparent",
+            )}
+          />
+          <div
+            className={cn(
+              "absolute left-[112px] top-[336px] h-[112px] w-[112px]",
+              isDark
+                ? "bg-gradient-to-t from-primary/[0.08] to-primary/[0.02]"
+                : "bg-gradient-to-t from-primary/[0.07] to-primary/[0.02]",
+            )}
+          />
+          <div
+            className={cn(
+              "absolute left-0 top-[336px] h-[112px] w-[112px]",
+              isDark
+                ? "bg-gradient-to-r from-primary/[0.06] to-primary/[0.015]"
+                : "bg-gradient-to-r from-primary/[0.05] to-primary/[0.015]",
+            )}
+          />
+
+          {/* Crisp 112px-aligned tinted cells on right */}
+          <div
+            className={cn(
+              "absolute right-0 top-[112px] h-[112px] w-[112px]",
+              isDark
+                ? "bg-gradient-to-b from-primary/[0.08] to-primary/[0.02]"
+                : "bg-gradient-to-b from-primary/[0.07] to-primary/[0.02]",
+            )}
+          />
+          <div
+            className={cn(
+              "absolute right-[112px] top-[224px] h-[112px] w-[112px]",
+              isDark
+                ? "bg-gradient-to-bl from-primary/[0.06] to-primary/[0.015]"
+                : "bg-gradient-to-bl from-primary/[0.055] to-primary/[0.015]",
+            )}
+          />
+          <div
+            className={cn(
+              "absolute right-0 top-[336px] h-[112px] w-[112px]",
+              isDark
+                ? "bg-gradient-to-b from-primary/[0.07] to-primary/[0.02]"
+                : "bg-gradient-to-b from-primary/[0.06] to-primary/[0.015]",
+            )}
+          />
+        </div>
       </div>
 
       {/* 1. Floating Black Pill Navbar */}
@@ -429,7 +629,7 @@ function MailoraHeroPreview({
             ? { duration: 0 }
             : { duration: 0.55, ease: [0.16, 1, 0.3, 1] }
         }
-        className="relative z-20 mx-auto max-w-md @4xl:max-w-4xl flex items-center justify-between gap-2"
+        className="relative z-20 mx-auto max-w-md @lg:max-w-xl @4xl:max-w-4xl flex items-center justify-between gap-2"
       >
         <div
           className={cn(
@@ -445,7 +645,7 @@ function MailoraHeroPreview({
               type="button"
               aria-label="Open navigation menu"
               onClick={() => setMobileMenuOpen(true)}
-              className="@md:hidden flex size-7 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 cursor-pointer"
+              className="@4xl:hidden flex size-7 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 cursor-pointer"
             >
               <Menu className="size-3.5" />
             </button>
@@ -459,7 +659,7 @@ function MailoraHeroPreview({
           {/* Center Nav Links */}
           <nav
             aria-label="Mailora navigation"
-            className="hidden @md:flex items-center gap-1.5 text-[11.5px]"
+            className="hidden @4xl:flex items-center gap-1.5 text-[11.5px]"
           >
             {navItems.map((item) => (
               <button
@@ -508,82 +708,9 @@ function MailoraHeroPreview({
         </div>
       </motion.header>
 
-      {/* Mobile Drawer */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.25 }}
-              onClick={() => setMobileMenuOpen(false)}
-              className="@md:hidden absolute inset-0 z-30 bg-black/40 backdrop-blur-[2px]"
-            />
-            <motion.aside
-              aria-label="Mobile navigation"
-              initial={prefersReducedMotion ? false : { x: "-100%" }}
-              animate={{ x: 0 }}
-              exit={prefersReducedMotion ? undefined : { x: "-100%" }}
-              transition={
-                prefersReducedMotion
-                  ? { duration: 0 }
-                  : { duration: 0.35, ease: [0.16, 1, 0.3, 1] }
-              }
-              className={cn(
-                "@md:hidden absolute inset-y-0 left-0 z-40 w-64 p-5 border-r flex flex-col justify-between",
-                isDark
-                  ? "bg-[#11141d] border-white/10 text-zinc-100"
-                  : "bg-white border-zinc-200 text-zinc-900",
-              )}
-            >
-              <div>
-                <div className="flex items-center justify-between pb-4 border-b border-current/10">
-                  <span className="text-[15px] font-semibold">Mailora</span>
-                  <button
-                    type="button"
-                    aria-label="Close navigation menu"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="p-1 rounded-md opacity-70 hover:opacity-100 cursor-pointer"
-                  >
-                    <X className="size-4" />
-                  </button>
-                </div>
-
-                <nav className="mt-4 flex flex-col gap-1">
-                  {navItems.map((item) => (
-                    <button
-                      key={item.label}
-                      type="button"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={cn(
-                        "flex items-center justify-between rounded-lg px-3 py-2 text-left text-[13px] cursor-pointer",
-                        item.active
-                          ? "bg-primary/15 font-semibold text-primary"
-                          : isDark
-                            ? "text-zinc-400 hover:bg-white/5"
-                            : "text-zinc-600 hover:bg-zinc-50",
-                      )}
-                    >
-                      <span>{item.label}</span>
-                    </button>
-                  ))}
-                </nav>
-              </div>
-
-              <button
-                type="button"
-                className="inline-flex h-9 w-full items-center justify-center rounded-full bg-gradient-to-b from-primary to-[color-mix(in_oklab,var(--primary)_86%,black)] text-white text-[12px] font-medium cursor-pointer"
-              >
-                Book a Demo
-              </button>
-            </motion.aside>
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* 4 Floating Side Cards (anchored to outer viewport edges) */}
-      {/* Top-Left Floating Card: $2,320 Increase Rate */}
+      {/* Hero Stage: 4 Floating Side Cards + Center Content */}
+      <div className="relative -mx-4 @sm:-mx-6 @lg:-mx-8 px-4 @sm:px-6 @lg:px-8 mt-4 @4xl:mt-6">
+      {/* Top-Left Floating Card: $4,850 Monthly Revenue */}
       <motion.div
         initial={prefersReducedMotion ? false : { opacity: 0, x: -18, y: -8 }}
         animate={{ opacity: 1, x: 0, y: 0 }}
@@ -593,11 +720,21 @@ function MailoraHeroPreview({
             : { duration: 0.7, delay: 0.25, ease: [0.16, 1, 0.3, 1] }
         }
         className={cn(
-          "hidden @lg:block absolute left-6 @xl:left-14 top-28 z-10 w-36 p-3.5",
+          "hidden @lg:block absolute left-3 @4xl:left-[4.5%] top-10 @4xl:top-16 z-10 w-36 p-3.5 origin-top-left scale-[0.72] @4xl:scale-100",
           floatingCardClass,
         )}
       >
-        <span className="block h-0.5 w-4 rounded-full bg-primary" />
+        <motion.span
+          initial={prefersReducedMotion ? false : { scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={
+            prefersReducedMotion
+              ? { duration: 0 }
+              : { duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }
+          }
+          style={{ transformOrigin: "left" }}
+          className="block h-0.5 w-6 rounded-full bg-primary"
+        />
         <div className="mt-2.5 flex items-center justify-between gap-1">
           <span className="text-[17px] font-semibold tracking-tight text-primary">
             <AnimatedCounter
@@ -629,15 +766,24 @@ function MailoraHeroPreview({
             : { duration: 0.75, delay: 0.35, ease: [0.16, 1, 0.3, 1] }
         }
         className={cn(
-          "hidden @lg:block absolute -left-6 @xl:-left-8 bottom-8 z-10 w-56 p-3.5",
+          "hidden @lg:block absolute -left-5 @4xl:-left-7 bottom-8 @4xl:bottom-14 z-10 w-56 p-3.5 origin-left scale-[0.72] @4xl:scale-100",
           floatingCardClass,
         )}
       >
         <p className="text-[11px] font-semibold">Deliverability</p>
-        <div className="mt-2 h-20 w-full">
+        <motion.div
+          initial={prefersReducedMotion ? false : { clipPath: "inset(0 100% 0 0)" }}
+          animate={{ clipPath: "inset(0 0% 0 0)" }}
+          transition={
+            prefersReducedMotion
+              ? { duration: 0 }
+              : { duration: 1.25, delay: 0.35, ease: [0.16, 1, 0.3, 1] }
+          }
+          className="mt-2 h-20 w-full"
+        >
           <svg viewBox="0 0 180 72" className="h-full w-full overflow-visible" aria-hidden>
             <defs>
-              <linearGradient id="mailora-growth-fill" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id={`${uid}-growth-fill`} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#FACC15" stopOpacity="0.45" />
                 <stop offset="100%" stopColor="#FACC15" stopOpacity="0.02" />
               </linearGradient>
@@ -657,7 +803,7 @@ function MailoraHeroPreview({
             ))}
             <path
               d="M 6 60 L 42 46 L 82 40 L 122 30 L 154 14 L 174 18 L 174 70 L 6 70 Z"
-              fill="url(#mailora-growth-fill)"
+              fill={`url(#${uid}-growth-fill)`}
             />
             <path
               d="M 6 60 L 42 46 L 82 40 L 122 30 L 154 14 L 174 18"
@@ -686,7 +832,7 @@ function MailoraHeroPreview({
               />
             ))}
           </svg>
-        </div>
+        </motion.div>
         <div
           className={cn(
             "mt-1 flex items-center justify-between text-[8px] font-medium",
@@ -709,7 +855,7 @@ function MailoraHeroPreview({
             : { duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }
         }
         className={cn(
-          "hidden @lg:block absolute -right-6 @xl:-right-8 top-24 z-10 w-56 p-3.5",
+          "hidden @lg:block absolute -right-5 @4xl:-right-7 top-10 @4xl:top-16 z-10 w-56 p-3.5 origin-right scale-[0.72] @4xl:scale-100",
           floatingCardClass,
         )}
       >
@@ -728,32 +874,52 @@ function MailoraHeroPreview({
           </div>
           <div className="relative flex-1 pt-4">
             {/* Peak Tooltip */}
-            <div className="absolute left-[62%] -translate-x-1/2 top-0 z-10 flex flex-col items-center">
+            <motion.div
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 6, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : { duration: 0.5, delay: 0.95, ease: [0.16, 1, 0.3, 1] }
+              }
+              className="absolute left-[62%] -translate-x-1/2 top-0 z-10 flex flex-col items-center"
+            >
               <span className="rounded-full bg-zinc-950 px-2 py-0.5 text-[7.5px] font-semibold text-white">
                 84k
               </span>
               <span className="h-0 w-0 border-x-[3px] border-t-[4px] border-x-transparent border-t-zinc-950" />
               <span className="h-14 w-px bg-zinc-950/70 dark:bg-white/60" />
               <span className="size-1 rounded-full bg-zinc-950 dark:bg-white" />
-            </div>
+            </motion.div>
 
-            <svg
-              viewBox="0 0 150 64"
-              preserveAspectRatio="none"
+            <motion.div
+              initial={prefersReducedMotion ? false : { clipPath: "inset(100% 0 0 0)" }}
+              animate={{ clipPath: "inset(0% 0 0 0)" }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : { duration: 1.05, delay: 0.4, ease: [0.16, 1, 0.3, 1] }
+              }
               className="h-full w-full"
-              aria-hidden
             >
-              <defs>
-                <linearGradient id="mailora-step-fill" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#FACC15" stopOpacity="0.65" />
-                  <stop offset="100%" stopColor="#FACC15" stopOpacity="0.06" />
-                </linearGradient>
-              </defs>
-              <path
-                d="M 0 64 L 0 46 L 34 46 L 34 26 L 68 26 L 68 10 L 106 10 L 106 32 L 150 32 L 150 64 Z"
-                fill="url(#mailora-step-fill)"
-              />
-            </svg>
+              <svg
+                viewBox="0 0 150 64"
+                preserveAspectRatio="none"
+                className="h-full w-full"
+                aria-hidden
+              >
+                <defs>
+                  <linearGradient id={`${uid}-step-fill`} x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#FACC15" stopOpacity="0.65" />
+                    <stop offset="100%" stopColor="#FACC15" stopOpacity="0.06" />
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M 0 64 L 0 46 L 34 46 L 34 26 L 68 26 L 68 10 L 106 10 L 106 32 L 150 32 L 150 64 Z"
+                  fill={`url(#${uid}-step-fill)`}
+                />
+              </svg>
+            </motion.div>
           </div>
         </div>
       </motion.div>
@@ -768,16 +934,40 @@ function MailoraHeroPreview({
             : { duration: 0.75, delay: 0.4, ease: [0.16, 1, 0.3, 1] }
         }
         className={cn(
-          "hidden @lg:flex absolute right-6 @xl:right-14 bottom-12 z-10 w-60 items-center gap-3 px-4 py-3.5",
+          "hidden @lg:flex absolute right-3 @4xl:right-[4.5%] bottom-14 @4xl:bottom-24 z-10 w-44 @4xl:w-52 items-center gap-2.5 px-3 @4xl:px-3.5 py-2.5 @4xl:py-3 origin-right scale-[0.75] @4xl:scale-100",
           floatingCardClass,
         )}
       >
         <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-b from-primary to-[color-mix(in_oklab,var(--primary)_86%,black)] text-white">
-          <TrendingUp className="size-3.5" aria-hidden />
+          <TrendingUpIcon size={14} isAnimated={!prefersReducedMotion} />
         </span>
         <div className="flex-1 space-y-2">
-          <div className="h-2 w-full rounded-full bg-gradient-to-r from-primary/35 to-primary/10" />
-          <div className="h-2 w-3/5 rounded-full bg-gradient-to-r from-primary/40 to-primary/10" />
+          <div className="h-2 w-full overflow-hidden rounded-full bg-primary/10">
+            <motion.div
+              initial={prefersReducedMotion ? false : { scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : { duration: 1.05, delay: 0.45, ease: [0.16, 1, 0.3, 1] }
+              }
+              style={{ transformOrigin: "left" }}
+              className="h-full w-full rounded-full bg-gradient-to-r from-primary/45 to-primary/15"
+            />
+          </div>
+          <div className="h-2 w-3/5 overflow-hidden rounded-full bg-primary/10">
+            <motion.div
+              initial={prefersReducedMotion ? false : { scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : { duration: 1.05, delay: 0.62, ease: [0.16, 1, 0.3, 1] }
+              }
+              style={{ transformOrigin: "left" }}
+              className="h-full w-full rounded-full bg-gradient-to-r from-primary/50 to-primary/15"
+            />
+          </div>
         </div>
         <span className="text-[11px] font-semibold text-primary shrink-0">
           <AnimatedCounter
@@ -790,10 +980,10 @@ function MailoraHeroPreview({
       </motion.div>
 
       {/* 2. Hero Center Content */}
-      <section className="relative z-10 mx-auto max-w-md @4xl:max-w-3xl pt-14 @sm:pt-16 pb-16">
+      <section className="relative z-20 mx-auto w-full max-w-md @lg:max-w-[460px] @4xl:max-w-4xl pt-8 pb-10 @4xl:pt-12 @4xl:pb-14">
 
         {/* Center Hero Content */}
-        <div className="mx-auto max-w-2xl text-center">
+        <div className="mx-auto max-w-3xl text-center">
           {/* Top Tag Pill */}
           <motion.div
             initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
@@ -822,7 +1012,7 @@ function MailoraHeroPreview({
                 ? { duration: 0 }
                 : { duration: 0.7, delay: 0.08, ease: [0.16, 1, 0.3, 1] }
             }
-            className="mt-5 text-[30px] @sm:text-[42px] @lg:text-[48px] font-semibold tracking-tight leading-[1.15]"
+            className="mt-5 text-[30px] @sm:text-[34px] @lg:text-[38px] @4xl:text-[60px] font-semibold tracking-tight leading-[1.12]"
           >
             <span className="block">
               Lifecycle email{" "}
@@ -836,19 +1026,27 @@ function MailoraHeroPreview({
               <span className="inline-flex translate-y-[5px] items-center -space-x-2">
                 <span
                   className={cn(
-                    "flex size-9 @sm:size-10 items-center justify-center rounded-full bg-[#FDE047] text-zinc-900 ring-2",
+                    "flex size-9 @sm:size-10 @4xl:size-12 items-center justify-center rounded-full bg-[#FDE047] text-zinc-900 ring-2",
                     isDark ? "ring-[#0B0D12]" : "ring-[#F9F9F9]",
                   )}
                 >
-                  <PieChart className="size-4" aria-hidden />
+                  <PieChartIcon
+                    size={18}
+                    isAnimated={!prefersReducedMotion}
+                    className="scale-90 @4xl:scale-105"
+                  />
                 </span>
                 <span
                   className={cn(
-                    "flex size-9 @sm:size-10 items-center justify-center rounded-full bg-gradient-to-b from-primary to-[color-mix(in_oklab,var(--primary)_86%,black)] text-white ring-2",
+                    "flex size-9 @sm:size-10 @4xl:size-12 items-center justify-center rounded-full bg-gradient-to-b from-primary to-[color-mix(in_oklab,var(--primary)_86%,black)] text-white ring-2",
                     isDark ? "ring-[#0B0D12]" : "ring-[#F9F9F9]",
                   )}
                 >
-                  <BarChart2 className="size-4" aria-hidden />
+                  <BarChartIcon
+                    size={18}
+                    isAnimated={!prefersReducedMotion}
+                    className="scale-90 @4xl:scale-105"
+                  />
                 </span>
               </span>
 
@@ -857,11 +1055,15 @@ function MailoraHeroPreview({
               {/* Right Yellow Cloud Badge */}
               <span
                 className={cn(
-                  "inline-flex translate-y-[5px] size-9 @sm:size-10 items-center justify-center rounded-full bg-[#FDE047] text-zinc-900 ring-2",
+                  "inline-flex translate-y-[5px] size-9 @sm:size-10 @4xl:size-12 items-center justify-center rounded-full bg-[#FDE047] text-zinc-900 ring-2",
                   isDark ? "ring-[#0B0D12]" : "ring-[#F9F9F9]",
                 )}
               >
-                <CloudCog className="size-4" aria-hidden />
+                <CloudCogIcon
+                  size={18}
+                  isAnimated={!prefersReducedMotion}
+                  className="scale-90 @4xl:scale-105"
+                />
               </span>
             </span>
           </motion.h2>
@@ -917,7 +1119,11 @@ function MailoraHeroPreview({
                   isDark ? "bg-white text-zinc-950" : "bg-zinc-950 text-white",
                 )}
               >
-                <Play className="size-2 fill-current ml-0.5" aria-hidden />
+                <PlayIcon
+                  size={8}
+                  isAnimated={!prefersReducedMotion}
+                  className="ml-0.5"
+                />
               </span>
               <span>See How It Works</span>
             </button>
@@ -925,9 +1131,10 @@ function MailoraHeroPreview({
         </div>
       </section>
       </div>
+      </div>
 
       {/* 3. Key Features Section */}
-      <section className="relative z-10 mx-auto max-w-md @4xl:max-w-5xl pt-12 @sm:pt-16 pb-6">
+      <section className="relative z-10 mx-auto max-w-md @lg:max-w-xl @4xl:max-w-5xl pt-12 @sm:pt-16 pb-6">
         {/* Top Tag Pill */}
         <motion.div
           initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
@@ -944,7 +1151,7 @@ function MailoraHeroPreview({
         </motion.div>
 
         {/* Heading + Right Subtitle */}
-        <div className="mt-4 flex flex-col gap-4 @md:flex-row @md:items-end @md:justify-between">
+        <div className="mt-4 flex flex-col gap-4 @lg:flex-row @lg:items-end @lg:justify-between">
           <motion.h3
             initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -954,7 +1161,7 @@ function MailoraHeroPreview({
                 ? { duration: 0 }
                 : { duration: 0.6, delay: 0.06, ease: [0.16, 1, 0.3, 1] }
             }
-            className="text-[26px] @sm:text-[34px] @lg:text-[38px] font-semibold tracking-tight leading-[1.14]"
+            className="text-[26px] @sm:text-[30px] @4xl:text-[38px] font-semibold tracking-tight leading-[1.14]"
           >
             Target every{" "}
             <span className={isDark ? "text-zinc-500" : "text-zinc-400"}>
@@ -1263,7 +1470,18 @@ function MailoraHeroPreview({
                           : "border-zinc-200/80 bg-zinc-50 text-zinc-600",
                       )}
                     >
-                      <Users className="size-4" aria-hidden />
+                      <AutoAnimatedIcon
+                        delayMs={0}
+                        prefersReducedMotion={prefersReducedMotion}
+                        renderIcon={(ref) => (
+                          <UsersIcon
+                            ref={ref as React.Ref<UsersIconHandle>}
+                            size={16}
+                            duration={1.3}
+                            isAnimated={!prefersReducedMotion}
+                          />
+                        )}
+                      />
                     </span>
 
                     <div
@@ -1305,7 +1523,18 @@ function MailoraHeroPreview({
                         aria-label="Invite team member"
                         className="flex size-7 items-center justify-center rounded-full bg-[#8B7CFF] text-white ring-2 ring-white dark:ring-[#141720] hover:opacity-90 transition-opacity cursor-pointer"
                       >
-                        <Plus className="size-3.5" />
+                        <AutoAnimatedIcon
+                          delayMs={400}
+                          prefersReducedMotion={prefersReducedMotion}
+                          renderIcon={(ref) => (
+                            <PlusIcon
+                              ref={ref as React.Ref<PlusIconHandle>}
+                              size={14}
+                              duration={1.3}
+                              isAnimated={!prefersReducedMotion}
+                            />
+                          )}
+                        />
                       </button>
                     </div>
                   </div>
@@ -1320,7 +1549,18 @@ function MailoraHeroPreview({
                         : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800",
                     )}
                   >
-                    <MoreHorizontal className="size-4" />
+                    <AutoAnimatedIcon
+                      delayMs={800}
+                      prefersReducedMotion={prefersReducedMotion}
+                      renderIcon={(ref) => (
+                        <MoreHorizontalIcon
+                          ref={ref as React.Ref<MoreHorizontalIconHandle>}
+                          size={16}
+                          duration={1.3}
+                          isAnimated={!prefersReducedMotion}
+                        />
+                      )}
+                    />
                   </button>
                 </div>
 
@@ -1439,7 +1679,7 @@ function MailoraHeroPreview({
 
                     <div className="flex items-center gap-1">
                       {Array.from({ length: 10 }).map((_, idx) => {
-                        const active = idx < audienceReachStep;
+                        const active = idx < displayReachStep;
                         return (
                           <button
                             key={idx}
@@ -1447,20 +1687,20 @@ function MailoraHeroPreview({
                             aria-label={`Set audience reach to ${(idx + 1) * 10}%`}
                             onClick={() => setAudienceReachStep(idx + 1)}
                             className={cn(
-                              "size-2.5 rounded-[3px] transition-colors cursor-pointer",
+                              "size-2.5 rounded-[3px] transition-all duration-150 cursor-pointer",
                               active
-                                ? "bg-primary"
+                                ? "bg-primary scale-100"
                                 : isDark
-                                  ? "bg-white/20 hover:bg-white/35"
-                                  : "bg-white hover:bg-white/80",
+                                  ? "bg-white/20 hover:bg-white/35 scale-95"
+                                  : "bg-white hover:bg-white/80 scale-95",
                             )}
                           />
                         );
                       })}
                     </div>
 
-                    <span className="text-[10.5px] font-semibold tabular-nums shrink-0">
-                      {audienceReachStep * 10}%
+                    <span className="text-[10.5px] font-semibold tabular-nums shrink-0 min-w-[2.25rem] text-right">
+                      {displayReachStep * 10}%
                     </span>
                   </div>
                 </div>
@@ -1477,7 +1717,7 @@ function MailoraHeroPreview({
           isDark ? "bg-white/[0.03]" : "bg-[#F9F9F9]",
         )}
       >
-        <div className="mx-auto max-w-md @4xl:max-w-5xl">
+        <div className="mx-auto max-w-md @lg:max-w-xl @4xl:max-w-5xl">
         {/* Top Tag Pill */}
         <motion.div
           initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
@@ -1511,14 +1751,14 @@ function MailoraHeroPreview({
             }
             className="text-[26px] @sm:text-[34px] @lg:text-[38px] font-semibold tracking-tight leading-[1.15]"
           >
-            Craft high-converting emails
+            Craft emails
             <br />
             <span className={isDark ? "text-zinc-500" : "text-[#C1C1C1]"}>
-              in minutes.
+              that convert in minutes.
             </span>
           </motion.h3>
 
-          <div className="flex items-center -space-x-3 self-start @md:self-auto">
+          <div className="hidden @4xl:flex items-center -space-x-3 self-start @md:self-auto">
             <motion.span
               animate={prefersReducedMotion ? undefined : { y: [0, -2.5, 0] }}
               transition={
@@ -1926,7 +2166,7 @@ function MailoraHeroPreview({
       </section>
 
       {/* 5. Metrics Strip Section */}
-      <section className="relative z-10 mx-auto max-w-md @4xl:max-w-5xl py-14 @sm:py-20">
+      <section className="relative z-10 mx-auto max-w-md @lg:max-w-xl @4xl:max-w-5xl py-14 @sm:py-20">
         <div className="flex flex-col @4xl:flex-row @4xl:items-stretch @4xl:justify-between gap-7 @4xl:gap-6">
           {[
             {
@@ -2065,7 +2305,7 @@ function MailoraHeroPreview({
           isDark ? "bg-white/[0.03]" : "bg-[#F9F9F9]",
         )}
       >
-        <div className="mx-auto max-w-md @4xl:max-w-5xl">
+        <div className="mx-auto max-w-md @lg:max-w-xl @4xl:max-w-5xl">
           {/* Centered Header */}
           <div className="text-center">
             <motion.div
@@ -2145,7 +2385,7 @@ function MailoraHeroPreview({
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <span className="flex size-6 items-center justify-center rounded-md bg-primary text-white">
-                      <TrendingUp className="size-3.5" aria-hidden />
+                      <TrendingUpIcon size={14} isAnimated={!prefersReducedMotion} />
                     </span>
                     <span className="text-[13px] font-semibold">Attributed Revenue</span>
                   </div>
@@ -2295,7 +2535,7 @@ function MailoraHeroPreview({
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <span className="flex size-6 items-center justify-center rounded-md bg-[#8B7CFF]/15 text-[#8B7CFF]">
-                      <Users className="size-3.5" aria-hidden />
+                      <UsersIcon size={14} isAnimated={!prefersReducedMotion} />
                     </span>
                     <span className="text-[13px] font-semibold">Total Opens</span>
                   </div>
@@ -2452,7 +2692,7 @@ function MailoraHeroPreview({
         id="testimonials"
         className="relative z-10 -mx-4 @sm:-mx-6 @lg:-mx-8 overflow-hidden px-4 @sm:px-6 @lg:px-8 pt-16 @sm:pt-20 pb-14 @sm:pb-16"
       >
-        <div className="mx-auto max-w-md @4xl:max-w-6xl">
+        <div className="mx-auto max-w-md @lg:max-w-xl @4xl:max-w-6xl">
           {/* Centered Heading */}
           <motion.div
             initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
@@ -2669,7 +2909,7 @@ function MailoraHeroPreview({
         id="cta"
         className="relative z-10 py-10 @4xl:py-14"
       >
-        <div className="mx-auto max-w-md @4xl:max-w-5xl">
+        <div className="mx-auto max-w-md @lg:max-w-xl @4xl:max-w-5xl">
           <motion.div
             initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -2748,7 +2988,11 @@ function MailoraHeroPreview({
                         isDark ? "bg-white text-zinc-900" : "bg-zinc-900 text-white",
                       )}
                     >
-                      <Play className="size-2 fill-current translate-x-[0.5px]" aria-hidden />
+                      <PlayIcon
+                        size={8}
+                        isAnimated={!prefersReducedMotion}
+                        className="translate-x-[0.5px]"
+                      />
                     </span>
                     <span>Tour the Product</span>
                   </button>
@@ -3098,7 +3342,7 @@ function MailoraHeroPreview({
               ? { duration: 0 }
               : { duration: 0.65, ease: [0.16, 1, 0.3, 1] }
           }
-          className="mx-auto max-w-md @4xl:max-w-5xl pt-10 pb-6 @4xl:py-16"
+          className="mx-auto max-w-md @lg:max-w-xl @4xl:max-w-5xl pt-10 pb-6 @4xl:py-16"
         >
           <div className="grid grid-cols-1 @4xl:grid-cols-[1.2fr_0.15fr_1fr_1fr_1fr_1fr] gap-8 @4xl:gap-6">
             {/* Column 1: Mailora Logo + Quick Links + Social Icons */}
@@ -3378,7 +3622,7 @@ function MailoraHeroPreview({
             isDark ? "border-white/[0.07]" : "border-zinc-200/70",
           )}
         >
-          <div className="mx-auto max-w-md @4xl:max-w-5xl py-5 flex items-center justify-between gap-4 pr-10 @sm:pr-0">
+          <div className="mx-auto max-w-md @lg:max-w-xl @4xl:max-w-5xl py-5 flex items-center justify-between gap-4 pr-10 @sm:pr-0">
             <p
               className={cn(
                 "text-[11px]",

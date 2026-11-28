@@ -741,7 +741,7 @@ export function TemplatePage({
           >
             <div
               className={cn(
-                "sticky top-0 z-20 flex items-center justify-between gap-2 border-b backdrop-blur-[2px] px-4 py-2.5",
+                "sticky top-0 z-50 flex items-center justify-between gap-2 border-b backdrop-blur-[2px] px-4 py-2.5",
                 previewTheme === "dark"
                   ? "border-white/[0.08] bg-[#0D0E12]/20"
                   : "border-foreground/[0.08] bg-background/5",
