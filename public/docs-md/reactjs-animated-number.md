@@ -6,7 +6,7 @@ url: https://avaraui.com/docs/nextjs/animated-number
 
 # Shadcn Animated Number
 
-A number that counts up when it scrolls into view, then counts to each new value.
+A number that counts up when it scrolls into view, then counts, rolls or blurs to each new value.
 
 ## Installation
 
@@ -29,16 +29,42 @@ npx shadcn@latest add @avara-ui/animated-number
 import { AnimatedNumber } from "@/components/custom/blocks/AnimatedNumberBlock";
 import { useState } from "react";
 
+const money = (n: number) => n.toLocaleString("en-US", { style: "currency", currency: "USD" });
+
 export default function Balance() {
   const [balance, setBalance] = useState(12480.5);
 
   return (
-    <div className="flex flex-col items-center gap-5">
-      <AnimatedNumber
-        value={balance}
-        format={(n) => n.toLocaleString("en-US", { style: "currency", currency: "USD" })}
-        className="text-5xl font-semibold tracking-tight text-foreground"
-      />
+    <div className="flex w-full flex-col items-center gap-8">
+      <div className="grid w-full max-w-3xl grid-cols-1 gap-6 sm:grid-cols-3">
+        <div className="flex flex-col items-center gap-2">
+          <AnimatedNumber
+            value={balance}
+            variant="count"
+            format={money}
+            className="text-3xl font-semibold tracking-tight text-foreground"
+          />
+          <span className="text-xs font-medium text-muted-foreground">Count</span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+          <AnimatedNumber
+            value={balance}
+            variant="roll"
+            format={money}
+            className="text-3xl font-semibold tracking-tight text-foreground"
+          />
+          <span className="text-xs font-medium text-muted-foreground">Roll</span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+          <AnimatedNumber
+            value={balance}
+            variant="blur"
+            format={money}
+            className="text-3xl font-semibold tracking-tight text-foreground"
+          />
+          <span className="text-xs font-medium text-muted-foreground">Blur</span>
+        </div>
+      </div>
       <div className="flex gap-2">
         <button
           type="button"
@@ -66,6 +92,8 @@ export default function Balance() {
 
 **How it works.** When `value` changes, it counts from the figure on screen to the new one, so a total can count down after a payment. `format` turns the running number into text, such as a currency string.
 
+**Variants.** `variant="count"` ticks through the values. `"roll"` slides each changed digit in from below when the number goes up and from above when it goes down. `"blur"` fades each changed digit in out of a blur, drifting the same way.
+
 **When to use it.** Use it for totals, balances and statistics that change. For a stat card with a label, use [Counter](https://avaraui.com/docs/reactjs/counter).
 
 ## For AI agents
@@ -83,6 +111,7 @@ export default function Balance() {
 
 - Named export `AnimatedNumber` from `@/components/custom/blocks/AnimatedNumberBlock`. It renders a `span`; style it with `className`.
 - `format` runs every frame, so keep it cheap. Use `Intl.NumberFormat` created once, outside the component.
+- `variant="roll"` and `"blur"` animate per character, so `format` runs once per render, not per frame.
 - Screen readers get the final value, not the count.
 - Honours `prefers-reduced-motion`: the figure shows without counting.
 
@@ -93,6 +122,7 @@ export default function Balance() {
 | `value` | `number` | Required | The number to show. It counts up in view, then to each new value. |
 | `format` | `(n: number) => string` | `toLocaleString` | Turns the running number into text, such as a currency string. |
 | `duration` | `number` | `0.9` | Seconds each count takes. |
+| `variant` | `"count" \| "roll" \| "blur"` | `"count"` | How the figure changes. Roll and blur follow the direction of the change. |
 | `...props` | `HTMLAttributes<HTMLSpanElement>` | `undefined` | Passed to the span, including `className`. |
 
 ## Works with other components

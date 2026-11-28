@@ -695,7 +695,7 @@ export const BrandBridge = React.forwardRef<HTMLDivElement, BrandBridgeProps>(
       <div
         ref={root}
         className={cn(
-          "relative mx-auto w-[480px] max-w-full overflow-hidden rounded-2xl bg-white dark:bg-[#121215] text-[#242423] dark:text-zinc-100 border border-black/[0.08] dark:border-white/[0.1] shadow-[0_0_12px_rgba(0,0,0,0.06)] dark:shadow-[0_0_12px_rgba(0,0,0,0.28)]",
+          "relative mx-auto w-[480px] max-w-full overflow-hidden rounded-[1.75rem] bg-card text-foreground ring-1 ring-[#F7F7F6] dark:ring-border/60 shadow-[0_1px_2px_rgb(0_0_0/0.04),0_18px_40px_-24px_rgb(0_0_0/0.22)]",
           className,
         )}
       >
@@ -862,7 +862,7 @@ export const BrandBridge = React.forwardRef<HTMLDivElement, BrandBridgeProps>(
                 className="absolute inset-0 rounded-2xl opacity-0"
                 style={{ background: conic }}
               />
-              <div className="relative size-full overflow-hidden rounded-2xl p-[1.5px] shadow-[0_0_12px_rgba(0,0,0,0.06)] dark:shadow-[0_0_12px_rgba(0,0,0,0.3)]">
+              <div className="relative size-full overflow-hidden rounded-[1.25rem] p-[1.5px] shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-16px_rgba(0,0,0,0.18)]">
                 <span
                   aria-hidden
                   className="absolute -inset-1/2"
@@ -873,8 +873,8 @@ export const BrandBridge = React.forwardRef<HTMLDivElement, BrandBridgeProps>(
                       : "avara-bridge-spin 8s linear infinite",
                   }}
                 />
-                <div className="relative grid size-full place-items-center rounded-xl bg-white dark:bg-[#121215]">
-                  <div className="grid size-[60px] place-items-center rounded-xl bg-[#242423]/[0.04] dark:bg-white/[0.06]">
+                <div className="relative grid size-full place-items-center rounded-[1.25rem] bg-card">
+                  <div className="grid size-[60px] place-items-center rounded-[1.25rem] bg-[#F7F7F6] dark:bg-background/50">
                     {hub ?? <BridgeMark />}
                   </div>
                 </div>
@@ -901,7 +901,7 @@ export const BrandBridge = React.forwardRef<HTMLDivElement, BrandBridgeProps>(
                   onPointerLeave={() => setHover((h) => (h === i ? null : h))}
                   onFocus={() => setHover(i)}
                   onBlur={() => setHover((h) => (h === i ? null : h))}
-                  className="avara-bridge-tile group absolute grid cursor-pointer place-items-center rounded-xl bg-white dark:bg-zinc-900 outline-none ring-1 ring-black/[0.08] dark:ring-white/[0.1] shadow-[0_0_10px_rgba(0,0,0,0.06)] dark:shadow-[0_0_12px_rgba(0,0,0,0.35)] focus-visible:ring-2 focus-visible:ring-[#242423]/40 dark:focus-visible:ring-white/40"
+                  className="avara-bridge-tile group absolute grid cursor-pointer place-items-center rounded-[1.25rem] bg-card outline-none shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-16px_rgba(0,0,0,0.18)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                   style={
                     {
                       left: l.x - TILE / 2,

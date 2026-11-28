@@ -9,7 +9,7 @@ export default function AudioPlayerDemo({
   loop = false,
   color = "primary",
 }: {
-  variant?: "hero" | "bar" | "native";
+  variant?: "hero" | "bar";
   enableGlow?: boolean;
   skipSeconds?: number;
   loop?: boolean;
@@ -18,11 +18,11 @@ export default function AudioPlayerDemo({
   return (
     <div
       style={{ "--theme-color": color.startsWith("#") ? color : `var(--${color},var(--primary))` } as React.CSSProperties}
-      className="w-full relative overflow-hidden flex items-center justify-center"
+      className="w-full relative flex items-center justify-center p-6 sm:p-10"
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.05)_1px,transparent_1px)] dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
-      <div className="relative z-10 w-full max-w-5xl">
+      <div className="relative z-10 w-full max-w-4xl">
         <AudioPlayer
           variant={variant}
           enableGlow={enableGlow}

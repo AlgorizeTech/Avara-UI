@@ -46,3 +46,10 @@ next-env.d.ts
 src/graphify-out/
 /graphify-out/
 .playwright-mcp/
+public/docs-md/index.json
+COMPONENT-DOCS-PLAN.md
+CLAUDE.md
+DESIGN.md
+instructions.md
+pnpm-lock.yaml
+SEO.md

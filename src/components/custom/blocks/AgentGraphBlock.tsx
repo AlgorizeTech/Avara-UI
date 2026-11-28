@@ -1,6 +1,12 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import {
+  CheckIcon,
+  ClockIcon,
+  LoaderCircleIcon,
+  PauseIcon,
+} from "@/components/custom/ui/animated-icons";
 import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 
 export type AgentStatus = "working" | "done" | "idle" | "needs-you" | "failed" | "paused";
@@ -243,85 +249,13 @@ function StatusBadge({
 
   const icon = (
     <>
-      {status === "working" && (
-        <svg
-          viewBox="0 0 16 16"
-          className="w-3 h-3 animate-spin shrink-0"
-          fill="none"
-          aria-hidden="true"
-        >
-          <circle
-            cx="8"
-            cy="8"
-            r="5.5"
-            stroke="currentColor"
-            strokeOpacity="0.25"
-            strokeWidth="1.75"
-          />
-          <path
-            d="M8 2.5A5.5 5.5 0 0 1 13.5 8"
-            stroke="currentColor"
-            strokeWidth="1.75"
-            strokeLinecap="round"
-          />
-        </svg>
-      )}
-      {status === "done" && (
-        <svg
-          viewBox="0 0 16 16"
-          className="w-3.5 h-3.5 shrink-0"
-          fill="none"
-          aria-hidden="true"
-        >
-          <path
-            d="M3.5 8.5L6.5 11.5L12.5 5"
-            stroke="currentColor"
-            strokeWidth="1.75"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      )}
+      {status === "working" && <LoaderCircleIcon className="size-3 shrink-0 animate-spin" strokeWidth={2.25} />}
+      {status === "done" && <CheckIcon className="size-3.5 shrink-0" strokeWidth={2.25} animateOnMount />}
       {status === "idle" && (
         <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70 shrink-0" />
       )}
-      {status === "paused" && (
-        <svg
-          viewBox="0 0 24 24"
-          className="w-3 h-3 shrink-0"
-          fill="none"
-          aria-hidden="true"
-        >
-          <path
-            d="M9 6.5V17.5M15 6.5V17.5"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeWidth="2.6"
-          />
-        </svg>
-      )}
-      {status === "needs-you" && (
-        <svg
-          viewBox="0 0 16 16"
-          className="w-3 h-3 shrink-0"
-          fill="none"
-          aria-hidden="true"
-        >
-          <circle
-            cx="8"
-            cy="8"
-            r="5.5"
-            stroke="currentColor"
-            strokeWidth="1.5"
-          />
-          <path
-            d="M8 5v3.2l2 1.2"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-        </svg>
-      )}
+      {status === "paused" && <PauseIcon className="size-3 shrink-0" strokeWidth={2.25} />}
+      {status === "needs-you" && <ClockIcon className="size-3 shrink-0" strokeWidth={2.25} />}
     </>
   );
 

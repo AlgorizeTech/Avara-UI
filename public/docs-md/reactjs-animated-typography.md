@@ -12,7 +12,7 @@ Building animated text that scales responsively and doesn't break screen readers
 
 It features a **Smart Sizing Engine**. You can maintain semantic SEO value (like rendering an `h1`) but visually override the size using either a Tailwind class (`3xl`) or a hardcoded CSS value (`24px`, `2rem`).
 
-Every example remounts when it scrolls into view, so the animation plays. Reach for the reload button in a preview's header to replay it.
+Previews replay every two seconds. Use the reload button in a preview's header to restart one.
 
 ## Installation
 
@@ -29,265 +29,7 @@ npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/animated-typography
 ```
 
-## Typewriter
-
-Types each word, holds it, deletes it and moves on behind a blinking caret, as in the Hero's typing title. The prefix re-centres as the word changes, just like the hero.
-
-- `variant="typewriter"` types and deletes each word in turn.
-- `prefixPosition="fluid"` the default here: the text before the word re-centres as it types and deletes.
-
-```tsx
-import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
-
-const words = ["Interfaces", "Components", "Experiences"];
-
-export default function TypewriterShowcase() {
-  return (
-    <div className="flex flex-col gap-6 items-center text-center">
-      <AnimatedTypographyBlock as="h3" variant="typewriter" align="center" titlePrefix="Build " text="Interfaces" words={words} />
-      <AnimatedTypographyBlock as="h4" variant="typewriter" align="center" titlePrefix="Build " text="Interfaces" words={words} />
-      <AnimatedTypographyBlock as="p" variant="typewriter" align="center" titlePrefix="Build " text="Interfaces" words={words} />
-    </div>
-  );
-}
-```
-
-## Examples
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/animated-typography.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/animated-typography
-```
-
-### Typewriter, Fixed Prefix
-
-The same typewriter with the prefix held in place: the line keeps the longest word's width, so only the typed word moves.
-
-- `prefixPosition="fixed"` reserves the longest word's width, so the text before it never moves.
-- `variant="typewriter"` types and deletes each word in turn.
-
-```tsx
-import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
-
-const words = ["Interfaces", "Components", "Experiences"];
-
-export default function TypewriterFixedShowcase() {
-  return (
-    <div className="flex flex-col gap-6 items-center text-center">
-      <AnimatedTypographyBlock as="h3" variant="typewriter" prefixPosition="fixed" align="center" titlePrefix="Build " text="Interfaces" words={words} />
-      <AnimatedTypographyBlock as="h4" variant="typewriter" prefixPosition="fixed" align="center" titlePrefix="Build " text="Interfaces" words={words} />
-      <AnimatedTypographyBlock as="p" variant="typewriter" prefixPosition="fixed" align="center" titlePrefix="Build " text="Interfaces" words={words} />
-    </div>
-  );
-}
-```
-
-### Letter Bounce Word Rotator
-
-The word leaves letter by letter; the next springs in one letter at a time, as in the Hero's bounce title.
-
-- `variant="letter-bounce"` rotates words, each letter springing in and out.
-- `words=["Interfaces", …]` the words to cycle through after titlePrefix.
-
-```tsx
-import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
-
-const words = ["Interfaces", "Components", "Experiences"];
-
-export default function LetterBounceShowcase() {
-  return (
-    <div className="flex flex-col gap-6 items-center text-center">
-      <AnimatedTypographyBlock as="h3" variant="letter-bounce" align="center" titlePrefix="Build " text="Interfaces" words={words} />
-      <AnimatedTypographyBlock as="h4" variant="letter-bounce" align="center" titlePrefix="Build " text="Interfaces" words={words} />
-      <AnimatedTypographyBlock as="p" variant="letter-bounce" align="center" titlePrefix="Build " text="Interfaces" words={words} />
-    </div>
-  );
-}
-```
-
-### Word Flip
-
-The word slides up and out, then the next slides up in from below, as in the homepage hero.
-
-- `variant="word-flip"` slides words vertically through a clipped slot.
-- `interval=2400` milliseconds each word stays.
-
-```tsx
-import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
-
-const words = ["Interfaces", "Components", "Experiences"];
-
-export default function WordFlipShowcase() {
-  return (
-    <div className="flex flex-col gap-6 items-center text-center">
-      <AnimatedTypographyBlock as="h3" variant="word-flip" align="center" titlePrefix="Build " text="Interfaces" words={words} />
-      <AnimatedTypographyBlock as="h4" variant="word-flip" align="center" titlePrefix="Build " text="Interfaces" words={words} />
-      <AnimatedTypographyBlock as="p" variant="word-flip" align="center" titlePrefix="Build " text="Interfaces" words={words} />
-    </div>
-  );
-}
-```
-
-### Blur Swap
-
-The outgoing word lifts away into a blur as the next sharpens out of one, as in the Hero Carousel headline.
-
-- `variant="blur-swap"` cross-fades words through a blur.
-- `words=["Interfaces", …]` the words to cycle through after titlePrefix.
-
-```tsx
-import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
-
-const words = ["Interfaces", "Components", "Experiences"];
-
-export default function BlurSwapShowcase() {
-  return (
-    <div className="flex flex-col gap-6 items-center text-center">
-      <AnimatedTypographyBlock as="h3" variant="blur-swap" align="center" titlePrefix="Build " text="Interfaces" words={words} />
-      <AnimatedTypographyBlock as="h4" variant="blur-swap" align="center" titlePrefix="Build " text="Interfaces" words={words} />
-      <AnimatedTypographyBlock as="p" variant="blur-swap" align="center" titlePrefix="Build " text="Interfaces" words={words} />
-    </div>
-  );
-}
-```
-
-### Blur Rise
-
-The whole line rises out of a soft blur, as the Collage Hero heading does.
-
-- `variant="blur-rise"` lifts the line in while it comes into focus.
-- `align="center"` centers the text aligned to the middle.
-
-```tsx
-import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
-
-export default function BlurRiseShowcase() {
-  return (
-    <div className="flex flex-col gap-6 items-center text-center">
-      <AnimatedTypographyBlock as="h3" variant="blur-rise" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="h4" variant="blur-rise" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="p" variant="blur-rise" align="center" text="The quick brown fox jumps over the lazy dog." />
-    </div>
-  );
-}
-```
-
-### Color Wipe
-
-An accent copy of the text is unclipped left to right over the foreground, the technique behind the Honeycomb Hero title.
-
-- `variant="color-wipe"` sweeps the text color from foreground to the accent.
-- `color="primary"` the color the wipe ends in.
-
-```tsx
-import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
-
-export default function ColorWipeShowcase() {
-  return (
-    <div className="flex flex-col gap-6 items-center text-center">
-      <AnimatedTypographyBlock as="h3" variant="color-wipe" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="h4" variant="color-wipe" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="p" variant="color-wipe" align="center" text="The quick brown fox jumps over the lazy dog." />
-    </div>
-  );
-}
-```
-
-### Color Reveal Staggered Sweep
-
-Characters start in muted gray and transition left-to-right into active theme color.
-
-- `variant="color-reveal"` transitions text from gray to active theme color from left to right.
-- `align="center"` centers the text aligned to the middle.
-
-```tsx
-import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
-
-export default function ColorRevealShowcase() {
-  return (
-    <div className="flex flex-col gap-6 items-center text-center">
-      <AnimatedTypographyBlock as="h3" variant="color-reveal" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="h4" variant="color-reveal" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="p" variant="color-reveal" align="center" text="The quick brown fox jumps over the lazy dog." />
-    </div>
-  );
-}
-```
-
-### Wavy Float Sine Wave
-
-Continuous sine-wave floating vertical movement across characters.
-
-- `variant="wavy-float"` animates characters in a smooth sine wave float.
-- `align="center"` centers the text aligned to the middle.
-
-```tsx
-import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
-
-export default function WavyFloatShowcase() {
-  return (
-    <div className="flex flex-col gap-6 items-center text-center">
-      <AnimatedTypographyBlock as="h3" variant="wavy-float" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="h4" variant="wavy-float" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="p" variant="wavy-float" align="center" text="The quick brown fox jumps over the lazy dog." />
-    </div>
-  );
-}
-```
-
-### 3D Perspective Flip
-
-Words enter with 3D rotateX perspective and spring settling.
-
-- `variant="3d-perspective-flip"` flips words in 3D around their bottom edge.
-- `align="center"` centers the text aligned to the middle.
-
-```tsx
-import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
-
-export default function PerspectiveFlipShowcase() {
-  return (
-    <div className="flex flex-col gap-6 items-center text-center">
-      <AnimatedTypographyBlock as="h3" variant="3d-perspective-flip" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="h4" variant="3d-perspective-flip" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="p" variant="3d-perspective-flip" align="center" text="The quick brown fox jumps over the lazy dog." />
-    </div>
-  );
-}
-```
-
-### Elastic Spring Overshoot
-
-Playful spring bounce entrance scaling up with overshoot physics.
-
-- `variant="elastic-spring"` bounces words with elastic spring curve.
-- `align="center"` centers the text aligned to the middle.
-
-```tsx
-import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
-
-export default function ElasticSpringShowcase() {
-  return (
-    <div className="flex flex-col gap-6 items-center text-center">
-      <AnimatedTypographyBlock as="h3" variant="elastic-spring" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="h4" variant="elastic-spring" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="p" variant="elastic-spring" align="center" text="The quick brown fox jumps over the lazy dog." />
-    </div>
-  );
-}
-```
-
-### Spotlight Focus Reveal
+## Spotlight Focus Reveal
 
 Localized spotlight beam effect revealing text out of heavy blur.
 
@@ -300,15 +42,59 @@ import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypo
 export default function SpotlightRevealShowcase() {
   return (
     <div className="flex flex-col gap-6 items-center text-center">
-      <AnimatedTypographyBlock as="h3" variant="spotlight-reveal" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="h4" variant="spotlight-reveal" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="p" variant="spotlight-reveal" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="h3" variant="spotlight-reveal" align="center" text="Build beautiful interfaces." />
+      <AnimatedTypographyBlock as="h4" variant="spotlight-reveal" align="center" text="Build beautiful interfaces." />
+      <AnimatedTypographyBlock as="p" variant="spotlight-reveal" align="center" text="Build beautiful interfaces." />
     </div>
   );
 }
 ```
 
-### Split Stagger Entrance
+## Blur Swap
+
+The outgoing word lifts away into a blur as the next sharpens out of one, as in the Hero Carousel headline.
+
+- `variant="blur-swap"` cross-fades words through a blur.
+- `words=["interfaces", …]` the words to cycle through after titlePrefix.
+
+```tsx
+import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+const words = ["interfaces", "components", "products"];
+
+export default function BlurSwapShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="blur-swap" align="center" titlePrefix="Build beautiful " text="interfaces" words={words} />
+      <AnimatedTypographyBlock as="h4" variant="blur-swap" align="center" titlePrefix="Build beautiful " text="interfaces" words={words} />
+      <AnimatedTypographyBlock as="p" variant="blur-swap" align="center" titlePrefix="Build beautiful " text="interfaces" words={words} />
+    </div>
+  );
+}
+```
+
+## Color Reveal Staggered Sweep
+
+Characters start in muted gray and transition left-to-right into the text color.
+
+- `variant="color-reveal"` transitions text from gray to the text color from left to right.
+- `align="center"` centers the text aligned to the middle.
+
+```tsx
+import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function ColorRevealShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="color-reveal" align="center" text="Build beautiful interfaces." />
+      <AnimatedTypographyBlock as="h4" variant="color-reveal" align="center" text="Build beautiful interfaces." />
+      <AnimatedTypographyBlock as="p" variant="color-reveal" align="center" text="Build beautiful interfaces." />
+    </div>
+  );
+}
+```
+
+## Split Stagger Entrance
 
 Alternating letters slide in from top and bottom directions.
 
@@ -321,36 +107,15 @@ import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypo
 export default function SplitStaggerShowcase() {
   return (
     <div className="flex flex-col gap-6 items-center text-center">
-      <AnimatedTypographyBlock as="h3" variant="split-stagger" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="h4" variant="split-stagger" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="p" variant="split-stagger" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="h3" variant="split-stagger" align="center" text="Build beautiful interfaces." />
+      <AnimatedTypographyBlock as="h4" variant="split-stagger" align="center" text="Build beautiful interfaces." />
+      <AnimatedTypographyBlock as="p" variant="split-stagger" align="center" text="Build beautiful interfaces." />
     </div>
   );
 }
 ```
 
-### Underline Stroke Draw
-
-Synchronized liquid SVG underline stroke drawing beneath text.
-
-- `variant="underline-draw"` animates an SVG path underline beneath text.
-- `align="center"` centers the text aligned to the middle.
-
-```tsx
-import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
-
-export default function UnderlineDrawShowcase() {
-  return (
-    <div className="flex flex-col gap-6 items-center text-center">
-      <AnimatedTypographyBlock as="h3" variant="underline-draw" align="center" text="Creative Typography Design" />
-      <AnimatedTypographyBlock as="h4" variant="underline-draw" align="center" text="Creative Typography Design" />
-      <AnimatedTypographyBlock as="p" variant="underline-draw" align="center" text="Creative Typography Design" />
-    </div>
-  );
-}
-```
-
-### Matrix Scramble Decryption
+## Matrix Scramble Decryption
 
 Cyberpunk symbol scrambling effect resolving to crisp text.
 
@@ -363,9 +128,227 @@ import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypo
 export default function MatrixScrambleShowcase() {
   return (
     <div className="flex flex-col gap-6 items-center text-center">
-      <AnimatedTypographyBlock as="h3" variant="matrix-scramble" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="h4" variant="matrix-scramble" align="center" text="The quick brown fox jumps over the lazy dog." />
-      <AnimatedTypographyBlock as="p" variant="matrix-scramble" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="h3" variant="matrix-scramble" align="center" text="Build beautiful interfaces." />
+      <AnimatedTypographyBlock as="h4" variant="matrix-scramble" align="center" text="Build beautiful interfaces." />
+      <AnimatedTypographyBlock as="p" variant="matrix-scramble" align="center" text="Build beautiful interfaces." />
+    </div>
+  );
+}
+```
+
+## Typewriter
+
+Types each word, holds it, deletes it and moves on behind a blinking caret, as in the Hero's typing title. The prefix re-centres as the word changes, just like the hero.
+
+- `variant="typewriter"` types and deletes each word in turn.
+- `prefixPosition="fluid"` the default here: the text before the word re-centres as it types and deletes.
+
+```tsx
+import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+const words = ["interfaces", "components", "products"];
+
+export default function TypewriterShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="typewriter" align="center" titlePrefix="Build beautiful " text="interfaces" words={words} />
+      <AnimatedTypographyBlock as="h4" variant="typewriter" align="center" titlePrefix="Build beautiful " text="interfaces" words={words} />
+      <AnimatedTypographyBlock as="p" variant="typewriter" align="center" titlePrefix="Build beautiful " text="interfaces" words={words} />
+    </div>
+  );
+}
+```
+
+## Typewriter, Fixed Prefix
+
+The same typewriter with the prefix held in place: the line keeps the longest word's width, so only the typed word moves.
+
+- `prefixPosition="fixed"` reserves the longest word's width, so the text before it never moves.
+- `variant="typewriter"` types and deletes each word in turn.
+
+```tsx
+import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+const words = ["interfaces", "components", "products"];
+
+export default function TypewriterFixedShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="typewriter" prefixPosition="fixed" align="center" titlePrefix="Build beautiful " text="interfaces" words={words} />
+      <AnimatedTypographyBlock as="h4" variant="typewriter" prefixPosition="fixed" align="center" titlePrefix="Build beautiful " text="interfaces" words={words} />
+      <AnimatedTypographyBlock as="p" variant="typewriter" prefixPosition="fixed" align="center" titlePrefix="Build beautiful " text="interfaces" words={words} />
+    </div>
+  );
+}
+```
+
+## Letter Bounce Word Rotator
+
+The word leaves letter by letter; the next springs in one letter at a time, as in the Hero's bounce title.
+
+- `variant="letter-bounce"` rotates words, each letter springing in and out.
+- `words=["interfaces", …]` the words to cycle through after titlePrefix.
+
+```tsx
+import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+const words = ["interfaces", "components", "products"];
+
+export default function LetterBounceShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="letter-bounce" align="center" titlePrefix="Build beautiful " text="interfaces" words={words} />
+      <AnimatedTypographyBlock as="h4" variant="letter-bounce" align="center" titlePrefix="Build beautiful " text="interfaces" words={words} />
+      <AnimatedTypographyBlock as="p" variant="letter-bounce" align="center" titlePrefix="Build beautiful " text="interfaces" words={words} />
+    </div>
+  );
+}
+```
+
+## Word Flip
+
+The word slides up and out, then the next slides up in from below, as in the homepage hero.
+
+- `variant="word-flip"` slides words vertically through a clipped slot.
+- `interval=2400` milliseconds each word stays.
+
+```tsx
+import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+const words = ["interfaces", "components", "products"];
+
+export default function WordFlipShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="word-flip" align="center" titlePrefix="Build beautiful " text="interfaces" words={words} />
+      <AnimatedTypographyBlock as="h4" variant="word-flip" align="center" titlePrefix="Build beautiful " text="interfaces" words={words} />
+      <AnimatedTypographyBlock as="p" variant="word-flip" align="center" titlePrefix="Build beautiful " text="interfaces" words={words} />
+    </div>
+  );
+}
+```
+
+## Blur Rise
+
+The whole line rises out of a soft blur, as the Collage Hero heading does.
+
+- `variant="blur-rise"` lifts the line in while it comes into focus.
+- `align="center"` centers the text aligned to the middle.
+
+```tsx
+import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function BlurRiseShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="blur-rise" align="center" text="Build beautiful interfaces." />
+      <AnimatedTypographyBlock as="h4" variant="blur-rise" align="center" text="Build beautiful interfaces." />
+      <AnimatedTypographyBlock as="p" variant="blur-rise" align="center" text="Build beautiful interfaces." />
+    </div>
+  );
+}
+```
+
+## Color Wipe
+
+A second copy of the text is unclipped left to right over the first, the technique behind the Honeycomb Hero title. Pick a color to see the sweep.
+
+- `variant="color-wipe"` sweeps the text from foreground to the chosen color.
+- `color="indigo"` the color the wipe ends in; the plain text color by default.
+
+```tsx
+import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function ColorWipeShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="color-wipe" align="center" text="Build beautiful interfaces." />
+      <AnimatedTypographyBlock as="h4" variant="color-wipe" align="center" text="Build beautiful interfaces." />
+      <AnimatedTypographyBlock as="p" variant="color-wipe" align="center" text="Build beautiful interfaces." />
+    </div>
+  );
+}
+```
+
+## Wavy Float Sine Wave
+
+Continuous sine-wave floating vertical movement across characters.
+
+- `variant="wavy-float"` animates characters in a smooth sine wave float.
+- `align="center"` centers the text aligned to the middle.
+
+```tsx
+import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function WavyFloatShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="wavy-float" align="center" text="Build beautiful interfaces." />
+      <AnimatedTypographyBlock as="h4" variant="wavy-float" align="center" text="Build beautiful interfaces." />
+      <AnimatedTypographyBlock as="p" variant="wavy-float" align="center" text="Build beautiful interfaces." />
+    </div>
+  );
+}
+```
+
+## 3D Perspective Flip
+
+Words enter with 3D rotateX perspective and spring settling.
+
+- `variant="3d-perspective-flip"` flips words in 3D around their bottom edge.
+- `align="center"` centers the text aligned to the middle.
+
+```tsx
+import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function PerspectiveFlipShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="3d-perspective-flip" align="center" text="Build beautiful interfaces." />
+      <AnimatedTypographyBlock as="h4" variant="3d-perspective-flip" align="center" text="Build beautiful interfaces." />
+      <AnimatedTypographyBlock as="p" variant="3d-perspective-flip" align="center" text="Build beautiful interfaces." />
+    </div>
+  );
+}
+```
+
+## Elastic Spring Overshoot
+
+Playful spring bounce entrance scaling up with overshoot physics.
+
+- `variant="elastic-spring"` bounces words with elastic spring curve.
+- `align="center"` centers the text aligned to the middle.
+
+```tsx
+import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function ElasticSpringShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="elastic-spring" align="center" text="Build beautiful interfaces." />
+      <AnimatedTypographyBlock as="h4" variant="elastic-spring" align="center" text="Build beautiful interfaces." />
+      <AnimatedTypographyBlock as="p" variant="elastic-spring" align="center" text="Build beautiful interfaces." />
+    </div>
+  );
+}
+```
+
+## Underline Stroke Draw
+
+Synchronized liquid SVG underline stroke drawing beneath text.
+
+- `variant="underline-draw"` animates an SVG path underline beneath text.
+- `align="center"` centers the text aligned to the middle.
+
+```tsx
+import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function UnderlineDrawShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="underline-draw" align="center" text="Build beautiful interfaces." />
+      <AnimatedTypographyBlock as="h4" variant="underline-draw" align="center" text="Build beautiful interfaces." />
+      <AnimatedTypographyBlock as="p" variant="underline-draw" align="center" text="Build beautiful interfaces." />
     </div>
   );
 }
@@ -396,7 +379,7 @@ export default function MatrixScrambleShowcase() {
 - Named export `AnimatedTypographyBlock` from `@/components/custom/blocks/AnimatedTypographyBlock`. `as` defaults to `"p"` and `variant` to `"matrix-scramble"`.
 - `text` is what screen readers announce. For the rotating variants (`letter-bounce`, `typewriter`, `word-flip`, `blur-swap`) pass the words in `words` and set `text` to the first word.
 - `prefixPosition` is `"fixed"` or `"fluid"`. It defaults to `"fluid"` for `typewriter` and `"fixed"` for the others; use `"fixed"` when the text before the word must stay still.
-- `size` takes a Tailwind key such as `"3xl"` or a CSS length such as `"2rem"`. `color` takes `primary`, `indigo`, `rose`, `emerald`, `zinc` or a hex string.
+- `size` takes a Tailwind key such as `"3xl"` or a CSS length such as `"2rem"`. `color` takes `indigo`, `rose`, `emerald`, `zinc`, `primary` or a hex string; left out, the text uses the foreground color.
 - `delay` is in milliseconds and `speed` multiplies the stagger and animation times. Set `play={false}` to hold the text at rest until it should start.
 
 ## Props Reference
@@ -415,7 +398,7 @@ export default function MatrixScrambleShowcase() {
 | `AnimatedTypographyBlock` | `bare` | `boolean` | `false` | Drops the block's own weight, size, colour, alignment and padding, so `className` and the parent set the type — for composing it into a section heading. |
 | `AnimatedTypographyBlock` | `titlePrefix` / `titleSuffix` | `string` | — | Static text either side of the animated part, e.g. `titlePrefix="Build "` before a rotating word. |
 | `AnimatedTypographyBlock` | `align` | `"left" \| "center" \| "right" \| "justify"` | `"left"` | Controls the CSS text alignment of the underlying container. |
-| `AnimatedTypographyBlock` | `color` | `"primary" \| "indigo" \| "rose" \| "emerald" \| "zinc" \| "default" \| (hex string)` | `"primary"` | Text colour. Not applied when `bare` is set unless you pass it. |
+| `AnimatedTypographyBlock` | `color` | `"primary" \| "indigo" \| "rose" \| "emerald" \| "zinc" \| "default" \| (hex string)` | `"default"` | Text colour; `"default"` is the theme foreground, black in light mode and white in dark. Not applied when `bare` is set unless you pass it. |
 | `AnimatedTypographyBlock` | `size` | `string` | Per tag | A Tailwind size key such as `"3xl"` (scaled down on small screens) or a CSS length such as `"2rem"`, which is clamped from 10px up to that value. |
 | `AnimatedTypographyBlock` | `delay` | `number` | `0` | Base delay in milliseconds before the animation starts. |
 | `AnimatedTypographyBlock` | `speed` | `number` | `1` | Multiplier for the stagger and animation times. Higher is slower. |

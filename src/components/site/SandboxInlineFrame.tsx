@@ -265,7 +265,7 @@ function InlineStage({
           transformOrigin: "top left",
         }}
       >
-        <div ref={contentRef} className="flex w-full flex-col items-center">
+        <div ref={contentRef} className="flex w-full flex-col items-center p-3! xl:p-5!">
           <SandboxErrorBoundary key={resetKey} name={name}>
             <Suspense fallback={null}>
               <Demo key={resetKey} {...(sandboxProps ?? {})} />

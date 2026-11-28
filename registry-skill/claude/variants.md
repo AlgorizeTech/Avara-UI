@@ -75,7 +75,7 @@ Install the chosen variant's own `install` command from the index. Several looks
 - `scroll-stack`: 6 variants. All live: https://avaraui.com/view/scroll-stack
 - `file-upload`: 3 variants. All live: https://avaraui.com/view/file-upload
 - `video-player`: 4 variants. All live: https://avaraui.com/view/video-player
-- `audio-player`: 4 variants. All live: https://avaraui.com/view/audio-player
+- `audio-player`: 3 variants. All live: https://avaraui.com/view/audio-player
 - `auth-forms`: 13 variants. All live: https://avaraui.com/view/auth-forms
 - `profile-page`: 3 variants. All live: https://avaraui.com/view/profile-page
 - `component-wall`: 2 variants. All live: https://avaraui.com/view/component-wall
@@ -92,7 +92,7 @@ Install the chosen variant's own `install` command from the index. Several looks
 - `book-appointment`: 2 variants. All live: https://avaraui.com/view/book-appointment
 - `loader`: 5 variants. All live: https://avaraui.com/view/loader
 - `vertical-tabs`: 8 variants. All live: https://avaraui.com/view/vertical-tabs
-- `accordion`: 7 variants. All live: https://avaraui.com/view/accordion
+- `accordion`: 6 variants. All live: https://avaraui.com/view/accordion
 - `gallery`: 6 variants. All live: https://avaraui.com/view/gallery
 - `image-compare`: 10 variants. All live: https://avaraui.com/view/image-compare
 - `cursor-animation`: 11 variants. All live: https://avaraui.com/view/cursor-animation
@@ -101,7 +101,7 @@ Install the chosen variant's own `install` command from the index. Several looks
 - `chat`: 4 variants. All live: https://avaraui.com/view/chat
 - `calendar`: 4 variants. All live: https://avaraui.com/view/calendar
 - `email`: 4 variants. All live: https://avaraui.com/view/email
-- `ai-chat`: 6 variants. All live: https://avaraui.com/view/ai-chat
+- `ai-chat`: 5 variants. All live: https://avaraui.com/view/ai-chat
 - `curved-carousel`: 2 variants. All live: https://avaraui.com/view/curved-carousel
 - `data-maps`: 2 variants. All live: https://avaraui.com/view/data-maps
 - `draggable-card-list`: 2 variants. All live: https://avaraui.com/view/draggable-card-list

@@ -49,11 +49,12 @@ runs on GSAP. Prefer Motion? Many of these also have a
 **Text & Effects**
 
 - [Animated List](https://avaraui.com/docs-md/nextjs-animated-list.md): An animated list: items rise and blur in, then fade and glide as they are added, removed or filtered.
-- [Animated Number](https://avaraui.com/docs-md/nextjs-animated-number.md): A number that counts up when it scrolls into view, then counts to each new value.
+- [Animated Number](https://avaraui.com/docs-md/nextjs-animated-number.md): A number that counts up when it scrolls into view, then counts, rolls or blurs to each new value.
 
 **More Components**
 
 - [Action Button](https://avaraui.com/docs-md/nextjs-action-buttons.md): Animated action buttons: slide to confirm, hold to delete, star, add to cart, waitlist and payment. (Motion build available)
+- [Guest Morph](https://avaraui.com/docs-md/nextjs-guest-morph.md): A pill of overlapping faces that morphs into a guest list, with an invite form and pending invites. (Motion build available)
 
 **Marketing Sections**
 

@@ -1,16 +1,16 @@
 import type { PageVariants } from "./types";
 
 /**
- * Audio player: 4 designs. Three are looks of the `audio-player` item (the
+ * Audio player: 3 designs. Two are looks of the `audio-player` item (the
  * `variant` prop), one is the Plyr item in its audio layout. Claims come from
  * src/app/docs/[framework]/audio-player/page.mdx.
  */
 export const audioPlayer: PageVariants = {
   slug: "audio-player",
   intro:
-    "Playing audio on a page. Choose between a hero card with artwork, a compact bar, the browser's own controls, or Plyr's control bar.",
+    "Playing audio on a page. Choose between a hero card with artwork, a compact bar, or Plyr's control bar.",
   gotchas: [
-    "Three of the four are one item (`audio-player`), chosen with its `variant` prop. The Plyr audio player is a separate item, `video-player-plyr`.",
+    "Two of the three are one item (`audio-player`), chosen with its `variant` prop. The Plyr audio player is a separate item, `video-player-plyr`.",
   ],
   variants: [
     {
@@ -42,22 +42,8 @@ export const audioPlayer: PageVariants = {
       setProps: { variant: "bar" },
     },
     {
-      id: "native",
-      group: "Browser and library controls",
-      label: "Native controls",
-      summary: "The browser's own audio controls inside the card, with platform features such as playback speed for free.",
-      bestFor: ["the most accessible default with nothing custom to maintain"],
-      avoidIf: ["you want a branded transport that looks the same in every browser"],
-      traits: ["browser controls", "platform features", "uses the `audio-player` item"],
-      item: "audio-player",
-      demo: "audio-player",
-      example: "Native controls",
-      props: { variant: "native" },
-      setProps: { variant: "native" },
-    },
-    {
       id: "plyr",
-      group: "Browser and library controls",
+      group: "Library controls",
       label: "Plyr audio",
       summary: "Plyr's control bar in its audio layout, with no video frame.",
       bestFor: ["a site that already uses Plyr for video and wants matching audio controls"],

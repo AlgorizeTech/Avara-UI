@@ -1,14 +1,14 @@
 ---
 title: "Shadcn Audio Player"
-description: "Shadcn Audio Player. An audio player with artwork, transport, scrubber and volume — in a hero card, a compact bar."
+description: "An audio player with artwork, transport, scrubber and volume — in a hero card or a compact bar. Free shadcn/ui component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/audio-player
 ---
 
 # Shadcn Audio Player
 
-An audio player with artwork, transport, scrubber and volume — in a hero card, a compact bar, or wrapped around the browser's native controls. Built on a plain `<audio>` element with no player library.
+An audio player with artwork, transport, scrubber and volume — in a hero card or a compact bar. Built on a plain `<audio>` element with no player library.
 
-`AudioPlayer` is a separate component with the same visual language. It wraps a plain `<audio>` element and mirrors that element's events, so the UI stays correct when a media key, the OS, or the native controls change playback.
+`AudioPlayer` is a separate component with the same visual language. It wraps a plain `<audio>` element and mirrors that element's events, so the UI stays correct when a media key or the OS changes playback.
 
 ## Installation
 
@@ -72,29 +72,6 @@ export default function EpisodeRow() {
 }
 ```
 
-## Native controls
-
-The browser's own audio controls under the artwork — nothing custom to keep in sync.
-
-- `variant="native"` renders `<audio controls>` instead of the custom transport. The most accessible option by default, and the one that inherits platform features like playback speed for free.
-
-```tsx
-import { AudioPlayer } from "@/components/custom/blocks/AudioPlayerBlock";
-
-export default function NativeAudioHero() {
-  return (
-    <AudioPlayer
-      variant="native"
-      badge="Now Playing"
-      title="It All Began With a Burst"
-      subtitle="Kishi Bashi — 151a"
-      audioUrl="https://cdn.plyr.io/static/demo/Kishi_Bashi_-_It_All_Began_With_a_Burst.mp3"
-      artworkUrl="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145142/photo-1511671782779-c97d3d27a1d4-1790145143493.jpg"
-    />
-  );
-}
-```
-
 ## Audio via Plyr
 
 The [Plyr player](https://avaraui.com/docs/nextjs/video-player) from the Video Player page also has an audio layout: set `mediaType="audio"` and the card drops its video frame and sizes to the control bar. Use it when you want Plyr's control bar for both media types across a site.
@@ -139,9 +116,9 @@ export default function PlyrAudioHero() {
 
 ## About Shadcn Audio Player
 
-**What it is.** `AudioPlayer` plays one audio file through a plain `<audio>` element in three layouts: `"hero"` (artwork card with custom transport), `"bar"` (a compact single row) and `"native"` (the browser's own `<audio controls>` under the artwork). It needs no player library, only `lucide-react` icons.
+**What it is.** `AudioPlayer` plays one audio file through a plain `<audio>` element in two layouts: `"hero"` (artwork card with custom transport) and `"bar"` (a compact single row). It needs no player library, only the `ui-animated-icons` item for its icons.
 
-**How it is built.** The `<audio>` element is the source of truth. The component listens to its `play`, `pause`, `timeupdate`, `volumechange` and `ended` events, so media keys, the OS and the native controls keep the UI correct. The accent comes from `--theme-color`, falling back to `--primary`. `PlyrPlayer` with `mediaType="audio"` is the alternative.
+**How it is built.** The `<audio>` element is the source of truth. The component listens to its `play`, `pause`, `timeupdate`, `volumechange` and `ended` events, so media keys and the OS keep the UI correct. The accent comes from `--theme-color`, falling back to `--primary`. `PlyrPlayer` with `mediaType="audio"` is the alternative.
 
 **When to use it.** Use it for podcast episodes, music previews, voiceover tracks and sticky footer audio bars.
 
@@ -159,22 +136,22 @@ export default function PlyrAudioHero() {
 
 **Agent notes**
 
-- Named export `AudioPlayer` from `@/components/custom/blocks/AudioPlayerBlock`. Key props are `audioUrl`, `audioType`, `artworkUrl`, `variant` (`"hero" | "bar" | "native"`), `skipSeconds` (default `10`, `0` hides both skip buttons) and `enableGlow`.
+- Named export `AudioPlayer` from `@/components/custom/blocks/AudioPlayerBlock`. Key props are `audioUrl`, `audioType`, `artworkUrl`, `variant` (`"hero" | "bar"`), `skipSeconds` (default `10`, `0` hides both skip buttons) and `enableGlow`.
 - It plays a single `<source>`, so there is no playlist. Change `audioUrl` to switch tracks and use `onEnded` to advance your own queue.
-- `onPlay` and `onPause` fire only from the player's own Play and Pause button. On `variant="native"` and for media keys, only `onEnded` fires, so use native `<audio>` events if you need every change.
+- `onPlay` and `onPause` fire only from the player's own Play and Pause button. For media keys, only `onEnded` fires, so use native `<audio>` events if you need every change.
 - For a Plyr control bar across audio and video, install `video-player-plyr` and pass `mediaType="audio"` instead.
 
-**Ask before you pick.** This page has 4 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+**Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
 
-All 4 options as live previews: https://avaraui.com/view/audio-player
+All 3 options as live previews: https://avaraui.com/view/audio-player
 
-**When to use it.** Playing audio on a page. Choose between a hero card with artwork, a compact bar, the browser's own controls, or Plyr's control bar.
+**When to use it.** Playing audio on a page. Choose between a hero card with artwork, a compact bar, or Plyr's control bar.
 
 **Gotchas:**
 
-- Three of the four are one item (`audio-player`), chosen with its `variant` prop. The Plyr audio player is a separate item, `video-player-plyr`.
+- Two of the three are one item (`audio-player`), chosen with its `variant` prop. The Plyr audio player is a separate item, `video-player-plyr`.
 
-### The 4 variants
+### The 3 variants
 
 1. **Audio hero** (`hero`): The default: artwork beside its own transport, scrubber and volume.
    - Live: https://avaraui.com/view/audio-player/hero
@@ -192,15 +169,7 @@ All 4 options as live previews: https://avaraui.com/view/audio-player
    - Install: `npx shadcn@latest add @avara-ui/audio-player`
    - Set these props: `{"variant":"bar"}`
    - Docs: https://avaraui.com/docs/nextjs/audio-player#compact-bar
-3. **Native controls** (`native`): The browser's own audio controls inside the card, with platform features such as playback speed for free.
-   - Live: https://avaraui.com/view/audio-player/native
-   - Best for: the most accessible default with nothing custom to maintain
-   - Avoid if: you want a branded transport that looks the same in every browser
-   - Traits: browser controls, platform features, uses the `audio-player` item
-   - Install: `npx shadcn@latest add @avara-ui/audio-player`
-   - Set these props: `{"variant":"native"}`
-   - Docs: https://avaraui.com/docs/nextjs/audio-player#native-controls
-4. **Plyr audio** (`plyr`): Plyr's control bar in its audio layout, with no video frame.
+3. **Plyr audio** (`plyr`): Plyr's control bar in its audio layout, with no video frame.
    - Live: https://avaraui.com/view/audio-player/plyr
    - Best for: a site that already uses Plyr for video and wants matching audio controls
    - Avoid if: you want no extra library
@@ -217,7 +186,7 @@ All 4 options as live previews: https://avaraui.com/view/audio-player
 | --- | --- | --- | --- |
 | `audioUrl` | `string` | `"https://cdn.plyr.io/..."` | Audio file the browser plays natively — mp3, ogg, wav, m4a. |
 | `audioType` | `string` | `"audio/mpeg"` | MIME type on the `<source>`, so the browser can skip a format it cannot play. |
-| `variant` | `"hero" \| "bar" \| "native"` | `"hero"` | Full artwork card, single compact row, or the browser's own `<audio controls>` under the artwork. |
+| `variant` | `"hero" \| "bar"` | `"hero"` | Full artwork card or a single compact row. |
 | `artworkUrl` / `artworkAlt` | `string` | `"https://images.unsplash..."` | Cover image and its alt text. |
 | `badge` / `title` / `subtitle` | `string` | `"Now Playing"` / … | Track copy. `subtitle` is the natural place for the artist or show name. |
 | `skipSeconds` | `number` | `10` | Seconds the rewind and forward buttons jump. `0` hides both. |
@@ -234,15 +203,15 @@ All 4 options as live previews: https://avaraui.com/view/audio-player
 
 ## Does AudioPlayer stay in sync with keyboard media keys?
 
-Yes. `AudioPlayer` treats the `<audio>` element as the source of truth and listens to its `play`, `pause`, `timeupdate`, `volumechange` and `ended` events. Hardware media keys, OS playback controls and the native controls therefore update the buttons, scrubber and volume without extra code.
+Yes. `AudioPlayer` treats the `<audio>` element as the source of truth and listens to its `play`, `pause`, `timeupdate`, `volumechange` and `ended` events. Hardware media keys and OS playback controls therefore update the buttons, scrubber and volume without extra code.
 
 ## How do I hide the skip forward/backward buttons?
 
-Pass `skipSeconds={0}`. Both the rewind and forward buttons are removed from the custom transport. Any positive number keeps them and sets how far each jumps, so `skipSeconds={15}` gives 15-second jumps. The default is `10`, and `variant="native"` has no skip buttons at all.
+Pass `skipSeconds={0}`. Both the rewind and forward buttons are removed from the custom transport. Any positive number keeps them and sets how far each jumps, so `skipSeconds={15}` gives 15-second jumps. The default is `10`.
 
-## Which AudioPlayer variant should I use: hero, bar or native?
+## Which AudioPlayer variant should I use: hero or bar?
 
-Use `hero` for a featured track with artwork, `bar` for a one-row player in a sidebar, episode list or sticky footer, and `native` when you want the browser's own `<audio controls>` with nothing custom to keep in sync. The `bar` volume slider hides below the `sm` breakpoint.
+Use `hero` for a featured track with artwork, and `bar` for a one-row player in a sidebar, episode list or sticky footer. The `bar` volume slider hides below the `sm` breakpoint.
 
 ## Why does autoPlay not start my AudioPlayer?
 
@@ -250,7 +219,7 @@ Browsers block unmuted autoplay until the visitor has interacted with the page. 
 
 ## When do onPlay, onPause and onEnded fire in AudioPlayer?
 
-`onPlay` and `onPause` run when the visitor uses the player's own Play and Pause button, not for media keys or the native controls. `onEnded` fires from the audio element's `ended` event on every variant. For complete analytics, attach listeners to the `<audio>` element yourself.
+`onPlay` and `onPause` run when the visitor uses the player's own Play and Pause button, not for media keys. `onEnded` fires from the audio element's `ended` event on every variant. For complete analytics, attach listeners to the `<audio>` element yourself.
 
 ---
 

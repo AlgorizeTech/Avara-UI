@@ -130,133 +130,6 @@ export default function CompactAssistant() {
 }
 ```
 
-### Wired to your backend
-
-- Pass `uploadFile` as `(file, onProgress, signal) => Promise<void>` to replace the simulated upload — the rocket follows whatever percentage you report, and the chip turns green when the promise resolves or red when it rejects.
-- `onSend` receives `{ content, attachments, model, effort }` every time a prompt goes out, so the endpoint gets the model id, the effort id and the finished uploads in one call.
-- `models` fills the picker with your own `{ id, name, description?, badge?, pro?, premium? }[]`; `defaultModelId` chooses the initial one.
-
-```tsx
-import AIChat, {
-  type ChatModel,
-  type ComposerTool,
-  type SendPayload,
-  type UploadHandler,
-} from "@/components/custom/blocks/Ai-chat";
-import { Database, Paperclip, Ticket } from "lucide-react";
-
-// One upload row, then whatever sources your assistant can reach. Picking a
-// mention row writes "@Label" into the prompt; `onSend` lists which were named.
-const tools: ComposerTool[] = [
-  { id: "files", label: "Photos & files", description: "Upload from this device", icon: <Paperclip className="w-4 h-4" />, action: "upload" },
-  { id: "crm", label: "CRM", description: "Accounts and deals", icon: <Database className="w-4 h-4" /> },
-  { id: "tickets", label: "Tickets", description: "Open support issues", icon: <Ticket className="w-4 h-4" /> },
-];
-
-const models: ChatModel[] = [
-  { id: "gpt-5", name: "GPT-5", description: "Flagship reasoning", badge: "New" },
-  { id: "claude-sonnet-5", name: "Claude Sonnet 5", description: "Fast and capable" },
-];
-
-// Stream a real upload and report progress as it goes. Reject to mark the chip failed;
-// `signal` aborts if the user removes the chip mid-flight.
-const uploadFile: UploadHandler = (file, onProgress, signal) =>
-  new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", "/api/upload");
-    xhr.upload.onprogress = (e) =>
-      e.lengthComputable && onProgress(Math.round((e.loaded / e.total) * 100));
-    xhr.onload = () => (xhr.status < 300 ? resolve() : reject(new Error(xhr.statusText)));
-    xhr.onerror = () => reject(new Error("Network error"));
-    signal.addEventListener("abort", () => xhr.abort());
-    const body = new FormData();
-    body.append("file", file);
-    xhr.send(body);
-  });
-
-export default function WiredAssistant() {
-  const handleSend = ({ content, attachments, model, effort, tools }: SendPayload) => {
-    // attachments are the finished uploads; tools are the "@" sources the prompt named
-    fetch("/api/chat", {
-      method: "POST",
-      body: JSON.stringify({
-        content,
-        files: attachments.map((a) => a.id),
-        model: model.id,
-        effort: effort.id,
-        sources: tools.map((t) => t.id),
-      }),
-    });
-  };
-
-  return (
-    <div className="w-full h-[600px]">
-      <AIChat
-        tools={tools}
-        models={models}
-        defaultModelId="claude-sonnet-5"
-        defaultEffort="high"
-        accept="image/*,.pdf,.md"
-        maxFiles={4}
-        uploadFile={uploadFile}
-        onSend={handleSend}
-      />
-    </div>
-  );
-}
-```
-
-### Minimal
-
-- Set `variant="minimal"` to strip the borders, shadows and dividers so the assistant blends into a surrounding surface.
-
-```tsx
-import AIChat, { type ChatThread, type Message } from "@/components/custom/blocks/Ai-chat";
-
-const chatHistory: ChatThread[] = [
-  { id: 1, title: "Help with React Components", date: "Today" },
-  { id: 2, title: "Write a python script for SEO", date: "Today" },
-  { id: 3, title: "Ideas for marketing campaign", date: "Yesterday" },
-  { id: 4, title: "Explain quantum physics", date: "Previous 7 Days" },
-  { id: 5, title: "Dinner recipes with chicken", date: "Previous 7 Days" },
-];
-
-const initialMessages: Message[] = [
-  {
-    id: 1,
-    role: "ai",
-    content: "Hello! I am your AI assistant. How can I help you today?",
-    time: "10:00 AM",
-  },
-  {
-    id: 2,
-    role: "user",
-    content: "Can you help me build a modern dashboard UI using Tailwind CSS?",
-    time: "10:02 AM",
-  },
-  {
-    id: 3,
-    role: "ai",
-    content:
-      "Absolutely! Tailwind CSS is fantastic for building modern dashboards. I recommend starting with a clean layout: a side navigation bar, a top header for user profile and search, and a main content area with grid-based cards for your widgets.\n\nWould you like me to generate some starter code for a specific component, like a statistics card or a data table?",
-    time: "10:02 AM",
-  },
-];
-
-export default function MinimalAssistant() {
-  return (
-    <div className="w-full h-[600px]">
-      {/* Card chrome and dividers removed — drops cleanly into an existing panel. */}
-      <AIChat
-        variant="minimal"
-        chatHistory={chatHistory}
-        initialMessages={initialMessages}
-      />
-    </div>
-  );
-}
-```
-
 ### Glass
 
 - Set `variant="glass"` for translucent panels with backdrop blur — it needs a colourful backdrop behind it to read.
@@ -414,11 +287,11 @@ Everything under the prompt is built in and works without any props:
 - Pass `uploadFile(file, onProgress, signal)` to replace the simulated upload on either component.
 - Seed data: `AIChat` takes `chatHistory` and `initialMessages`; `AIChatWorkspace` takes `chatHistory` and `messagesByThread`.
 
-**Ask before you pick.** This page has 6 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+**Ask before you pick.** This page has 5 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
 
-All 6 options as live previews: https://avaraui.com/view/ai-chat
+All 5 options as live previews: https://avaraui.com/view/ai-chat
 
-**When to use it.** An LLM chat interface with conversation history, typing indicators, editable titles and a full prompt composer (a + menu for files and mentions, an upload indicator, a model picker), in five looks of one item plus a separate full workspace.
+**When to use it.** An LLM chat interface with conversation history, typing indicators, editable titles and a full prompt composer (a + menu for files and mentions, an upload indicator, a model picker), in four looks of one item plus a separate full workspace.
 
 **When to use something else:**
 
@@ -426,11 +299,11 @@ All 6 options as live previews: https://avaraui.com/view/ai-chat
 
 **Gotchas:**
 
-- Five are looks of the one `ai-chat` item: install it once and set `variant` from the index. The workspace is a separate item, `ai-chat-workspace`, with no `variant` prop.
+- Four are looks of the one `ai-chat` item: install it once and set `variant` from the index. The workspace is a separate item, `ai-chat-workspace`, with no `variant` prop.
 - To connect a real backend, pass your own upload and send handlers; the simulated stream and upload are the defaults.
 - `glass` and `liquid-glass` need a colourful backdrop behind them to read.
 
-### The 6 variants
+### The 5 variants
 
 1. **Workspace** (`workspace`): Full AI workspace: empty-screen start, model menu in the prompt bar, research and image modes, linked apps, Library.
    - Live: https://avaraui.com/view/ai-chat/workspace
@@ -455,15 +328,7 @@ All 6 options as live previews: https://avaraui.com/view/ai-chat
    - Install: `npx shadcn@latest add @avara-ui/ai-chat`
    - Set these props: `{"variant":"compact"}`
    - Docs: https://avaraui.com/docs/nextjs/ai-chat#compact
-4. **Minimal** (`minimal`): Borders, shadows and dividers are stripped so the assistant blends into the surface around it.
-   - Live: https://avaraui.com/view/ai-chat/minimal
-   - Best for: an assistant inside a page or panel that already has its own frame
-   - Avoid if: you want it to read as a standalone card
-   - Traits: no borders or shadows
-   - Install: `npx shadcn@latest add @avara-ui/ai-chat`
-   - Set these props: `{"variant":"minimal"}`
-   - Docs: https://avaraui.com/docs/nextjs/ai-chat#minimal
-5. **Glass** (`glass`): Translucent panels with backdrop blur; the accent can be tinted to hold up against your backdrop.
+4. **Glass** (`glass`): Translucent panels with backdrop blur; the accent can be tinted to hold up against your backdrop.
    - Live: https://avaraui.com/view/ai-chat/glass
    - Best for: an assistant over a colourful or photographic background
    - Avoid if: the background is plain
@@ -471,7 +336,7 @@ All 6 options as live previews: https://avaraui.com/view/ai-chat
    - Install: `npx shadcn@latest add @avara-ui/ai-chat`
    - Set these props: `{"variant":"glass"}`
    - Docs: https://avaraui.com/docs/nextjs/ai-chat#glass
-6. **Liquid glass** (`liquid-glass`): Liquid-glass refraction using SVG displacement mapping, layered specular highlights and fluid reflections.
+5. **Liquid glass** (`liquid-glass`): Liquid-glass refraction using SVG displacement mapping, layered specular highlights and fluid reflections.
    - Live: https://avaraui.com/view/ai-chat/liquid-glass
    - Best for: a showpiece assistant over rich imagery
    - Avoid if: you want a restrained look or a plain background
@@ -527,7 +392,7 @@ Use `AIChatWorkspace` and pass `generateReply`, a function that receives the sen
 
 ## What is the difference between `ai-chat` and `ai-chat-workspace`?
 
-`ai-chat` installs `AIChat`, a thread-plus-conversation shell with five `variant` looks and a simulated reply. `ai-chat-workspace` installs `AIChatWorkspace`, which opens on an empty screen and adds Research, web, image and reasoning modes, a Library, connectors, sources, a stop button and `generateReply`.
+`ai-chat` installs `AIChat`, a thread-plus-conversation shell with four documented `variant` looks and a simulated reply. `ai-chat-workspace` installs `AIChatWorkspace`, which opens on an empty screen and adds Research, web, image and reasoning modes, a Library, connectors, sources, a stop button and `generateReply`.
 
 ## How do I replace the simulated file upload in AI Chat?
 
@@ -543,7 +408,7 @@ Set `color` to `"primary"` (the default, which follows your theme tokens), `"ind
 
 ## Does AI Chat work in Vite and does it respect reduced motion?
 
-It runs in Vite as well as Next.js, since it has no `next/*` imports. It needs `gsap` and `lucide-react` from npm, or `motion` in the Motion build, and the `ui-liquid-glass` registry item. The Pro and Premium model flourishes are skipped when `prefers-reduced-motion: reduce` is set.
+It runs in Vite as well as Next.js, since it has no `next/*` imports. It needs `gsap` from npm, or `motion` in the Motion build, and the `ui-liquid-glass` and `ui-animated-icons` registry items. The Pro and Premium model flourishes are skipped when `prefers-reduced-motion: reduce` is set.
 
 ---
 

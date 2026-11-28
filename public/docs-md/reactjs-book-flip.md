@@ -101,7 +101,7 @@ export default function BookFlipDemo() {
       duration={0.7}
       easing="cubic-bezier(0.4, 0, 0.2, 1)"
       spineShift={true}
-      radius="4px"
+      radius="8px"
       showPageNumbers={true}
       showSpineBinding={true}
       autoplay={false}
@@ -173,7 +173,7 @@ export default function BookFlipDemo() {
 | `easing` | `string` | `"cubic-bezier(0.4, 0, 0.2, 1)"` | CSS easing for the flip. |
 | `shadowIntensity` | `number` | `0.35` | Shadow strength from 0 to 1. |
 | `spineShift` | `boolean` | `true` | Shifts the book sideways so the open spread stays centred. |
-| `radius` | `string \| number` | `"4px"` | Page corner radius. A number is read as pixels. |
+| `radius` | `string \| number` | `"8px"` | Outer corner radius; the spine side stays nearly square. A number is read as pixels. |
 | `pauseOnHover` | `boolean` | `true` | Pauses autoplay while the pointer is over the book. |
 | `interactive` | `boolean` | `true` | Lets visitors click a page to turn it. When `false`, the pages ignore the pointer. |
 | `className / style` | `string / CSSProperties` | `undefined` | Classes and inline style for the outer container. |

@@ -275,7 +275,13 @@ export const PlyrPlayer = React.forwardRef<
     return (
       <div
         ref={ref}
-        className={cn("relative w-full", className)}
+        className={cn(
+          "relative w-full",
+          // Plyr reads these custom properties, so the audio bar follows the
+          // theme tokens and flips with dark mode without touching its CSS.
+          "[--plyr-font-family:inherit] [--plyr-control-radius:9999px] [--plyr-range-track-height:6px] [--plyr-range-thumb-height:14px] [--plyr-range-thumb-background:var(--card)] [--plyr-audio-control-color:var(--muted-foreground)] [--plyr-audio-control-color-hover:var(--primary-foreground)] [--plyr-audio-controls-background:#F7F7F6] [--plyr-audio-progress-buffered-background:color-mix(in_oklab,var(--foreground)_15%,transparent)] dark:[--plyr-audio-controls-background:color-mix(in_oklab,var(--background)_50%,transparent)]",
+          className,
+        )}
         // Plyr is skinned entirely through CSS custom properties, so the accent
         // is set on the wrapper rather than through a stylesheet override.
         style={
@@ -286,27 +292,35 @@ export const PlyrPlayer = React.forwardRef<
         {...props}
       >
         {enableGlow && (
-          <div className="pointer-events-none absolute -inset-4 z-0 rounded-3xl bg-gradient-to-tr from-primary/20 via-primary/20 to-primary/10 opacity-80 blur-3xl transition-opacity duration-500 dark:opacity-50" />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-6 top-8 -bottom-2 z-0 rounded-[1.75rem] bg-primary opacity-20 blur-3xl dark:opacity-15"
+          />
         )}
 
-        <div className="relative z-10 flex w-full flex-col overflow-hidden rounded-xl border border-border/80 bg-zinc-900 shadow-2xl sm:rounded-2xl md:rounded-3xl">
+        <div className="relative z-10 flex w-full flex-col rounded-[1.75rem] bg-card p-2 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-16px_rgba(0,0,0,0.18)]">
           <div
             className={cn(
-              "group/frame relative w-full bg-black",
-              isAudio ? "p-4 sm:p-6" : aspectRatios[aspectRatio],
+              "group/frame relative w-full",
+              isAudio
+                ? "p-3 sm:p-4"
+                : cn(
+                    "overflow-hidden rounded-[1.25rem] bg-black",
+                    aspectRatios[aspectRatio],
+                  ),
             )}
           >
             {/* An audio player has no picture to lay copy over, so its title
                 sits above the control bar in normal flow instead. */}
             {isAudio && showOverlay && (title || subtitle) && (
-              <div className="mb-3">
+              <div className="mb-4 px-1">
                 {title && (
-                  <h3 className="line-clamp-1 text-base font-semibold tracking-tight text-white sm:text-xl">
+                  <h3 className="line-clamp-1 text-base font-semibold tracking-tight text-foreground sm:text-xl">
                     {title}
                   </h3>
                 )}
                 {subtitle && (
-                  <p className="mt-0.5 line-clamp-1 text-[11px] text-zinc-400 sm:text-xs">
+                  <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground sm:text-sm">
                     {subtitle}
                   </p>
                 )}
@@ -321,14 +335,27 @@ export const PlyrPlayer = React.forwardRef<
                 "h-full w-full",
                 !isReady && "invisible",
                 !isAudio && "[&_.plyr]:h-full [&_.plyr]:w-full",
+                isAudio && "[&_.plyr]:rounded-full",
               )}
             >
               {media}
             </div>
 
             {!isReady && (
-              <div className="absolute inset-0 flex items-center justify-center bg-zinc-950">
-                <span className="h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-white/80" />
+              <div
+                className={cn(
+                  "absolute inset-0 flex items-center justify-center",
+                  isAudio ? "bg-card" : "bg-zinc-950",
+                )}
+              >
+                <span
+                  className={cn(
+                    "h-8 w-8 animate-spin rounded-full border-2 motion-reduce:animate-none",
+                    isAudio
+                      ? "border-foreground/15 border-t-foreground/60"
+                      : "border-white/20 border-t-white/80",
+                  )}
+                />
               </div>
             )}
 

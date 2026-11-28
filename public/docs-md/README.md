@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-11-26T15:58:19.818Z
-**Total files:** 353
+**Generated at:** 2026-11-28T12:21:49.343Z
+**Total files:** 357
 
 ## Available Files
 
@@ -89,6 +89,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/gallery](/docs-md/nextjs-gallery.md) - Source: `[framework]\gallery\page.mdx`
 - [nextjs/glass-panel](/docs-md/nextjs-glass-panel.md) - Source: `[framework]\glass-panel\page.mdx`
 - [nextjs/gsap-components](/docs-md/nextjs-gsap-components.md) - Source: `[framework]\gsap-components\page.mdx`
+- [nextjs/guest-morph](/docs-md/nextjs-guest-morph.md) - Source: `[framework]\guest-morph\page.mdx`
 - [nextjs/half-stars](/docs-md/nextjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
 - [nextjs/heart-signal](/docs-md/nextjs-heart-signal.md) - Source: `[framework]\heart-signal\page.mdx`
 - [nextjs/hero](/docs-md/nextjs-hero.md) - Source: `[framework]\hero\page.mdx`
@@ -158,6 +159,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/table](/docs-md/nextjs-table.md) - Source: `[framework]\table\page.mdx`
 - [nextjs/table-of-contents](/docs-md/nextjs-table-of-contents.md) - Source: `[framework]\table-of-contents\page.mdx`
 - [nextjs/tech-stack](/docs-md/nextjs-tech-stack.md) - Source: `[framework]\tech-stack\page.mdx`
+- [nextjs/templates/mailora](/docs-md/nextjs-templates-mailora.md) - Source: `[framework]\templates\mailora\page.mdx`
 - [nextjs/templates/veloce](/docs-md/nextjs-templates-veloce.md) - Source: `[framework]\templates\veloce\page.mdx`
 - [nextjs/terminal](/docs-md/nextjs-terminal.md) - Source: `[framework]\terminal\page.mdx`
 - [nextjs/text-animation](/docs-md/nextjs-text-animation.md) - Source: `[framework]\text-animation\page.mdx`
@@ -265,6 +267,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/gallery](/docs-md/reactjs-gallery.md) - Source: `[framework]\gallery\page.mdx`
 - [reactjs/glass-panel](/docs-md/reactjs-glass-panel.md) - Source: `[framework]\glass-panel\page.mdx`
 - [reactjs/gsap-components](/docs-md/reactjs-gsap-components.md) - Source: `[framework]\gsap-components\page.mdx`
+- [reactjs/guest-morph](/docs-md/reactjs-guest-morph.md) - Source: `[framework]\guest-morph\page.mdx`
 - [reactjs/half-stars](/docs-md/reactjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
 - [reactjs/heart-signal](/docs-md/reactjs-heart-signal.md) - Source: `[framework]\heart-signal\page.mdx`
 - [reactjs/hero](/docs-md/reactjs-hero.md) - Source: `[framework]\hero\page.mdx`
@@ -334,6 +337,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/table](/docs-md/reactjs-table.md) - Source: `[framework]\table\page.mdx`
 - [reactjs/table-of-contents](/docs-md/reactjs-table-of-contents.md) - Source: `[framework]\table-of-contents\page.mdx`
 - [reactjs/tech-stack](/docs-md/reactjs-tech-stack.md) - Source: `[framework]\tech-stack\page.mdx`
+- [reactjs/templates/mailora](/docs-md/reactjs-templates-mailora.md) - Source: `[framework]\templates\mailora\page.mdx`
 - [reactjs/templates/veloce](/docs-md/reactjs-templates-veloce.md) - Source: `[framework]\templates\veloce\page.mdx`
 - [reactjs/terminal](/docs-md/reactjs-terminal.md) - Source: `[framework]\terminal\page.mdx`
 - [reactjs/text-animation](/docs-md/reactjs-text-animation.md) - Source: `[framework]\text-animation\page.mdx`

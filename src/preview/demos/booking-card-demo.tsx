@@ -1,7 +1,7 @@
 "use client";
 
 import { BookingCard } from "@/components/custom/blocks/BookingCardBlock";
-import { GlassBackdrop, GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
+import { GlassBackdrop } from "@/components/custom/blocks/GlassPanelBlock";
 import { cn } from "@/lib/utils";
 
 const SLOTS = [
@@ -43,8 +43,8 @@ function Card({ className }: { className?: string }) {
 export default function BookingCardDemo({
   surface = "card",
 }: {
-  /** The panel the card sits in: a plain card, a glass slab, or liquid-glass refraction. */
-  surface?: "card" | "glass" | "liquid-glass";
+  /** The panel the card sits in: a plain card on a soft wrapper, or liquid-glass refraction. */
+  surface?: "card" | "liquid-glass";
 }) {
   if (surface === "liquid-glass") {
     return (
@@ -54,19 +54,11 @@ export default function BookingCardDemo({
     );
   }
 
-  if (surface === "glass") {
-    return (
-      <GlassBackdrop className="w-full max-w-md rounded-[var(--radius-3xl,2rem)]">
-        <GlassPanel shape="slab" className="col-span-full">
-          <Card />
-        </GlassPanel>
-      </GlassBackdrop>
-    );
-  }
-
   return (
-    <div className="w-full max-w-md rounded-[2rem] bg-card text-card-foreground shadow-[0_1px_2px_rgba(0,0,0,0.06),0_24px_56px_-20px_rgba(0,0,0,0.42)]">
-      <Card />
+    <div className="w-full max-w-lg rounded-[2rem] bg-[#F7F7F6] p-4 lg:p-6 dark:bg-background/50">
+      <div className="rounded-[1.75rem] bg-card text-card-foreground shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-16px_rgba(0,0,0,0.18)]">
+        <Card />
+      </div>
     </div>
   );
 }

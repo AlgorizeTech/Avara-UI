@@ -122,74 +122,6 @@ export default function Assistant() {
   );
 }`;
 
-export const usageComposer = `import AIChat, {
-  type ChatModel,
-  type ComposerTool,
-  type SendPayload,
-  type UploadHandler,
-} from "@/components/custom/blocks/Ai-chat";
-import { Database, Paperclip, Ticket } from "lucide-react";
-
-// One upload row, then whatever sources your assistant can reach. Picking a
-// mention row writes "@Label" into the prompt; \`onSend\` lists which were named.
-const tools: ComposerTool[] = [
-  { id: "files", label: "Photos & files", description: "Upload from this device", icon: <Paperclip className="w-4 h-4" />, action: "upload" },
-  { id: "crm", label: "CRM", description: "Accounts and deals", icon: <Database className="w-4 h-4" /> },
-  { id: "tickets", label: "Tickets", description: "Open support issues", icon: <Ticket className="w-4 h-4" /> },
-];
-
-const models: ChatModel[] = [
-  { id: "gpt-5", name: "GPT-5", description: "Flagship reasoning", badge: "New" },
-  { id: "claude-sonnet-5", name: "Claude Sonnet 5", description: "Fast and capable" },
-];
-
-// Stream a real upload and report progress as it goes. Reject to mark the chip failed;
-// \`signal\` aborts if the user removes the chip mid-flight.
-const uploadFile: UploadHandler = (file, onProgress, signal) =>
-  new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", "/api/upload");
-    xhr.upload.onprogress = (e) =>
-      e.lengthComputable && onProgress(Math.round((e.loaded / e.total) * 100));
-    xhr.onload = () => (xhr.status < 300 ? resolve() : reject(new Error(xhr.statusText)));
-    xhr.onerror = () => reject(new Error("Network error"));
-    signal.addEventListener("abort", () => xhr.abort());
-    const body = new FormData();
-    body.append("file", file);
-    xhr.send(body);
-  });
-
-export default function WiredAssistant() {
-  const handleSend = ({ content, attachments, model, effort, tools }: SendPayload) => {
-    // attachments are the finished uploads; tools are the "@" sources the prompt named
-    fetch("/api/chat", {
-      method: "POST",
-      body: JSON.stringify({
-        content,
-        files: attachments.map((a) => a.id),
-        model: model.id,
-        effort: effort.id,
-        sources: tools.map((t) => t.id),
-      }),
-    });
-  };
-
-  return (
-    <div className="w-full h-[600px]">
-      <AIChat
-        tools={tools}
-        models={models}
-        defaultModelId="claude-sonnet-5"
-        defaultEffort="high"
-        accept="image/*,.pdf,.md"
-        maxFiles={4}
-        uploadFile={uploadFile}
-        onSend={handleSend}
-      />
-    </div>
-  );
-}`;
-
 export const usageCompact = `import AIChat from "@/components/custom/blocks/Ai-chat";
 
 export default function CompactAssistant() {
@@ -201,23 +133,6 @@ export default function CompactAssistant() {
         variant="compact"
         heroTitle="What can I help you with?"
         heroSubtitle="Ask a question, attach a file, or pick a source with +"
-      />
-    </div>
-  );
-}`;
-
-export const usageMinimal = `import AIChat, { type ChatThread, type Message } from "@/components/custom/blocks/Ai-chat";
-
-${chatData}
-
-export default function MinimalAssistant() {
-  return (
-    <div className="w-full h-[600px]">
-      {/* Card chrome and dividers removed — drops cleanly into an existing panel. */}
-      <AIChat
-        variant="minimal"
-        chatHistory={chatHistory}
-        initialMessages={initialMessages}
       />
     </div>
   );
@@ -338,43 +253,6 @@ export default function LiquidGlassAssistant() {
       ],
       props: { variant: "compact" },
       usage: usageCompact,
-    },
-    {
-      title: "Wired to your backend",
-      propNotes: [
-        {
-          lead: "Pass",
-          prop: "uploadFile",
-          effect:
-            "as `(file, onProgress, signal) => Promise<void>` to replace the simulated upload — the rocket follows whatever percentage you report, and the chip turns green when the promise resolves or red when it rejects.",
-        },
-        {
-          prop: "onSend",
-          effect:
-            "receives `{ content, attachments, model, effort }` every time a prompt goes out, so the endpoint gets the model id, the effort id and the finished uploads in one call.",
-        },
-        {
-          prop: "models",
-          effect:
-            "fills the picker with your own `{ id, name, description?, badge?, pro?, premium? }[]`; `defaultModelId` chooses the initial one.",
-        },
-      ],
-      props: { variant: "default" },
-      usage: usageComposer,
-    },
-    {
-      title: "Minimal",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "variant",
-          value: '"minimal"',
-          effect:
-            "to strip the borders, shadows and dividers so the assistant blends into a surrounding surface.",
-        },
-      ],
-      props: { variant: "minimal" },
-      usage: usageMinimal,
     },
     {
       title: "Glass",
@@ -795,7 +673,7 @@ Use `AIChatWorkspace` and pass `generateReply`, a function that receives the sen
 
 ## What is the difference between `ai-chat` and `ai-chat-workspace`?
 
-`ai-chat` installs `AIChat`, a thread-plus-conversation shell with five `variant` looks and a simulated reply. `ai-chat-workspace` installs `AIChatWorkspace`, which opens on an empty screen and adds Research, web, image and reasoning modes, a Library, connectors, sources, a stop button and `generateReply`.
+`ai-chat` installs `AIChat`, a thread-plus-conversation shell with four documented `variant` looks and a simulated reply. `ai-chat-workspace` installs `AIChatWorkspace`, which opens on an empty screen and adds Research, web, image and reasoning modes, a Library, connectors, sources, a stop button and `generateReply`.
 
 ## How do I replace the simulated file upload in AI Chat?
 
@@ -811,7 +689,7 @@ Set `color` to `"primary"` (the default, which follows your theme tokens), `"ind
 
 ## Does AI Chat work in Vite and does it respect reduced motion?
 
-It runs in Vite as well as Next.js, since it has no `next/*` imports. It needs `gsap` and `lucide-react` from npm, or `motion` in the Motion build, and the `ui-liquid-glass` registry item. The Pro and Premium model flourishes are skipped when `prefers-reduced-motion: reduce` is set.
+It runs in Vite as well as Next.js, since it has no `next/*` imports. It needs `gsap` from npm, or `motion` in the Motion build, and the `ui-liquid-glass` and `ui-animated-icons` registry items. The Pro and Premium model flourishes are skipped when `prefers-reduced-motion: reduce` is set.
 
 <DocsJsonLd slug="ai-chat" />
 <FaqJsonLd slug="ai-chat" />
